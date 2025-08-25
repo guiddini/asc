@@ -1,4 +1,4 @@
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Image } from "react-bootstrap";
 import { SPONSORS } from "../../../helpers/data";
 
 const Sponsors = () => {
@@ -21,8 +21,8 @@ const Sponsors = () => {
       <Row className="g-4 justify-content-center align-items-center">
         {SPONSORS.map((logo, i) => (
           <Col xs={6} sm={4} md={3} lg={2} key={i} className="text-center">
-            <img
-              src={logo}
+            <Image
+              src={logo.replace("public/", "/")}
               alt={`sponsor-${i}`}
               className="img-fluid grayscale hover:grayscale-0 transition-all mx-auto"
               style={{ maxHeight: "120px", objectFit: "contain" }}
