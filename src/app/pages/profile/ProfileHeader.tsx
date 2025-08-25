@@ -1,11 +1,11 @@
 import type React from "react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { KTIcon } from "../../../_metronic/helpers";
 import clsx from "clsx";
 import type { User } from "../../types/user";
 import getMediaUrl from "../../helpers/getMediaUrl";
-import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Button, OverlayTrigger, Tooltip, Modal, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import type { UserResponse } from "../../types/reducers";
@@ -20,12 +20,19 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
   const { user: currentUser } = useSelector(
     (state: UserResponse) => state.user
   );
-
   const is_owner = currentUser?.id === user.id;
   const user_company = user?.company;
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const queryClient = useQueryClient();
+
+  const [showMeetModal, setShowMeetModal] = useState(false);
+  const [selectedSlot, setSelectedSlot] = useState<string>("");
+  const [selectedPlace, setSelectedPlace] = useState<string>("");
+  const [meetNote, setMeetNote] = useState<string>("");
+
+  const [showTextModal, setShowTextModal] = useState(false);
+  const [textMessage, setTextMessage] = useState<string>("");
 
   const updateAvatarMutation = useMutation(
     (formData: FormData) => updateUserLogo(formData),
@@ -54,6 +61,49 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
   const handleIconClick = () => {
     fileInputRef.current?.click();
   };
+
+  const handleOpenMeetModal = () => setShowMeetModal(true);
+  const handleCloseMeetModal = () => {
+    setShowMeetModal(false);
+    setSelectedSlot("");
+    setSelectedPlace("");
+    setMeetNote("");
+  };
+
+  const handleConfirmMeet = () => {
+    toast.success(
+      `Vous avez réservé le créneau ${selectedSlot} à ${selectedPlace} avec ${
+        user.fname
+      }. Note: ${meetNote || "Aucune"}`
+    );
+    handleCloseMeetModal();
+  };
+
+  const handleOpenTextModal = () => setShowTextModal(true);
+  const handleCloseTextModal = () => {
+    setShowTextModal(false);
+    setTextMessage("");
+  };
+  const handleSendText = () => {
+    toast.success(`Message envoyé à ${user.fname}: "${textMessage}"`);
+    handleCloseTextModal();
+  };
+
+  // 8 time slots with rooms
+  const startHour = 10;
+  const rooms = ["Salle A1", "Salle B2", "Salle C1", "Salle D3"];
+  const slots = Array.from({ length: 8 }, (_, i) => {
+    const start = new Date();
+    start.setHours(startHour + Math.floor(i / 2), (i % 2) * 30, 0, 0);
+    const end = new Date(start);
+    end.setMinutes(end.getMinutes() + 30);
+    const formatTime = (d: Date) =>
+      `${d.getHours()}:${d.getMinutes() === 0 ? "00" : d.getMinutes()}`;
+    return {
+      time: `${formatTime(start)} - ${formatTime(end)}`,
+      room: rooms[i % rooms.length],
+    };
+  });
 
   return (
     <div className="card rounded-0">
@@ -105,67 +155,10 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
                     </span>
                   )}
                 </div>
-
-                <div className="d-flex flex-wrap flex-row align-items-center fw-bold fs-6 pe-2">
-                  <span className="d-flex align-items-center text-gray-500 me-3">
-                    {user.roleValues?.display_name}
-                  </span>
-
-                  <span className="d-flex align-items-center text-gray-500 me-3">
-                    {user?.info?.type === "student" ? (
-                      <span className="d-flex align-items-center text-gray-500 me-3">
-                        | Étudiant
-                      </span>
-                    ) : user?.info?.occupation_id !== null ? (
-                      <span className="d-flex align-items-center text-gray-500 me-3">
-                        | {user?.info?.occupationFound?.label_fr}
-                      </span>
-                    ) : (
-                      <span className="d-flex align-items-center text-gray-500 me-3">
-                        {user?.info?.occupation !== null &&
-                          `| ${user?.info?.occupation}`}
-                      </span>
-                    )}
-                  </span>
-                </div>
-
-                <div className="d-flex flex-wrap fw-bold fs-6 pe-2">
-                  {/* Phone and email information */}
-                </div>
-
-                {user_company?.id ? (
-                  <div
-                    className="d-flex flex-row align-items-center my-4 cursor-pointer"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      navigate(`/company/${user_company?.id}`);
-                    }}
-                  >
-                    <div className="symbol symbol-35px symbol-fixed position-relative">
-                      <img
-                        src={
-                          getMediaUrl(user_company?.logo) || "/placeholder.svg"
-                        }
-                        alt=""
-                        className="rounded-3"
-                      />
-                    </div>
-                    <div>
-                      <h4 className="text-gray-700 ms-2 my-1 fs-5">
-                        {user_company?.legal_status} {user_company?.name}
-                      </h4>
-                      <h6 className="text-gray-500 ms-2 fs-6">
-                        {user_company?.email}
-                      </h6>
-                    </div>
-                  </div>
-                ) : (
-                  <></>
-                )}
               </div>
 
               {!is_owner && (
-                <div className="d-flex my-4">
+                <div className="d-flex my-4 gap-2 flex-wrap">
                   <OverlayTrigger
                     placement="top-start"
                     delay={{ show: 250, hide: 400 }}
@@ -173,35 +166,113 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
                   >
                     <Button
                       variant="light"
-                      className="opacity-25 me-4"
-                      onClick={(e) => {
-                        e.preventDefault();
-                      }}
+                      className="opacity-25"
+                      onClick={(e) => e.preventDefault()}
                     >
                       Suivre
                     </Button>
                   </OverlayTrigger>
 
-                  <OverlayTrigger
-                    placement="top-start"
-                    delay={{ show: 250, hide: 400 }}
-                    overlay={<Tooltip>Bientôt disponible !</Tooltip>}
-                  >
-                    <Button
-                      variant="primary"
-                      className="opacity-25"
-                      onClick={(e) => {
-                        e.preventDefault();
-                      }}
-                    >
-                      Rencontrer
-                    </Button>
-                  </OverlayTrigger>
+                  <Button variant="primary" onClick={handleOpenMeetModal}>
+                    Rencontrer
+                  </Button>
+
+                  <Button variant="success" onClick={handleOpenTextModal}>
+                    Envoyer un message
+                  </Button>
                 </div>
               )}
             </div>
           </div>
         </div>
+
+        {/* Meet Modal */}
+        <Modal
+          show={showMeetModal}
+          onHide={handleCloseMeetModal}
+          centered
+          size="lg"
+          aria-labelledby="contained-modal-title-vcenter"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Rencontrer {user.fname}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>Choisissez un créneau et un emplacement :</p>
+            <div className="d-flex flex-wrap gap-2 mb-3">
+              {slots.map((slot) => (
+                <div
+                  key={slot.time}
+                  className={`p-2 border rounded cursor-pointer text-center flex-fill ${
+                    selectedSlot === slot.time
+                      ? "bg-primary text-white"
+                      : "bg-light"
+                  }`}
+                  style={{ minWidth: "120px" }}
+                  onClick={() => {
+                    setSelectedSlot(slot.time);
+                    setSelectedPlace(slot.room);
+                  }}
+                >
+                  <strong>{slot.time}</strong>
+                  <div>{slot.room}</div>
+                </div>
+              ))}
+            </div>
+            <Form.Group controlId="meetNote">
+              <Form.Label>Note (optionnelle)</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                placeholder="Écrivez une note pour la rencontre..."
+                value={meetNote}
+                onChange={(e) => setMeetNote(e.target.value)}
+              />
+            </Form.Group>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseMeetModal}>
+              Annuler
+            </Button>
+            <Button
+              variant="primary"
+              onClick={handleConfirmMeet}
+              disabled={!selectedSlot}
+            >
+              Confirmer
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        {/* Text Message Modal */}
+        <Modal show={showTextModal} onHide={handleCloseTextModal} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Envoyer un message à {user.fname}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form.Group controlId="textMessage">
+              <Form.Control
+                as="textarea"
+                rows={4}
+                placeholder="Écrivez votre message..."
+                value={textMessage}
+                onChange={(e) => setTextMessage(e.target.value)}
+              />
+            </Form.Group>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseTextModal}>
+              Annuler
+            </Button>
+            <Button
+              variant="success"
+              onClick={handleSendText}
+              disabled={!textMessage.trim()}
+            >
+              Envoyer
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </div>
   );
