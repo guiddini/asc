@@ -28,7 +28,7 @@ const TicketBoughtSuccess = () => {
         </button>
         <img
           src="/media/eventili/logos/logo-bg-dark.svg"
-          alt="Eventili"
+          alt="African Startup Conference"
           id="exhibition-confirmation-logo"
         />
       </header>

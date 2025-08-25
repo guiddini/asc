@@ -97,7 +97,7 @@ const CompanyReservationPage = () => {
             <p id="company-reservation-description">
               Suivez l'état de vos demandes de réservation, prenez les mesures
               nécessaires et accédez aux fonctionnalités supplémentaires
-              d'Eventili en toute transparence.
+              d'African Startup Conference en toute transparence.
             </p>
           </div>
 

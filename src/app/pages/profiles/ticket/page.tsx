@@ -44,7 +44,7 @@ const TicketsPage = () => {
       location: "Cultural Center of the Great Mosque of Algiers",
       website: "https://algeriafintech.com",
       email: "Contact@algeriafintech.com",
-      organizers: ["/media/eventili/logos/guiddini.svg"],
+      organizers: ["/media/eventili/logos/algeria-venture-logo.svg"],
       onClick: () => navigate("/profiles/afes"),
       hero: "/media/eventili/afes/bg.jpg",
       cta: "Retour",

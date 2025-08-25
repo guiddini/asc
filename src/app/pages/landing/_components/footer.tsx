@@ -11,7 +11,7 @@ export default function Footer() {
         />
         <h2 id="footer-title">
           Découvrez. Connectez-vous. Prospérez avec{" "}
-          <span id="footer-highlight">Eventili</span>
+          <span id="footer-highlight">African Startup Conference</span>
         </h2>
         <p id="footer-description">
           Vous permettant de trouver les bons événements, établir des connexions
@@ -19,7 +19,6 @@ export default function Footer() {
         </p>
       </div>
       <div id="footer-bottom">
-        <div id="footer-copyright">© 2025 Eventili. Tous droits réservés.</div>
         <a
           href="https://guiddini.com/"
           target="_blank"
@@ -28,10 +27,12 @@ export default function Footer() {
             marginTop: "0",
           }}
         >
+          <img src="/media/eventili/logos/algeria-venture-logo.svg" alt="" />
           <span>
-            Un produit de <span id="owner">Guiddini</span>{" "}
+            Copyright © 2025 <span id="owner">Algeria Venture</span>
+            <br />
+            All rights reserved.
           </span>
-          <img src="/media/eventili/logos/guiddini-long.svg" alt="" />
         </a>
         <div id="footer-links">
           <a href="/about">À propos</a>

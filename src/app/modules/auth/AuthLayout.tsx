@@ -8,7 +8,8 @@ const AuthLayout = () => {
         <div id="auth-layout-left">
           <div id="welcome-content">
             <h1>
-              Bienvenue sur <span id="highlight">Eventili</span>
+              Bienvenue sur{" "}
+              <span id="highlight">African Startup Conference</span>
               <br />
               L'endroit où chaque événement commence !
             </h1>
@@ -16,8 +17,8 @@ const AuthLayout = () => {
               Rejoignez une communauté de rêveurs, créateurs et organisateurs
               qui donnent vie à des expériences inoubliables. Que vous planifiez
               votre prochain grand événement ou que vous soyez à la recherche de
-              votre prochaine aventure, Eventili rend tout simple, fluide et
-              excitant.
+              votre prochaine aventure, African Startup Conference rend tout
+              simple, fluide et excitant.
             </p>
             <p>
               Ne manquez pas l'opportunité de faire partie de quelque chose
@@ -25,12 +26,6 @@ const AuthLayout = () => {
               l'aventure commencer !
             </p>
           </div>
-          <a href="https://guiddini.com/" target="_blank" id="powered-by">
-            <span>
-              Un produit de <span id="owner">Guiddini</span>{" "}
-            </span>
-            <img src="/media/eventili/logos/guiddini-long.svg" alt="" />
-          </a>
         </div>
         <div id="auth-layout-right">
           <div id="auth-header">

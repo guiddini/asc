@@ -20,11 +20,11 @@ const Footer: FC = () => {
             {new Date().getFullYear()}&copy;
           </span>
           <a
-            href="https://guiddini.com.dz/"
+            href="https://aventure.dz/home"
             target="_blank"
             className="text-gray-800 text-hover-primary"
           >
-            Algeria Fintech & E-commerce Summit with 30☕ By Guiddini
+            Copyright © 2025 Algeria Venture All rights reserved.
           </a>
         </div>
 

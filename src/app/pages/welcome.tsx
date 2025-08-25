@@ -45,7 +45,7 @@ const WelcomePage = () => {
         <div className="nav-center">
           <img
             src="/media/eventili/logos/logo-bg.svg"
-            alt="Eventili"
+            alt="African Startup Conference"
             className="logo"
           />
         </div>
@@ -74,7 +74,7 @@ const WelcomePage = () => {
         <span className="category-label">TOUS LES ÉVÉNEMENTS</span>
 
         <h1 className="welcome-heading">
-          Bienvenue chez Eventili !
+          Bienvenue chez African Startup Conference !
           <br />
           Découvrons votre premier
           <span className="welcome-highlight"> événement</span>

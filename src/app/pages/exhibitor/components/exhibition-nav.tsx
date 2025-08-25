@@ -94,7 +94,7 @@ const ExhibitionNav = () => {
       </Link>
       <img
         src="/media/eventili/logos/logo-bg-dark.svg"
-        alt="Eventili"
+        alt="African Startup Conference"
         id="event-management-nav-logo"
       />
       <div id="event-management-nav-actions">

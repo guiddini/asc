@@ -47,7 +47,7 @@ const SearchTicketPage = () => {
         <div id="badge-header">
           <img
             src={eventiliLogo || "/placeholder.svg"}
-            alt="Eventili"
+            alt="African Startup Conference"
             id="eventili-logo"
           />
         </div>

@@ -16,7 +16,8 @@ export default function HeroSection() {
         <h1 id="landing-hero-title">
           Créez des connexions réelles
           <br />
-          avec <span id="landing-hero-highlight">Eventili</span>
+          avec{" "}
+          <span id="landing-hero-highlight">African Startup Conference</span>
         </h1>
         <p id="landing-hero-description">
           Rejoignez un monde d'innovation, d'entrepreneuriat et de croissance.

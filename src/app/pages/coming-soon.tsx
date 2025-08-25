@@ -18,7 +18,10 @@ export default function ComingSoon() {
           Retour
         </Link>
         <div id="logo-container">
-          <img src="/media/eventili/logos/logo-white.svg" alt="Eventili" />
+          <img
+            src="/media/eventili/logos/logo-white.svg"
+            alt="African Startup Conference"
+          />
         </div>
         <button id="logout-button" onClick={handleLogout}>
           Déconnexion
