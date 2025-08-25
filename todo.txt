@@ -1,0 +1,45 @@
+- corporate = exhibitor
+- institution :
+    - type = {
+        institution publique
+        ministere
+        association
+        organisme
+    }
+    - nom
+    - occupation (input)
+
+
+- independant :
+    - same as exhibitor but without company
+
+
+-- serviuces : name, description, image a la une , gallery (opt), categories 2 max , cta
+-- add checkbox for general conditions in code invit page + captcha
+- services cta : - external link / number phone to call / mail  
+
+todo today :
+
+-- timeline in homepage will be like agenda for events or my agenda b2b
+
+sevices media type (imgs, pdf,)
+
+
+
+-- company detail page :
+    - company type 
+    - annee de creation
+    - nombre d'employe
+
+- founder quote  
+
+-change name of publications => actualites
+
+-- product page =>
+ -- filterage par: category, type,
+
+-- company details page =>
+  -- on the cover image add 2 btns : products // recrutement
+  -- add join us form in the bottom of the page
+
+

@@ -1,0 +1,47 @@
+name: Deploy to cPanel
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install dependencies
+      run: npm install --force
+
+    - name: Build the Vite application
+      run: npm run build
+
+    - name: Deploy to cPanel server
+      env:
+        CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
+        CPANEL_USER: ${{ secrets.CPANEL_USER }}
+        CPANEL_SSH_KEY: ${{ secrets.CPANEL_SSH_KEY }}
+      run: |
+        # Create the .ssh directory if it doesn't exist
+        mkdir -p ~/.ssh
+        
+        # Set up SSH private key
+        echo "${CPANEL_SSH_KEY}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+
+        # Add server to known_hosts to avoid prompt
+        ssh-keyscan -H $CPANEL_SERVER >> ~/.ssh/known_hosts
+        
+        # Verify SSH connection
+        ssh -o StrictHostKeyChecking=no $CPANEL_USER@$CPANEL_SERVER "echo 'SSH connection successful'"
+
+        # Deploy using rsync
+        rsync -avz --delete dist/ $CPANEL_USER@$CPANEL_SERVER:public_html/

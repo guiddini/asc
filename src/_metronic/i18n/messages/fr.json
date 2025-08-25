@@ -1,0 +1,152 @@
+{
+  "auth": {
+    "header": "Sous le haut patronage du Ministère de la Poste et des Télécommunications <br /> Ministère de l'Économie et de la Connaissance, des Startups et des Micro-entreprises <br /> Ministère du Commerce et de la Promotion des Exportations <br /> Ministère de la Numérisation et des Statistiques"
+  },
+  "invitation": {
+    "title": "Utiliser le code d'invitation",
+    "label": "Code d'invitation",
+    "button": "Confirmer",
+    "formTitle": "Veuillez confirmer votre présence ou désigner un représentant de votre entité",
+    "confirmPresence": "Valider Ma Présence",
+    "delegateParticipation": "Déléguer Ma Participation",
+    "meDescription": "Je confirme ma présence à l'événement.",
+    "otherDescription": "Je délègue ma place à une autre personne.",
+    "firstName": "Prénom",
+    "lastName": "Nom de famille",
+    "email": "Email",
+    "invitationCode": "Code d'invitation",
+    "validateInvitation": "Valider l'invitation",
+    "continue": "Continuer",
+    "successMessage": "Merci d'avoir accepté l'invitation. Nous apprécions votre acceptation, la plateforme est en cours de développement. Les détails suivront par e-mail à son lancement.",
+    "invitCodeErrorLabel": "Code Non Valide",
+    "invitCodeErrorDesc": "Le code que vous avez saisi n'est pas valide ou a déjà été utilisé. Veuillez vérifier et réessayer",
+    "invitCodeErrorFooter": "Si vous pensez qu'il s'agit d'une erreur , veuillez contacter contact@algeriafintech.com",
+    "assignSuccessLabel": "Merci d'avoir accepté l'invitation",
+    "assignSuccessDesc": "Nous apprécions votre acceptation, la plateforme est en cours de développement, les détails suivront par e-mail à son lancement.",
+    "assignSuccessFooter": "Plateforme en cours de développement",
+
+    "generalCondition": {
+      "label": "J'ai lu et j'accepte",
+      "link": "les conditions générales."
+    },
+
+    "validation": {
+      "assignInvitation": {
+        "type": {
+          "required": "Veuillez déléguer l'invitation",
+          "typeError": "Veuillez déléguer l'invitation"
+        },
+        "email": {
+          "me": {
+            "email": "Format d'e-mail incorrect",
+            "min": "Minimum 3 caractères",
+            "max": "Maximum 50 caractères",
+            "required": "L'e-mail est requis"
+          },
+          "other": {
+            "email": "Format d'e-mail incorrect",
+            "min": "Minimum 3 caractères",
+            "max": "Maximum 50 caractères",
+            "required": "L'e-mail délégué est requis"
+          }
+        },
+        "delegated_fname": {
+          "other": {
+            "min": "Minimum 3 caractères",
+            "required": "Le prénom délégué est requis"
+          }
+        },
+        "delegated_lname": {
+          "other": {
+            "min": "Minimum 3 caractères",
+            "required": "Le nom de famille délégué est requis"
+          }
+        }
+      },
+      "invitCode": {
+        "invitation_code": {
+          "required": "Le code d'invitation est requis",
+          "typeError": "Le code d'invitation est requis",
+          "max": "Maximum 8 symboles"
+        },
+        "generalConditionError": "Veuillez cocher la case pour indiquer que vous avez lu et accepté les conditions générales."
+      }
+    }
+  },
+  "login": {
+    "label": "Se connecter",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "btn": "Connexion",
+    "validation": {
+      "email": {
+        "email": "Format email incorrect",
+        "min": "Minimum 3 caractères",
+        "max": "Maximum 50 caractères",
+        "required": "L'email est requis"
+      },
+      "password": {
+        "min": "Minimum 3 caractères",
+        "max": "Maximum 50 caractères",
+        "required": "Le mot de passe est requis"
+      }
+    }
+  },
+  "completeProfile": {
+    "validation": {
+      "avatar": {
+        "required": "L'avatar est requis",
+        "fileType": "Type de fichier non pris en charge. Veuillez sélectionner une image.",
+        "maxSize": "La taille du fichier est trop grande. Veuillez sélectionner un fichier de taille inférieure à 5 Mo."
+      },
+      "fname": {
+        "required": "Le prénom est requis"
+      },
+      "lname": {
+        "required": "Le nom de famille est requis"
+      },
+      "phone": {
+        "matches": "Numéro de téléphone invalide",
+        "required": "Le numéro de téléphone est requis"
+      },
+      "address": {
+        "required": "L'adresse est requise"
+      },
+      "country": {
+        "required": "Le pays est requis",
+        "typeError": "Le pays est requis"
+      },
+      "wilaya": {
+        "required": "La wilaya est requise"
+      },
+      "commune": {
+        "required": "La commune est requise"
+      },
+      "institution_type": {
+        "required": "Le type d'institution est requis"
+      },
+      "institution_name": {
+        "required": "Le nom de l'institution est requis"
+      },
+      "university_id": {
+        "required": "L'université est requise",
+        "typeError": "L'université est requise"
+      },
+      "foreign_university": {
+        "required": "L'université étrangère est requise"
+      },
+      "occupation_id": {
+        "typeError": "L'occupation est requise"
+      },
+      "activity_area_ids": {
+        "min": "Les domaines d'activité doivent être au nombre de 3",
+        "max": "Les domaines d'activité doivent être au nombre de 3",
+        "required": "Les domaines d'activité sont requis",
+        "typeError": "Les domaines d'activité doivent être un tableau de nombres"
+      },
+      "occupation": {
+        "required": "Le nom de l'occupation est requis"
+      }
+    }
+  }
+}

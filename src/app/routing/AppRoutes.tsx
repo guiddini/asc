@@ -1,0 +1,50 @@
+import { FC } from "react";
+import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
+import { PrivateRoutes } from "./PrivateRoutes";
+import { ErrorsPage } from "../modules/errors/ErrorsPage";
+import { Logout, AuthPage } from "../modules/auth";
+import { App } from "../App";
+import { LandingPage } from "../pages";
+import ProfileRoutes from "../pages/profiles";
+import { useSelector } from "react-redux";
+import { UserResponse } from "../types/reducers";
+import PrivacyPolicy from "../pages/privacy-policy/page";
+import SharedTicketsPage from "../pages/shared-tickets/shared-tickets";
+import SharedTicketsSuccess from "../pages/shared-tickets/shared-tickets-success";
+import SearchTicketPage from "../pages/public/search-ticket-page";
+import MonBadge from "../pages/public/mon-badge";
+
+const AppRoutes: FC = () => {
+  const { user } = useSelector((state: UserResponse) => state.user);
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route element={<App />}>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/profiles/*" element={<ProfileRoutes />} />
+          <Route path="error/*" element={<ErrorsPage />} />
+          <Route path="logout" element={<Logout />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/shared-tickets/:id" element={<SharedTicketsPage />} />
+          <Route path="/ticket" element={<SearchTicketPage />} />
+          <Route path="/ticket/qrcode/:userId" element={<MonBadge />} />
+          <Route
+            path="/shared-tickets-success"
+            element={<SharedTicketsSuccess />}
+          />
+          {user ? (
+            <>
+              <Route path="/*" element={<PrivateRoutes />} />
+            </>
+          ) : (
+            <>
+              <Route path="auth/*" element={<AuthPage />} />
+              <Route path="*" element={<Navigate to="/" />} />
+            </>
+          )}
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+};
+export { AppRoutes };

@@ -1,0 +1,47 @@
+import axiosInstance from "./axios";
+
+const calculateExhibitionDemandTotal = async (data: FormData) => {
+  return axiosInstance.post(`/exhibition-demand/calculateTotal`, data);
+};
+
+const createExhibitionDemandApi = async (data: FormData) => {
+  return axiosInstance.post(`/exhibition-demand/create`, data);
+};
+
+const getAllExhibitionDemandsApi = async () => {
+  return axiosInstance.get(`/exhibition-demand/all`);
+};
+
+const getCompanyExhibitionDemand = async () => {
+  return axiosInstance.get(`/exhibition-demand/company`);
+};
+
+const acceptExhibitionDemandApi = async (id: string, role: string) => {
+  return axiosInstance.post(`/exhibition-demand/accept`, {
+    demand_id: id,
+    role,
+  });
+};
+
+const refuseExhibitionDemandApi = async (id: string) => {
+  return axiosInstance.post(`/exhibition-demand/refuse`, {
+    demand_id: id,
+  });
+};
+
+const getExhibitionDemandTransactionApi = async (id: string) =>
+  await axiosInstance.get(`/exhibition-demand/transaction/${id}`);
+
+const checkExhibitionDemandTransactionApi = async () =>
+  await axiosInstance.post(`/exhibition-demand/check`);
+
+export {
+  calculateExhibitionDemandTotal,
+  createExhibitionDemandApi,
+  getAllExhibitionDemandsApi,
+  getCompanyExhibitionDemand,
+  acceptExhibitionDemandApi,
+  refuseExhibitionDemandApi,
+  getExhibitionDemandTransactionApi,
+  checkExhibitionDemandTransactionApi,
+};

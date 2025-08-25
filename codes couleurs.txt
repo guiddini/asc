@@ -1,0 +1,4 @@
+1-bleu foncé:    1f0060
+4-bleu claire :  00ebff
+2-violé claire : ef10ff
+3-violet foncé : 7d00ff

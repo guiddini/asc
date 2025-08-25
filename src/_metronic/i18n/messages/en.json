@@ -1,0 +1,150 @@
+{
+  "auth": {
+    "header": "Under the high patronage of the Ministry of Post and Telecommunications <br /> Ministry of Economy and Knowledge, Startups and Micro-enterprises <br /> Ministry of Commerce and Export Promotion <br /> Ministry of Digitization and Statistics"
+  },
+  "invitation": {
+    "title": "Use the invitation code",
+    "label": "Invitation code",
+    "button": "Confirm",
+    "formTitle": "Please confirm your presence or designate a representative for your entity",
+    "confirmPresence": "Confirm My Presence",
+    "delegateParticipation": "Delegate My Participation",
+    "meDescription": "I confirm my presence at the event.",
+    "otherDescription": "I delegate my place to another person.",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "Email",
+    "invitationCode": "Invitation Code",
+    "validateInvitation": "Validate the invitation",
+    "continue": "Continue",
+    "successMessage": "Thank you for accepting the invitation. We appreciate your acceptance; the platform is under development, and details will follow via email at its launch.",
+    "invitCodeErrorLabel": "Invalid Code",
+    "invitCodeErrorDesc": "The code you entered is either invalid or has already been used. Please check and try again.",
+    "invitCodeErrorFooter": "If you believe this is an error, please contact contact@algeriafintech.com",
+    "assignSuccessLabel": "Thank you for accepting the invitation",
+    "assignSuccessDesc": "We appreciate your acceptance. The platform is under development, and details will follow via email at its launch.",
+    "assignSuccessFooter": "Platform under development",
+    "generalCondition": {
+      "label": "I have read and agree",
+      "link": "to the general conditions."
+    },
+    "validation": {
+      "assignInvitation": {
+        "type": {
+          "required": "Please delegate the invitation",
+          "typeError": "Please delegate the invitation"
+        },
+        "email": {
+          "me": {
+            "email": "Incorrect email format",
+            "min": "Minimum 3 characters",
+            "max": "Maximum 50 characters",
+            "required": "Email is required"
+          },
+          "other": {
+            "email": "Incorrect email format",
+            "min": "Minimum 3 characters",
+            "max": "Maximum 50 characters",
+            "required": "Delegated email is required"
+          }
+        },
+        "delegated_fname": {
+          "other": {
+            "min": "Minimum 3 characters",
+            "required": "Delegated first name is required"
+          }
+        },
+        "delegated_lname": {
+          "other": {
+            "min": "Minimum 3 characters",
+            "required": "Delegated last name is required"
+          }
+        }
+      },
+      "invitCode": {
+        "invitation_code": {
+          "required": "Invitation code is required",
+          "typeError": "Invitation code is required",
+          "max": "Maximum 8 symbols"
+        },
+        "generalConditionError": "Please check the box to indicate that you have read and agree to the general conditions."
+      }
+    }
+  },
+  "login": {
+    "label": "Sign In",
+    "email": "Email",
+    "password": "Password",
+    "btn": "Login",
+    "validation": {
+      "email": {
+        "email": "Wrong email format",
+        "min": "Minimum 3 symbols",
+        "max": "Maximum 50 symbols",
+        "required": "Email is required"
+      },
+      "password": {
+        "min": "Minimum 3 symbols",
+        "max": "Maximum 50 symbols",
+        "required": "Password is required"
+      }
+    }
+  },
+  "completeProfile": {
+    "validation": {
+      "avatar": {
+        "required": "Avatar is required",
+        "fileType": "Unsupported file type. Please select an image.",
+        "maxSize": "File size is too large. Please select a file smaller than 5 MB."
+      },
+      "fname": {
+        "required": "First name is required"
+      },
+      "lname": {
+        "required": "Last name is required"
+      },
+      "phone": {
+        "matches": "Invalid phone number",
+        "required": "Phone number is required"
+      },
+      "address": {
+        "required": "Address is required"
+      },
+      "country": {
+        "required": "Country is required",
+        "typeError": "Country is required"
+      },
+      "wilaya": {
+        "required": "Wilaya is required"
+      },
+      "commune": {
+        "required": "Commune is required"
+      },
+      "institution_type": {
+        "required": "Institution type is required"
+      },
+      "institution_name": {
+        "required": "Institution name is required"
+      },
+      "university_id": {
+        "required": "University is required",
+        "typeError": "University is required"
+      },
+      "foreign_university": {
+        "required": "Foreign University is required"
+      },
+      "occupation_id": {
+        "typeError": "Occupation is required"
+      },
+      "activity_area_ids": {
+        "min": "Activity areas must be 5",
+        "max": "Activity areas must be 5",
+        "required": "Activity areas is required",
+        "typeError": "Activity areas must be an array of numbers"
+      },
+      "occupation": {
+        "required": "Occupation name is required"
+      }
+    }
+  }
+}
