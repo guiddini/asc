@@ -263,7 +263,7 @@ const EventPage = () => {
                 <button
                   className="btn mb-3 order-last text-light"
                   style={{
-                    backgroundColor: "#59efb2",
+                    backgroundColor: "#00c4c4",
                   }}
                   disabled={
                     event.slug === "Guichet-unique" && barcode !== null

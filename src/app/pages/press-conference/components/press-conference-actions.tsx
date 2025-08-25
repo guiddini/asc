@@ -94,7 +94,7 @@ const PressConferenceActions = ({ row }: { row: PressConference }) => {
       }}
     >
       <Check
-        color={row.status === "Pending" ? "#59efb2" : "#ccc"}
+        color={row.status === "Pending" ? "#00c4c4" : "#ccc"}
         onClick={() => row.status === "Pending" && setShowAcceptModal(true)}
         role="button"
         style={{ cursor: row.status === "Pending" ? "pointer" : "not-allowed" }}

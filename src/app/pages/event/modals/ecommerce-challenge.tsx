@@ -170,7 +170,7 @@ const EcommerceChallenge = () => {
         <button
           className="btn mb-3 order-last order-md-first text-light"
           style={{
-            backgroundColor: "#59efb2",
+            backgroundColor: "#00c4c4",
           }}
           // onClick={() => setShowModal(true)}
         >

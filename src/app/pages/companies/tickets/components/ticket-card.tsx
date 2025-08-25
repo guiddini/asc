@@ -20,7 +20,7 @@ const TicketCard = ({
     <Col xs={12} sm={6} md={6} lg={4} xl={3} className="mb-3 mb-lg-0">
       <Card className="h-md-150px">
         <Card.Body className="d-flex align-items-center justify-content-start column-gap-4">
-          <TicketIcon width={50} height={50} stroke="#59efb2" />
+          <TicketIcon width={50} height={50} stroke="#00c4c4" />
           <div className="">
             <p className="fs-3 fw-bold m-0">Ticket {ticket.name}</p>
             <p className="fs-5 fw-medium m-0">Quantité : {ticket?.quantity}</p>
@@ -34,7 +34,7 @@ const TicketCard = ({
                 Afficher les privilèges
               </p>
 
-              <ChevronRight stroke="#59efb2" width={16} height={16} />
+              <ChevronRight stroke="#00c4c4" width={16} height={16} />
             </div>
           </div>
         </Card.Body>

@@ -49,10 +49,10 @@ $grays: (
 
 // Bootstrap contextual colors
 // Primary colors
-$primary: #59efb2 !default;
-$primary-active: darken(#59efb2, 10%) !default; // This results in #29e99e
-$primary-light: lighten(#59efb2, 30%) !default; // This results in #d7faea
-$primary-clarity: rgba(#59efb2, 0.2) !default;
+$primary: #00c4c4 !default;
+$primary-active: darken(#00c4c4, 10%) !default; // This results in #29e99e
+$primary-light: lighten(#00c4c4, 30%) !default; // This results in #d7faea
+$primary-clarity: rgba(#00c4c4, 0.2) !default;
 $primary-inverse: $white !default;
 
 // Secondary colors
@@ -70,10 +70,10 @@ $light-clarity: rgba($white, 0.2) !default;
 $light-inverse: $gray-800 !default;
 
 // Success colors
-$success: #59efb2 !default;
+$success: #00c4c4 !default;
 $success-active: #04b440 !default;
 $success-light: #dfffea !default;
-$success-clarity: rgba(#59efb2, 0.2) !default;
+$success-clarity: rgba(#00c4c4, 0.2) !default;
 $success-inverse: $white !default;
 
 // Info colors
@@ -104,10 +104,10 @@ $dark-light: #f9f9f9 !default;
 $dark-clarity: rgba(#1e2129, 0.2) !default;
 $dark-inverse: $white !default;
 
-$custom-blue-dark: #59efb2 !default;
-$custom-blue-light: #59efb2 !default;
-$custom-purple-light: #59efb2 !default;
-$custom-purple-dark: #59efb2 !default;
+$custom-blue-dark: #00c4c4 !default;
+$custom-blue-light: #00c4c4 !default;
+$custom-purple-light: #00c4c4 !default;
+$custom-purple-dark: #00c4c4 !default;
 
 // Contextual colors
 $theme-colors: (
@@ -613,7 +613,7 @@ $font-sizes: (
   // 88.25px
   7hx: $font-size-base * 7.5,
   // 91.5px
-  7tx: $font-size-base * 7.75 // 94.75px,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+  7tx: $font-size-base * 7.75 // 94.75px,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ) !default;
 
 $headings-font-weight: 600 !default;

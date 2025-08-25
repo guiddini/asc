@@ -68,7 +68,7 @@ export function Overview({ user }: { user: User }) {
                   key={index}
                   className={`badge fs-6 text-black p-2`}
                   style={{
-                    background: "#59efb2",
+                    background: "#00c4c4",
                   }}
                 >
                   {a.label_fr}

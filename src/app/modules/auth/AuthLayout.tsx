@@ -35,7 +35,14 @@ const AuthLayout = () => {
             </Link>
 
             <Link to="/" id="auth-logo">
-              <img src="/media/eventili/logos/logo.svg" alt="" />
+              <img
+                src="/media/eventili/logos/logo.svg"
+                alt=""
+                style={{
+                  height: "40px",
+                  width: "auto",
+                }}
+              />
             </Link>
           </div>
           <Outlet />

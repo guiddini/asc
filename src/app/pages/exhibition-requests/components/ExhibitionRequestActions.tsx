@@ -77,7 +77,7 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
         >
           <Check
             size={16}
-            color={row.status === "Pending" ? "#59efb2" : "#ccc"}
+            color={row.status === "Pending" ? "#00c4c4" : "#ccc"}
             onClick={() => row.status === "Pending" && setShowAcceptModal(true)}
             role="button"
             style={{

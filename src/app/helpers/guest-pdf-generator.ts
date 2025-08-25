@@ -13,13 +13,13 @@ export const guestPdfGenerator = (name: string, code: string) => {
 	p {margin: 0; padding: 0;}	.ft10{font-size:12px;font-family:Times;color:#152038;}
 	.ft11{font-size:12px;font-family:Times;color:#ffffff;}
 	.ft12{font-size:11px;font-family:Times;color:#000000;}
-	.ft13{font-size:117px;font-family:Times;color:#59efb2;}
+	.ft13{font-size:117px;font-family:Times;color:#00c4c4;}
 	.ft14{font-size:62px;font-family:Times;color:#00ebff;}
-	.ft15{font-size:16px;font-family:Times;color:#59efb2;}
+	.ft15{font-size:16px;font-family:Times;color:#00c4c4;}
 	.ft16{font-size:12px;font-family:Times;color:#000000;}
-	.ft17{font-size:33px;font-family:Times;color:#59efb2;}
+	.ft17{font-size:33px;font-family:Times;color:#00c4c4;}
 	.ft18{font-size:12px;font-family:Times;color:#00ebff;}
-	.ft19{font-size:16px;line-height:28px;font-family:Times;color:#59efb2;}
+	.ft19{font-size:16px;line-height:28px;font-family:Times;color:#00c4c4;}
 -->
 </style>
 </head>
