@@ -13,6 +13,7 @@ import SharedTicketsPage from "../pages/shared-tickets/shared-tickets";
 import SharedTicketsSuccess from "../pages/shared-tickets/shared-tickets-success";
 import SearchTicketPage from "../pages/public/search-ticket-page";
 import MonBadge from "../pages/public/mon-badge";
+import SpeakerDetail from "../pages/speakers/speaker-detail";
 
 const AppRoutes: FC = () => {
   const { user } = useSelector((state: UserResponse) => state.user);
@@ -21,6 +22,7 @@ const AppRoutes: FC = () => {
       <Routes>
         <Route element={<App />}>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/speakers/:slug" element={<SpeakerDetail />} />
           <Route path="/profiles/*" element={<ProfileRoutes />} />
           <Route path="error/*" element={<ErrorsPage />} />
           <Route path="logout" element={<Logout />} />

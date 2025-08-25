@@ -22,6 +22,16 @@ export default function EventsSection() {
       url: "/profiles/afes",
       hasPassed: false,
     },
+    {
+      title: "Algeria 2.0",
+      description:
+        "5 days of innovation, networking, and learning, connecting Algeria’s brightest minds to shape the digital future.",
+      date: "5 days",
+      location: "Algeria",
+      image: "/algeria20.avif",
+      url: "/profiles/algeria-2-0",
+      hasPassed: false,
+    },
   ];
 
   return (

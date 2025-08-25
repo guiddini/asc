@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import { Button, Container, Row, Col, Image } from "react-bootstrap";
 import LandingNavbar from "./landing-navbar";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -12,19 +12,18 @@ export default function HeroSection() {
       <div id="landing-hero-overlay"></div>
       <LandingNavbar />
       <div id="landing-hero-content">
-        <span id="landing-hero-label">BIENVENUE SUR EVENTILI</span>
-        <h1 id="landing-hero-title">
-          Créez des connexions réelles
-          <br />
-          avec{" "}
-          <span id="landing-hero-highlight">African Startup Conference</span>
-        </h1>
+        <span id="landing-hero-label">
+          African Startup Conference – 4ème Édition
+        </span>
+        <h1 id="landing-hero-title">Le regroupement des champions africains</h1>
         <p id="landing-hero-description">
-          Rejoignez un monde d'innovation, d'entrepreneuriat et de croissance.
-          <br />
-          Découvrez, réservez ou organisez des événements qui favorisent le
-          succès dans la technologie, les affaires, les startups, et plus
-          encore.
+          L’African Startup Conference revient pour sa troisième édition,
+          réunissant cette année les champions de l’innovation et de
+          l’entrepreneuriat africain. <br />
+          Sous le thème{" "}
+          <strong>“Le regroupement des champions africains”</strong>,
+          l’événement met en lumière les startups, investisseurs, institutions
+          et leaders qui façonnent l’avenir de l’Afrique
         </p>
         <div id="landing-hero-buttons">
           <a href="#events-section" id="landing-book-ticket-btn">
@@ -37,7 +36,7 @@ export default function HeroSection() {
           >
             <img
               src={toAbsoluteUrl("/media/eventili/afes/play-store.svg")}
-              alt=""
+              alt="Play Store"
             />
           </a>
         </div>

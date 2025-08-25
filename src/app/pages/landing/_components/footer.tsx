@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { toAbsoluteUrl } from "../../../../_metronic/helpers";
 
 export default function Footer() {
@@ -19,8 +20,8 @@ export default function Footer() {
         </p>
       </div>
       <div id="footer-bottom">
-        <a
-          href="https://guiddini.com/"
+        <Link
+          to="https://aventure.dz/home"
           target="_blank"
           id="powered-by"
           style={{
@@ -33,11 +34,11 @@ export default function Footer() {
             <br />
             All rights reserved.
           </span>
-        </a>
+        </Link>
         <div id="footer-links">
-          <a href="/about">À propos</a>
-          <a href="/events">Événements</a>
-          <a href="/terms">Termes et conditions</a>
+          <Link to="/#about">À propos</Link>
+          <Link to="/#events">Événements</Link>
+          <Link to="/privacy-policy">Termes et conditions</Link>
         </div>
       </div>
     </footer>
