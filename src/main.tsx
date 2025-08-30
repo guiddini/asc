@@ -55,7 +55,7 @@ if (container) {
           </AuthProvider>
         </Provider>
       </MetronicI18nProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
 }

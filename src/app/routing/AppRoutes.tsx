@@ -4,7 +4,6 @@ import { PrivateRoutes } from "./PrivateRoutes";
 import { ErrorsPage } from "../modules/errors/ErrorsPage";
 import { Logout, AuthPage } from "../modules/auth";
 import { App } from "../App";
-import { LandingPage } from "../pages";
 import ProfileRoutes from "../pages/profiles";
 import { useSelector } from "react-redux";
 import { UserResponse } from "../types/reducers";
@@ -14,6 +13,7 @@ import SharedTicketsSuccess from "../pages/shared-tickets/shared-tickets-success
 import SearchTicketPage from "../pages/public/search-ticket-page";
 import MonBadge from "../pages/public/mon-badge";
 import SpeakerDetail from "../pages/speakers/speaker-detail";
+import LandingPage from "../pages/landing-page/page";
 
 const AppRoutes: FC = () => {
   const { user } = useSelector((state: UserResponse) => state.user);

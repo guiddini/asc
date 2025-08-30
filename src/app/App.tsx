@@ -5,6 +5,7 @@ import { MasterInit } from "../_metronic/layout/MasterInit";
 import { AuthInit } from "./modules/auth";
 import { ThemeModeProvider } from "../_metronic/partials";
 import "./globale.scss";
+import "./styles/index.scss";
 import { useTranslation } from "react-i18next";
 
 const App = () => {
