@@ -36,9 +36,9 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
 
         {"content" in blog && (
           <Card.Text className="blog-excerpt text-muted mb-3 flex-grow-1">
-            {blog.content.length > 100
-              ? blog.content.substring(0, 100) + "..."
-              : blog.content}
+            {blog?.content?.length > 100
+              ? blog?.content?.substring(0, 100) + "..."
+              : blog?.content}
           </Card.Text>
         )}
       </Card.Body>

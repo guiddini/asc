@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
       className="site-footer"
       style={{
         margin: "0 calc(-50vw + 50%)",
-        width: "100vw",
+
         padding: "4rem 0 2rem 0",
         color: "black",
       }}

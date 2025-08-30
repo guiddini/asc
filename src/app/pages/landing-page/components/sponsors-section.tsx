@@ -33,7 +33,7 @@ const SponsorsSection: React.FC = () => {
       style={{
         width: "100%",
         margin: "0 calc(-50vw + 50%)",
-        width: "100vw",
+
         padding: "5rem 0",
         backgroundColor: "var(--bs-white)",
       }}

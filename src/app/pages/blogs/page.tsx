@@ -4,7 +4,6 @@ import { useMutation } from "react-query";
 import SearchFilters from "./components/search-filters";
 import BlogList from "./components/blog-list";
 import { Blog, BlogSearchParams } from "./types/blog";
-import { SAMPLE_BLOGS } from "./data/blogs";
 import { searchBlogs } from "../../apis";
 
 const BlogsPage: React.FC = () => {
@@ -12,7 +11,7 @@ const BlogsPage: React.FC = () => {
     title: "",
   });
 
-  const [blogs, setBlogs] = useState<Blog[]>(SAMPLE_BLOGS);
+  const [blogs, setBlogs] = useState<Blog[]>();
   const [hasSearched, setHasSearched] = useState(false);
 
   // React Query Mutation for searching blogs
@@ -24,15 +23,6 @@ const BlogsPage: React.FC = () => {
     },
     onError: (error) => {
       console.error("Search failed:", error);
-      // On error, show sample blogs as fallback
-      if (filters.title) {
-        const filteredBlogs = SAMPLE_BLOGS.filter((blog) =>
-          blog.title.toLowerCase().includes(filters.title!.toLowerCase())
-        );
-        setBlogs(filteredBlogs);
-      } else {
-        setBlogs(SAMPLE_BLOGS);
-      }
       setHasSearched(true);
     },
   });
@@ -48,7 +38,6 @@ const BlogsPage: React.FC = () => {
 
   const handleResetFilters = () => {
     setFilters({ title: "" });
-    setBlogs(SAMPLE_BLOGS);
     setHasSearched(false);
     searchMutation.reset();
   };
@@ -71,7 +60,7 @@ const BlogsPage: React.FC = () => {
         style={{
           width: "100%",
           margin: "0 calc(-50vw + 50%)",
-          width: "100vw",
+
           padding: "8rem 0 6rem 0",
           background:
             "linear-gradient(135deg, var(--bs-primary) 0%, var(--bs-secondary) 100%)",
