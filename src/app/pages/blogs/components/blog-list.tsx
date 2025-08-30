@@ -4,7 +4,7 @@ import { Blog } from "../types/blog";
 import BlogCard from "./blog-card";
 
 interface BlogListProps {
-  blogs: Blog[];
+  blogs?: Blog[];
   loading?: boolean;
   error?: string;
 }
@@ -43,8 +43,8 @@ const BlogList: React.FC<BlogListProps> = ({ blogs, loading, error }) => {
 
   return (
     <Row className="g-4">
-      {blogs.map((blog) => (
-        <Col key={blog.id} lg={4} md={6} sm={12}>
+      {blogs?.map((blog) => (
+        <Col key={blog?.id} lg={4} md={6} sm={12}>
           <BlogCard blog={blog} />
         </Col>
       ))}
