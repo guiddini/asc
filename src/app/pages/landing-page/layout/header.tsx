@@ -3,6 +3,7 @@ import { Navbar, Nav, Container, Button, Offcanvas } from "react-bootstrap";
 import NavigationMenu from "./navigation-menu";
 import MobileMenu from "./mobile-menu";
 import SearchComponent from "./search-component";
+import { Link } from "react-router-dom";
 
 interface HeaderProps {
   className?: string;
@@ -30,7 +31,8 @@ const Header: React.FC<HeaderProps> = ({ className = "" }) => {
         <Container>
           {/* Logo */}
           <Navbar.Brand
-            href="/"
+            as={Link}
+            to="/"
             className="brand-logo d-flex align-items-center"
           >
             <div className="logo-container d-flex align-items-center">

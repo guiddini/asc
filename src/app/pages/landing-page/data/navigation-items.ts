@@ -33,6 +33,10 @@ export const navigationItems: NavigationItem[] = [
     href: "/investors",
   },
   {
+    label: "Blogs",
+    href: "/blogs",
+  },
+  {
     label: "Media",
     dropdown: [
       { label: "Press Kit", href: "/media/press-kit" },

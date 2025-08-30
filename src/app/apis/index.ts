@@ -15,3 +15,4 @@ export * from "./favorite";
 export * from "./report";
 export * from "./notifications";
 export * from "./job-offers";
+export * from "./blog";

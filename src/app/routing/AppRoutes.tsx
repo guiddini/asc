@@ -1,5 +1,11 @@
 import { FC } from "react";
-import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  BrowserRouter,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
 import { PrivateRoutes } from "./PrivateRoutes";
 import { ErrorsPage } from "../modules/errors/ErrorsPage";
 import { Logout, AuthPage } from "../modules/auth";
@@ -14,14 +20,31 @@ import SearchTicketPage from "../pages/public/search-ticket-page";
 import MonBadge from "../pages/public/mon-badge";
 import SpeakerDetail from "../pages/speakers/speaker-detail";
 import LandingPage from "../pages/landing-page/page";
+import BlogsPage from "../pages/blogs/page";
+import LandingLayout from "../pages/landing-page/layout/layout-landing";
+import BLogDetailsPage from "../pages/blogs/id/page";
 
 const AppRoutes: FC = () => {
   const { user } = useSelector((state: UserResponse) => state.user);
+
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<App />}>
-          <Route path="/" element={<LandingPage />} />
+          {/* Landing layout wrapper */}
+          <Route
+            element={
+              <LandingLayout>
+                <Outlet />
+              </LandingLayout>
+            }
+          >
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/blogs" element={<BlogsPage />} />
+            <Route path="/blogs/:slug" element={<BLogDetailsPage />} />
+          </Route>
+
+          {/* Other routes */}
           <Route path="/speakers/:slug" element={<SpeakerDetail />} />
           <Route path="/profiles/*" element={<ProfileRoutes />} />
           <Route path="error/*" element={<ErrorsPage />} />
@@ -34,10 +57,9 @@ const AppRoutes: FC = () => {
             path="/shared-tickets-success"
             element={<SharedTicketsSuccess />}
           />
+
           {user ? (
-            <>
-              <Route path="/*" element={<PrivateRoutes />} />
-            </>
+            <Route path="/*" element={<PrivateRoutes />} />
           ) : (
             <>
               <Route path="auth/*" element={<AuthPage />} />
@@ -49,4 +71,5 @@ const AppRoutes: FC = () => {
     </BrowserRouter>
   );
 };
+
 export { AppRoutes };

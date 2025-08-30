@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Nav, Dropdown } from "react-bootstrap";
 import { navigationItems } from "../data/navigation-items";
+import { Link } from "react-router-dom";
 
 interface HoverDropdownProps {
   title: string;
@@ -42,9 +43,9 @@ const HoverDropdown: React.FC<HoverDropdownProps> = ({ title, items }) => {
       ref={dropdownRef}
     >
       <Dropdown.Toggle
-        as="a"
+        as={Link}
         className="nav-link nav-dropdown-toggle"
-        href="#"
+        to="#"
         onClick={(e) => e.preventDefault()}
       >
         {title}
@@ -73,9 +74,9 @@ const NavigationMenu: React.FC = () => {
         item.dropdown ? (
           <HoverDropdown key={index} title={item.label} items={item.dropdown} />
         ) : (
-          <Nav.Link key={index} href={item.href} className="nav-link-custom">
+          <Link key={index} to={item.href} className="nav-link-custom">
             {item.label}
-          </Nav.Link>
+          </Link>
         )
       )}
     </Nav>

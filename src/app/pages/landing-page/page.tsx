@@ -12,16 +12,12 @@ import FooterSection from "./components/footer-section";
 const LandingPage: React.FC = () => {
   return (
     <div id="home-page">
-      <Header />
-      <Container fluid="md" className="p-0">
-        <HeroSection />
-        <AboutSection />
-        <SpeakerSection />
-        <SponsorsSection />
-        <EventGallerySection />
-        <SideEventsSection />
-        <FooterSection />
-      </Container>
+      <HeroSection />
+      <AboutSection />
+      <SpeakerSection />
+      <SponsorsSection />
+      <EventGallerySection />
+      <SideEventsSection />
     </div>
   );
 };
