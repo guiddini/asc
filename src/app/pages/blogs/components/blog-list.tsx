@@ -28,7 +28,7 @@ const BlogList: React.FC<BlogListProps> = ({ blogs, loading, error }) => {
     );
   }
 
-  if (blogs.length === 0) {
+  if (blogs?.length === 0) {
     return (
       <div className="no-blogs-found text-center py-5">
         <i className="bi bi-journal-x display-1 text-muted mb-3"></i>
