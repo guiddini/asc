@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Col, Modal, Row, Spinner } from "react-bootstrap";
 import { useTicket } from "../../../../hooks";
 import { updateGiftedUserTicket } from "../../../../apis";
@@ -14,6 +14,22 @@ import TicketItem from "../../../../modules/auth/components/complete-profile/tic
 import toast from "react-hot-toast";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+
+interface UpdateGiftedUserForm {
+  old_email: string;
+  email: string;
+  showUpdateEmail: boolean;
+  showUpdateTicket: boolean;
+  ticket?: {
+    name: string;
+    ids: number[];
+    quantity: number;
+    type: string;
+    typeId: string;
+    source: string;
+    role: string;
+  };
+}
 
 export const getIcon = (ticket: any) => {
   switch (ticket?.slug) {
@@ -110,7 +126,7 @@ const UpdateGiftedTicketModal = ({
     register,
     watch,
     setValue,
-  } = useForm({
+  } = useForm<UpdateGiftedUserForm>({
     defaultValues: {
       old_email: user?.email,
       email: "",
@@ -159,19 +175,9 @@ const UpdateGiftedTicketModal = ({
     (ticket) => ticket.id === user?.userHasTicketIdFound?.ticket_id
   );
 
-  const updateGiftedUserTicketFunction = async (data: {
-    email: string;
-    ticket: {
-      name: string;
-      ids: number[];
-      quantity: number;
-      type: string;
-      typeId: string;
-      source: string;
-      role: string;
-    };
-    old_email: string;
-  }) => {
+  const updateGiftedUserTicketFunction: SubmitHandler<
+    UpdateGiftedUserForm
+  > = async (data) => {
     const isTheSameTicket =
       ticket?.slug === data?.ticket?.type &&
       user?.userHasTicketIdFound?.role_slug === data?.ticket?.role;
@@ -187,22 +193,22 @@ const UpdateGiftedTicketModal = ({
       }
       formdata.append("old_email", user?.email);
 
-      if (showUpdateTicket) {
+      if (data.showUpdateTicket && data.ticket) {
         const userHasNewTicketID = (await assignTicket(
-          data?.ticket?.type,
-          data?.ticket?.source,
-          data?.ticket?.role
+          data.ticket.type,
+          data.ticket.source,
+          data.ticket.role
         )) as string;
         formdata.append("user_has_new_ticket_id", userHasNewTicketID);
       }
 
       mutate(formdata, {
-        onSuccess: (res) => {
+        onSuccess: () => {
           refetch();
           toast.success("Le ticket a été attribué avec succès");
-
-          if (showUpdateTicket)
+          if (data.showUpdateTicket && data.ticket) {
             decreaseTicketQuantity(data.ticket.type, data.ticket.source);
+          }
           reset(user);
           closeModal();
         },

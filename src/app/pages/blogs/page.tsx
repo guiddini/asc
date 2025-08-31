@@ -42,12 +42,6 @@ const BlogsPage: React.FC = () => {
     searchMutation.reset();
   };
 
-  const handleBlogClick = (blog: Blog) => {
-    // Navigate to blog detail page
-    console.log("Navigate to blog:", blog.slug);
-    // In Next.js: router.push(`/blogs/${blog.slug}`);
-  };
-
   useEffect(() => {
     handleSearch();
   }, []);

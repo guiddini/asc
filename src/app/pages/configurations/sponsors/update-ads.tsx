@@ -82,8 +82,15 @@ const UpdateAds: React.FC<UpdateAdsProps> = ({ ads, isOpen, setIsOpen }) => {
     setValue,
     watch,
     handleSubmit,
-  } = useForm<ADProps>({
-    defaultValues: defaultValues,
+  } = useForm<CreateAdsFormProps>({
+    defaultValues: {
+      name: ads?.name,
+      image_path: ads?.image_path as any,
+      company_id: { label: "", value: String(ads?.company_id) },
+      link: ads?.link,
+      start_date: ads?.start_date,
+      end_date: ads?.end_date,
+    },
     resolver: yupResolver(updateValidationSchema) as any,
   });
 
