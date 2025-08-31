@@ -1,6 +1,4 @@
 import { Check } from "lucide-react";
-import Navbar from "../profiles/_components/navbar";
-import Footer from "../landing/_components/footer";
 import { UserResponse } from "../../types/reducers";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -10,7 +8,6 @@ const SharedTicketsSuccess = () => {
 
   return (
     <div id="shared-ticket-success">
-      <Navbar />
       <div id="success-content">
         <div id="success-container">
           <div id="success-icon-wrapper">
@@ -35,7 +32,6 @@ const SharedTicketsSuccess = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

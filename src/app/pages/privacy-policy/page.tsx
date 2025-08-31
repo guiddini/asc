@@ -1,11 +1,10 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import LandingNavbar from "../landing/_components/landing-navbar";
+import LandingLayout from "../landing-page/layout/layout-landing";
 
 const PrivacyPolicy: React.FC = () => {
   return (
-    <section className="bg-black">
-      <div id="landing-hero-overlay"></div>
+    <LandingLayout>
       <Helmet>
         <title>Conditions d'utilisation | African Startup Conference</title>
         <meta
@@ -13,7 +12,6 @@ const PrivacyPolicy: React.FC = () => {
           content="Conditions d'utilisation pour African Startup Conference, votre solution globale pour la gestion d'événements."
         />
       </Helmet>
-      <LandingNavbar />
       <div id="privacypolicy-page-container">
         <h1 id="privacypolicy-page-title">Conditions d'utilisation</h1>
 
@@ -167,7 +165,7 @@ const PrivacyPolicy: React.FC = () => {
           </p>
         </section>
       </div>
-    </section>
+    </LandingLayout>
   );
 };
 

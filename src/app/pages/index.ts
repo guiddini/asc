@@ -1,6 +1,3 @@
-// landing page
-export * from "./landing/LandingPage";
-
 // dashboard pages
 export * from "./dashboard/DashboardWrapper";
 

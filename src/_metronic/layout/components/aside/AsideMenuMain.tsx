@@ -65,6 +65,13 @@ export function AsideMenuMain() {
       </RoleGuard>
 
       <AsideMenuItem
+        to={`/meetings`}
+        title="Meetings"
+        bsTitle="Meetings"
+        customIcon={<i className="fa-solid fa-handshake"></i>}
+      />
+
+      <AsideMenuItem
         to={`/participants`}
         title="Participants"
         bsTitle="Participants"

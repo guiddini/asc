@@ -57,6 +57,7 @@ import BlogsManagementPage from "../pages/blog-management/page";
 import CreateBlogPage from "../pages/blog-management/create-blog/page";
 import UpdateBlogPage from "../pages/blog-management/update-blog/page";
 import RoleGuard from "../components/role-guard";
+import MeetingsCalendar from "../pages/meetings/page";
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import("../pages/profile/ProfilePage"));
@@ -159,6 +160,15 @@ const PrivateRoutes = () => {
               element={
                 <SuspensedView>
                   <EventPage />
+                </SuspensedView>
+              }
+            />
+
+            <Route
+              path="/meetings"
+              element={
+                <SuspensedView>
+                  <MeetingsCalendar />
                 </SuspensedView>
               }
             />

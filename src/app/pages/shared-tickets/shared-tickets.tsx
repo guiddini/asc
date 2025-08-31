@@ -15,8 +15,6 @@ import * as Yup from "yup";
 import { debounce } from "lodash";
 import toast from "react-hot-toast";
 import { checkUserEmailExists } from "../../apis";
-import Navbar from "../profiles/_components/navbar";
-import Footer from "../landing/_components/footer";
 import { Button } from "react-bootstrap";
 import { TicketsPrivilege } from "../../components";
 import { useQuery, useMutation } from "react-query";
@@ -138,7 +136,6 @@ const SharedTicketsPage = () => {
   if (error) {
     return (
       <div id="error-page">
-        <Navbar />
         <div id="error-content">
           <AlertTriangle id="error-icon" size={64} />
           <h1 id="error-title">Oops! Something went wrong</h1>
@@ -150,7 +147,6 @@ const SharedTicketsPage = () => {
             Return to Home
           </a>
         </div>
-        <Footer />
       </div>
     );
   }
@@ -160,7 +156,6 @@ const SharedTicketsPage = () => {
   if (!link || link.status !== "Active") {
     return (
       <div id="error-page">
-        <Navbar />
         <div id="error-content">
           <AlertTriangle id="error-icon" size={64} />
           <h1 id="error-title">Oops! Quelque chose s'est mal passé</h1>
@@ -169,7 +164,6 @@ const SharedTicketsPage = () => {
             Retour à l'accueil
           </a>
         </div>
-        <Footer />
       </div>
     );
   }
@@ -177,7 +171,6 @@ const SharedTicketsPage = () => {
   if (link.remaining_tickets_count === 0) {
     return (
       <div id="no-remaining-tickets-page">
-        <Navbar />
         <div id="no-tickets-content">
           <div id="no-tickets-container">
             <div id="warning-icon">
@@ -192,14 +185,12 @@ const SharedTicketsPage = () => {
             </Link>
           </div>
         </div>
-        <Footer />
       </div>
     );
   }
 
   return (
     <div id="shared-ticket-page">
-      <Navbar />
       <div id="shared-ticket-content">
         <div id="shared-ticket-container">
           <span id="shared-ticket-label">
@@ -346,7 +337,6 @@ const SharedTicketsPage = () => {
           </form>
         </div>
       </div>
-      <Footer />
       <TicketsPrivilege
         isOpen={selectedTicket !== null}
         setIsOpen={setSelectedTicket}

@@ -10,7 +10,6 @@ import {
   ListGroup,
 } from "react-bootstrap";
 import { SPEAKERS } from "../../helpers/data";
-import LandingNavbar from "../landing/_components/landing-navbar";
 
 const SpeakerDetail = () => {
   const { slug } = useParams();
@@ -44,7 +43,6 @@ const SpeakerDetail = () => {
 
   return (
     <div id="landing-page-body" className="w-100 h-100">
-      <LandingNavbar isLight />
       <Container
         as="section"
         className="py-5"

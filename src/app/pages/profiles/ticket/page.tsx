@@ -1,4 +1,3 @@
-import Footer from "../../landing/_components/footer";
 import Description from "../_components/description";
 import Hero from "../_components/hero";
 import Navbar from "../_components/navbar";
@@ -55,7 +54,6 @@ const TicketsPage = () => {
 
   return (
     <div className="w-100 h-100">
-      <Navbar />
       <Hero event={event} />
       <div className="profile-container">
         <div id="page-content">
@@ -80,8 +78,6 @@ const TicketsPage = () => {
         </div>
         <TicketSection />
       </div>
-
-      <Footer />
     </div>
   );
 };

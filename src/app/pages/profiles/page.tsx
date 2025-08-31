@@ -4,8 +4,6 @@ import EventInfo from "./_components/event-info";
 import Agenda from "./_components/agenda";
 import Gallery from "./_components/gallery";
 import Description from "./_components/description";
-import Navbar from "./_components/navbar";
-import Footer from "../landing/_components/footer";
 import { useState } from "react";
 import SignupPressConferenceModal from "./_components/signup-press-conference-modal";
 import { useScrollNavigation } from "../../hooks/useScrollNavigation";
@@ -105,7 +103,6 @@ const EntityProfilePage = () => {
 
     return (
       <div className="w-100 h-100">
-        <Navbar />
         <Hero event={event} />
         <div className="profile-container">
           <div id="page-content">
@@ -117,8 +114,6 @@ const EntityProfilePage = () => {
             <EventInfo event={event} />
           </div>
         </div>
-
-        <Footer />
 
         <SignupPressConferenceModal
           isOpen={isOpen}
