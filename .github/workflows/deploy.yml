@@ -25,11 +25,11 @@ jobs:
         run: npm run build
 
       - name: Deploy to cPanel via FTP
-        uses: SamKirkland/ftp-deploy-action@v4   # ✅ fixed
+        uses: SamKirkland/ftp-deploy-action@v4.3.6  # ✅ fixed
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: build
+          local-dir: dist
           server-dir: /asc.eventili.com/
           dangerous-clean-slate: false
