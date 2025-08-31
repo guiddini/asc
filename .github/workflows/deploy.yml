@@ -1,7 +1,7 @@
 name: Deploy to cPanel
 
 on:
-  workflow_dispatch:   # allows manual trigger from GitHub Actions tab
+  workflow_dispatch:   # manual trigger
   push:
     branches:
       - main
@@ -25,11 +25,11 @@ jobs:
         run: npm run build
 
       - name: Deploy to cPanel via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4
+        uses: SamKirkland/ftp-deploy-action@v4   # ✅ fixed
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: dist
+          local-dir: build
           server-dir: /asc.eventili.com/
           dangerous-clean-slate: false
