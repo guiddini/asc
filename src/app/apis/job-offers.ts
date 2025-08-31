@@ -36,14 +36,19 @@ const makeCompanyJobOfferInactiveApi = async (id: string | number) => {
 
 const applyToJobApi = async (data: {
   company_job_offer_id: string | number;
-  user_website: string;
+  user_website?: string; // Make optional
   user_cv: File;
   user_phone_number: string | number;
 }) => {
   const formdata = new FormData();
   formdata.append("company_job_offer_id", String(data.company_job_offer_id));
   formdata.append("user_cv", data.user_cv);
-  formdata.append("user_website", data.user_website);
+
+  // Only append if user_website exists
+  if (data.user_website) {
+    formdata.append("user_website", data.user_website);
+  }
+
   formdata.append("user_phone_number", String(data.user_phone_number));
   return axiosInstance.post(`/jobapplication/apply`, formdata);
 };

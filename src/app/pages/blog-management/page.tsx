@@ -1,21 +1,11 @@
 import React, { useEffect } from "react";
 import { TableComponent } from "../../components";
-import { PageLink, PageTitle } from "../../../_metronic/layout/core";
 import { useMutation } from "react-query";
 import { searchBlogs } from "../../apis";
 import moment from "moment";
 import getMediaUrl from "../../helpers/getMediaUrl";
 import { Blog } from "./types/blog";
 import BlogActionColumn from "./components/blog-action-column";
-
-const blogsBreadcrumbs: Array<PageLink> = [
-  {
-    title: "Blogs Management",
-    path: "/blogs-management",
-    isSeparator: false,
-    isActive: false,
-  },
-];
 
 const BlogsManagementPage = () => {
   const searchMutation = useMutation({
@@ -49,7 +39,7 @@ const BlogsManagementPage = () => {
       sortable: false,
     },
     {
-      name: "Titre",
+      name: "Title",
       selector: (row: Blog) => row.title,
       sortable: true,
     },
@@ -59,23 +49,22 @@ const BlogsManagementPage = () => {
       sortable: true,
     },
     {
-      name: "Statut",
+      name: "Status",
       selector: (row: Blog) =>
         row.status === "draft"
-          ? "Brouillon"
+          ? "Draft"
           : row.status === "published"
-          ? "Publié"
-          : "Archivé",
+          ? "Published"
+          : "Archived",
       sortable: true,
     },
-
     {
-      name: "Créé à",
+      name: "Created At",
       selector: (row: Blog) => moment(row.created_at).format("DD/MM/YYYY"),
       sortable: true,
     },
     {
-      name: "Mis à jour",
+      name: "Updated At",
       selector: (row: Blog) => moment(row.updated_at).format("DD/MM/YYYY"),
       sortable: true,
     },
@@ -91,8 +80,6 @@ const BlogsManagementPage = () => {
 
   return (
     <>
-      <PageTitle breadcrumbs={blogsBreadcrumbs} />
-
       <TableComponent
         columns={columns as any}
         data={data}

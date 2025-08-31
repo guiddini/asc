@@ -22,7 +22,7 @@ import SpeakerDetail from "../pages/speakers/speaker-detail";
 import LandingPage from "../pages/landing-page/page";
 import BlogsPage from "../pages/blogs/page";
 import LandingLayout from "../pages/landing-page/layout/layout-landing";
-import BLogDetailsPage from "../pages/blogs/id/page";
+import BLogDetailsPage from "../pages/blogs/slug/page";
 
 const AppRoutes: FC = () => {
   const { user } = useSelector((state: UserResponse) => state.user);

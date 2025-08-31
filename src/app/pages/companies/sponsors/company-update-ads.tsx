@@ -24,7 +24,7 @@ interface UpdateAdsProps {
 
 interface CreateAdsFormProps {
   name: string;
-  image_path: File;
+  image_path: string | File;
   link: string;
   start_date: string;
   end_date: string;

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { JobsReducer, UserResponse } from "../../types/reducers";
 import { Link, useParams } from "react-router-dom";
 import { Col, Row, Spinner } from "react-bootstrap";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { applyToJobApi, getOneJobOfferApi } from "../../apis";
 import { addJob } from "../../features/jobsSlice";
 import { Dropzone } from "../../components";
@@ -20,12 +20,19 @@ import { toAbsoluteUrl } from "../../../_metronic/helpers";
 import { PageTitle } from "../../../_metronic/layout/core";
 import getMediaUrl from "../../helpers/getMediaUrl";
 
+// Define the form data interface
+interface FormData {
+  user_website?: string;
+  user_cv: File | null;
+  user_phone_number: string;
+}
+
 const schema = yup.object().shape({
   user_website: yup
     .string()
     .typeError("Le site Web doit être une URL valide")
     .notRequired(),
-  user_cv: yup.mixed().required("Le CV est requis"),
+  user_cv: yup.mixed<File>().required("Le CV est requis"),
   user_phone_number: yup
     .string()
     .matches(/^[0-9]{10}$/, t(`completeProfile.validation.phone.matches`))
@@ -65,7 +72,8 @@ export const JobOfferDetailPage = () => {
   } = useForm({
     defaultValues: {
       user_cv: null,
-      user_phone_number: user?.info?.phone,
+      user_phone_number: user?.info?.phone || "",
+      user_website: "",
     },
     resolver: yupResolver(schema),
   });
@@ -81,27 +89,31 @@ export const JobOfferDetailPage = () => {
     (company) => company.id === job?.company_id
   );
 
-  const user_cv: any = watch("user_cv");
+  const user_cv: File | null = watch("user_cv");
 
   const { mutate, isLoading } = useMutation({
     mutationKey: ["apply-for-job", jobID],
     mutationFn: async (data: {
       company_job_offer_id: string | number;
-      user_website: string;
+      user_website?: string; // Make optional here too
       user_cv: File;
       user_phone_number: string | number;
     }) => await applyToJobApi(data),
   });
 
-  const handleApplyToJob = async (data: {
-    user_website: string;
-    user_cv: File;
-    user_phone_number: string | number;
-  }) => {
+  const handleApplyToJob: SubmitHandler<FormData> = async (data) => {
+    // Validate that user_cv is not null before proceeding
+    if (!data.user_cv) {
+      toast.error("Le CV est requis");
+      return;
+    }
+
     mutate(
       {
-        ...data,
-        company_job_offer_id: jobID,
+        company_job_offer_id: jobID!,
+        user_cv: data.user_cv,
+        user_website: data.user_website || "",
+        user_phone_number: data.user_phone_number,
       },
       {
         onSuccess(data, variables, context) {
@@ -190,18 +202,18 @@ export const JobOfferDetailPage = () => {
                     <p
                       className="fw-semibold fs-6 text-gray-600"
                       dangerouslySetInnerHTML={{
-                        __html: job?.description,
+                        __html: job?.description || "",
                       }}
                     />
                   </div>
                   <div className="w-100 d-flex flex-row align-items-start justify-content-between gap-4 flex-wrap pt-8">
-                    {job?.work_skills?.length > 0 && (
+                    {job?.work_skills?.length && job.work_skills.length > 0 && (
                       <div className="">
                         <h4 className="text-gray-700 w-bolder mb-0">
                           Compétences
                         </h4>
                         <div className="my-2">
-                          {job?.work_skills?.map((term, index) => (
+                          {job.work_skills.map((term, index) => (
                             <div
                               className="d-flex align-items-center mb-3"
                               key={index}
@@ -216,76 +228,79 @@ export const JobOfferDetailPage = () => {
                       </div>
                     )}
 
-                    {job?.work_requirements?.length > 0 && (
-                      <div className="">
-                        <h4 className="text-gray-700 w-bolder mb-0">
-                          Les exigences
-                        </h4>
-                        <div className="my-2">
-                          {job?.work_requirements?.map((req, index) => (
-                            <div
-                              className="d-flex align-items-center mb-3"
-                              key={index}
-                            >
-                              <span className="bullet me-3"></span>
-                              <div className="text-gray-600 fw-semibold fs-6">
-                                {req}
+                    {job?.work_requirements?.length &&
+                      job.work_requirements.length > 0 && (
+                        <div className="">
+                          <h4 className="text-gray-700 w-bolder mb-0">
+                            Les exigences
+                          </h4>
+                          <div className="my-2">
+                            {job.work_requirements.map((req, index) => (
+                              <div
+                                className="d-flex align-items-center mb-3"
+                                key={index}
+                              >
+                                <span className="bullet me-3"></span>
+                                <div className="text-gray-600 fw-semibold fs-6">
+                                  {req}
+                                </div>
                               </div>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
 
-                    {job?.work_benefits?.length > 0 && (
-                      <div className="">
-                        <h4 className="text-gray-700 w-bolder mb-0">
-                          Les avantages
-                        </h4>
-                        <div className="my-2">
-                          {job?.work_benefits?.map((term, index) => (
-                            <div
-                              className="d-flex align-items-center mb-3"
-                              key={index}
-                            >
-                              <span className="bullet me-3"></span>
-                              <div className="text-gray-600 fw-semibold fs-6">
-                                {term}
+                    {job?.work_benefits?.length &&
+                      job.work_benefits.length > 0 && (
+                        <div className="">
+                          <h4 className="text-gray-700 w-bolder mb-0">
+                            Les avantages
+                          </h4>
+                          <div className="my-2">
+                            {job.work_benefits.map((term, index) => (
+                              <div
+                                className="d-flex align-items-center mb-3"
+                                key={index}
+                              >
+                                <span className="bullet me-3"></span>
+                                <div className="text-gray-600 fw-semibold fs-6">
+                                  {term}
+                                </div>
                               </div>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
 
-                    {job?.application_terms?.length > 0 && (
-                      <div className="">
-                        <h4 className="text-gray-700 w-bolder mb-0">
-                          Les conditions
-                        </h4>
-                        <div className="my-2">
-                          {job?.application_terms?.map((term, index) => (
-                            <div
-                              className="d-flex align-items-center mb-3"
-                              key={index}
-                            >
-                              <span className="bullet me-3"></span>
-                              <div className="text-gray-600 fw-semibold fs-6">
-                                {term}
+                    {job?.application_terms?.length &&
+                      job.application_terms.length > 0 && (
+                        <div className="">
+                          <h4 className="text-gray-700 w-bolder mb-0">
+                            Les conditions
+                          </h4>
+                          <div className="my-2">
+                            {job.application_terms.map((term, index) => (
+                              <div
+                                className="d-flex align-items-center mb-3"
+                                key={index}
+                              >
+                                <span className="bullet me-3"></span>
+                                <div className="text-gray-600 fw-semibold fs-6">
+                                  {term}
+                                </div>
                               </div>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
 
-                    {job?.work_roles?.length > 0 && (
+                    {job?.work_roles?.length && job.work_roles.length > 0 && (
                       <div className="">
                         <h4 className="text-gray-700 w-bolder mb-0">
                           Responsabilités
                         </h4>
                         <div className="my-2">
-                          {job?.work_roles?.map((term, index) => (
+                          {job.work_roles.map((term, index) => (
                             <div
                               className="d-flex align-items-center mb-3"
                               key={index}
@@ -321,7 +336,7 @@ export const JobOfferDetailPage = () => {
                             </label>
                             <input
                               className="form-control form-control-solid"
-                              type="number"
+                              type="tel"
                               name="user_phone_number"
                               {...register("user_phone_number")}
                             />
@@ -338,8 +353,9 @@ export const JobOfferDetailPage = () => {
                             </label>
                             <input
                               className="form-control form-control-solid"
+                              type="url"
                               placeholder=""
-                              name="website"
+                              name="user_website"
                               {...register("user_website")}
                             />
                             {errorMessage(errors, "user_website")}
@@ -396,6 +412,7 @@ export const JobOfferDetailPage = () => {
                       type="submit"
                       className="btn btn-primary"
                       id="kt_careers_submit_button"
+                      disabled={isLoading}
                     >
                       {!isLoading && (
                         <span className="indicator-label">Postuler</span>
@@ -408,10 +425,6 @@ export const JobOfferDetailPage = () => {
                           <span className="spinner-border spinner-border-sm align-middle ms-2"></span>
                         </span>
                       )}
-                      {/* <span className="indicator-progress">
-                        Please wait...
-                        <span className="spinner-border spinner-border-sm align-middle ms-2"></span>
-                      </span> */}
                     </button>
                   </form>
                 </Col>

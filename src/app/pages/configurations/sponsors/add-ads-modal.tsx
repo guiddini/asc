@@ -60,8 +60,8 @@ export const AddAdsModal: React.FC<SelectAdsProps> = ({
     setValue,
     watch,
     handleSubmit,
-  } = useForm<CreateAdsProps>({
-    defaultValues: {},
+  } = useForm<CreateAdsFormProps>({
+    defaultValues: {} as CreateAdsFormProps,
   });
 
   const onDrop = async (file: File[]) => {
