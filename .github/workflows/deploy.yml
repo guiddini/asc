@@ -32,4 +32,5 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: dist/
           server-dir: /asc.eventili.com/
+          protocol: ftp
           dangerous-clean-slate: false
