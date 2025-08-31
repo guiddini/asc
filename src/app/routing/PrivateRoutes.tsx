@@ -56,6 +56,7 @@ import UserProfileWrapper from "../utils/user-profile-wrapper";
 import BlogsManagementPage from "../pages/blog-management/page";
 import CreateBlogPage from "../pages/blog-management/create-blog/page";
 import UpdateBlogPage from "../pages/blog-management/update-blog/page";
+import RoleGuard from "../components/role-guard";
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import("../pages/profile/ProfilePage"));
@@ -114,27 +115,42 @@ const PrivateRoutes = () => {
             <Route
               path="/blogs-management"
               element={
-                <SuspensedView>
-                  <BlogsManagementPage />
-                </SuspensedView>
+                <RoleGuard
+                  allowedRoles={["admin", "super_admin", "staff"]}
+                  showError
+                >
+                  <SuspensedView>
+                    <BlogsManagementPage />
+                  </SuspensedView>
+                </RoleGuard>
               }
             />
 
             <Route
               path="/blogs-management/create"
               element={
-                <SuspensedView>
-                  <CreateBlogPage />
-                </SuspensedView>
+                <RoleGuard
+                  allowedRoles={["admin", "super_admin", "staff"]}
+                  showError
+                >
+                  <SuspensedView>
+                    <CreateBlogPage />
+                  </SuspensedView>
+                </RoleGuard>
               }
             />
 
             <Route
               path="/blogs-management/update/:id"
               element={
-                <SuspensedView>
-                  <UpdateBlogPage />
-                </SuspensedView>
+                <RoleGuard
+                  allowedRoles={["admin", "super_admin", "staff"]}
+                  showError
+                >
+                  <SuspensedView>
+                    <UpdateBlogPage />
+                  </SuspensedView>
+                </RoleGuard>
               }
             />
 

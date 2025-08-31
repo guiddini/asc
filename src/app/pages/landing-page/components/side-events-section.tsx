@@ -168,18 +168,22 @@ const SideEventsSection: React.FC = () => {
         </div>
 
         {/* Progress Indicators */}
-        <div className="carousel-indicators mt-4">
-          {Array.from({ length: maxIndex + 1 }, (_, index) => (
-            <button
-              key={index}
-              className={`indicator ${index === currentIndex ? "active" : ""}`}
-              onClick={() => {
-                if (isTransitioning) return;
-                setCurrentIndex(index);
-                setIsAutoPlaying(false);
-              }}
-            />
-          ))}
+        <div className="position-relative pt-14">
+          <div className="carousel-indicators">
+            {Array.from({ length: maxIndex + 1 }, (_, index) => (
+              <button
+                key={index}
+                className={`indicator ${
+                  index === currentIndex ? "active" : ""
+                }`}
+                onClick={() => {
+                  if (isTransitioning) return;
+                  setCurrentIndex(index);
+                  setIsAutoPlaying(false);
+                }}
+              />
+            ))}
+          </div>
         </div>
       </Container>
     </section>

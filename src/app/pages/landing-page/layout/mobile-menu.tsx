@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Offcanvas, Nav, Accordion, Button } from "react-bootstrap";
 import { mobileNavItems } from "../data/navigation-items";
+import SearchComponent from "./search-component";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { UserResponse } from "../../../types/reducers";
 
 interface MobileMenuProps {
   show: boolean;
@@ -8,6 +12,16 @@ interface MobileMenuProps {
 }
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ show, onHide }) => {
+  const [showSearch, setShowSearch] = useState(false);
+  const navigate = useNavigate();
+
+  const handleShowSearch = () => setShowSearch(true);
+  const handleCloseSearch = () => setShowSearch(false);
+
+  const { user: currentUser } = useSelector(
+    (state: UserResponse) => state.user
+  );
+
   return (
     <Offcanvas
       show={show}
@@ -21,25 +35,57 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ show, onHide }) => {
 
       <Offcanvas.Body className="p-0">
         <div className="mobile-nav-container">
-          {/* Action Buttons - Mobile */}
           <div className="mobile-actions p-3 border-bottom">
             <div className="d-grid gap-2">
-              <Button variant="primary" size="sm">
-                <i className="bi bi-ticket-perforated me-2"></i>
-                Book tickets
-              </Button>
-              <Button variant="secondary" size="sm">
-                <i className="bi bi-briefcase me-2"></i>
-                Partner with us
-              </Button>
-              <Button variant="outline-secondary" size="sm">
+              {currentUser ? (
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={() => {
+                    navigate("/dashboard");
+                    onHide();
+                  }}
+                >
+                  <i className="bi bi-house-door me-2"></i>
+                  Dashboard
+                </Button>
+              ) : (
+                <>
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={() => {
+                      navigate("/auth/login");
+                      onHide();
+                    }}
+                  >
+                    <i className="bi bi-box-arrow-in-right me-2"></i>
+                    Login
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => {
+                      navigate("/auth/signup");
+                      onHide();
+                    }}
+                  >
+                    <i className="bi bi-person-plus me-2"></i>
+                    Register
+                  </Button>
+                </>
+              )}
+              <Button
+                variant="outline-secondary"
+                size="sm"
+                onClick={handleShowSearch}
+              >
                 <i className="bi bi-search me-2"></i>
                 Search
               </Button>
             </div>
           </div>
 
-          {/* Navigation Items */}
           <div className="mobile-nav-list">
             {mobileNavItems.map((item, index) =>
               item.items ? (
@@ -53,9 +99,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ show, onHide }) => {
                         {item.items.map((subItem, subIndex) => (
                           <Nav.Link
                             key={subIndex}
-                            href={subItem.href}
+                            onClick={() => {
+                              navigate(subItem.href);
+                              onHide();
+                            }}
                             className="mobile-nav-sublink"
-                            onClick={onHide}
                           >
                             {subItem.label}
                           </Nav.Link>
@@ -67,9 +115,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ show, onHide }) => {
               ) : (
                 <div key={index} className="mobile-nav-single">
                   <Nav.Link
-                    href={item.href}
+                    onClick={() => {
+                      navigate(item.href);
+                      onHide();
+                    }}
                     className="mobile-nav-link"
-                    onClick={onHide}
                   >
                     <span className="mobile-nav-label">{item.label}</span>
                   </Nav.Link>
@@ -79,6 +129,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ show, onHide }) => {
           </div>
         </div>
       </Offcanvas.Body>
+
+      <SearchComponent show={showSearch} onHide={handleCloseSearch} />
     </Offcanvas>
   );
 };

@@ -262,78 +262,6 @@
   width: 100%;
   margin: 0 calc(-50vw + 50%);
   width: 100vw;
-  padding: 5rem 0;
-  background-color: var(--bs-white);
-
-  // Constrain the content container
-  .container {
-    max-width: 1400px;
-    margin: 0 auto;
-    width: 100%;
-    padding: 0 15px;
-  }
-
-  .about-content {
-    .about-title {
-      color: var(--bs-dark);
-      line-height: 1.2;
-      margin-bottom: 2rem;
-    }
-
-    .about-description {
-      color: var(--bs-gray-700);
-      font-size: 1.1rem;
-      line-height: 1.7;
-      margin-bottom: 0;
-    }
-  }
-
-  .about-image-container {
-    .about-image {
-      width: 100%;
-      height: auto;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-      &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-      }
-    }
-  }
-
-  .ministry-endorsement {
-    padding: 1.5rem 0;
-    border-top: 1px solid var(--bs-gray-200);
-
-    .ministry-logo {
-      transition: all 0.3s ease;
-      filter: grayscale(20%) opacity(0.9);
-
-      &:hover {
-        filter: grayscale(0%) opacity(1);
-        transform: scale(1.05);
-      }
-    }
-
-    .endorsement-text {
-      p {
-        font-size: 0.95rem;
-        line-height: 1.4;
-        font-style: italic;
-      }
-    }
-  }
-}
-
-// About Section with full-width background but constrained content
-.about-section {
-  // Full viewport width background
-  width: 100%;
-  margin: 0 calc(-50vw + 50%);
-  width: 100vw;
-  padding: 5rem 0;
   background-color: var(--bs-white);
 
   // Constrain the content container
@@ -405,6 +333,42 @@
         }
       }
     }
+  }
+}
+
+.patronage-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.patronage-image-container {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.patronage-image {
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.patronage-title {
+  color: #2c3e50;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.patronage-subtitle {
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .patronage-title {
+    font-size: 1.8rem;
+  }
+
+  .patronage-subtitle {
+    font-size: 1rem;
   }
 }
 

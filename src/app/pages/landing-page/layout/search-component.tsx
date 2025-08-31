@@ -3,6 +3,7 @@ import { Modal, Form, Button, ListGroup, Badge } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { Link } from "react-router-dom";
 
 interface SearchProps {
   show: boolean;
@@ -18,15 +19,15 @@ interface SearchResult {
   title: string;
   description: string;
   category: string;
-  href: string;
+  to: string;
   type: "page" | "speaker" | "startup" | "partner" | "session";
 }
 
 const schema = yup.object().shape({
   query: yup
     .string()
-    .required("Veuillez saisir un terme de recherche")
-    .min(2, "Le terme de recherche doit contenir au moins 2 caractères"),
+    .required("Please enter a search term")
+    .min(2, "Search term must contain at least 2 characters"),
 });
 
 const SearchComponent: React.FC<SearchProps> = ({ show, onHide }) => {
@@ -48,71 +49,87 @@ const SearchComponent: React.FC<SearchProps> = ({ show, onHide }) => {
   } = form;
   const watchQuery = watch("query");
 
-  // Mock search data with French content
+  // Updated mock search data to match the navigation structure
   const mockResults: SearchResult[] = [
     {
       id: "1",
-      title: "Inscription à l'événement",
-      description: "Inscrivez-vous à la conférence et réservez votre place",
-      category: "Participants",
-      href: "/attendees/register",
+      title: "Event & Previous Editions",
+      description: "Learn about the event history and previous editions",
+      category: "About",
+      to: "/about/event",
       type: "page",
     },
     {
       id: "2",
-      title: "Intervenants & Conférenciers",
-      description:
-        "Découvrez notre formidable sélection d'experts de l'industrie",
-      category: "Événement",
-      href: "/speakers",
-      type: "speaker",
-    },
-    {
-      id: "3",
-      title: "Postuler pour Pitcher",
-      description: "Soumettez votre startup pour notre concours de pitch",
-      category: "Startups",
-      href: "/startups/apply",
-      type: "startup",
-    },
-    {
-      id: "4",
-      title: "Devenir Partenaire",
-      description: "Partenariat pour atteindre des milliers de participants",
-      category: "Partenaires",
-      href: "/partners/join",
-      type: "partner",
-    },
-    {
-      id: "5",
-      title: "Programme & Horaires",
-      description: "Consultez le programme complet et les sessions",
-      category: "Événement",
-      href: "/attendees/schedule",
+      title: "Program: Agenda, Keynotes, Workshops, Panels",
+      description: "Complete program schedule with all sessions",
+      category: "About",
+      to: "/about/program",
       type: "session",
     },
     {
+      id: "3",
+      title: "Speakers: The African Champions",
+      description: "Meet our amazing lineup of industry experts",
+      category: "About",
+      to: "/about/speakers",
+      type: "speaker",
+    },
+    {
+      id: "4",
+      title: "Exhibiting Startups: Thematic Filtering - Countries",
+      description: "Browse startups by theme and country",
+      category: "About",
+      to: "/about/startups",
+      type: "startup",
+    },
+    {
+      id: "5",
+      title: "Partnership Packages + Visibility",
+      description: "Partnership opportunities to reach thousands of attendees",
+      category: "Partners",
+      to: "/partners/packages",
+      type: "partner",
+    },
+    {
       id: "6",
-      title: "Réseautage Professionnel",
-      description: "Connectez-vous avec des entrepreneurs et investisseurs",
-      category: "Participants",
-      href: "/attendees/networking",
+      title: "Thematic Spaces",
+      description:
+        "Startup Factory, Tech Zone, Gaming Zone, Immersion Room, Media Lounge",
+      category: "Partners",
+      to: "/partners/spaces",
       type: "page",
     },
     {
       id: "7",
-      title: "Histoires de Réussite",
-      description: "Découvrez les success stories de nos startups",
-      category: "Startups",
-      href: "/startups/stories",
-      type: "startup",
+      title: "Location, Access, Accommodation",
+      description: "All practical information about venue and travel",
+      category: "Practical Info",
+      to: "/info/location",
+      type: "page",
     },
     {
       id: "8",
-      title: "Kit Presse & Média",
-      description: "Ressources média et informations presse",
-      category: "Médias",
-      href: "/media/press-kit",
+      title: "Register: VIP - Visitor - Startup - Media - Sponsor",
+      description: "Registration options for all attendee types",
+      category: "Practical Info",
+      to: "/info/register",
+      type: "page",
+    },
+    {
+      id: "9",
+      title: "Blog - News",
+      description: "Latest news and updates from the event",
+      category: "Content",
+      to: "/blog",
+      type: "page",
+    },
+    {
+      id: "10",
+      title: "Press Room",
+      description: "Media resources and press information",
+      category: "Media",
+      to: "/press",
       type: "page",
     },
   ];
@@ -134,14 +151,16 @@ const SearchComponent: React.FC<SearchProps> = ({ show, onHide }) => {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case "Participants":
+      case "About":
         return "primary";
-      case "Startups":
-        return "success";
-      case "Partenaires":
+      case "Partners":
         return "warning";
-      case "Médias":
+      case "Practical Info":
+        return "success";
+      case "Media":
         return "info";
+      case "Content":
+        return "secondary";
       default:
         return "secondary";
     }
@@ -193,14 +212,14 @@ const SearchComponent: React.FC<SearchProps> = ({ show, onHide }) => {
   };
 
   const popularSearches = [
-    "Conférenciers",
-    "Inscription",
-    "Programme",
-    "Partenaires",
+    "Speakers",
+    "Registration",
+    "Program",
+    "Partners",
     "Startups",
-    "Réseautage",
-    "Pitch",
-    "Investisseurs",
+    "Location",
+    "Accommodation",
+    "Press",
   ];
 
   return (
@@ -221,7 +240,7 @@ const SearchComponent: React.FC<SearchProps> = ({ show, onHide }) => {
                 </div>
                 <Form.Control
                   type="text"
-                  placeholder="Rechercher des sessions, conférenciers, partenaires..."
+                  placeholder="Search for sessions, speakers, partners..."
                   size="lg"
                   className="search-input"
                   autoFocus
@@ -235,7 +254,7 @@ const SearchComponent: React.FC<SearchProps> = ({ show, onHide }) => {
                         className="spinner-border text-primary"
                         role="status"
                       >
-                        <span className="visually-hidden">Recherche...</span>
+                        <span className="visually-hidden">Searching...</span>
                       </div>
                     </div>
                   </div>
@@ -257,11 +276,10 @@ const SearchComponent: React.FC<SearchProps> = ({ show, onHide }) => {
               <div className="results-header mb-3 d-flex justify-content-between align-items-center">
                 <span className="results-count">
                   <i className="bi bi-search me-1"></i>
-                  {results.length} résultat{results.length !== 1 ? "s" : ""}{" "}
-                  trouvé{results.length !== 1 ? "s" : ""}
+                  {results.length} result{results.length !== 1 ? "s" : ""} found
                 </span>
                 <small className="text-muted">
-                  ↑↓ pour naviguer • ↵ pour sélectionner
+                  ↑↓ to navigate • ↵ to select
                 </small>
               </div>
 
@@ -270,7 +288,7 @@ const SearchComponent: React.FC<SearchProps> = ({ show, onHide }) => {
                   <div
                     key={result.id}
                     className="search-result-item"
-                    onClick={() => handleResultClick(result.href)}
+                    onClick={() => handleResultClick(result.to)}
                   >
                     <div className="result-content">
                       <div className="result-header">
@@ -312,13 +330,12 @@ const SearchComponent: React.FC<SearchProps> = ({ show, onHide }) => {
                 <div className="no-results-icon">
                   <i className="bi bi-search"></i>
                 </div>
-                <h6 className="no-results-title">Aucun résultat trouvé</h6>
+                <h6 className="no-results-title">No results found</h6>
                 <p className="no-results-text">
-                  Essayez d'ajuster vos termes de recherche ou parcourez notre
-                  menu de navigation
+                  Try adjusting your search terms or browse our navigation menu
                 </p>
                 <div className="no-results-suggestions">
-                  <span className="suggestions-label">Suggestions :</span>
+                  <span className="suggestions-label">Suggestions:</span>
                   {popularSearches.slice(0, 3).map((suggestion) => (
                     <Button
                       key={suggestion}
@@ -337,17 +354,16 @@ const SearchComponent: React.FC<SearchProps> = ({ show, onHide }) => {
           {!watchQuery && (
             <div className="search-welcome">
               <div className="welcome-header mb-4">
-                <h6 className="welcome-title">Que recherchez-vous ?</h6>
+                <h6 className="welcome-title">What are you looking for?</h6>
                 <p className="welcome-subtitle">
-                  Trouvez rapidement des informations sur l'événement, les
-                  intervenants et plus encore
+                  Quickly find information about the event, speakers and more
                 </p>
               </div>
 
               <div className="popular-searches">
                 <div className="section-title mb-3">
                   <i className="bi bi-fire me-2 text-danger"></i>
-                  <span>Recherches populaires</span>
+                  <span>Popular searches</span>
                 </div>
                 <div className="suggestions-grid">
                   {popularSearches.map((tag) => (
@@ -368,41 +384,41 @@ const SearchComponent: React.FC<SearchProps> = ({ show, onHide }) => {
               <div className="quick-links mt-4">
                 <div className="section-title mb-3">
                   <i className="bi bi-lightning-fill me-2 text-warning"></i>
-                  <span>Accès rapide</span>
+                  <span>Quick access</span>
                 </div>
                 <div className="quick-links-grid">
-                  <a
-                    href="/attendees/register"
+                  <Link
+                    to="/info/register"
                     className="quick-link"
                     onClick={handleClose}
                   >
                     <i className="bi bi-ticket-perforated"></i>
-                    <span>S'inscrire</span>
-                  </a>
-                  <a
-                    href="/speakers"
+                    <span>Register</span>
+                  </Link>
+                  <Link
+                    to="/about/speakers"
                     className="quick-link"
                     onClick={handleClose}
                   >
                     <i className="bi bi-people"></i>
-                    <span>Conférenciers</span>
-                  </a>
-                  <a
-                    href="/attendees/schedule"
+                    <span>Speakers</span>
+                  </Link>
+                  <Link
+                    to="/about/program"
                     className="quick-link"
                     onClick={handleClose}
                   >
                     <i className="bi bi-calendar-event"></i>
-                    <span>Programme</span>
-                  </a>
-                  <a
-                    href="/partners/join"
+                    <span>Program</span>
+                  </Link>
+                  <Link
+                    to="/partners/packages"
                     className="quick-link"
                     onClick={handleClose}
                   >
                     <i className="bi bi-handshake"></i>
-                    <span>Partenariat</span>
-                  </a>
+                    <span>Partnership</span>
+                  </Link>
                 </div>
               </div>
             </div>

@@ -72,6 +72,27 @@ const addUserToStaffApi = async (user_id: string | number) =>
   await axiosInstance.post("/role/staff", {
     user_id,
   });
+
+const assignRoleToUserApi = async (
+  user_id: string | number,
+  role_id: string | number
+) => {
+  return await axiosInstance.post("/role/assign", {
+    user_id,
+    role_id,
+  });
+};
+
+const removeRoleFromUserApi = async (
+  user_id: string | number,
+  role_id: string | number
+) => {
+  return await axiosInstance.post("/role/remove", {
+    user_id,
+    role_id,
+  });
+};
+
 export {
   getAllRolesApi,
   getAllPermissionsApi,
@@ -84,4 +105,6 @@ export {
   getUserPermissionsApi,
   getRolePermissionsApi,
   addUserToStaffApi,
+  assignRoleToUserApi,
+  removeRoleFromUserApi,
 };

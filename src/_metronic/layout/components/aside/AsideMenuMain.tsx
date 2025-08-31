@@ -7,6 +7,7 @@ import {
   canEditCompany,
   canViewCompany,
 } from "../../../../app/features/userSlice";
+import RoleGuard from "../../../../app/components/role-guard";
 
 const isAdmin = (permissions) => {
   const adminPermissions = [
@@ -53,6 +54,16 @@ export function AsideMenuMain() {
         bsTitle="Accueil"
         className="py-2"
       />
+      <RoleGuard allowedRoles={["admin", "super_admin", "staff"]}>
+        <AsideMenuItem
+          to="/blogs-management"
+          title="Blogs"
+          customIcon={<i className="fa-solid fa-blog"></i>}
+          bsTitle="Blogs"
+          className="py-2"
+        />
+      </RoleGuard>
+
       <AsideMenuItem
         to={`/participants`}
         title="Participants"

@@ -1,3 +1,5 @@
+import { Role as UserRole } from "./roles";
+
 export interface User {
   id: string;
   fname: string;
@@ -31,6 +33,7 @@ export interface User {
     user_id: string;
   };
   roleValues: Role;
+  roles?: UserRole[];
   permissions: Permission[];
   company: Company;
   giftedTickets: Ticket[];

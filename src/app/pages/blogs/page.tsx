@@ -135,15 +135,15 @@ const BlogsPage: React.FC = () => {
                   <p className="mb-0 text-muted">
                     {filters.title ? (
                       <>
-                        Found {blogs.length} result
-                        {blogs.length !== 1 ? "s" : ""} for
+                        Found {blogs?.length} result
+                        {blogs?.length !== 1 ? "s" : ""} for
                         <strong className="text-primary ms-1">
-                          "{filters.title}"
+                          "{filters?.title}"
                         </strong>
                       </>
                     ) : (
-                      `Showing all ${blogs.length} blog${
-                        blogs.length !== 1 ? "s" : ""
+                      `Showing all ${blogs?.length} blog${
+                        blogs?.length !== 1 ? "s" : ""
                       }`
                     )}
                   </p>

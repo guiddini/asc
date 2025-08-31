@@ -12,6 +12,8 @@ import AddStaffModal from "./add-user-to-staff";
 import ResetPasswordModal from "./ResetPasswordModal";
 import GiftTicketToOtherUserModal from "./gift-ticket-to-other-user-modal";
 import ShowUserQrCodeModal from "./show-user-qr-code";
+import AssignRoleModal from "./assign-role-modal";
+import RemoveRoleModal from "./remove-role-modal";
 
 const UserActionColumn = ({
   openViewModal,
@@ -35,20 +37,18 @@ const UserActionColumn = ({
   });
 
   const [openAddNewTicket, setOpenAddNewTicket] = useState<User | null>(null);
-
   const [openAssignTicket, setOpenAssignTicket] = useState<boolean>(false);
-
   const [openViewBadge, setOpenViewBadge] = useState<boolean>(false);
-
   const [openAddNewStaff, setOpenAddNewStaff] = useState<boolean>(false);
-
   const [openGiftTicketToOtherUser, setOpenGiftTicketToOtherUser] =
     useState<boolean>(false);
-
   const [openResetPasswordModal, setOpenResetPasswordModal] =
     useState<boolean>(false);
-
   const [showUserQrCode, setShowUserQrCode] = useState<boolean>(false);
+  const [openAssignRoleModal, setOpenAssignRoleModal] =
+    useState<boolean>(false);
+  const [openRemoveRoleModal, setOpenRemoveRoleModal] =
+    useState<boolean>(false);
 
   return (
     <Dropdown placement="top-start">
@@ -93,6 +93,33 @@ const UserActionColumn = ({
           </div>
         </Dropdown.Item>
 
+        {/* New Role Management Options */}
+        <Dropdown.Item
+          onClick={() => setOpenAssignRoleModal(true)}
+          className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
+        >
+          <div className="cursor-pointer d-flex flex-row align-items-center">
+            <KTIcon
+              iconName="shield-check"
+              className="fs-1 cursor-pointer m-0 text-primary"
+            />
+            <span className="text-muted ms-2">Assign Role</span>
+          </div>
+        </Dropdown.Item>
+
+        <Dropdown.Item
+          onClick={() => setOpenRemoveRoleModal(true)}
+          className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
+        >
+          <div className="cursor-pointer d-flex flex-row align-items-center">
+            <KTIcon
+              iconName="shield-cross"
+              className="fs-1 cursor-pointer m-0 text-danger"
+            />
+            <span className="text-muted ms-2">Remove Role</span>
+          </div>
+        </Dropdown.Item>
+
         <Dropdown.Item
           onClick={() => setOpenResetPasswordModal(true)}
           className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
@@ -118,7 +145,6 @@ const UserActionColumn = ({
               iconName="receipt-square"
               className="fs-1 cursor-pointer m-0 text-warning"
             />
-
             <span className="text-muted ms-2">Gift ticket to other user</span>
           </div>
         </Dropdown.Item>
@@ -137,7 +163,6 @@ const UserActionColumn = ({
           </Dropdown.Item>
 
           {/* print badge && assign ticket */}
-
           {props?.user_has_ticket_id === null ? (
             <Dropdown.Item
               onClick={(e) => {
@@ -151,7 +176,6 @@ const UserActionColumn = ({
                   iconName="receipt-square"
                   className="fs-1 cursor-pointer m-0 text-warning"
                 />
-
                 <span className="text-muted ms-2">Assigner un ticket</span>
               </div>
             </Dropdown.Item>
@@ -254,6 +278,7 @@ const UserActionColumn = ({
         </div>
       </Dropdown.Menu>
 
+      {/* All existing modals */}
       <AddNewTicketToUserModal
         isOpen={openAddNewTicket === null ? false : true}
         setIsOpen={setOpenAddNewTicket}
@@ -303,6 +328,26 @@ const UserActionColumn = ({
           setIsOpen={setShowUserQrCode}
           userId={props?.id}
           userName={props?.fname + " " + props?.lname}
+        />
+      )}
+
+      {/* New Role Management Modals */}
+      {openAssignRoleModal && (
+        <AssignRoleModal
+          isOpen={openAssignRoleModal}
+          setIsOpen={setOpenAssignRoleModal}
+          userId={props?.id}
+          userName={props?.fname + " " + props?.lname}
+          userRoles={props?.roles || []} // Pass user's current roles
+        />
+      )}
+      {openRemoveRoleModal && (
+        <RemoveRoleModal
+          isOpen={openRemoveRoleModal}
+          setIsOpen={setOpenRemoveRoleModal}
+          userId={props?.id}
+          userName={props?.fname + " " + props?.lname}
+          userRoles={props?.roles || []} // Pass user's current roles
         />
       )}
     </Dropdown>

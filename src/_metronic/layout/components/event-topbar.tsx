@@ -62,7 +62,7 @@ const EventTopbar = () => {
                 className="d-none d-md-block"
               />
               <div id="event-top-bar-info">
-                <h1>Algeria Startup Conference & E-commerce summit</h1>
+                <h1>African Startup Conference</h1>
 
                 <div
                   id="event-top-bar-info-calendar"

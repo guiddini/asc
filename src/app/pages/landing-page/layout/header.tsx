@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Navbar, Nav, Container, Button, Offcanvas } from "react-bootstrap";
+import { Navbar, Container, Button } from "react-bootstrap";
 import NavigationMenu from "./navigation-menu";
 import MobileMenu from "./mobile-menu";
 import SearchComponent from "./search-component";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { UserResponse } from "../../../types/reducers";
 
 interface HeaderProps {
   className?: string;
@@ -12,12 +14,17 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ className = "" }) => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const navigate = useNavigate();
 
   const handleToggleMobileMenu = () => setShowMobileMenu(!showMobileMenu);
   const handleCloseMobileMenu = () => setShowMobileMenu(false);
 
   const handleShowSearch = () => setShowSearch(true);
   const handleCloseSearch = () => setShowSearch(false);
+
+  const { user: currentUser } = useSelector(
+    (state: UserResponse) => state.user
+  );
 
   return (
     <header className={`site-header ${className}`}>
@@ -63,15 +70,40 @@ const Header: React.FC<HeaderProps> = ({ className = "" }) => {
                 Search
               </Button>
 
-              <Button variant="primary" size="sm" className="px-3">
-                <i className="bi bi-ticket-perforated me-1"></i>
-                Book tickets
-              </Button>
+              {currentUser ? (
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={() => {
+                    navigate("/dashboard");
+                  }}
+                >
+                  <i className="bi bi-house-door me-2"></i>
+                  Dashboard
+                </Button>
+              ) : (
+                <>
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    className="px-3"
+                    onClick={() => navigate("/auth/login")}
+                  >
+                    <i className="bi bi-box-arrow-in-right me-1"></i>
+                    Login
+                  </Button>
 
-              <Button variant="secondary" size="sm" className="px-3">
-                <i className="bi bi-briefcase me-1"></i>
-                Partner with us
-              </Button>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    className="px-3"
+                    onClick={() => navigate("/auth/signup")}
+                  >
+                    <i className="bi bi-person-plus me-1"></i>
+                    Register
+                  </Button>
+                </>
+              )}
             </div>
           </div>
 

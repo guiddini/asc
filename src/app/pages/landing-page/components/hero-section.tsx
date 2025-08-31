@@ -1,7 +1,10 @@
 import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection: React.FC = () => {
+  const navigation = useNavigate();
+
   return (
     <section className="hero-section">
       <Container fluid className="h-100">
@@ -13,45 +16,45 @@ const HeroSection: React.FC = () => {
                 <Col xl={10}>
                   <div className="hero-content">
                     <h1 className="hero-title display-4 fw-bold mb-3">
-                      {" "}
                       {/* Smaller display size */}
-                      Web Summit Qatar
+                      African Startup Conference
                       <br />
-                      <span className="hero-subtitle">
-                        coming 1-4 February, 2026
-                      </span>
+                      <span className="hero-subtitle">6-8 December, 2025</span>
+                      <br />
+                      <span className="hero-subtitle">CIC, Algiers</span>
                     </h1>
 
                     <p className="hero-description mb-3">
-                      {" "}
                       {/* Removed lead class for compactness */}
-                      Web Summit Qatar will return to the Doha Exhibition and
-                      Convention Center (DECC) next year. Thousands of
-                      international entrepreneurs, investors and leaders will
-                      gather for Web Summit Qatar 2026. Join them.
+                      The African Startup Conference will take place at the CIC
+                      Algiers this December. Thousands of entrepreneurs,
+                      investors, and leaders from across Africa and beyond will
+                      gather to connect, collaborate, and shape the future of
+                      innovation on the continent. Join them.
                     </p>
 
                     <p className="hero-cta-text mb-3">
-                      Book tickets for 2026 now and join us in Doha next
-                      February.
+                      Book your tickets now and be part of African Startup
+                      Conference 2025 in Algiers.
                     </p>
 
                     <div className="hero-actions d-flex flex-column flex-sm-row gap-2">
-                      {" "}
                       {/* Reduced gap */}
                       <Button
                         variant="primary"
                         size="lg"
                         className="hero-btn-primary"
+                        onClick={() => navigation("/auth/login")}
                       >
-                        Book tickets
+                        Login
                       </Button>
                       <Button
                         variant="secondary"
                         size="lg"
                         className="hero-btn-secondary"
+                        onClick={() => navigation("/auth/signup")}
                       >
-                        Partner with us
+                        Book Ticket
                       </Button>
                     </div>
                   </div>
