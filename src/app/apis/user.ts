@@ -35,16 +35,46 @@ const filterParticipantsApi = async ({
   nameFilter,
   roleFilter,
   offset,
+  country,
+  interestsFilter,
 }: {
   roleFilter?: string;
   nameFilter?: string;
   offset: number | string;
+  country?: string;
+  interestsFilter?: string[] | string;
 }) => {
   const formdata = new FormData();
-  roleFilter?.length > 0 && formdata.append("roleFilter", roleFilter);
-  nameFilter?.length > 0 && formdata.append("nameFilter", nameFilter);
+
+  // Add existing filters
+  roleFilter?.length &&
+    roleFilter.length > 0 &&
+    formdata.append("roleFilter", roleFilter);
+  nameFilter?.length &&
+    nameFilter.length > 0 &&
+    formdata.append("nameFilter", nameFilter);
   formdata.append("offset", String(offset));
-  return await axiosInstance.post(`/user/participants/filter`, formdata);
+
+  // Add new filters
+  country?.length &&
+    country.length > 0 &&
+    formdata.append("countryFilter", country);
+
+  // Handle interestsFilter - can be array or string
+  if (interestsFilter) {
+    if (Array.isArray(interestsFilter)) {
+      // If it's an array, join with commas or send as JSON string
+      interestsFilter.length > 0 &&
+        formdata.append("interestsFilter", interestsFilter.join(","));
+    } else if (
+      typeof interestsFilter === "string" &&
+      interestsFilter.length > 0
+    ) {
+      formdata.append("interestsFilter", interestsFilter);
+    }
+  }
+
+  return await axiosInstance.post(`/user/participants/filter/v2`, formdata);
 };
 
 const createUserApi = async (data: any) => {

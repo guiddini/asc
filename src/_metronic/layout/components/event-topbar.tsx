@@ -57,12 +57,12 @@ const EventTopbar = () => {
             </div>
             <div id="event-top-bar-event-infos">
               <img
-                src="/media/eventili/afes/logo.jpg"
+                src="/media/eventili/logos/logo.svg"
                 alt="Event logo"
                 className="d-none d-md-block"
               />
               <div id="event-top-bar-info">
-                <h1>Algeria fintech & E-commerce summit</h1>
+                <h1>Algeria Startup Conference & E-commerce summit</h1>
 
                 <div
                   id="event-top-bar-info-calendar"

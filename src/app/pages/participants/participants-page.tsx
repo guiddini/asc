@@ -16,29 +16,47 @@ import {
 import { ParticipantsReducer } from "../../types/reducers";
 import { useForm } from "react-hook-form";
 import { Role } from "../../types/roles";
+// Import the components you're using in info-settings
+import { CountriesSelect, SelectComponent } from "../../components";
+import { useUser } from "../../hooks"; // Import to get activities
+
+type selectProps = {
+  label: string;
+  value: string | number;
+};
 
 export const ParticipantsPage = () => {
+  // Get activities for interests filter
+  const { MEMORIZED_ACTIVITIES, loadingActivities } = useUser();
+
   const { mutate: filterMutate, isLoading: isFiltering } = useMutation({
     mutationKey: ["filter-participants"],
     mutationFn: async ({
       nameFilter,
       roleFilter,
       offset,
+      country,
+      interestsFilter,
     }: {
       roleFilter?: string;
       nameFilter?: string;
       offset: number | string;
+      country?: string;
+      interestsFilter?: string[];
     }) =>
       await filterParticipantsApi({
         nameFilter,
         roleFilter,
         offset: offset,
+        country,
+        interestsFilter,
       }),
   });
 
   const dispatch = useDispatch();
 
   const [initialLoading, setInitialLoading] = useState<boolean>(false);
+
   useEffect(() => {
     if (USERS?.length === 0) {
       setInitialLoading(true);
@@ -90,35 +108,69 @@ export const ParticipantsPage = () => {
     [data, isFiltering]
   );
 
-  const { register, handleSubmit, watch, setValue } = useForm({
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    control,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       roleFilter: "",
       nameFilter: "",
+      country: null, // Add country filter
+      interestsFilter: null, // Add interests filter
       prevRoleFilter: "",
       prevNameFilter: "",
+      prevCountry: null,
+      prevInterestsFilter: null,
     },
   });
 
-  const { nameFilter, roleFilter } = watch();
+  const { nameFilter, roleFilter, country, interestsFilter } = watch();
 
   const handleFilter = async (data: {
     roleFilter?: string;
     nameFilter?: string;
+    country?: selectProps | null;
+    interestsFilter?: selectProps[] | null;
     prevRoleFilter?: string;
     prevNameFilter?: string;
+    prevCountry?: selectProps | null;
+    prevInterestsFilter?: selectProps[] | null;
   }) => {
-    const { nameFilter, roleFilter, prevNameFilter, prevRoleFilter } = data;
+    const {
+      nameFilter,
+      roleFilter,
+      country,
+      interestsFilter,
+      prevNameFilter,
+      prevRoleFilter,
+      prevCountry,
+      prevInterestsFilter,
+    } = data;
 
     const paramsChanged =
-      nameFilter === prevNameFilter || roleFilter === prevRoleFilter;
+      nameFilter !== prevNameFilter ||
+      roleFilter !== prevRoleFilter ||
+      JSON.stringify(country) !== JSON.stringify(prevCountry) ||
+      JSON.stringify(interestsFilter) !== JSON.stringify(prevInterestsFilter);
 
     if (paramsChanged) {
       dispatch(resetCurrentPage());
     }
 
+    // Prepare interests filter - extract values from selected options
+    const interestsArray =
+      interestsFilter?.map((interest: selectProps) => String(interest.value)) ||
+      [];
+
     const req = {
-      nameFilter: nameFilter?.toLocaleLowerCase(),
-      roleFilter: roleFilter?.toLocaleLowerCase(),
+      nameFilter: nameFilter?.toLowerCase(),
+      roleFilter: roleFilter?.toLowerCase(),
+      country: country?.value ? String(country.value) : undefined,
+      interestsFilter: interestsArray.length > 0 ? interestsArray : undefined,
       offset: paramsChanged ? 0 : currentPage,
     };
 
@@ -126,6 +178,9 @@ export const ParticipantsPage = () => {
       onSuccess(res) {
         setValue("prevNameFilter", nameFilter);
         setValue("prevRoleFilter", roleFilter);
+        setValue("prevCountry", country);
+        setValue("prevInterestsFilter", interestsFilter);
+
         const users: ParticipantProps[] = res?.data;
         if (paramsChanged && users.length === 0) {
           dispatch(initparticipants(users));
@@ -152,6 +207,8 @@ export const ParticipantsPage = () => {
           handleFilter({
             nameFilter,
             roleFilter,
+            country,
+            interestsFilter,
           });
         }
       },
@@ -193,8 +250,6 @@ export const ParticipantsPage = () => {
                       type="text"
                       className="form-control form-control-solid"
                       name="search"
-                      // value={searchTerm}
-                      // onChange={(e) => setSearchTerm(e.target.value)}
                       placeholder="Nom du participant"
                       {...register("nameFilter")}
                     />
@@ -226,14 +281,14 @@ export const ParticipantsPage = () => {
                 <div className="collapse" id="kt_advanced_search_form">
                   <div className="separator separator-dashed mt-9 mb-6"></div>
                   <div className="row g-8">
-                    <div className="col-12">
+                    <div className="col-12 col-md-4">
                       <label className="fs-6 form-label fw-bold text-gray-900">
                         Role du participant
                       </label>
                       <select
                         className="form-select form-select-solid"
                         data-control="select2"
-                        data-placeholder="In Progress"
+                        data-placeholder="Sélectionner un rôle"
                         data-hide-search="true"
                         {...register("roleFilter")}
                       >
@@ -245,11 +300,39 @@ export const ParticipantsPage = () => {
                         ))}
                       </select>
                     </div>
+
+                    {/* Country Filter */}
+                    <div className="col-12 col-md-4">
+                      <CountriesSelect
+                        control={control as any}
+                        errors={errors}
+                        colMD={12}
+                        colXS={12}
+                      />
+                    </div>
+
+                    <div className="col-12 col-md-4">
+                      {/* Interests Filter */}
+                      <SelectComponent
+                        errors={errors}
+                        label="Centre d'intérêt"
+                        control={control}
+                        name="interestsFilter"
+                        placeholder="Sélectionner les centres d'intérêt"
+                        data={MEMORIZED_ACTIVITIES || []}
+                        isMulti={true}
+                        isLoading={loadingActivities}
+                        disabled={loadingActivities}
+                        colMD={12}
+                        colXS={12}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </form>
+
           {USERS?.length > 0 ? (
             <>
               {USERS?.map((user, index) => (

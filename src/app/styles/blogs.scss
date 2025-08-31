@@ -591,4 +591,57 @@
       }
     }
   }
+
+  .comments-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--bs-border-color);
+
+    h4 {
+      color: var(--bs-dark);
+      font-weight: var(--bs-font-weight-bold);
+      margin-bottom: 2rem;
+    }
+
+    h6 {
+      color: var(--bs-dark);
+      font-weight: var(--bs-font-weight-semibold);
+    }
+
+    .comments-list {
+      .card {
+        border: var(--bs-border-width) solid var(--bs-border-color);
+        transition: box-shadow 0.2s ease;
+
+        &:hover {
+          box-shadow: var(--bs-box-shadow);
+        }
+
+        .card-body {
+          padding: 1.5rem;
+        }
+      }
+
+      .dropdown-toggle {
+        &:focus {
+          box-shadow: none;
+        }
+      }
+    }
+
+    // Comment form styles
+    .form-control {
+      &:focus {
+        border-color: var(--bs-primary);
+        box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
+      }
+    }
+
+    // Empty state styles
+    .text-center {
+      .display-4 {
+        opacity: 0.5;
+      }
+    }
+  }
 }

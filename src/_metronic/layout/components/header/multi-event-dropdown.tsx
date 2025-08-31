@@ -37,7 +37,7 @@ const MultiEventDropdown = () => {
       >
         <div id="multi-event-dropdown-content">
           <img
-            src={"/media/eventili/afes/logo.jpg"}
+            src={"/media/eventili/logos/logo.svg"}
             alt=""
             id="multi-event-dropdown-icon"
             width={24}
@@ -59,7 +59,7 @@ const MultiEventDropdown = () => {
           >
             <div id="multi-event-dropdown-current">
               <img
-                src={"/media/eventili/afes/logo.jpg"}
+                src={"/media/eventili/logos/logo.svg"}
                 alt=""
                 width={24}
                 height={24}

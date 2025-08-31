@@ -8,6 +8,7 @@ import BlogHeader from "../components/blog-header";
 import BlogMeta from "../components/blog-meta";
 import BlogContent from "../components/blog-content";
 import ErrorMessage from "../components/error-message";
+import CommentsSection from "../components/comments-section";
 
 interface BlogPost {
   id: string;
@@ -51,6 +52,10 @@ const BlogDetailsPage: React.FC = () => {
         <BlogHeader title={blog.title} coverImage={blog.cover_image} />
         <BlogMeta publishedAt={blog.published_at} status={blog.status} />
         <BlogContent content={blog.content} />
+
+        <div className="mt-5">
+          <CommentsSection blogId={blog.id} />
+        </div>
       </Container>
     </div>
   );
