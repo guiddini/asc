@@ -1,3 +1,4 @@
+import { Slot } from "../types/slot";
 import axiosInstance from "./axios";
 
 export const checkSlot = async (data: {
@@ -14,7 +15,7 @@ export const getBookedUserSlot = async (receiver_id: string) => {
   return response?.data;
 };
 
-export const getMyBookedSlot = async () => {
+export const getMyBookedSlot = async (): Promise<Slot[]> => {
   const response = await axiosInstance.get("/slot/my");
   return response?.data;
 };

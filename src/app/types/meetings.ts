@@ -10,3 +10,19 @@ export interface Meeting {
   created_at: string;
   updated_at: string;
 }
+
+export interface MeetingDetail extends Meeting {
+  receiver: {
+    id: string;
+    fname: string;
+    lname: string;
+    email: string;
+    avatar: string | null;
+    can_create_company: number;
+    email_verified_at: string | null;
+    created_at: string;
+    updated_at: string;
+    ticket_count: number;
+    user_has_ticket_id: string | null;
+  };
+}

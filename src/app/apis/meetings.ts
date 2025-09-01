@@ -1,4 +1,4 @@
-import { Meeting } from "../types/meetings";
+import { Meeting, MeetingDetail } from "../types/meetings";
 import axiosInstance from "./axios";
 
 export const getUserMeetings = async (): Promise<Meeting[]> => {
@@ -6,7 +6,7 @@ export const getUserMeetings = async (): Promise<Meeting[]> => {
   return response.data;
 };
 
-export const showOneMeeting = async (id: string) => {
+export const showOneMeeting = async (id: string): Promise<MeetingDetail> => {
   const response = await axiosInstance.get(`/meeting/show/${id}`);
   return response.data;
 };

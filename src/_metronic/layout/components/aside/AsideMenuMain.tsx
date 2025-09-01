@@ -64,12 +64,25 @@ export function AsideMenuMain() {
         />
       </RoleGuard>
 
-      <AsideMenuItem
-        to={`/meetings`}
-        title="Meetings"
-        bsTitle="Meetings"
-        customIcon={<i className="fa-solid fa-handshake"></i>}
-      />
+      <AsideMenuItemWithSubMain
+        to={`/agenda`}
+        title="Agenda"
+        bsTitle="Agenda"
+        customIcon={<i className="fa-solid fa-calendar"></i>}
+      >
+        <AsideMenuItem
+          to={`/agenda`}
+          title="Agenda"
+          bsTitle="Agenda"
+          hasBullet
+        />
+        <AsideMenuItem
+          to={`/meetings`}
+          title="Meetings"
+          bsTitle="Meetings"
+          hasBullet
+        />
+      </AsideMenuItemWithSubMain>
 
       <AsideMenuItem
         to={`/participants`}

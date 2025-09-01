@@ -9,7 +9,6 @@ const Footer: React.FC = () => {
       className="site-footer"
       style={{
         margin: "0 calc(-50vw + 50%)",
-
         padding: "4rem 0 2rem 0",
         color: "black",
       }}
@@ -26,70 +25,70 @@ const Footer: React.FC = () => {
           {/* About Section */}
           <Col lg={3} md={6} sm={12}>
             <div className="footer-section">
-              <h5 className="footer-title fw-bold mb-3">Web Summit Qatar</h5>
+              <h5 className="footer-title fw-bold mb-3">
+                African Startup Conference
+              </h5>
               <p className="footer-text">
-                Connecting a new generation of founders in the Middle East to
-                investors, journalists and innovators from around the world.
+                Connecting African entrepreneurs, startups, and innovators with
+                investors, partners, and industry leaders to build the future of
+                the African tech ecosystem.
               </p>
               <div className="footer-logo mt-3">
                 <img
                   src="/sponsors/a-venture.webp"
-                  alt="Algeria venture Logo"
+                  alt="Algeria Venture Logo"
                   style={{ height: "80px", width: "auto", opacity: 0.8 }}
                 />
               </div>
             </div>
           </Col>
 
-          {/* Quick Links */}
+          {/* Navigation Links */}
           <Col lg={2} md={6} sm={12}>
             <div className="footer-section">
-              <h5 className="footer-title fw-bold mb-3">Quick Links</h5>
+              <h5 className="footer-title fw-bold mb-3">Navigate</h5>
               <ul className="footer-links">
                 <li>
-                  <a href="#home">Home</a>
+                  <a href="/">Home</a>
                 </li>
                 <li>
-                  <a href="#about">About</a>
+                  <a href="/about/event">About</a>
                 </li>
                 <li>
-                  <a href="#speakers">Speakers</a>
+                  <a href="/about/speakers">Speakers</a>
                 </li>
                 <li>
-                  <a href="#schedule">Schedule</a>
+                  <a href="/about/program">Program</a>
                 </li>
                 <li>
-                  <a href="#sponsors">Sponsors</a>
+                  <a href="/blog">Blog</a>
                 </li>
                 <li>
-                  <a href="#gallery">Gallery</a>
+                  <a href="/contact">Contact</a>
                 </li>
               </ul>
             </div>
           </Col>
 
-          {/* Event Info */}
+          {/* Opportunities */}
           <Col lg={2} md={6} sm={12}>
             <div className="footer-section">
-              <h5 className="footer-title fw-bold mb-3">Event Info</h5>
+              <h5 className="footer-title fw-bold mb-3">Get Involved</h5>
               <ul className="footer-links">
                 <li>
-                  <a href="#registration">Registration</a>
+                  <a href="/partners/packages">Become a Sponsor</a>
                 </li>
                 <li>
-                  <a href="#venue">Venue</a>
+                  <a href="/partners/spaces">Exhibition Spaces</a>
                 </li>
                 <li>
-                  <a href="#accommodation">Hotels</a>
+                  <a href="/partners/startup-factory">Startup Factory</a>
                 </li>
                 <li>
-                  <a href="#travel">Travel</a>
+                  <a href="/about/startups">Exhibiting Startups</a>
                 </li>
                 <li>
-                  <a href="#faq">FAQ</a>
-                </li>
-                <li>
-                  <a href="#contact">Contact</a>
+                  <a href="/press">Press</a>
                 </li>
               </ul>
             </div>
@@ -102,21 +101,21 @@ const Footer: React.FC = () => {
               <div className="contact-info">
                 <div className="contact-item mb-2">
                   <i className="bi bi-geo-alt me-2"></i>
-                  <span>Doha, Qatar</span>
+                  <span>Algeria</span>
                 </div>
                 <div className="contact-item mb-2">
                   <i className="bi bi-calendar-event me-2"></i>
-                  <span>February 1-4, 2026</span>
+                  <span>Coming Soon 2025</span>
                 </div>
                 <div className="contact-item mb-2">
                   <i className="bi bi-envelope me-2"></i>
-                  <a href="mailto:info@websummitqatar.com">
-                    info@websummitqatar.com
+                  <a href="mailto:contact@africanstartupconference.org">
+                    contact@africanstartupconference.org
                   </a>
                 </div>
                 <div className="contact-item">
                   <i className="bi bi-telephone me-2"></i>
-                  <a href="tel:+97444123456">+974 4412 3456</a>
+                  <a href="tel:+213770737483">+213 (0) 770 737 483</a>
                 </div>
               </div>
             </div>
@@ -175,7 +174,7 @@ const Footer: React.FC = () => {
           <Col md={6}>
             <div className="copyright">
               <p className="mb-0 small">
-                &copy; {currentYear} Web Summit Qatar. All rights reserved.
+                &copy; {currentYear} Algeria Venture. All rights reserved.
               </p>
             </div>
           </Col>

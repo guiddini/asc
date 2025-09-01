@@ -1,4 +1,5 @@
-// src/utils/scheduleUtils.ts
+// utils/agendaUtils.ts
+import React from "react";
 
 export interface Day {
   date: string; // ISO string YYYY-MM-DD
@@ -14,7 +15,7 @@ export const getThreeDayRange = (): Day[] => {
     const date = new Date(today);
     date.setDate(today.getDate() + i);
     days.push({
-      date: date.toISOString().split("T")[0], // YYYY-MM-DD format
+      date: date.toISOString().split("T")[0],
       display: date.toLocaleDateString("en-US", {
         weekday: "long",
         month: "long",
@@ -27,7 +28,6 @@ export const getThreeDayRange = (): Day[] => {
   return days;
 };
 
-// Time slots with 30-minute intervals, each representing start-end time
 export interface TimeSlot {
   start: string;
   end: string;
@@ -84,10 +84,11 @@ export const locations: string[] = [
   "Innovation Lab",
 ];
 
-export const formatMeetingDateTime = (date: string, time: string): string => {
+// Format Meeting Date + Time nicely
+export const formatMeetingDateTime = (date: string, time: string) => {
   if (!date || !time) return "";
-  const meetingDate = new Date(`${date}T${time}`);
-  return meetingDate.toLocaleDateString("en-US", {
+  const dt = new Date(`${date}T${time}`);
+  return dt.toLocaleString("en-US", {
     weekday: "long",
     month: "long",
     day: "numeric",
@@ -96,24 +97,22 @@ export const formatMeetingDateTime = (date: string, time: string): string => {
   });
 };
 
-// Utility function to check if a time slot is available
+// Check if slot is available compared to booked slots
 export const isSlotAvailable = (
   slotStart: string,
   slotEnd: string,
   bookedSlots: Array<{ start_time: string; end_time: string }>
 ): boolean => {
-  const slotStartTime = new Date(slotStart).getTime();
-  const slotEndTime = new Date(slotEnd).getTime();
+  const slotStartMs = new Date(slotStart).getTime();
+  const slotEndMs = new Date(slotEnd).getTime();
 
   return !bookedSlots.some(({ start_time, end_time }) => {
-    const bookedStart = new Date(start_time).getTime();
-    const bookedEnd = new Date(end_time).getTime();
-
-    // Check for any overlap
+    const bookedStartMs = new Date(start_time).getTime();
+    const bookedEndMs = new Date(end_time).getTime();
     return (
-      (slotStartTime >= bookedStart && slotStartTime < bookedEnd) ||
-      (slotEndTime > bookedStart && slotEndTime <= bookedEnd) ||
-      (slotStartTime <= bookedStart && slotEndTime >= bookedEnd)
+      (slotStartMs >= bookedStartMs && slotStartMs < bookedEndMs) ||
+      (slotEndMs > bookedStartMs && slotEndMs <= bookedEndMs) ||
+      (slotStartMs <= bookedStartMs && slotEndMs >= bookedEndMs)
     );
   });
 };
