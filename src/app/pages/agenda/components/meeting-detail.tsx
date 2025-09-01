@@ -40,7 +40,7 @@ const MeetingDetail: React.FC<MeetingDetailProps> = ({
   return (
     <>
       <Modal.Header>
-        <Modal.Title>Meeting Details</Modal.Title>
+        <Modal.Title>Meeting Details :</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p>
