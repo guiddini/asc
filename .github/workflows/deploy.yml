@@ -1,4 +1,4 @@
-name: Deploy to cPanel
+name: Deploy to cPanel (SSH)
 
 on:
   workflow_dispatch:   # manual trigger
@@ -24,30 +24,13 @@ jobs:
       - name: Build React app
         run: npm run build
 
-      # Try FTPS first
-      - name: Deploy to cPanel via FTPS
-        id: ftps
-        continue-on-error: true
-        uses: SamKirkland/ftp-deploy-action@v4.3.6
+      - name: Deploy via SSH/rsync
+        uses: burnett01/rsync-deployments@5.2
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: dist/
-          server-dir: /asc.eventili.com/
-          security: loose
-          protocol: ftps
-          dangerous-clean-slate: false
-
-      # Fallback to plain FTP if FTPS failed
-      - name: Deploy to cPanel via FTP (fallback)
-        if: steps.ftps.outcome == 'failure'
-        uses: SamKirkland/ftp-deploy-action@v4.3.6
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: dist/
-          server-dir: /asc.eventili.com/
-          protocol: ftp
-          dangerous-clean-slate: false
+          switches: -avzr --delete --exclude='.htaccess'
+          path: dist/
+          remote_path: /home/eventili/asc.eventili.com/
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_port: 2908
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
