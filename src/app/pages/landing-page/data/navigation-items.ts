@@ -46,7 +46,7 @@ export const navigationItems: NavigationItem[] = [
   // },
   {
     label: "Blog",
-    href: "/blog",
+    href: "/blogs",
   },
   {
     label: "Press",
@@ -104,7 +104,7 @@ export const mobileNavItems: MobileNavigationItem[] = [
   // },
   {
     label: "Blog",
-    href: "/blog",
+    href: "/blogs",
   },
   {
     label: "Press",
