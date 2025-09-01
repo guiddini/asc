@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { TableComponent } from "../../components";
 import { useMutation } from "react-query";
 import { searchBlogs } from "../../apis";
