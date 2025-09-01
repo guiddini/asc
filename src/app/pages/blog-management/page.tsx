@@ -6,8 +6,10 @@ import moment from "moment";
 import getMediaUrl from "../../helpers/getMediaUrl";
 import { Blog } from "./types/blog";
 import BlogActionColumn from "./components/blog-action-column";
+import { useNavigate } from "react-router-dom";
 
 const BlogsManagementPage = () => {
+  const navigate = useNavigate();
   const searchMutation = useMutation({
     mutationFn: searchBlogs,
     mutationKey: ["blogs"],
@@ -84,7 +86,7 @@ const BlogsManagementPage = () => {
         columns={columns as any}
         data={data}
         placeholder="blogs"
-        onAddClick={() => {}}
+        onAddClick={() => navigate("/blogs-management/create")}
         showSearch={true}
         searchKeys={["title", "slug"]}
         showCreate
