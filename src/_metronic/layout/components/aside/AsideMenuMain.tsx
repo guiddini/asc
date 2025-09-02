@@ -8,6 +8,7 @@ import {
   canViewCompany,
 } from "../../../../app/features/userSlice";
 import RoleGuard from "../../../../app/components/role-guard";
+import { adminRoles } from "../../../../app/routing/PrivateRoutes";
 
 const isAdmin = (permissions) => {
   const adminPermissions = [
@@ -54,7 +55,7 @@ export function AsideMenuMain() {
         bsTitle="Accueil"
         className="py-2"
       />
-      <RoleGuard allowedRoles={["admin", "super_admin", "staff"]}>
+      <RoleGuard allowedRoles={adminRoles}>
         <AsideMenuItem
           to="/blogs-management"
           title="Blogs"
@@ -264,6 +265,15 @@ export function AsideMenuMain() {
               />
             </>
           )}
+
+          <AsideMenuItem
+            to="/conferences-management"
+            title="Conferences"
+            hasBullet={true}
+            bsTitle="Conferences"
+            customIcon={<i className="fa-solid fa-calendar-days"></i>}
+          />
+
           {/* <Can I="list" a="usersadmin">
           </Can> */}
           <Can I="list" a="guests">

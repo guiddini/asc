@@ -59,6 +59,9 @@ import UpdateBlogPage from "../pages/blog-management/update-blog/page";
 import RoleGuard from "../components/role-guard";
 import MeetingsCalendar from "../pages/meetings/page";
 import AgendaPage from "../pages/agenda/page";
+import ConferencesPage from "../pages/conference/page";
+
+export const adminRoles = ["admin", "super_admin", "staff"];
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import("../pages/profile/ProfilePage"));
@@ -117,10 +120,7 @@ const PrivateRoutes = () => {
             <Route
               path="/blogs-management"
               element={
-                <RoleGuard
-                  allowedRoles={["admin", "super_admin", "staff"]}
-                  showError
-                >
+                <RoleGuard allowedRoles={adminRoles} showError>
                   <SuspensedView>
                     <BlogsManagementPage />
                   </SuspensedView>
@@ -131,10 +131,7 @@ const PrivateRoutes = () => {
             <Route
               path="/blogs-management/create"
               element={
-                <RoleGuard
-                  allowedRoles={["admin", "super_admin", "staff"]}
-                  showError
-                >
+                <RoleGuard allowedRoles={adminRoles} showError>
                   <SuspensedView>
                     <CreateBlogPage />
                   </SuspensedView>
@@ -145,12 +142,19 @@ const PrivateRoutes = () => {
             <Route
               path="/blogs-management/update/:id"
               element={
-                <RoleGuard
-                  allowedRoles={["admin", "super_admin", "staff"]}
-                  showError
-                >
+                <RoleGuard allowedRoles={adminRoles} showError>
                   <SuspensedView>
                     <UpdateBlogPage />
+                  </SuspensedView>
+                </RoleGuard>
+              }
+            />
+            <Route
+              path="/conferences-management"
+              element={
+                <RoleGuard allowedRoles={adminRoles} showError>
+                  <SuspensedView>
+                    <ConferencesPage />
                   </SuspensedView>
                 </RoleGuard>
               }
