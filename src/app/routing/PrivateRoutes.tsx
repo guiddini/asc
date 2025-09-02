@@ -60,6 +60,7 @@ import RoleGuard from "../components/role-guard";
 import MeetingsCalendar from "../pages/meetings/page";
 import AgendaPage from "../pages/agenda/page";
 import ConferencesPage from "../pages/conference/page";
+import ConferenceDetailPage from "../pages/conference/detail/page";
 
 export const adminRoles = ["admin", "super_admin", "staff"];
 
@@ -155,6 +156,16 @@ const PrivateRoutes = () => {
                 <RoleGuard allowedRoles={adminRoles} showError>
                   <SuspensedView>
                     <ConferencesPage />
+                  </SuspensedView>
+                </RoleGuard>
+              }
+            />
+            <Route
+              path="/conferences-management/:id"
+              element={
+                <RoleGuard allowedRoles={adminRoles} showError>
+                  <SuspensedView>
+                    <ConferenceDetailPage />
                   </SuspensedView>
                 </RoleGuard>
               }

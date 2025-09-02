@@ -32,7 +32,9 @@ export const updateMeeting = async (data: {
 };
 
 export const deleteMeeting = async (id: string) => {
-  const response = await axiosInstance.post(`/meeting/delete/${id}`);
+  const response = await axiosInstance.post(`/meeting/delete`, {
+    meeting_id: id,
+  });
   return response.data;
 };
 

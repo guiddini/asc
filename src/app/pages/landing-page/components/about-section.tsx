@@ -3,65 +3,93 @@ import { Container, Row, Col } from "react-bootstrap";
 
 const AboutSection: React.FC = () => {
   return (
-    <section className="about-section">
-      {/* Patronage Section */}
-      <div className="patronage-section py-10 mb-5">
-        <Container>
+    <section className="about-section pt-5 position-relative">
+      <div className="patronage-section py-8 mb-2 w-100">
+        <Container
+          style={{
+            paddingTop: "5rem",
+            paddingBottom: "5rem",
+          }}
+        >
           <Row className="justify-content-center text-center">
             <Col lg={8}>
               <div className="patronage-image-container mb-4">
                 <img
                   src="/media/startups-minister.png"
-                  alt="Under the high patronage of the President of the Republic"
+                  alt="Under the High Patronage"
                   className="patronage-image img-fluid"
-                  width="200"
+                  width={180}
+                  height={100}
                 />
               </div>
-              <h2 className="patronage-title display-4 fw-bold mb-3">
-                Under the high patronage of the President of the Republic
+              <h2 className="patronage-title display-5 fw-bold mb-3">
+                Under the High Patronage of the President of the Republic
               </h2>
               <p className="patronage-subtitle lead text-muted">
-                Get ready for 3 full days of enthralling conferences,
-                live-action workshops, matched concierge networking and business
-                partnerships.
+                Experience 3 powerful days of global networking, innovation
+                showcases, and future-shaping workshops. Entrepreneurs,
+                investors, and thinkers will gather to drive opportunity and
+                impact across Africa.
               </p>
             </Col>
           </Row>
         </Container>
       </div>
 
-      {/* Original About Section */}
-      <Container>
-        <Row className="align-items-center g-5">
-          {/* Right Column - Image */}
+      <Container
+        style={{
+          paddingTop: "5rem",
+          paddingBottom: "5rem",
+        }}
+      >
+        <Row className="align-items-center g-5 flex-column-reverse flex-lg-row">
+          {/* Left Content Column */}
+          <Col lg={6} className="mb-4 mb-lg-0">
+            {/* If you have a neutral event logo, put it here */}
+            <img
+              src="media/eventili/logos/logo.svg"
+              alt="Event Logo"
+              style={{ width: 70, marginBottom: 18, display: "block" }}
+              className="d-none d-md-block"
+            />
+            <div className="about-content">
+              <p className="about-description">
+                L'African Startup Conference est le rendez-vous panafricain
+                incontournable de l’innovation et de l’entrepreneuriat. Pour sa
+                4ème édition, du 6 au 8 décembre 2025 à Alger, elle met à
+                l’honneur les “African Champions” : startups en forte
+                croissance, investisseurs, décideurs publics et diaspora, réunis
+                pour bâtir un écosystème technologique compétitif et souverain.
+              </p>
+              {/* Endorsement/Organization Banner */}
+              <div className="ministry-endorsement d-flex align-items-center gap-3 mt-4 rounded-3 bg-light p-3 shadow-sm">
+                <img
+                  src="/media/startups-minister.png"
+                  alt="Ministry logo"
+                  height={48}
+                  className="ministry-logo"
+                  style={{ marginRight: 12 }}
+                />
+                <div className="endorsement-text text-muted">
+                  <p>
+                    Organisé par le Ministere de l'Economie de la Connaissance,
+                    <br />
+                    des Startups & des Micro-Entreprises & ALGERIA VENTURE
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Col>
+
+          {/* Right Image Column */}
           <Col lg={6}>
             <div className="about-image-container">
               <img
                 src="/media/eventili/cover.webp"
                 alt="About Event"
                 className="about-image img-fluid"
+                loading="lazy"
               />
-            </div>
-          </Col>
-
-          {/* Left Column - Content */}
-          <Col lg={6}>
-            <div className="about-content">
-              <h2 className="about-title display-5 fw-bold mb-4">
-                Why will 30,000+ people gather in Algiers?
-              </h2>
-
-              <p className="about-description">
-                The African Startup Conference connects a new generation of
-                founders across Africa with investors, policymakers,
-                journalists, and global partners. We're proud of our track
-                record in bringing ecosystems together and creating
-                opportunities for collaboration.
-                <br />
-                African Startup Conference Connecting a new generation of
-                founders in Africa with investors, policymakers, journalists,
-                and innovators from around the world.
-              </p>
             </div>
           </Col>
         </Row>
