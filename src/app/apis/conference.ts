@@ -1,5 +1,4 @@
 import {
-  Conference,
   ConferencesResponse,
   CreateConferenceRequest,
   ShowConferenceResponse,
@@ -10,6 +9,12 @@ export const getAllConference = async (): Promise<ConferencesResponse> => {
   const res = await axiosInstance.get("/conference/index");
   return res?.data;
 };
+
+export const getAllPublishedConferences =
+  async (): Promise<ConferencesResponse> => {
+    const res = await axiosInstance.get("/conferences/published");
+    return res.data;
+  };
 
 export const showConferenceById = async (
   conference_id: string

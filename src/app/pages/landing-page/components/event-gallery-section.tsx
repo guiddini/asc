@@ -66,9 +66,8 @@ const EventGallerySection: React.FC = () => {
     <section
       className="event-gallery-section"
       style={{
-        width: "100%",
+        width: "100vw",
         margin: "0 calc(-50vw + 50%)",
-
         padding: "5rem 0",
         backgroundColor: "var(--bs-light)",
       }}

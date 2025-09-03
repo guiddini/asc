@@ -68,9 +68,8 @@ const SideEventsSection: React.FC = () => {
     <section
       className="side-events-section"
       style={{
-        width: "100%",
+        width: "100vw",
         margin: "0 calc(-50vw + 50%)",
-
         padding: "5rem 0",
         backgroundColor: "var(--bs-secondary)",
       }}

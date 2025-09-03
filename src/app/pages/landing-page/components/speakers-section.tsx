@@ -1,43 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import SpeakerList from "./speaker-list";
-import { SPEAKERS } from "../data/speakers";
+import { useQuery } from "react-query";
+import { getAllSpeakers, SpeakersResponse } from "../../../apis/speaker";
 
 const SpeakerSection: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState("");
-  const [showAll, setShowAll] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  // Fixed values (no props)
-  const title = "Meet Our Speakers";
-  const subtitle =
-    "Industry experts and thought leaders sharing their insights";
-  const showFilters = true;
-  const maxDisplay = 8;
-  const fullWidth = true;
+  // Fetch speakers using React Query with currentPage param
+  const { data, isLoading, isError } = useQuery<SpeakersResponse>(
+    ["speakers", currentPage],
+    () => getAllSpeakers(currentPage),
+    {
+      keepPreviousData: true,
+      staleTime: 5000,
+    }
+  );
 
-  // Filter speakers based on search and country
-  const filteredSpeakers = SPEAKERS.filter((speaker) => {
-    const matchesSearch =
-      speaker.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      speaker.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      speaker.affiliation.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      speaker.topic.toLowerCase().includes(searchTerm.toLowerCase());
+  // Speakers from API response or empty array if loading
+  const speakers = data?.data || [];
 
-    const matchesCountry =
-      !selectedCountry || speaker.country === selectedCountry;
-
-    return matchesSearch && matchesCountry;
+  // Filter speakers based on search term locally on current page
+  const filteredSpeakers = speakers.filter((speaker) => {
+    const lowerSearch = searchTerm.toLowerCase();
+    const fullName = `${speaker.fname} ${speaker.lname}`.toLowerCase();
+    return fullName.includes(lowerSearch);
   });
 
-  // Apply maxDisplay limit if specified and showAll is false
-  const displayedSpeakers =
-    maxDisplay && !showAll
-      ? filteredSpeakers.slice(0, maxDisplay)
-      : filteredSpeakers;
+  const totalPages = data?.last_page || 1;
+  const safeCurrentPage = Math.min(Math.max(currentPage, 1), totalPages);
 
-  // Get unique countries for filter
-  const countries = Array.from(new Set(SPEAKERS.map((s) => s.country))).sort();
+  // Handlers for pagination buttons
+  const goToPrevPage = () => setCurrentPage((p) => Math.max(p - 1, 1));
+  const goToNextPage = () => setCurrentPage((p) => Math.min(p + 1, totalPages));
+
+  // Reset to page 1 when search term changes (optional: can keep currentPage)
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
 
   return (
     <section
@@ -49,107 +50,91 @@ const SpeakerSection: React.FC = () => {
       }}
     >
       <Container
-        style={{
-          maxWidth: "1400px",
-          margin: "0 auto",
-          padding: "0 15px",
-        }}
+        style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 15px" }}
       >
         {/* Section Header */}
         <Row className="mb-5 w-100">
           <Col lg={8} className="mx-auto text-center">
-            <h2 className="display-5 fw-bold text-dark mb-3">{title}</h2>
-            <p className="lead text-muted mb-0">{subtitle}</p>
+            <h2 className="display-5 fw-bold text-dark mb-3">
+              Meet Our Speakers
+            </h2>
+            <p className="lead text-muted mb-0">
+              Industry experts and thought leaders sharing their insights
+            </p>
           </Col>
         </Row>
-
-        {/* Filters */}
+        {/* Search Filter */}
         <Row className="mb-4 w-100">
           <Col lg={8} className="mx-auto">
-            <div className="speaker-filters">
-              <Row className="g-3">
-                <Col md={8}>
-                  <Form.Control
-                    type="text"
-                    placeholder="Search speakers by name, title, company, or topic..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="form-control-lg"
-                  />
-                </Col>
-                <Col md={4}>
-                  <Form.Select
-                    value={selectedCountry}
-                    onChange={(e) => setSelectedCountry(e.target.value)}
-                    className="form-select-lg"
-                  >
-                    <option value="">All Countries</option>
-                    {countries.map((country) => (
-                      <option key={country} value={country}>
-                        {country}
-                      </option>
-                    ))}
-                  </Form.Select>
-                </Col>
-              </Row>
+            <Form.Control
+              type="text"
+              placeholder="Search speakers by name..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="form-control-lg"
+              disabled={isLoading}
+            />
+          </Col>
+        </Row>
+        {/* Results Info & Pagination */}
+        <Row className="mb-4 w-100">
+          <Col
+            lg={8}
+            className="mx-auto d-flex justify-content-between align-items-center"
+          >
+            <p className="text-muted mb-0">
+              Showing {filteredSpeakers.length} of {speakers.length} speakers on
+              page {safeCurrentPage} of {totalPages}
+            </p>
+            <div>
+              <Button
+                variant="outline-primary"
+                onClick={goToPrevPage}
+                disabled={safeCurrentPage <= 1 || isLoading}
+                className="me-2"
+              >
+                Previous
+              </Button>
+              <Button
+                variant="outline-primary"
+                onClick={goToNextPage}
+                disabled={safeCurrentPage >= totalPages || isLoading}
+              >
+                Next
+              </Button>
             </div>
           </Col>
         </Row>
-
-        {/* Results Info */}
-        <Row className="mb-4">
-          <Col className="text-center">
-            {" "}
-            {/* Center the results info */}
-            <div className="d-flex justify-content-between align-items-center">
-              <p className="text-muted mb-0">
-                Showing {displayedSpeakers.length} of {filteredSpeakers.length}{" "}
-                speakers
-              </p>
-              {maxDisplay && filteredSpeakers.length > maxDisplay && (
-                <Button
-                  variant="outline-primary"
-                  onClick={() => setShowAll(!showAll)}
-                >
-                  {showAll
-                    ? "Show Less"
-                    : `Show All ${filteredSpeakers.length} Speakers`}
-                </Button>
-              )}
-            </div>
-          </Col>
-        </Row>
-
-        {/* Centered Speaker List Container */}
-        <div className="d-flex justify-content-center">
-          <div style={{ maxWidth: "1200px", width: "100%" }}>
-            <SpeakerList speakers={displayedSpeakers} />
-          </div>
-        </div>
-
-        {/* No Results */}
-        {filteredSpeakers.length === 0 && (
-          <Row className="text-center py-5">
-            <Col>
-              <div className="no-results">
+        {/* Speaker List */}
+        <Row
+          className="justify-content-center w-100"
+          xs={12}
+          sm={12}
+          md={12}
+          lg={12}
+        >
+          <Col lg={8}>
+            {isLoading ? (
+              <p>Loading speakers...</p>
+            ) : isError ? (
+              <p>Error loading speakers.</p>
+            ) : filteredSpeakers.length > 0 ? (
+              <SpeakerList speakers={filteredSpeakers} />
+            ) : (
+              <div className="no-results text-center py-5">
                 <i className="bi bi-search display-1 text-muted mb-3"></i>
                 <h4 className="text-muted">No speakers found</h4>
-                <p className="text-muted">
-                  Try adjusting your search criteria or clearing the filters
-                </p>
+                <p className="text-muted">Try adjusting your search criteria</p>
                 <Button
                   variant="outline-primary"
-                  onClick={() => {
-                    setSearchTerm("");
-                    setSelectedCountry("");
-                  }}
+                  onClick={() => setSearchTerm("")}
                 >
-                  Clear Filters
+                  Clear Search
                 </Button>
               </div>
-            </Col>
-          </Row>
-        )}
+            )}
+          </Col>
+        </Row>
       </Container>
     </section>
   );

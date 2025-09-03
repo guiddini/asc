@@ -42,10 +42,11 @@ const AppRoutes: FC = () => {
             <Route path="/" element={<LandingPage />} />
             <Route path="/blogs" element={<BlogsPage />} />
             <Route path="/blogs/:slug" element={<BLogDetailsPage />} />
+            <Route path="/speakers/:id" element={<SpeakerDetail />} />
           </Route>
 
           {/* Other routes */}
-          <Route path="/speakers/:slug" element={<SpeakerDetail />} />
+
           <Route path="/profiles/*" element={<ProfileRoutes />} />
           <Route path="error/*" element={<ErrorsPage />} />
           <Route path="logout" element={<Logout />} />

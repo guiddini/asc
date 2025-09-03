@@ -6,6 +6,7 @@ import SponsorsSection from "./components/sponsors-section";
 import EventGallerySection from "./components/event-gallery-section";
 import SideEventsSection from "./components/side-events-section";
 import EventStatsSection from "./components/event-stats-section";
+import ConferenceSection from "./components/conference-section";
 
 const LandingPage: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ const LandingPage: React.FC = () => {
       <HeroSection />
       <AboutSection />
       <EventStatsSection />
+      <ConferenceSection />
       <SpeakerSection />
       <SponsorsSection />
       <EventGallerySection />

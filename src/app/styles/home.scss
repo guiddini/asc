@@ -1633,3 +1633,106 @@
     }
   }
 }
+
+//
+
+#conference-section {
+  background: var(--bs-light);
+  border-radius: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+[id^="conference-card-"] {
+  cursor: pointer;
+  transition: box-shadow 0.16s cubic-bezier(0.25, 0.8, 0.25, 1),
+    transform 0.14s cubic-bezier(0.25, 0.8, 0.25, 1);
+  background: var(--bs-white);
+  border: none;
+  box-shadow: 0 2px 20px rgba(var(--bs-dark-rgb), 0.04);
+
+  // Maintain equal height for all cards inside the grid
+  min-height: 300px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &:hover,
+  &:focus {
+    box-shadow: 0 8px 24px rgba(var(--bs-primary-rgb), 0.16),
+      0 2px 20px rgba(var(--bs-dark-rgb), 0.1);
+    transform: translateY(-2px) scale(1.02);
+    outline: none;
+  }
+}
+
+[id^="date-label-"] {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--bs-danger);
+}
+
+[id^="time-label-"] {
+  font-size: 0.96rem;
+}
+
+[id^="conf-title-"] {
+  font-size: 1.22rem;
+  color: var(--bs-dark);
+  line-height: 1.37;
+  margin-bottom: 6px;
+}
+
+[id^="conf-desc-"] {
+  color: var(--bs-secondary);
+  font-size: 1rem;
+}
+
+[id^="speaker-avatar-"] {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--bs-white);
+  box-shadow: 0 2px 8px rgba(var(--bs-dark-rgb), 0.09);
+  object-fit: cover;
+}
+
+[id^="speaker-name-"] {
+  color: var(--bs-dark);
+  font-size: 0.98rem;
+  font-weight: 600;
+  margin-left: 2px;
+}
+
+[id^="speaker-org-"] {
+  font-size: 0.9rem;
+  color: var(--bs-muted);
+  margin-left: 2px;
+}
+
+[id^="additional-speakers-"] {
+  background: var(--bs-light);
+  border-radius: 1.2rem;
+  padding: 5px 14px;
+  font-size: 0.94rem;
+}
+
+#conference-section-spinner,
+#conference-section-error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 180px;
+}
+
+// Responsive tweaks for grid and card spacing
+@media (max-width: 1200px) {
+  [id^="conference-card-"] {
+    min-height: 320px;
+  }
+}
+@media (max-width: 768px) {
+  [id^="conference-card-"] {
+    min-height: 340px;
+  }
+}
