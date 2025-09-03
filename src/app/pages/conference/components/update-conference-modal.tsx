@@ -18,7 +18,10 @@ interface UpdateConference {
 
 const schema = yup.object().shape({
   title: yup.string().required("Le titre est obligatoire"),
-  description: yup.string().required("La description est obligatoire"),
+  description: yup
+    .string()
+    .required("La description est obligatoire")
+    .max(250, "La description ne peut pas dépasser 250 caractères"),
   start_time: yup.string().required("L'heure de début est obligatoire"),
   end_time: yup
     .string()

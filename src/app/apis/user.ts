@@ -4,6 +4,43 @@ import { getAuth } from "../modules/auth";
 
 const userAuth = getAuth();
 
+export type UsersResponse = {
+  current_page: number;
+  data: {
+    id: string;
+    fname: string;
+    lname: string;
+    email: string;
+    avatar: string | null;
+    can_create_company: number;
+    email_verified_at: string | null;
+    created_at: string;
+    updated_at: string;
+    ticket_count: number;
+    user_has_ticket_id: string | null;
+    pivot: {
+      model_type: string;
+      role_id: number;
+      model_id: string;
+    };
+  }[];
+  first_page_url: string;
+  from: number;
+  last_page: number;
+  last_page_url: string;
+  links: {
+    url: string | null;
+    label: string;
+    active: boolean;
+  }[];
+  next_page_url: string | null;
+  path: string;
+  per_page: number;
+  prev_page_url: string | null;
+  to: number;
+  total: number;
+};
+
 const getAllUsersApi = async ({
   is_registered,
   nameFilter,
@@ -153,4 +190,15 @@ export {
   checkUserEmailExists,
   updateUserFnameApi,
   updateUserLogo,
+};
+
+export const getUsersPerRole = async (
+  roleID: string,
+  page = 1,
+  search = ""
+): Promise<UsersResponse> => {
+  const response = await axiosInstance.get(`/users/${roleID}`, {
+    params: { page, search },
+  });
+  return response?.data;
 };

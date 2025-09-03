@@ -1,103 +1,76 @@
 import React, { useState } from "react";
-import { Dropdown, Modal, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { useMutation, useQueryClient } from "react-query";
-import toast from "react-hot-toast";
+import { Dropdown } from "react-bootstrap";
 import { Conference } from "../../../types/conference";
-import { deleteConference } from "../../../apis/conference";
+import DeleteConfirmationModal from "./delete-conference-modal";
+import CancelConfirmationModal from "./cancel-conference-modal";
+import { Link } from "react-router-dom";
 
 interface ConferenceActionColumnProps {
   conference: Conference;
   onEdit: () => void;
   onDeleted: () => void;
+  showView?: boolean;
 }
 
 const ConferenceActionColumn: React.FC<ConferenceActionColumnProps> = ({
   conference,
   onEdit,
   onDeleted,
+  showView = false,
 }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const queryClient = useQueryClient();
-
-  const { mutate: deleteMutate, isLoading } = useMutation(deleteConference, {
-    onSuccess: () => {
-      toast.success("Conférence supprimée avec succès");
-      queryClient.invalidateQueries({ queryKey: ["conferences"] });
-      onDeleted();
-      setOpenDeleteModal(false);
-    },
-    onError: () => {
-      toast.error("Erreur lors de la suppression de la conférence.");
-    },
-  });
+  const [openCancelModal, setOpenCancelModal] = useState(false);
 
   return (
     <>
       <Dropdown>
-        <Dropdown.Toggle
-          variant="transparent"
-          id={`dropdown-${conference.id}`}
-          className="btn btn-icon btn-color-gray-500 btn-active-color-primary justify-content-end"
-        >
-          <i className="bi bi-three-dots fs-4" />
-        </Dropdown.Toggle>
+        <Dropdown.Toggle id="dropdown-basic">Actions</Dropdown.Toggle>
 
         <Dropdown.Menu>
-          <Dropdown.Item
-            as={Link}
-            to={`/conferences/${conference.id}`}
-            className="d-flex align-items-center"
-          >
-            <i className="bi bi-eye text-success me-2" />
-            Voir
+          {showView && (
+            <Dropdown.Item
+              as={Link}
+              to={`/conferences-management/${conference.id}`}
+              className="d-flex align-items-center"
+            >
+              Voir
+            </Dropdown.Item>
+          )}
+          <Dropdown.Item onClick={onEdit} className="d-flex align-items-center">
+            Modifier
           </Dropdown.Item>
           <Dropdown.Item
-            onClick={() => onEdit()}
+            onClick={() => setOpenCancelModal(true)}
             className="d-flex align-items-center"
           >
-            <i className="bi bi-pencil text-primary me-2" />
-            Modifier
+            Annuler la conférence
           </Dropdown.Item>
           <Dropdown.Item
             onClick={() => setOpenDeleteModal(true)}
             className="d-flex align-items-center"
           >
-            <i className="bi bi-trash text-danger me-2" />
             Supprimer
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
 
-      <Modal
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmationModal
         show={openDeleteModal}
         onHide={() => setOpenDeleteModal(false)}
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Confirmer la suppression</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          Êtes-vous sûr de vouloir supprimer la conférence{" "}
-          <strong>{conference.title}</strong> ?
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="secondary"
-            onClick={() => setOpenDeleteModal(false)}
-            disabled={isLoading}
-          >
-            Annuler
-          </Button>
-          <Button
-            variant="danger"
-            onClick={() => deleteMutate(conference.id)}
-            disabled={isLoading}
-          >
-            {isLoading ? "Suppression..." : "Supprimer"}
-          </Button>
-        </Modal.Footer>
-      </Modal>
+        conferenceId={conference.id}
+        conferenceTitle={conference.title}
+        onDeleted={onDeleted}
+      />
+
+      {/* Cancel Confirmation Modal */}
+      <CancelConfirmationModal
+        show={openCancelModal}
+        onHide={() => setOpenCancelModal(false)}
+        conferenceId={conference.id}
+        conferenceTitle={conference.title}
+        onDeleted={onDeleted}
+      />
     </>
   );
 };

@@ -44,7 +44,12 @@ export const updateConference = async (
 };
 
 export const deleteConference = async (conference_id: string) => {
-  const res = await axiosInstance.delete(`/conference/delete/${conference_id}`);
+  const res = await axiosInstance.post(`/conference/delete/${conference_id}`);
+  return res.data;
+};
+
+export const cancelConference = async (conference_id: string) => {
+  const res = await axiosInstance.post(`/conference/cancel/${conference_id}`);
   return res.data;
 };
 
@@ -70,24 +75,16 @@ export const removeSpeakerFromConference = async (
   return res.data;
 };
 
-export const addAttendeeToConference = async (
-  conference_id: string,
-  user_id: string
-) => {
+export const joinConference = async (conference_id: string) => {
   const res = await axiosInstance.post(
-    `/conference/add-attendee/${conference_id}`,
-    { user_id }
+    `/conference/add-attendee/${conference_id}`
   );
   return res.data;
 };
 
-export const removeAttendeeFromConference = async (
-  conference_id: string,
-  user_id: string
-) => {
+export const leaveConference = async (conference_id: string) => {
   const res = await axiosInstance.post(
-    `/conference/remove-attendee/${conference_id}`,
-    { user_id }
+    `/conference/remove-attendee/${conference_id}`
   );
   return res.data;
 };

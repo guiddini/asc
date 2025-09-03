@@ -76,6 +76,7 @@ const ConferencesManagementPage = () => {
       name: "Actions",
       selector: (row: Conference) => (
         <ConferenceActionColumn
+          showView={true}
           conference={row}
           onEdit={() => openUpdateModal(row.id)}
           onDeleted={() => conferencesMutation.mutate()}

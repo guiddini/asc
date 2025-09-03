@@ -6,10 +6,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { createConference } from "../../../apis/conference";
 import toast from "react-hot-toast";
+import { Conference } from "../../../types/conference";
+import { useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
   title: yup.string().required("Le titre est obligatoire"),
-  description: yup.string().required("La description est obligatoire"),
+  description: yup
+    .string()
+    .required("La description est obligatoire")
+    .max(250, "La description ne peut pas dépasser 250 caractères"),
   start_time: yup.string().required("L'heure de début est obligatoire"),
   end_time: yup
     .string()
@@ -42,11 +47,13 @@ interface Props {
 
 const CreateConferenceModal: React.FC<Props> = ({ show, onClose }) => {
   const queryClient = useQueryClient();
+  const navigation = useNavigate();
   const mutation = useMutation(createConference, {
-    onSuccess() {
+    onSuccess(data: Conference) {
       queryClient.invalidateQueries("conferences");
       toast.success("Conférence créée avec succès");
       onClose();
+      navigation(`/conferences-management/${data?.id}`);
     },
     onError() {
       toast.error("Échec de la création de la conférence");

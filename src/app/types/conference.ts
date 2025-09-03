@@ -1,10 +1,12 @@
 export type ConferenceSpeaker = {
+  id: string;
   fname: string;
   lname: string;
   avatar: string;
 };
 
 export type ConferenceAttendee = {
+  id: string;
   fname: string;
   lname: string;
   avatar: string;
