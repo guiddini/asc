@@ -38,10 +38,10 @@ const MeetingList: React.FC<MeetingListProps> = ({
         />
         <h6>
           {viewType === "meetings"
-            ? "No meetings scheduled for this day"
-            : "No meeting requests for this day"}
+            ? "Aucune réunion prévue pour cette journée"
+            : "Aucune demande de réunion pour cette journée"}
         </h6>
-        <p className="mb-0">Your schedule is clear!</p>
+        <p className="mb-0">Votre emploi du temps est libre !</p>
       </div>
     );
   }
@@ -84,7 +84,7 @@ const MeetingList: React.FC<MeetingListProps> = ({
                 {formatTimeRange(meeting.start_time, meeting.end_time)}
                 {viewType === "requests" && (
                   <span className="ms-2">
-                    • Request from user {meeting.requester_id}
+                    • Demande de l'utilisateur {meeting.requester_id}
                   </span>
                 )}
               </small>

@@ -3,7 +3,7 @@ import React from "react";
 
 export interface Day {
   date: string; // ISO string YYYY-MM-DD
-  display: string; // e.g. "Sunday, August 31"
+  display: string; // e.g. "dimanche 31 août"
   fullDate: Date;
 }
 
@@ -16,7 +16,7 @@ export const getThreeDayRange = (): Day[] => {
     date.setDate(today.getDate() + i);
     days.push({
       date: date.toISOString().split("T")[0],
-      display: date.toLocaleDateString("en-US", {
+      display: date.toLocaleDateString("fr-FR", {
         weekday: "long",
         month: "long",
         day: "numeric",
@@ -70,25 +70,25 @@ export const timeSlots: TimeSlot[] = [
 ];
 
 export const locations: string[] = [
-  "Conference Room A",
-  "Conference Room B",
-  "Meeting Room 1",
-  "Meeting Room 2",
-  "Boardroom",
-  "Executive Lounge",
-  "Co-working Space",
-  "Private Office",
-  "Virtual Meeting",
-  "Coffee Shop - Ground Floor",
-  "Reception Area",
-  "Innovation Lab",
+  "Salle de conférence A",
+  "Salle de conférence B",
+  "Salle de réunion 1",
+  "Salle de réunion 2",
+  "Salle du conseil",
+  "Salon exécutif",
+  "Espace de coworking",
+  "Bureau privé",
+  "Réunion virtuelle",
+  "Café - Rez-de-chaussée",
+  "Zone de réception",
+  "Laboratoire d'innovation",
 ];
 
 // Format Meeting Date + Time nicely
 export const formatMeetingDateTime = (date: string, time: string) => {
   if (!date || !time) return "";
   const dt = new Date(`${date}T${time}`);
-  return dt.toLocaleString("en-US", {
+  return dt.toLocaleString("fr-FR", {
     weekday: "long",
     month: "long",
     day: "numeric",

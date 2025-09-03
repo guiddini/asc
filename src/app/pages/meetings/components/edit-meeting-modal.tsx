@@ -60,7 +60,7 @@ const EditMeetingModal: React.FC<EditMeetingModalProps> = ({
       <Modal.Header closeButton>
         <Modal.Title>
           <i className="bi bi-pencil me-2 text-primary" />
-          Edit Meeting
+          Modifier la réunion
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -70,7 +70,7 @@ const EditMeetingModal: React.FC<EditMeetingModalProps> = ({
               <Form.Group className="mb-3">
                 <Form.Label>
                   <i className="bi bi-chat-text me-1" />
-                  Meeting Topic
+                  Sujet de la réunion
                 </Form.Label>
                 <Form.Control
                   as="textarea"
@@ -78,7 +78,7 @@ const EditMeetingModal: React.FC<EditMeetingModalProps> = ({
                   name="topic"
                   value={formData.topic}
                   onChange={handleChange}
-                  placeholder="Enter meeting topic"
+                  placeholder="Entrez le sujet de la réunion"
                   required
                 />
               </Form.Group>
@@ -87,7 +87,7 @@ const EditMeetingModal: React.FC<EditMeetingModalProps> = ({
               <Form.Group className="mb-3">
                 <Form.Label>
                   <i className="bi bi-calendar me-1" />
-                  Start Time
+                  Heure de début
                 </Form.Label>
                 <Form.Control
                   type="datetime-local"
@@ -102,7 +102,7 @@ const EditMeetingModal: React.FC<EditMeetingModalProps> = ({
               <Form.Group className="mb-3">
                 <Form.Label>
                   <i className="bi bi-clock me-1" />
-                  End Time
+                  Heure de fin
                 </Form.Label>
                 <Form.Control
                   type="datetime-local"
@@ -117,7 +117,7 @@ const EditMeetingModal: React.FC<EditMeetingModalProps> = ({
               <Form.Group className="mb-3">
                 <Form.Label>
                   <i className="bi bi-geo-alt me-1" />
-                  Location
+                  Lieu
                 </Form.Label>
                 <Form.Select
                   name="location"
@@ -125,7 +125,7 @@ const EditMeetingModal: React.FC<EditMeetingModalProps> = ({
                   onChange={handleChange}
                   required
                 >
-                  <option value="">Choose a location...</option>
+                  <option value="">Choisissez un lieu...</option>
                   {locations.map((location) => (
                     <option key={location} value={location}>
                       {location}
@@ -139,7 +139,7 @@ const EditMeetingModal: React.FC<EditMeetingModalProps> = ({
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
-          Cancel
+          Annuler
         </Button>
         <Button variant="primary" onClick={handleSubmit} disabled={loading}>
           {loading ? (
@@ -148,12 +148,12 @@ const EditMeetingModal: React.FC<EditMeetingModalProps> = ({
                 className="spinner-border spinner-border-sm me-2"
                 role="status"
               />
-              Updating...
+              Mise à jour...
             </>
           ) : (
             <>
               <i className="bi bi-check-circle me-1" />
-              Update Meeting
+              Mettre à jour la réunion
             </>
           )}
         </Button>

@@ -7,6 +7,7 @@ import {
   updateMeeting,
   deleteMeeting,
   respondToMeeting,
+  cancelMeeting,
 } from "../../apis/meetings";
 import { useSelector } from "react-redux";
 import { UserResponse } from "../../types/reducers";
@@ -26,10 +27,10 @@ const MeetingsCalendar: React.FC = () => {
   const displayRange = useMemo(() => {
     const startDay = threeDayRange[0].fullDate.getDate();
     const endDay = threeDayRange[2].fullDate.getDate();
-    const month = threeDayRange[0].fullDate.toLocaleDateString("en-US", {
+    const month = threeDayRange[0].fullDate.toLocaleDateString("fr-FR", {
       month: "long",
     });
-    return `${startDay} to ${endDay} ${month}`;
+    return `${startDay} au ${endDay} ${month}`;
   }, [threeDayRange]);
 
   const [selectedMeeting, setSelectedMeeting] = useState<MeetingDetail | null>(
@@ -48,13 +49,11 @@ const MeetingsCalendar: React.FC = () => {
     isLoading,
     error,
   } = useQuery<Meeting[]>("meetings", getUserMeetings, {
-    refetchOnWindowFocus: false,
-    staleTime: 5 * 60 * 1000,
+    retry: 1,
   });
 
   const { userMeetings, meetingRequests } = useMemo(() => {
     if (!userId) return { userMeetings: [], meetingRequests: [] };
-
     return {
       userMeetings: meetings.filter(
         (meeting) =>
@@ -70,12 +69,10 @@ const MeetingsCalendar: React.FC = () => {
 
   const filteredData = useMemo(() => {
     const dateSet = new Set(threeDayRange.map((d) => d.date));
-
     const filterByDate = (arr: Meeting[]) =>
       arr.filter((meeting) =>
         dateSet.has(new Date(meeting.start_time).toISOString().split("T")[0])
       );
-
     return {
       meetings: filterByDate(userMeetings),
       requests: filterByDate(meetingRequests),
@@ -128,28 +125,37 @@ const MeetingsCalendar: React.FC = () => {
   const updateMeetingMutation = useMutation(updateMeeting, {
     onSuccess: () => {
       queryClient.invalidateQueries("meetings");
-      setSuccess("Meeting updated successfully!");
+      setSuccess("Réunion mise à jour avec succès !");
       setShowEditModal(false);
     },
-    onError: () => setSuccess("Failed to update meeting"),
+    onError: () => setSuccess("Échec de la mise à jour de la réunion"),
   });
 
   const deleteMeetingMutation = useMutation(deleteMeeting, {
     onSuccess: () => {
       queryClient.invalidateQueries("meetings");
-      setSuccess("Meeting deleted successfully!");
+      setSuccess("Réunion supprimée avec succès !");
       setShowDetailsModal(false);
     },
-    onError: () => setSuccess("Failed to delete meeting"),
+    onError: () => setSuccess("Échec de la suppression de la réunion"),
+  });
+
+  const cancelMeetingMutation = useMutation(cancelMeeting, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("meetings");
+      setSuccess("Réunion annulée avec succès !");
+      setShowDetailsModal(false);
+    },
+    onError: () => setSuccess("Échec de l'annulation de la réunion"),
   });
 
   const respondMeetingMutation = useMutation(respondToMeeting, {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries("meetings");
-      setSuccess(`Meeting ${variables.status} successfully!`);
+      setSuccess(`Réunion ${variables.status} avec succès !`);
       setShowDetailsModal(false);
     },
-    onError: () => setSuccess("Failed to respond to meeting"),
+    onError: () => setSuccess("Échec de la réponse à la réunion"),
   });
 
   const isUserRequester = (meeting: Meeting) => meeting.requester_id === userId;
@@ -165,9 +171,13 @@ const MeetingsCalendar: React.FC = () => {
     setShowEditModal(true);
   };
 
-  const handleUpdateMeeting = (formData) => {
+  const handleUpdateMeeting = (formData: {
+    topic: string;
+    start_time: string;
+    end_time: string;
+    location: string;
+  }) => {
     if (!selectedMeeting) return;
-
     updateMeetingMutation.mutate({
       id: selectedMeeting.id,
       ...formData,
@@ -179,17 +189,24 @@ const MeetingsCalendar: React.FC = () => {
     respondMeetingMutation.mutate({ id: selectedMeeting.id, status });
   };
 
-  const handleDeleteMeeting = () => {
+  // Unified handler for meeting removal (delete or cancel)
+  const handleRemoveMeeting = () => {
     if (!selectedMeeting) return;
-    if (window.confirm("Are you sure you want to delete this meeting?")) {
-      deleteMeetingMutation.mutate(selectedMeeting.id);
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer cette réunion ?")) {
+      if (selectedMeeting.status === "pending") {
+        deleteMeetingMutation.mutate(selectedMeeting.id);
+      } else if (selectedMeeting.status === "accepted") {
+        cancelMeetingMutation.mutate(selectedMeeting.id);
+      }
     }
   };
 
   if (!userId)
     return (
       <Container className="py-5 text-center">
-        <Alert variant="warning">Please log in to view your meetings.</Alert>
+        <Alert variant="warning">
+          Veuillez vous connecter pour voir vos réunions.
+        </Alert>
       </Container>
     );
 
@@ -197,7 +214,7 @@ const MeetingsCalendar: React.FC = () => {
     return (
       <Container className="py-5 text-center">
         <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
+          <span className="visually-hidden">Chargement...</span>
         </div>
       </Container>
     );
@@ -210,7 +227,7 @@ const MeetingsCalendar: React.FC = () => {
             <Card.Header className="text-center">
               <Card.Title className="mb-3">
                 <i className="bi bi-calendar-event me-2" />
-                Meetings Schedule - {displayRange}
+                Calendrier des réunions - {displayRange}
               </Card.Title>
             </Card.Header>
             <Nav variant="pills" className="justify-content-center mt-4">
@@ -227,7 +244,7 @@ const MeetingsCalendar: React.FC = () => {
             <Card.Body>
               {error && (
                 <Alert variant="danger">
-                  Failed to load meetings. Please try again.
+                  Échec du chargement des réunions. Veuillez réessayer.
                 </Alert>
               )}
               {success && (
@@ -246,11 +263,11 @@ const MeetingsCalendar: React.FC = () => {
                 isUserRequester={isUserRequester}
                 isUserReceiver={isUserReceiver}
                 formatTimeRange={(s, e) => {
-                  const start = new Date(s).toLocaleTimeString("en-US", {
+                  const start = new Date(s).toLocaleTimeString("fr-FR", {
                     hour: "2-digit",
                     minute: "2-digit",
                   });
-                  const end = new Date(e).toLocaleTimeString("en-US", {
+                  const end = new Date(e).toLocaleTimeString("fr-FR", {
                     hour: "2-digit",
                     minute: "2-digit",
                   });
@@ -273,9 +290,11 @@ const MeetingsCalendar: React.FC = () => {
             onAccept={() => handleMeetingResponse("accepted")}
             onDecline={() => handleMeetingResponse("declined")}
             onEdit={handleEditMeeting}
-            onDelete={handleDeleteMeeting}
+            onDelete={handleRemoveMeeting}
             loadingRespond={respondMeetingMutation.isLoading}
-            deleting={deleteMeetingMutation.isLoading}
+            deleting={
+              deleteMeetingMutation.isLoading || cancelMeetingMutation.isLoading
+            }
           />
           <EditMeetingModal
             show={showEditModal}

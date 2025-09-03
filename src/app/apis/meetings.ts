@@ -24,8 +24,10 @@ export const createMeeting = async (data: {
 
 export const updateMeeting = async (data: {
   id: string;
-  meeting_date?: string;
-  location?: string;
+  topic: string;
+  start_time: string;
+  end_time: string;
+  location: string;
 }) => {
   const response = await axiosInstance.post("/meeting/update", data);
   return response.data;
@@ -42,6 +44,17 @@ export const respondToMeeting = async (data: {
   id: string;
   status: "accepted" | "declined";
 }) => {
-  const response = await axiosInstance.post("/meeting/respond", data);
+  const response = await axiosInstance.post("/meeting/respond", {
+    ...data,
+    meeting_id: data.id,
+  });
   return response.data;
+};
+
+export const cancelMeeting = async (meeting_id: string) => {
+  const response = await axiosInstance.post("/meeting/cancel", {
+    meeting_id,
+  });
+
+  return response?.data;
 };
