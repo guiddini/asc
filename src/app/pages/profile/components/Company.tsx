@@ -1,7 +1,7 @@
 import { CompanyCard } from "../../../components";
-import { Company } from "../../../types/user";
+import { Company as CompanyType } from "../../../types/user";
 
-const Company = ({ company }: { company: Company }) => {
+const Company = ({ company }: { company: CompanyType }) => {
   return (
     <>
       <div className="d-flex flex-wrap flex-stack mb-6">

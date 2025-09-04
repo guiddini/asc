@@ -1,8 +1,7 @@
 import React from "react";
 import { useQuery } from "react-query";
-import { Modal, Badge, Spinner, Alert, Image, Button } from "react-bootstrap";
+import { Modal, Spinner, Alert, Image, Button } from "react-bootstrap";
 import { showOneMeeting } from "../../../apis/meetings";
-import { MeetingDetail } from "../../../types/meetings";
 import getMediaUrl from "../../../helpers/getMediaUrl";
 import { Link } from "react-router-dom";
 
@@ -15,7 +14,7 @@ const MeetingDetail: React.FC<MeetingDetailProps> = ({
   meetingId,
   onClose,
 }) => {
-  const { data, isLoading, error } = useQuery<MeetingDetail>(
+  const { data, isLoading, error } = useQuery(
     ["meeting", meetingId],
     () => showOneMeeting(meetingId),
     { retry: false }
