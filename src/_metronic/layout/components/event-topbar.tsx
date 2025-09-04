@@ -69,7 +69,7 @@ const EventTopbar = () => {
                   className="d-none d-md-flex"
                 >
                   <Calendar />
-                  30-31 Jan & 01 Fév
+                  06-07-08 Décembre
                 </div>
 
                 <div id="current-ticket-topbar">

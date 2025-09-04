@@ -20,16 +20,16 @@ const WelcomePage = () => {
   const events = useMemo(
     () => [
       {
-        title: "Conférence de Presse AFES 2025",
-        backgroundImage: "/media/eventili/afes/afes.jpeg",
+        title: "African Startup Conference 2024",
+        backgroundImage: "/media/afes/Conference-africaine-des-start-up.jpg",
         isLocked: false,
         isContinue: false,
         onClick: () => {},
         hasPassed: true,
       },
-      {
-        title: "Algeria Fintech & E-commerce Summit",
-        backgroundImage: "/media/eventili/afes/bg.jpg",
+    {
+        title: "African Startup Conference 2025 ",
+       backgroundImage: "/media/afes/africainStartup.jpg",
         isLocked: !userHasTicket,
         isContinue: userHasTicket,
         hasPassed: false,

@@ -24,6 +24,30 @@
       }
     }
   }
+ .navbar-custom-transparent {
+    background-color: transparent !important;
+    transition: all 0.3s ease;
+
+    .brand-logo {
+      text-decoration: none;
+      color: inherit;
+
+      &:hover {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .logo-container {
+        .logo-image {
+          transition: transform 0.3s ease;
+
+          &:hover {
+            transform: scale(1.05);
+          }
+        }
+      }
+    }
+  }
 
   // Desktop Navigation with Animations
   .navigation-menu {

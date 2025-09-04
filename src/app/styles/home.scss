@@ -149,6 +149,102 @@
     }
   }
 }
+.home-slider {
+    .carousel-control-next,
+    .carousel-control-prev {
+        width: 30px;
+        height: 30px;
+        top: 50%;
+        transform: translateY(-50%);
+        border-radius: 30px;
+        border: 1px solid #2a3c51;
+    }
+    .carousel-control-next-icon,
+    .carousel-control-prev-icon {
+        width: 30%;
+    }
+
+    .carousel-control-next {
+        right: 8px;
+    }
+
+    .carousel-control-prev {
+        left: 8px;
+    }
+}
+@mixin home-common {
+    background-size: cover;
+    align-self: center;
+    position: relative;
+    background-position: center center;
+}
+.bg-home {
+    height: 100vh;    
+    @include home-common();
+}
+.bg-overlay {
+    background-color: rgba(#000, 0.5);
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%
+}
+.title-heading {
+    line-height: 26px;
+    .heading {
+        font-size: 45px !important;
+        letter-spacing: 1px;
+        @media (max-width: 768px) {
+            font-size: 35px !important;
+        }
+    }
+    .para-desc {
+        font-size: 18px;
+    }
+}
+/* Navigation links quand le header est transparent */
+.menu-light a,
+.menu-light .nav-dropdown-toggle,
+.menu-light .dropdown-item-custom {
+  color: white !important;
+}
+
+/* Navigation links quand le header devient blanc */
+.menu-dark a,
+.menu-dark .nav-dropdown-toggle,
+.menu-dark .dropdown-item-custom {
+  color: black !important;
+}
+
+.navbar-transparent {
+  background-color: transparent !important;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-scrolled {
+  background-color: #fff !important; /* ou la couleur de votre choix */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+/* Pour le menu en mode transparent (clair) */
+.menu-light .nav-link {
+  color: white !important;
+}
+
+/* Pour le menu en mode scrollé (foncé) */
+.menu-dark .nav-link {
+  color: #333 !important;
+}
+
+.transition-all {
+  transition: all 0.3s ease;
+}
+
+
 
 // Video Container
 .hero-video-container {

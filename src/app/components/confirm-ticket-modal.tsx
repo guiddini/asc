@@ -106,7 +106,7 @@ export default function ConfirmTicketModal({
 
         <div id="confirm-ticket-modal-content">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div id="modal-ticket-form-group">
+            {/* <div id="modal-ticket-form-group">
               <label>
                 Sélectionner un ticket <span id="required">*</span>
               </label>
@@ -127,7 +127,7 @@ export default function ConfirmTicketModal({
                 />
                 {errors.slug && <span>{errors.slug.message}</span>}
               </div>
-            </div>
+            </div> */}
 
             <div id="ticket-selection">
               <div id="ticket-info">
@@ -144,7 +144,7 @@ export default function ConfirmTicketModal({
                 </div>
               </div>
 
-              <div id="quantity-controls">
+              {/* <div id="quantity-controls">
                 <button
                   type="button"
                   onClick={() => handleQuantityChange(false)}
@@ -162,7 +162,7 @@ export default function ConfirmTicketModal({
                 >
                   +
                 </button>
-              </div>
+              </div> */}
             </div>
 
             <div id="confirm-ticket-modal-price-summary">
