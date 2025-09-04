@@ -6,6 +6,7 @@ import SearchComponent from "./search-component";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { UserResponse } from "../../../types/reducers";
+import UserTypeComponent from "./type-user-component";
 
 interface HeaderProps {
   className?: string;
@@ -15,7 +16,9 @@ const Header: React.FC<HeaderProps> = ({ className = "" }) => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const navigate = useNavigate();
-
+  const [showTypeComponent, setShowTypeComponent] = useState(false);
+  const handleType = () => setShowTypeComponent(true);
+  const handleCloseType = () => setShowTypeComponent(false);
   const handleToggleMobileMenu = () => setShowMobileMenu(!showMobileMenu);
   const handleCloseMobileMenu = () => setShowMobileMenu(false);
 
@@ -97,7 +100,7 @@ const Header: React.FC<HeaderProps> = ({ className = "" }) => {
                     variant="secondary"
                     size="sm"
                     className="px-3"
-                    onClick={() => navigate("/auth/signup")}
+                    onClick={handleType}
                   >
                     <i className="bi bi-person-plus me-1"></i>
                     Register
@@ -121,6 +124,7 @@ const Header: React.FC<HeaderProps> = ({ className = "" }) => {
 
       {/* Mobile Menu */}
       <MobileMenu show={showMobileMenu} onHide={handleCloseMobileMenu} />
+      <UserTypeComponent show={showTypeComponent} onHide={handleCloseType} />
 
       {/* Search Modal */}
       <SearchComponent show={showSearch} onHide={handleCloseSearch} />
