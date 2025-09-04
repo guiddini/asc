@@ -1,5 +1,6 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 interface SearchProps {
   show: boolean;
@@ -7,7 +8,13 @@ interface SearchProps {
 }
 
 const UserTypeComponent: React.FC<SearchProps> = ({ show, onHide }) => {
-  const userTypes = ["Visiteur", "Sponsor", "Exposant", "Investisseur", "Media"];
+  const userTypes = [
+    { label: "Visiteur", value: "visitor" },
+    { label: "Sponsor", value: "sponsor" },
+    { label: "Exposant", value: "exhibitor" },
+    { label: "Investisseur", value: "investor" },
+    { label: "Media", value: "media" },
+  ];
 
   return (
     <Modal
@@ -21,7 +28,6 @@ const UserTypeComponent: React.FC<SearchProps> = ({ show, onHide }) => {
 
       <Modal.Body>
         <div className="d-flex flex-column align-items-center">
-          {/* Logo */}
           <img
             src="/media/eventili/logos/logo.svg"
             alt="Event Logo"
@@ -29,21 +35,19 @@ const UserTypeComponent: React.FC<SearchProps> = ({ show, onHide }) => {
             height="60"
           />
 
-          {/* Phrase après le logo */}
           <p className="text-white text-center mb-4">
             Choisissez votre type d’utilisateur pour continuer
           </p>
 
-          {/* Liste des types */}
           <div className="d-flex flex-column gap-3 w-100">
             {userTypes.map((type, index) => (
-              <a
+              <Link
                 key={index}
-                href="/auth/signup"
+                to={`/auth/signup?type=${type.value}`}
                 className="type-row text-white text-decoration-none px-4 py-3"
               >
-                {type}
-              </a>
+                {type.label}
+              </Link>
             ))}
           </div>
         </div>
@@ -60,7 +64,7 @@ const UserTypeComponent: React.FC<SearchProps> = ({ show, onHide }) => {
         }
 
         .custom-modal .btn-close {
-          filter: invert(1); /* bouton close en blanc */
+          filter: invert(1);
         }
 
         .type-row {
