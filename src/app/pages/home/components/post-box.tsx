@@ -49,8 +49,7 @@ export function DescriptionWithLinks({ description }) {
   if (!description) {
     return null; // Or display a placeholder message
   }
-
-  const regex = /(https?:\/\/[^\s]+)/gi || /(http?:\/\/[^\s]+)/gi;
+  const regex = /(https?:\/\/[^\s]+)/gi;
   const parts = description.split(regex);
 
   const elements = parts.map((part, index) => {

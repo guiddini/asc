@@ -31,38 +31,34 @@ const HeroSection: React.FC = () => {
     setTimeout(() => setIsVisible(true), 300);
   }, []);
 
-
   const renderAction = (id: number) => {
     if (id === 1) {
       return (
-      <div className="mt-4 pt-2">
-  <Link
-    to="#"
-    className="btn"
-    style={{
-      background: "linear-gradient(90deg, #0090C7, #57C1DC)",
-      border: "none",
-      color: "#fff",
-      padding: "14px 32px", // plus grand
-      borderRadius: "10px",
-      fontWeight: 600,
-      fontSize: "1.1rem", // texte plus grand
-      display: "inline-flex",
-      alignItems: "center",
-      gap: "10px",
-      minWidth: "350px",   // largeur mini
-      minHeight: "50px",   // hauteur mini
-      justifyContent: "center",
-    }}
-                  onClick={handleType}
-
-  >
-    <i className="uil uil-envelope" style={{ fontSize: "1.3rem" }}></i>
-    Rejoignez-nous
-  </Link>
-</div>
-
-
+        <div className="mt-4 pt-2">
+          <Link
+            to="#"
+            className="btn"
+            style={{
+              background: "linear-gradient(90deg, #0090C7, #57C1DC)",
+              border: "none",
+              color: "#fff",
+              padding: "14px 32px", // plus grand
+              borderRadius: "10px",
+              fontWeight: 600,
+              fontSize: "1.1rem", // texte plus grand
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "10px",
+              minWidth: "350px", // largeur mini
+              minHeight: "50px", // hauteur mini
+              justifyContent: "center",
+            }}
+            onClick={handleType}
+          >
+            <i className="uil uil-envelope" style={{ fontSize: "1.3rem" }}></i>
+            Rejoignez-nous
+          </Link>
+        </div>
       );
     } else if (id === 2) {
       return (
@@ -87,7 +83,6 @@ const HeroSection: React.FC = () => {
         <div className="mt-4 pt-2">
           <Link
             to="#"
-            onClick={() => setIsOpen(true)}
             id="playbtn"
             className="btn btn-primary btn-lg rounded-circle"
           >
@@ -128,12 +123,12 @@ const HeroSection: React.FC = () => {
       ></video>
 
       {/* Overlay */}
-<div
-  className="position-absolute top-0 start-0 w-100 h-100"
-  style={{
-    background: "#3c4858b3",
-  }}
-></div>
+      <div
+        className="position-absolute top-0 start-0 w-100 h-100"
+        style={{
+          background: "#3c4858b3",
+        }}
+      ></div>
 
       {/* Animated diagonal lines - Left side */}
       <div className="diagonal-lines left-diagonals">
@@ -166,18 +161,22 @@ const HeroSection: React.FC = () => {
         <h4 className="display-5 fw-bold mb-4 text-white text-uppercase">
           {item.title}
         </h4>
-        <p className="lead text-white-50 mx-auto fs-4" style={{ maxWidth: "500px" ,fontWeight: 'bold'}}>
+        <p
+          className="lead text-white-50 mx-auto fs-4"
+          style={{ maxWidth: "500px", fontWeight: "bold" }}
+        >
           {item.desc}
         </p>
         <h5 className="mt-4 text-white fw-semibold">
-          Du <span style={{ color: '#64B45C', fontWeight: 'bold' }}>06</span> au{" "}
-          <span style={{ color: '#64B45C', fontWeight: 'bold' }}>08 Decembre 2025</span>
+          Du <span style={{ color: "#64B45C", fontWeight: "bold" }}>06</span> au{" "}
+          <span style={{ color: "#64B45C", fontWeight: "bold" }}>
+            08 Decembre 2025
+          </span>
         </h5>
         <h6 className="text-white-50 mt-2">
           Centre International de Conference Abdeelatif Rahal, Alger, Algérie
         </h6>
-                {renderAction(item.id)}
-
+        {renderAction(item.id)}
       </div>
       <UserTypeComponent show={showTypeComponent} onHide={handleCloseType} />
 

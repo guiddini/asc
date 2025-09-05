@@ -220,9 +220,8 @@ const Vertical = () => {
           onSubmit={submitStep}
         >
           {() => (
-            <Form
+            <div
               className="py-20 w-100 w-xl-700px px-9"
-              noValidate
               id="kt_create_account_form"
             >
               <div className="current" data-kt-stepper-element="content">
@@ -273,7 +272,7 @@ const Vertical = () => {
                   </button>
                 </div>
               </div>
-            </Form>
+            </div>
           )}
         </Formik>
       </div>

@@ -74,9 +74,9 @@ const UserType = ({ next, control }: { next: any; control: Control }) => {
           type="button"
           id="kt_sign_in_submit"
           className="btn btn-custom-purple-dark text-white"
-          disabled={type === undefined ?? null}
+          disabled={type === undefined}
           onClick={() => {
-            if (type !== undefined ?? null) {
+            if (type !== undefined) {
               next();
             }
           }}
