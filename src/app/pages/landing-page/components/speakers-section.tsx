@@ -56,15 +56,18 @@ const SpeakerSection: React.FC = () => {
         <Row className="mb-5 w-100">
           <Col lg={8} className="mx-auto text-center">
             <h2 className="display-5 fw-bold text-dark mb-3">
-              Meet Our Speakers
+              {/* Meet Our Speakers */}
+              Rencontrez nos conférenciers
+
             </h2>
             <p className="lead text-muted mb-0">
-              Industry experts and thought leaders sharing their insights
+              {/* Industry experts and thought leaders sharing their insights */}
+              Des experts du secteur et des leaders d'opinion partageant leurs connaissances
             </p>
           </Col>
         </Row>
         {/* Search Filter */}
-        <Row className="mb-4 w-100">
+        {/* <Row className="mb-4 w-100">
           <Col lg={8} className="mx-auto">
             <Form.Control
               type="text"
@@ -75,9 +78,9 @@ const SpeakerSection: React.FC = () => {
               disabled={isLoading}
             />
           </Col>
-        </Row>
+        </Row> */}
         {/* Results Info & Pagination */}
-        <Row className="mb-4 w-100">
+        {/* <Row className="mb-4 w-100">
           <Col
             lg={8}
             className="mx-auto d-flex justify-content-between align-items-center"
@@ -104,9 +107,9 @@ const SpeakerSection: React.FC = () => {
               </Button>
             </div>
           </Col>
-        </Row>
+        </Row> */}
         {/* Speaker List */}
-        <Row
+        {/* <Row
           className="justify-content-center w-100"
           xs={12}
           sm={12}
@@ -134,7 +137,7 @@ const SpeakerSection: React.FC = () => {
               </div>
             )}
           </Col>
-        </Row>
+        </Row> */}
       </Container>
     </section>
   );

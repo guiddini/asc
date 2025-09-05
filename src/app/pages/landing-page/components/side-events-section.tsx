@@ -84,9 +84,12 @@ const SideEventsSection: React.FC = () => {
         {/* Section Header */}
         <Row className="mb-5">
           <Col className="text-center">
-            <h2 className="display-5 fw-bold text-white mb-3">Side Events</h2>
+            {/* <h2 className="display-5 fw-bold text-white mb-3">Side Events</h2> */}
+                        <h2 className="display-5 fw-bold text-white mb-3">Événements parallèles</h2>
+
             <p className="lead text-light">
-              Discover exciting parallel events and activities
+              {/* Discover exciting parallel events and activities */}
+              Découvrez des événements parallèles et des activités passionnantes
             </p>
           </Col>
         </Row>
