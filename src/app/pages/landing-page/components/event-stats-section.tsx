@@ -11,52 +11,52 @@ type StatItem = {
 const EVENT_STATS: StatItem[] = [
   {
     icon: "/stats/startup.svg",
-    label: "Startups",
-    value: "500+",
+    label: "Délégations ministérielles",
+    value: "40+",
     alt: "Icône Startups",
   },
   {
     icon: "/stats/visitors.svg",
-    label: "Visiteurs",
-    value: "25000+",
+    label: "Participants",
+    value: "20 000+",
     alt: "Icône Visiteurs",
   },
-  {
-    icon: "/stats/ministers.svg",
-    label: "Ministres",
-    value: "45+",
-    alt: "Icône Ministres",
-  },
-  {
-    icon: "/stats/conferences.svg",
-    label: "Conférences",
-    value: "30+",
-    alt: "Icône Conférences",
-  },
+  // {
+  //   icon: "/stats/ministers.svg",
+  //   label: "Ministres",
+  //   value: "45+",
+  //   alt: "Icône Ministres",
+  // },
+  // {
+  //   icon: "/stats/conferences.svg",
+  //   label: "Conférences",
+  //   value: "30+",
+  //   alt: "Icône Conférences",
+  // },
   {
     icon: "/stats/experts.svg",
-    label: "Experts",
+    label: "Experts Internationaux",
     value: "200+",
     alt: "Icône Experts",
   },
   {
     icon: "/stats/investors.svg",
     label: "Investisseurs",
-    value: "100+",
+    value: "150+",
     alt: "Icône Investisseurs",
   },
-  {
-    icon: "/stats/countries.svg",
-    label: "Pays",
-    value: "50+",
-    alt: "Icône Pays",
-  },
-  {
-    icon: "/stats/sides-events.svg",
-    label: "Événements parallèles",
-    value: "6+",
-    alt: "Icône Événements parallèles",
-  },
+  // {
+  //   icon: "/stats/countries.svg",
+  //   label: "Pays",
+  //   value: "50+",
+  //   alt: "Icône Pays",
+  // },
+  // {
+  //   icon: "/stats/sides-events.svg",
+  //   label: "Événements parallèles",
+  //   value: "6+",
+  //   alt: "Icône Événements parallèles",
+  // },
 ];
 
 const EventStatsSection: React.FC = () => (

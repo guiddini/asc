@@ -14,16 +14,10 @@ const AuthLayout = () => {
               L'endroit où chaque événement commence !
             </h1>
             <p>
-              Rejoignez une communauté de rêveurs, créateurs et organisateurs
-              qui donnent vie à des expériences inoubliables. Que vous planifiez
-              votre prochain grand événement ou que vous soyez à la recherche de
-              votre prochaine aventure, African Startup Conference rend tout
-              simple, fluide et excitant.
+              L'African Startup Conference est le rendez-vous panafricain incontournable de l’innovation et de l’entrepreneuriat. Pour sa 4ème édition, du 6 au 8 décembre 2025 à Alger, elle met à l’honneur les “African Champions” : startups en forte croissance, investisseurs, décideurs publics et diaspora, réunis pour bâtir un écosystème technologique compétitif et souverain.
             </p>
             <p>
-              Ne manquez pas l'opportunité de faire partie de quelque chose
-              d'extraordinaire. Réservez votre place dès aujourd'hui et laissez
-              l'aventure commencer !
+              Ne manquez pas l'opportunité de faire partie de quelque chose d'extraordinaire. Réservez votre place dès aujourd'hui et laissez l'aventure commencer !
             </p>
           </div>
         </div>

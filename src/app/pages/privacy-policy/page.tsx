@@ -12,7 +12,7 @@ const PrivacyPolicy: React.FC = () => {
           content="Conditions d'utilisation pour African Startup Conference, votre solution globale pour la gestion d'événements."
         />
       </Helmet>
-      <div id="privacypolicy-page-container">
+      <div id="privacypolicy-page-container" style={{backgroundColor:'#002040'}}>
         <h1 id="privacypolicy-page-title">Conditions d'utilisation</h1>
 
         <section id="privacypolicy-page-section">

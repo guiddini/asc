@@ -23,13 +23,15 @@ const AboutSection: React.FC = () => {
                 />
               </div>
               <h2 className="patronage-title display-5 fw-bold mb-3">
-                Under the High Patronage of the President of the Republic
+                {/* Under the High Patronage of the President of the Republic */}
+                Sous le Haut Patronage du Président de la République
               </h2>
               <p className="patronage-subtitle lead text-muted">
-                Experience 3 powerful days of global networking, innovation
+                Vivez trois jours intenses de réseautage mondial, de présentations d'innovations et d'ateliers porteurs d'avenir. Entrepreneurs, investisseurs et penseurs se réuniront pour créer des opportunités et créer un impact en Afrique.
+                {/* Experience 3 powerful days of global networking, innovation
                 showcases, and future-shaping workshops. Entrepreneurs,
                 investors, and thinkers will gather to drive opportunity and
-                impact across Africa.
+                impact across Africa. */}
               </p>
             </Col>
           </Row>

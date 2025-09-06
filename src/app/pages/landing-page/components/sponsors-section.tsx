@@ -2,24 +2,37 @@ import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 
 // Built-in sponsors data
+// const SPONSORS = [
+//   "/sponsors/a-venture.webp",
+//   "/sponsors/bdl.webp",
+//   "/sponsors/bea.webp",
+//   "/sponsors/djezzy.webp",
+//   "/sponsors/saa.webp",
+//   "/sponsors/aba.webp",
+//   "/sponsors/bank-agrc.svg",
+//   "/sponsors/cnep.png",
+//   "/sponsors/gaan.png",
+//   "/sponsors/gie.webp",
+//   "/sponsors/h24.png",
+//   "/sponsors/natixis.webp",
+//   "/sponsors/nesda.png",
+//   "/sponsors/noubal.jpg",
+//   "/sponsors/satim.webp",
+//   "/sponsors/ugca.png",
+//   "/sponsors/zr.png",
+// ];
 const SPONSORS = [
-  "/sponsors/a-venture.webp",
-  "/sponsors/bdl.webp",
-  "/sponsors/bea.webp",
-  "/sponsors/djezzy.webp",
-  "/sponsors/saa.webp",
-  "/sponsors/aba.webp",
-  "/sponsors/bank-agrc.svg",
-  "/sponsors/cnep.png",
-  "/sponsors/gaan.png",
-  "/sponsors/gie.webp",
-  "/sponsors/h24.png",
-  "/sponsors/natixis.webp",
-  "/sponsors/nesda.png",
-  "/sponsors/noubal.jpg",
-  "/sponsors/satim.webp",
-  "/sponsors/ugca.png",
-  "/sponsors/zr.png",
+  "/sponsors/commingSoon.jpg",
+ "/sponsors/commingSoon.jpg",
+ "/sponsors/commingSoon.jpg",
+  "/sponsors/commingSoon.jpg",
+ "/sponsors/commingSoon.jpg",
+ "/sponsors/commingSoon.jpg",
+ "/sponsors/commingSoon.jpg",
+ "/sponsors/commingSoon.jpg",
+ "/sponsors/commingSoon.jpg",
+
+  
 ];
 
 // Split sponsors into two groups for better visual variety
@@ -48,8 +61,7 @@ const SponsorsSection: React.FC = () => {
         <Row className="mb-5">
           <Col className="text-center">
             <h2 className="display-5 fw-bold text-dark mb-0">
-              Official Sponsor
-            </h2>
+Nos sponsors            </h2>
           </Col>
         </Row>
 
@@ -68,7 +80,7 @@ const SponsorsSection: React.FC = () => {
               ))}
             </div>
             <div className="marquee-wrapper">
-              {firstHalf.map((sponsor, index) => (
+              {/* {firstHalf.map((sponsor, index) => (
                 <div key={`first-right-dup-${index}`} className="marquee-item">
                   <img
                     src={sponsor}
@@ -76,7 +88,7 @@ const SponsorsSection: React.FC = () => {
                     className="sponsor-logo"
                   />
                 </div>
-              ))}
+              ))} */}
             </div>
           </div>
         </div>
@@ -85,7 +97,7 @@ const SponsorsSection: React.FC = () => {
         <div className="marquee-container">
           <div className="marquee right-to-left">
             <div className="marquee-wrapper">
-              {secondHalf.map((sponsor, index) => (
+              {/* {secondHalf.map((sponsor, index) => (
                 <div key={`second-left-${index}`} className="marquee-item">
                   <img
                     src={sponsor}
@@ -93,10 +105,10 @@ const SponsorsSection: React.FC = () => {
                     className="sponsor-logo"
                   />
                 </div>
-              ))}
+              ))} */}
             </div>
             <div className="marquee-wrapper">
-              {secondHalf.map((sponsor, index) => (
+              {/* {secondHalf.map((sponsor, index) => (
                 <div key={`second-left-dup-${index}`} className="marquee-item">
                   <img
                     src={sponsor}
@@ -104,7 +116,7 @@ const SponsorsSection: React.FC = () => {
                     className="sponsor-logo"
                   />
                 </div>
-              ))}
+              ))} */}
             </div>
           </div>
         </div>
