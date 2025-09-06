@@ -99,7 +99,7 @@ const EventTopbar = () => {
               id="event-top-bar-switch"
               role="button"
               onClick={() => {
-                navigate("/events/manage");
+                navigate("/commingSoon");
               }}
             >
               <ArrowLeftRight />
@@ -123,7 +123,7 @@ const EventTopbar = () => {
                   ) : (
                     <Button
                       onClick={() => {
-                        navigate("/exhibition/request");
+                        navigate("/commingSoon");
                       }}
                       variant="custom-purple-dark text-white"
                       id="exhibition-request-cta"

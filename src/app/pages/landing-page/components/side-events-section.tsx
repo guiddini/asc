@@ -137,6 +137,7 @@ const SideEventsSection: React.FC = () => {
                         src={event.image}
                         alt={event.title}
                         className="card-image"
+                        style={{width:"100%", height:"100%"}}
                       />
                     </div>
 

@@ -61,6 +61,7 @@ import MeetingsCalendar from "../pages/meetings/page";
 import AgendaPage from "../pages/agenda/page";
 import ConferencesPage from "../pages/conference/page";
 import ConferenceDetailPage from "../pages/conference/detail/page";
+import ComingSoonASC from "../pages/commingsoonAsc/page";
 
 export const adminRoles = ["admin", "super_admin", "staff"];
 
@@ -93,6 +94,8 @@ const PrivateRoutes = () => {
           }
         >
           <Route path="/coming-soon" element={<ComingSoon />} />
+          <Route path="/comingSoon" element={<ComingSoonASC />} />
+
           <Route path="/exhibition/request" element={<ExhibitionRequest />} />
           <Route
             path="/exhibition/confirm/:companyId"

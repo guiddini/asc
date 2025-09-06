@@ -22,15 +22,15 @@ import { Container, Row, Col } from "react-bootstrap";
 //   "/sponsors/zr.png",
 // ];
 const SPONSORS = [
-  "/sponsors/commingSoon.jpg",
- "/sponsors/commingSoon.jpg",
- "/sponsors/commingSoon.jpg",
-  "/sponsors/commingSoon.jpg",
- "/sponsors/commingSoon.jpg",
- "/sponsors/commingSoon.jpg",
- "/sponsors/commingSoon.jpg",
- "/sponsors/commingSoon.jpg",
- "/sponsors/commingSoon.jpg",
+  "/sponsors/commingSoon.jpeg",
+ "/sponsors/commingSoon.jpeg",
+ "/sponsors/commingSoon.jpeg",
+  "/sponsors/commingSoon.jpeg",
+ "/sponsors/commingSoon.jpeg",
+ "/sponsors/commingSoon.jpeg",
+ "/sponsors/commingSoon.jpeg",
+ "/sponsors/commingSoon.jpeg",
+ "/sponsors/commingSoon.jpeg",
 
   
 ];
