@@ -156,11 +156,11 @@ const HeroSection: React.FC = () => {
           src="/media/eventili/logos/logo.svg"
           alt="Event Logo"
           className="logo-image mb-4"
-          height="60"
+          height="100"
         />
-        <h4 className="display-5 fw-bold mb-4 text-white text-uppercase">
+        <p className="display-5 fw-bold mb-4 text-white text-uppercase" style={{fontSize:"35px"}}>
           {item.title}
-        </h4>
+        </p>
         <p
           className="lead text-white-50 mx-auto fs-4"
           style={{ maxWidth: "500px", fontWeight: "bold" }}
