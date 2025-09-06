@@ -24,7 +24,7 @@
       }
     }
   }
- .navbar-custom-transparent {
+  .navbar-custom-transparent {
     background-color: transparent !important;
     transition: all 0.3s ease;
 
@@ -65,6 +65,9 @@
       display: flex;
       align-items: center;
       transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+      font-size: 0.95rem;
+      white-space: nowrap;
 
       &:hover,
       &:focus {

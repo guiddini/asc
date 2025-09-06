@@ -3,65 +3,86 @@ import { Nav, Dropdown } from "react-bootstrap";
 import { navigationItems } from "../data/navigation-items";
 import { Link } from "react-router-dom";
 
-interface HoverDropdownProps {
-  title: string;
-  items: { label: string; href: string }[];
+interface NavItem {
+  label: string;
+  href?: string;
+  dropdown?: NavItem[];
 }
 
-const HoverDropdown: React.FC<HoverDropdownProps> = ({ title, items }) => {
+interface HoverDropdownProps {
+  title: string;
+  items: NavItem[];
+  isSubmenu?: boolean;
+}
+
+const HoverDropdown: React.FC<HoverDropdownProps> = ({
+  title,
+  items,
+  isSubmenu = false,
+}) => {
   const [show, setShow] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleMouseEnter = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setShow(true);
   };
 
   const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => {
-      setShow(false);
-    }, 150); // Slightly longer delay for smoother UX
+    timeoutRef.current = setTimeout(() => setShow(false), 150);
   };
 
   useEffect(() => {
     return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
   }, []);
 
   return (
     <Dropdown
       show={show}
-      className={`nav-dropdown-hover ${show ? "show" : ""}`}
+      className={`nav-dropdown-hover ${show ? "show" : ""} ${
+        isSubmenu ? "dropend" : ""
+      }`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      ref={dropdownRef}
     >
       <Dropdown.Toggle
         as={Link}
-        className="nav-link nav-dropdown-toggle"
+        className={`nav-link nav-dropdown-toggle ${
+          isSubmenu ? "dropdown-item-custom" : ""
+        }`}
         to="#"
         onClick={(e) => e.preventDefault()}
       >
         {title}
-        <i className="bi bi-chevron-down ms-1 small"></i>
+        <i
+          className={`bi ${
+            isSubmenu ? "bi-chevron-right" : "bi-chevron-down"
+          } ms-1 small`}
+        ></i>
       </Dropdown.Toggle>
 
       <Dropdown.Menu className="dropdown-menu-hover">
-        {items.map((item, index) => (
-          <Dropdown.Item
-            key={index}
-            href={item.href}
-            className="dropdown-item-custom"
-          >
-            {item.label}
-          </Dropdown.Item>
-        ))}
+        {items.map((item, index) =>
+          item.dropdown ? (
+            <HoverDropdown
+              key={index}
+              title={item.label}
+              items={item.dropdown}
+              isSubmenu={true}
+            />
+          ) : (
+            <Dropdown.Item
+              key={index}
+              as={Link}
+              to={item.href || "#"}
+              className="dropdown-item-custom"
+            >
+              {item.label}
+            </Dropdown.Item>
+          )
+        )}
       </Dropdown.Menu>
     </Dropdown>
   );
@@ -74,7 +95,7 @@ const NavigationMenu: React.FC = () => {
         item.dropdown ? (
           <HoverDropdown key={index} title={item.label} items={item.dropdown} />
         ) : (
-          <Link key={index} to={item.href} className="nav-link-custom">
+          <Link key={index} to={item.href || "#"} className="nav-link-custom">
             {item.label}
           </Link>
         )
