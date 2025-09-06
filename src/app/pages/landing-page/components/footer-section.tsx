@@ -111,11 +111,11 @@ const Footer: React.FC = () => {
     <div className="contact-info">
       <div className="contact-item mb-2">
         <i className="bi bi-geo-alt me-2"></i>
-        <span>Algérie</span>
+        <span>CIC,Algérie</span>
       </div>
       <div className="contact-item mb-2">
         <i className="bi bi-calendar-event me-2"></i>
-        <span>Bientôt en 2025</span>
+        <span>06-07-08 Décembre 2025</span>
       </div>
       <div className="contact-item mb-2">
         <i className="bi bi-envelope me-2"></i>
@@ -125,7 +125,7 @@ const Footer: React.FC = () => {
       </div>
       <div className="contact-item">
         <i className="bi bi-telephone me-2"></i>
-        <a href="tel:+213770737483">+213 (0) 770 737 483</a>
+        <a href="tel:+213770737483">+213 770 22 21 49</a>
       </div>
     </div>
   </div>
