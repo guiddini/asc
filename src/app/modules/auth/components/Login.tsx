@@ -18,6 +18,7 @@ import {
   getServerErrorResponseMessage,
 } from "../../../utils/server-error";
 import { AxiosError } from "axios";
+import UserTypeComponent from "../../../pages/landing-page/layout/type-user-component";
 
 type loginProps = {
   email: string;
@@ -27,6 +28,9 @@ type loginProps = {
 export function Login() {
   const { saveAuth, setCurrentUser } = useAuth();
   const dispatch = useDispatch();
+   const [showTypeComponent, setShowTypeComponent] = useState(false);
+    const handleType = () => setShowTypeComponent(true);
+    const handleCloseType = () => setShowTypeComponent(false);
   const [showPassword, setShowPassword] = useState(false);
   const { mutate, isLoading, error } = useMutation({
     mutationKey: ["login"],
@@ -97,7 +101,7 @@ export function Login() {
       <h2>Se connecter</h2>
       <p id="form-subtitle">
         Vous n'avez pas de compte ?{" "}
-        <Link to="/auth/signup" id="highlight-link">
+        <Link to="" onClick={handleType} id="highlight-link">
           Inscrivez-vous maintenant
         </Link>
       </p>
@@ -170,6 +174,8 @@ export function Login() {
           <UserPlus />
         </Link>
       </form>
+            <UserTypeComponent show={showTypeComponent} onHide={handleCloseType} />
+
     </div>
   );
 }

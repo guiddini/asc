@@ -1,8 +1,7 @@
 import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
-// import "bootstrap/dist/css/bootstrap.min.css";
 
-export default function ComingSoonAsc() {
+const ComingSoonAsc: React.FC = () => {
   return (
     <div
       style={{
@@ -20,27 +19,20 @@ export default function ComingSoonAsc() {
       <Container>
         <Row className="justify-content-center">
           <Col md={8}>
-            {/* Logo */}
             <img
-              src="/logo-asc.png" // mets ton logo ici
-              alt="African Startup Conference"
+ src="/media/eventili/logos/logo.svg"
+               alt="African Startup Conference"
               style={{ maxWidth: "250px", marginBottom: "30px" }}
             />
-
-            {/* Titre */}
             <h1 style={{ fontWeight: 700, fontSize: "3rem" }}>
               🚀 African Startup Conference
             </h1>
             <h2 style={{ fontWeight: 500, marginTop: "10px" }}>
               Notre site arrive bientôt !
             </h2>
-
-            {/* Texte */}
             <p style={{ marginTop: "20px", fontSize: "1.2rem" }}>
               Restez connectés, une nouvelle aventure démarre très bientôt.
             </p>
-
-            {/* Bouton */}
             <Button
               variant="light"
               style={{
@@ -53,9 +45,13 @@ export default function ComingSoonAsc() {
             >
               Me notifier au lancement
             </Button>
-
-            {/* Footer */}
-            <p style={{ marginTop: "40px", fontSize: "0.9rem", opacity: 0.8 }}>
+            <p
+              style={{
+                marginTop: "40px",
+                fontSize: "0.9rem",
+                opacity: 0.8,
+              }}
+            >
               © {new Date().getFullYear()} African Startup Conference
             </p>
           </Col>
@@ -65,3 +61,4 @@ export default function ComingSoonAsc() {
   );
 };
 
+export default ComingSoonAsc;

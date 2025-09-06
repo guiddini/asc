@@ -93,7 +93,7 @@ const PrivateRoutes = () => {
             </UserProfileWrapper>
           }
         >
-          <Route path="/coming-soon" element={<ComingSoon />} />
+          {/* <Route path="/coming-soon" element={<ComingSoon />} /> */}
           <Route path="/comingSoon" element={<ComingSoonASC />} />
 
           <Route path="/exhibition/request" element={<ExhibitionRequest />} />
