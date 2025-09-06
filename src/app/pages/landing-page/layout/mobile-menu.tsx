@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Offcanvas, Nav, Accordion, Button } from "react-bootstrap";
-import { mobileNavItems } from "../data/navigation-items";
+import { navigationItems } from "../data/navigation-items";
 import SearchComponent from "./search-component";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -21,6 +21,39 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ show, onHide }) => {
   const { user: currentUser } = useSelector(
     (state: UserResponse) => state.user
   );
+
+  // recursive renderer for dropdowns
+  const renderNavItems = (items: typeof navigationItems) =>
+    items.map((item, index) =>
+      item.dropdown ? (
+        <Accordion flush className="mobile-accordion" key={index}>
+          <Accordion.Item eventKey={String(index)}>
+            <Accordion.Header className="mobile-accordion-header">
+              <span className="mobile-nav-label">{item.label}</span>
+            </Accordion.Header>
+            <Accordion.Body className="p-0">
+              <div className="mobile-submenu">
+                {renderNavItems(item.dropdown)}
+              </div>
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
+      ) : (
+        <div key={index} className="mobile-nav-single">
+          <Nav.Link
+            onClick={() => {
+              if (item.href) {
+                navigate(item.href);
+                onHide();
+              }
+            }}
+            className="mobile-nav-link"
+          >
+            <span className="mobile-nav-label">{item.label}</span>
+          </Nav.Link>
+        </div>
+      )
+    );
 
   return (
     <Offcanvas
@@ -87,45 +120,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ show, onHide }) => {
           </div>
 
           <div className="mobile-nav-list">
-            {mobileNavItems.map((item, index) =>
-              item.items ? (
-                <Accordion flush className="mobile-accordion" key={index}>
-                  <Accordion.Item eventKey="0">
-                    <Accordion.Header className="mobile-accordion-header">
-                      <span className="mobile-nav-label">{item.label}</span>
-                    </Accordion.Header>
-                    <Accordion.Body className="p-0">
-                      <div className="mobile-submenu">
-                        {item.items.map((subItem, subIndex) => (
-                          <Nav.Link
-                            key={subIndex}
-                            onClick={() => {
-                              navigate(subItem.href);
-                              onHide();
-                            }}
-                            className="mobile-nav-sublink"
-                          >
-                            {subItem.label}
-                          </Nav.Link>
-                        ))}
-                      </div>
-                    </Accordion.Body>
-                  </Accordion.Item>
-                </Accordion>
-              ) : (
-                <div key={index} className="mobile-nav-single">
-                  <Nav.Link
-                    onClick={() => {
-                      navigate(item.href);
-                      onHide();
-                    }}
-                    className="mobile-nav-link"
-                  >
-                    <span className="mobile-nav-label">{item.label}</span>
-                  </Nav.Link>
-                </div>
-              )
-            )}
+            {renderNavItems(navigationItems)}
           </div>
         </div>
       </Offcanvas.Body>
