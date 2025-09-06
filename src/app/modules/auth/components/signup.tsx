@@ -216,10 +216,20 @@ export default function SignupPage() {
         </Row>
 
         <Row>
-          <Col md={6}>
-            <div id="signup-form-group">
-              <label>LinkedIn</label>
-              <input type="url" {...register("linkedin_url")} />
+          <Col md={12}>
+            <div id="">
+              <label htmlFor="linkedin_url" className="form-label">
+                LinkedIn Profile
+              </label>
+              <div className="input-group mb-5">
+                <input
+                  type="url"
+                  className="form-control"
+                  placeholder="https://www.linkedin.com/in/your-username"
+                  {...register("linkedin_url")}
+                />
+              </div>
+
               {errors.linkedin_url && (
                 <span id="signup-error-message">
                   {errors.linkedin_url.message}
@@ -227,8 +237,10 @@ export default function SignupPage() {
               )}
             </div>
           </Col>
+        </Row>
 
-          <Col md={6}>
+        <Row>
+          <Col md={12}>
             <CountriesSelect
               control={control}
               errors={errors}
