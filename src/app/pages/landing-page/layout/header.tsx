@@ -70,7 +70,7 @@ const Header: React.FC<HeaderProps> = ({ className = "" }) => {
                 onClick={handleShowSearch}
               >
                 <i className="bi bi-search me-1"></i>
-                Search
+                Recherche
               </Button>
 
               {currentUser ? (
@@ -93,7 +93,7 @@ const Header: React.FC<HeaderProps> = ({ className = "" }) => {
                     onClick={() => navigate("/auth/login")}
                   >
                     <i className="bi bi-box-arrow-in-right me-1"></i>
-                    Login
+                    Connexion
                   </Button>
 
                   <Button
@@ -103,7 +103,7 @@ const Header: React.FC<HeaderProps> = ({ className = "" }) => {
                     onClick={handleType}
                   >
                     <i className="bi bi-person-plus me-1"></i>
-                    Register
+                    Inscription
                   </Button>
                 </>
               )}
