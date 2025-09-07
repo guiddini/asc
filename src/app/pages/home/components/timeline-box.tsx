@@ -101,9 +101,7 @@ const TimelineBox = () => {
               <i className="ki-outline ki-abstract-8 text-gray-600 fs-3"></i>
             </div>
 
-            <div className="fw-bold text-gray-700 ps-3 fs-6">
-              A rejoint Afes
-            </div>
+            <div className="fw-bold text-gray-700 ps-3 fs-6">A rejoint ACS</div>
           </div>
 
           {/* <div className="timeline-item d-flex align-items-center">
