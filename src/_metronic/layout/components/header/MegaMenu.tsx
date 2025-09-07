@@ -14,7 +14,7 @@ const MegaMenu: FC = () => (
             <span className="menu-bullet">
               <span className="bullet bullet-dot"></span>
             </span>
-            <span className="menu-title">à propos AFES</span>
+            <span className="menu-title">à propos ASC</span>
           </a>
         </div>
         <div className="menu-item">
@@ -200,7 +200,7 @@ const MegaMenu: FC = () => (
             <span className="menu-bullet">
               <span className="bullet bullet-dot"></span>
             </span>
-            <span className="menu-title">AFES Talks</span>
+            <span className="menu-title">ASC Talks</span>
           </a>
         </div>
       </div>
