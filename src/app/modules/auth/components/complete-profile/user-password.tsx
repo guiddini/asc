@@ -96,7 +96,7 @@ const UserPassword = ({ next }: { next: any }) => {
       {/* begin::Heading */}
       <div className="text-center mb-11">
         {/* begin::Title */}
-        <h1 className="text-gray-900 fw-bolder mb-3">Bienvenue à AFES</h1>
+        <h1 className="text-gray-900 fw-bolder mb-3">Bienvenue à ASC</h1>
         {/* end::Title */}
 
         <div className="text-gray-500 fw-semibold fs-6">

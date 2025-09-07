@@ -8,9 +8,9 @@ const eventSlugs = [
   },
   {
     slug: "dev&talents-day",
-    title: "AFES Dev & Talent Day - يوم المبرمجين والتوظيف في مهن البرمجة",
+    title: "ASC Dev & Talent Day - يوم المبرمجين والتوظيف في مهن البرمجة",
     description: `Un événement dédié aux développeurs pour explorer les langages de développement d’actualité sous forme d'un débat technique, ainsi que les offres d'emploi et de stage pour les développeurs présentées par les exposants au salon.`,
-    frenchName: "AFES Dev & Talent Day",
+    frenchName: "ASC Dev & Talent Day",
     arabicName: "يوم المبرمجين والتوظيف في مهن البرمجة",
   },
   {

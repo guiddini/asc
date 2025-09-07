@@ -11,7 +11,7 @@ export function MenuInner() {
   );
 }
 
-// <MenuItem title="AFES App" to="/home" />
+// <MenuItem title="ASC App" to="/home" />
 
 // <MenuInnerWithSub
 //   isMega={true}

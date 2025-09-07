@@ -5,9 +5,9 @@ import EventManagementNav from "./components/event-management-nav";
 const EventManagement = () => {
   const events = [
     {
-      title: "Conférence de Presse AFES 2025",
+      title: "Conférence de Presse ASC 2025",
       description:
-        "La conférence de presse d'AFES 2025 sera l'occasion d'annoncer les grandes lignes de cet événement majeur, abordant des sujets essentiels concernant l'avenir du fintech et de l'e-commerce.",
+        "La conférence de presse d'ASC 2025 sera l'occasion d'annoncer les grandes lignes de cet événement majeur, abordant des sujets essentiels concernant l'avenir du fintech et de l'e-commerce.",
       date: "21 Dec 2024 / 14:30",
       location: "Salle polyvalente centre culturel",
       image: "/media/eventili/conference-de-presse/afes.jpeg",
@@ -15,7 +15,7 @@ const EventManagement = () => {
     {
       title: "Algeria Fintech & E-commerce Summit",
       description:
-        "AFES 2025 veut être un espace incontournable pour un débat constructif autour des sujets d’actualité relatifs à cet événement.",
+        "ASC 2025 veut être un espace incontournable pour un débat constructif autour des sujets d’actualité relatifs à cet événement.",
       date: "30-31 Jan & 01 Fév",
       location: "Centre Culturel Mohammédia",
       image: "/media/eventili/afes/bg.jpg",

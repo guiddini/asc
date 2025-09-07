@@ -44,8 +44,8 @@ const EntityProfilePage = () => {
     const data: Event[] = [
       {
         slug: "conference-de-presse",
-        title: "Conference de Presse AFES 2025",
-        description: `La conférence de presse d'AFES 2025 sera l'occasion d'annoncer les grandes lignes de cet événement majeur, abordant des sujets essentiels concernant l'avenir du fintech et de l'e-commerce.`,
+        title: "Conference de Presse ASC 2025",
+        description: `La conférence de presse d'ASC 2025 sera l'occasion d'annoncer les grandes lignes de cet événement majeur, abordant des sujets essentiels concernant l'avenir du fintech et de l'e-commerce.`,
         date: "21 Dec 2024 / 14:30",
         gallery: [
           "/media/eventili/conference-de-presse/1.jpg",

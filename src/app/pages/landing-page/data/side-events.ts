@@ -2,7 +2,7 @@
 //   {
 //     id: 1,
 //     image: "/side-events/afes.jpg",
-//     title: "AFES",
+//     title: "ASC",
 //     description:
 //       "Annual forum bringing together entrepreneurs, startups, and investors to foster innovation and collaboration.",
 //   },
