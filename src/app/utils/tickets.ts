@@ -1,12 +1,12 @@
 export const tickets = [
   {
-    category: "GRATUIT",
+    category: "FREE",
     title: "0 DA",
     duration: "Trois Jours",
     features: [
-      { text: "Accès à l'exposition" },
-      { text: "Accès à la Cérémonie d'ouverture" },
-      { text: "Libre networking" },
+      { text: "Access to the exhibition" },
+      { text: "Access to the opening ceremony" },
+      { text: "Free networking" },
     ],
     price: 0,
     slug: "free", // Added slug

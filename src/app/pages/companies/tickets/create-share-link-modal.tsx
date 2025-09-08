@@ -52,7 +52,7 @@ const CreateShareLinkModal: React.FC<CreateShareLinkModalProps> = ({
       >
         <div id="share-link-modal-content">
           <Modal.Header closeButton>
-            <div id="share-link-modal-title">Lien de partage</div>
+            <div id="share-link-modal-title">share link</div>
           </Modal.Header>
 
           <Modal.Body>

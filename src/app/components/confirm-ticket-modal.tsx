@@ -90,7 +90,7 @@ export default function ConfirmTicketModal({
     <div id="confirm-ticket-modal-overlay">
       <div id="confirm-ticket-modal-container">
         <div id="confirm-ticket-modal-header">
-          <h2>Confirmer votre ticket</h2>
+          <h2>Confirm your ticket</h2>
           <button onClick={onClose}>
             <X size={24} />
           </button>
@@ -98,7 +98,7 @@ export default function ConfirmTicketModal({
 
         <div id="confirm-ticket-modal-warning">
           <AlertTriangle size={20} />
-          <span>Un ticket est requis pour accéder à cet événement</span>
+          <span>A ticket is required to access this event</span>
           <button onClick={onClose}>
             <X size={16} />
           </button>
@@ -108,7 +108,7 @@ export default function ConfirmTicketModal({
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* <div id="modal-ticket-form-group">
               <label>
-                Sélectionner un ticket <span id="required">*</span>
+                Select a ticket<span id="required">*</span>
               </label>
               <div id="confirm-ticket-modal-select-wrapper">
                 <Controller
@@ -165,7 +165,7 @@ export default function ConfirmTicketModal({
               </div> */}
             </div>
 
-            <div id="confirm-ticket-modal-price-summary">
+            {/* <div id="confirm-ticket-modal-price-summary">
               <div id="confirm-ticket-modal-subtotal">
                 <span>Sous-total</span>
                 <span>
@@ -182,7 +182,7 @@ export default function ConfirmTicketModal({
                   DA
                 </span>
               </div>
-            </div>
+            </div> */}
 
             <div id="confirm-ticket-modal-actions">
               <Link
@@ -190,11 +190,11 @@ export default function ConfirmTicketModal({
                 type="button"
                 id="confirm-ticket-modal-event-profile-btn"
               >
-                Profil de l'événement
+                event profile
               </Link>
               <button type="submit" id="confirm-ticket-modal-proceed-btn">
                 {slug === "free" ? (
-                  <>Réserver</>
+                  <>Reserve</>
                 ) : (
                   <>
                     Procéder

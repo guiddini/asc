@@ -189,7 +189,7 @@ export const BadgePage = () => {
             <Col xs={12} md={4} lg={4}>
               <div className="card w-100 h-100">
                 <div className="card-body d-flex flex-column align-items-center justify-content-center p-6">
-                  <h1>Partager ma partcipation</h1>
+                  <h1>Share my participation</h1>
 
                   <div className="w-100 h-50 d-flex flex-column align-items-start justify-content-center gap-4 align-self-start">
                     <LinkedinShareButton

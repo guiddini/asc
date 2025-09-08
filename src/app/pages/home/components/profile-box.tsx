@@ -42,9 +42,7 @@ const ProfileBox = ({ postLength }: { postLength: number }) => {
                 {postLength || 0}
               </span>
             </div>
-            <span className="text-gray-500 fs-8 d-block fw-bold">
-              Publications
-            </span>
+            <span className="text-gray-500 fs-8 d-block fw-bold">Posts</span>
           </div>
         </div>
       </div>

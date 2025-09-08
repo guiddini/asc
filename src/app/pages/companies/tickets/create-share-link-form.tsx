@@ -131,7 +131,7 @@ const CreateShareLinkForm: React.FC<CreateShareLinkFormProps> = ({
     <form onSubmit={handleSubmit(onSubmit)} id="share-link-form">
       <div id="share-link-form-group">
         <label htmlFor="title" id="share-link-form-label">
-          Titre du lien
+          Link title
         </label>
         <Controller
           name="title"
@@ -141,7 +141,7 @@ const CreateShareLinkForm: React.FC<CreateShareLinkFormProps> = ({
               {...field}
               type="text"
               id="share-link-form-input"
-              placeholder="Par exemple, les Tickets STAFF"
+              placeholder="For example, STAFF Tickets"
             />
           )}
         />
@@ -152,7 +152,7 @@ const CreateShareLinkForm: React.FC<CreateShareLinkFormProps> = ({
 
       <div id="share-link-ticket-form-group">
         <label id="share-link-ticket-label">
-          Sélectionner un ticket <span id="share-link-required">*</span>
+          Select a ticket<span id="share-link-required">*</span>
         </label>
         <div id="share-link-select-wrapper">
           <Controller
@@ -235,12 +235,12 @@ const CreateShareLinkForm: React.FC<CreateShareLinkFormProps> = ({
       )}
 
       <p className="my-4">
-        Précisez le nombre de tickets à inclure dans ce lien.
+        Specify the number of tickets to include in this link{" "}
       </p>
 
       <div className="modal-footer px-0">
         <Button variant="success" type="submit" id="share-link-submit-button">
-          Créer Un Lien
+          Create Link
         </Button>
       </div>
     </form>

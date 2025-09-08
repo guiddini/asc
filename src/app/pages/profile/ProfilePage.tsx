@@ -43,7 +43,7 @@ const ProfilePage = () => {
             onSelect={(k) => setKey(k)}
             className="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap bg-white mb-6 px-9 h-40px"
           >
-            <Tab eventKey="overview" title="Aperçu">
+            <Tab eventKey="overview" title="Overview">
               <Overview user={USER_DATA} />
             </Tab>
             {/* <Tab eventKey="connections" title="Suggestions">
@@ -51,7 +51,7 @@ const ProfilePage = () => {
               </Tab> */}
 
             {user?.id === USER_DATA?.id && (
-              <Tab eventKey="settings" title="Paramètres">
+              <Tab eventKey="settings" title="Settings">
                 <>
                   <AccountSettings {...USER_DATA} />
                 </>

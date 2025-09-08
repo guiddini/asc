@@ -45,10 +45,10 @@ const ConferenceSection: React.FC = () => {
   return (
     <section id="conference-section" className="container py-4">
       <div className="w-100 text-center mb-5">
-        <h2 className="fw-bold display-4 mb-3">Nos Conférences à l’Affiche</h2>
+        <h2 className="fw-bold display-4 mb-3">Our Featured Conferences</h2>
         <p className="lead text-secondary">
-          Découvrez les conférences publiées, leurs thématiques et les experts
-          qui y participent
+          Explore cutting-edge topics and meet the experts shaping the future of
+          innovation and entrepreneurship
         </p>
       </div>
 

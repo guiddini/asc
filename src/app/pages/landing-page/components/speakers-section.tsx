@@ -56,13 +56,14 @@ const SpeakerSection: React.FC = () => {
         <Row className="mb-5 w-100">
           <Col lg={8} className="mx-auto text-center">
             <h2 className="display-5 fw-bold text-dark mb-3">
-              {/* Meet Our Speakers */}
-              Rencontrez nos conférenciers
-
+              Meet Our Speakers
+              {/* Rencontrez nos conférenciers */}
             </h2>
             <p className="lead text-muted mb-0">
+              Discover the minds shaping the future of innovation and
+              entrepreneurship
               {/* Industry experts and thought leaders sharing their insights */}
-              Des experts du secteur et des leaders d'opinion partageant leurs connaissances
+              {/* Des experts du secteur et des leaders d'opinion partageant leurs connaissances */}
             </p>
           </Col>
         </Row>

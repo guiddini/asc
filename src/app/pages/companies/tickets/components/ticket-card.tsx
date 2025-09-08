@@ -23,7 +23,7 @@ const TicketCard = ({
           <TicketIcon width={50} height={50} stroke="#00c4c4" />
           <div className="">
             <p className="fs-3 fw-bold m-0">Ticket {ticket.name}</p>
-            <p className="fs-5 fw-medium m-0">Quantité : {ticket?.quantity}</p>
+            {/* <p className="fs-5 fw-medium m-0">Quantité : {ticket?.quantity}</p> */}
             <div className="w-100 d-flex flex-row align-items-center">
               <p
                 className="fs-7 fw-medium m-0 cursor-pointer"
@@ -31,7 +31,7 @@ const TicketCard = ({
                   setSelectedTicket(ticket?.type);
                 }}
               >
-                Afficher les privilèges
+                View Benefits
               </p>
 
               <ChevronRight stroke="#00c4c4" width={16} height={16} />

@@ -106,7 +106,7 @@ export const ProductsPage = () => {
               }}
             >
               <div className="card-body d-flex flex-column align-items-center justify-content-center">
-                <span className="fs-3">Aucun produit disponible</span>
+                <span className="fs-3">No products available</span>
                 <img
                   src={toAbsoluteUrl(
                     "/media/illustrations/sigma-1/21-dark.png"

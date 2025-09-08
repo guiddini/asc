@@ -38,18 +38,23 @@ const TicketBoughtSuccess = () => {
           <BadgeCheck size={48} />
         </div>
 
-        <h1 id="ticket-success-title">Votre ticket est réservé avec succès</h1>
+        <h1 id="ticket-success-title">
+          {" "}
+          <h1 id="ticket-success-title">
+            Your ticket has been successfully reserved
+          </h1>
+        </h1>
 
         <p id="ticket-success-description">
-          Votre réservation de Ticket a réussi.
+          Your ticket reservation was successful.
           <br />
-          Vous pouvez désormais explorer votre tableau de bord pour accéder aux
-          détails de l'événement et à la gestion des Tickets.
+          You can now explore your dashboard to access event details and manage
+          your tickets.
         </p>
 
         <div id="ticket-success-actions">
           <button id="ticket-success-dashboard" onClick={handleAuthRedirect}>
-            Accéder au tableau de bord
+            Go to dashboard
             <ArrowRight size={20} className="rotate-180" />
           </button>
 
@@ -57,7 +62,7 @@ const TicketBoughtSuccess = () => {
             id="ticket-success-explore"
             onClick={() => navigate("/#events-section")}
           >
-            Explorer les événements
+            Explore events
           </button>
         </div>
       </div>

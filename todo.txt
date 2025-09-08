@@ -33,7 +33,7 @@ sevices media type (imgs, pdf,)
 
 - founder quote  
 
--change name of publications => actualites
+-change name of posts => actualites
 
 -- product page =>
  -- filterage par: category, type,

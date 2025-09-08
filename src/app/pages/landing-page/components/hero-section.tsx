@@ -24,7 +24,7 @@ const HeroSection: React.FC = () => {
     subtitle: "Raising African Champions",
     price: "$19",
     title: "Raising African Champions",
-    desc: "Rejoignez le plus grand rassemblement des champions africains de l'innovation et de l'entrepreneuriat.",
+    desc: "Join the largest gathering of Africa’s champions of innovation and entrepreneurship.",
   };
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const HeroSection: React.FC = () => {
             onClick={handleType}
           >
             <i className="uil uil-envelope" style={{ fontSize: "1.3rem" }}></i>
-            Rejoignez-nous
+            Join-us{" "}
           </Link>
         </div>
       );
@@ -158,7 +158,10 @@ const HeroSection: React.FC = () => {
           className="logo-image mb-4"
           height="100"
         />
-        <p className="display-5 fw-bold mb-4 text-white text-uppercase" style={{fontSize:"35px"}}>
+        <p
+          className="display-5 fw-bold mb-4 text-white text-uppercase"
+          style={{ fontSize: "35px" }}
+        >
           {item.title}
         </p>
         <p
@@ -168,9 +171,10 @@ const HeroSection: React.FC = () => {
           {item.desc}
         </p>
         <h5 className="mt-4 text-white fw-semibold">
-          Du <span style={{ color: "#64B45C", fontWeight: "bold" }}>06</span> au{" "}
+          From <span style={{ color: "#64B45C", fontWeight: "bold" }}>06</span>{" "}
+          to{" "}
           <span style={{ color: "#64B45C", fontWeight: "bold" }}>
-            08 Decembre 2025
+            08 December 2025
           </span>
         </h5>
         <h6 className="text-white-50 mt-2">

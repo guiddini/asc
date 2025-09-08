@@ -23,15 +23,15 @@ const AboutSection: React.FC = () => {
                 />
               </div>
               <h2 className="patronage-title display-5 fw-bold mb-3">
-                {/* Under the High Patronage of the President of the Republic */}
-                Sous le Haut Patronage du Président de la République
+                Under the High Patronage of the President of the Republic
+                {/* Sous le Haut Patronage du Président de la République */}
               </h2>
               <p className="patronage-subtitle lead text-muted">
-                Vivez trois jours intenses de réseautage mondial, de présentations d'innovations et d'ateliers porteurs d'avenir. Entrepreneurs, investisseurs et penseurs se réuniront pour créer des opportunités et créer un impact en Afrique.
-                {/* Experience 3 powerful days of global networking, innovation
+                {/* Vivez trois jours intenses de réseautage mondial, de présentations d'innovations et d'ateliers porteurs d'avenir. Entrepreneurs, investisseurs et penseurs se réuniront pour créer des opportunités et créer un impact en Afrique. */}
+                Experience 3 powerful days of global networking, innovation
                 showcases, and future-shaping workshops. Entrepreneurs,
                 investors, and thinkers will gather to drive opportunity and
-                impact across Africa. */}
+                impact across Africa.
               </p>
             </Col>
           </Row>
@@ -56,12 +56,12 @@ const AboutSection: React.FC = () => {
             />
             <div className="about-content">
               <p className="about-description">
-                L'African Startup Conference est le rendez-vous panafricain
-                incontournable de l’innovation et de l’entrepreneuriat. Pour sa
-                4ème édition, du 6 au 8 décembre 2025 à Alger, elle met à
-                l’honneur les “African Champions” : startups en forte
-                croissance, investisseurs, décideurs publics et diaspora, réunis
-                pour bâtir un écosystème technologique compétitif et souverain.
+                The African Startup Conference is the ultimate Pan-African stage
+                for innovation and entrepreneurship. From December 6–8, 2025, in
+                Algiers, its 4th edition will celebrate the “African Champions”
+                bold startups, visionary investors, forward-thinking
+                policymakers, and the vibrant diaspora all coming together to
+                shape a competitive, sovereign, and world-class tech ecosystem
               </p>
               {/* Endorsement/Organization Banner */}
               <div className="ministry-endorsement d-flex align-items-center gap-3 mt-4 rounded-3 bg-light p-3 shadow-sm">
@@ -74,9 +74,8 @@ const AboutSection: React.FC = () => {
                 />
                 <div className="endorsement-text text-muted">
                   <p>
-                    Organisé par le Ministere de l'Economie de la Connaissance,
-                    <br />
-                    des Startups & des Micro-Entreprises & ALGERIA VENTURE
+                    Organized by the Ministry of Knowledge Economy, <br />
+                    Startups & Micro-Enterprises, and Algeria Venture
                   </p>
                 </div>
               </div>

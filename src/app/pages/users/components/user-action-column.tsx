@@ -209,7 +209,7 @@ const UserActionColumn = ({
                 iconName="eye"
                 className="fs-1 cursor-pointer m-0 text-success"
               />
-              <span className="text-muted ms-2">Consulter</span>
+              <span className="text-muted ms-2">View</span>
             </div>
           </Dropdown.Item>
 

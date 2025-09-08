@@ -2,18 +2,18 @@
 import { NavigationItem } from "../types/navigation";
 
 export const navigationItems: NavigationItem[] = [
-  { label: "Accueil", href: "/" },
-  { label: "À propos", href: "/a-propos" },
+  { label: "Home", href: "/" },
+  { label: "Abous Us", href: "/a-propos" },
   {
-    label: "Programme",
+    label: "Program",
     dropdown: [
       { label: "Agenda", href: "/programme#agenda" },
-      { label: "Keynotes", href: "/programme#keynotes" },
-      { label: "Ateliers", href: "/programme#ateliers" },
+      { label: "Keynote", href: "/programme#keynotes" },
+      { label: "Workshop", href: "/programme#ateliers" },
       { label: "Panels", href: "/programme#panels" },
       { label: "Speakers", href: "/speakers" },
       {
-        label: "Espaces thématiques",
+        label: "Thematic Spaces",
         dropdown: [
           { label: "Startup Factory", href: "/espaces/startup-factory" },
           { label: "Tech Zone", href: "/espaces/tech-zone" },
@@ -24,17 +24,17 @@ export const navigationItems: NavigationItem[] = [
       },
     ],
   },
-  { label: "Exposants", href: "/exposants" },
+  { label: "Exhibitors", href: "/exposants" },
   {
-    label: "Partenaires & Sponsors",
-    dropdown: [{ label: "Packs + visibilité", href: "/partenaires/packs" }],
+    label: "Partners & Sponsors",
+    dropdown: [{ label: "Packs + Visibility", href: "/partenaires/packs" }],
   },
   {
-    label: "Infos pratiques",
+    label: "Practical Info",
     dropdown: [
-      { label: "Lieu", href: "/infos/lieu" },
-      { label: "Accès", href: "/infos/acces" },
-      { label: "Hébergement", href: "/infos/hebergement" },
+      { label: "Location", href: "/infos/lieu" },
+      { label: "Access", href: "/infos/acces" },
+      { label: "Accommodation", href: "/infos/hebergement" },
       { label: "Contact", href: "/contact" },
     ],
   },

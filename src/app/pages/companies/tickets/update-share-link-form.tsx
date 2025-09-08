@@ -66,7 +66,7 @@ const UpdateShareLinkForm: React.FC<UpdateShareLinkFormProps> = ({
     <form onSubmit={handleSubmit(onSubmit)} id="share-link-form">
       <div id="share-link-form-group">
         <label htmlFor="title" id="share-link-form-label">
-          Titre du lien
+          Link title
         </label>
         <Controller
           name="title"
@@ -76,7 +76,7 @@ const UpdateShareLinkForm: React.FC<UpdateShareLinkFormProps> = ({
               {...field}
               type="text"
               id="share-link-form-input"
-              placeholder="Par exemple, les Tickets STAFF"
+              placeholder="For example, STAFF Tickets"
             />
           )}
         />
@@ -87,7 +87,7 @@ const UpdateShareLinkForm: React.FC<UpdateShareLinkFormProps> = ({
 
       <div id="share-link-ticket-form-group">
         <label id="share-link-ticket-label">
-          Sélectionner un ticket <span id="share-link-required">*</span>
+          Select a ticket<span id="share-link-required">*</span>
         </label>
         <div id="share-link-select-wrapper">
           <select

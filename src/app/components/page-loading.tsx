@@ -6,7 +6,7 @@ interface PageLoadingProps {
 }
 
 const PageLoading: React.FC<PageLoadingProps> = ({
-  message = "Chargement en cours...",
+  message = "Loading...",
 }) => {
   return (
     <div id="page-loading">

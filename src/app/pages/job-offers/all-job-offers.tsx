@@ -168,7 +168,7 @@ export const AllJobOffers = () => {
                 className="d-flex flex-column justify-content-center align-items-center bg-white rounded-3"
               >
                 <img src={toAbsoluteUrl("/media/afes/job-offer.png")} alt="" />
-                <h1>Pas d'offres d'emploi disponible</h1>
+                <h1>No offer available</h1>
               </div>
             )}
           </>

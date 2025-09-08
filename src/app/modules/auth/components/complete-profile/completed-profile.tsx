@@ -26,7 +26,7 @@ const CompletedProfile = () => {
       <div className="pb-8 pb-lg-10">
         <h2 className="fw-bold text-dark">Bienvenue</h2>
         <div className="text-muted fw-semibold fs-6">
-          Vous devez suivre les étapes de cette vidéo pour mieux comprendre le
+          Vous devez follow les étapes de cette vidéo pour mieux comprendre le
           fonctionnement de la plateforme.
         </div>
       </div>

@@ -16,7 +16,7 @@ export const getThreeDayRange = (): Day[] => {
     date.setDate(today.getDate() + i);
     days.push({
       date: date.toISOString().split("T")[0],
-      display: date.toLocaleDateString("fr-FR", {
+      display: date.toLocaleDateString("en-GB", {
         weekday: "long",
         month: "long",
         day: "numeric",

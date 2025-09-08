@@ -73,11 +73,7 @@ const EventCard: React.FC<EventCardProps> = ({
                   }
                 }}
               >
-                {hasPassed
-                  ? "Passé"
-                  : isContinue
-                  ? "Continuer"
-                  : "Obtenir l'accès"}
+                {hasPassed ? "Past" : isContinue ? "Continue" : "Get Access"}
                 {hasPassed ? (
                   ""
                 ) : isContinue ? (

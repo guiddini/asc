@@ -236,7 +236,7 @@ const InfoSettings = ({ user }: { user: any }) => {
         aria-controls="kt_account_profile_details"
       >
         <div className="card-title m-0">
-          <h3 className="fw-bolder m-0">Détails du profil</h3>
+          <h3 className="fw-bolder m-0">Profile Details</h3>
         </div>
       </div>
 
@@ -294,7 +294,7 @@ const InfoSettings = ({ user }: { user: any }) => {
 
             <div className="row mb-6">
               <label className="col-lg-4 col-form-label required fw-bold fs-6">
-                Nom complet
+                Full Name
               </label>
 
               <div className="col-lg-8">
@@ -303,7 +303,7 @@ const InfoSettings = ({ user }: { user: any }) => {
                     <input
                       type="text"
                       className="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
-                      placeholder="Prénom"
+                      placeholder="First Name"
                       {...register("fname")}
                     />
                     {errorMessage(errors, "fname")}
@@ -313,7 +313,7 @@ const InfoSettings = ({ user }: { user: any }) => {
                     <input
                       type="text"
                       className="form-control form-control-lg form-control-solid"
-                      placeholder="Nom"
+                      placeholder="Last Name"
                       {...register("lname")}
                     />
                     {errorMessage(errors, "lname")}
@@ -332,7 +332,7 @@ const InfoSettings = ({ user }: { user: any }) => {
                   type="email"
                   disabled
                   className="form-control form-control-lg form-control-solid disabled"
-                  placeholder="Adresse e-mail"
+                  placeholder="email address"
                   {...register("email")}
                 />
                 {errorMessage(errors, "email")}
@@ -341,14 +341,14 @@ const InfoSettings = ({ user }: { user: any }) => {
 
             <div className="row mb-6">
               <label className="col-lg-4 col-form-label fw-bold fs-6">
-                <span className="required">Numéro de téléphone</span>
+                <span className="required">Phone Number</span>
               </label>
 
               <div className="col-lg-8 fv-row">
                 <input
                   type="tel"
                   className="form-control form-control-lg form-control-solid"
-                  placeholder="Numéro de téléphone"
+                  placeholder="Phone Number"
                   {...register("phone")}
                 />
                 {errorMessage(errors, "phone")}
@@ -356,14 +356,14 @@ const InfoSettings = ({ user }: { user: any }) => {
             </div>
             <div className="row mb-6">
               <label className="col-lg-4 col-form-label fw-bold fs-6">
-                <span className="required">Centre d'intérêt</span>
+                <span className="required">Interests</span>
               </label>
 
               <SelectComponent
                 control={control as any}
                 data={MEMORIZED_ACTIVITIES}
                 errors={errors}
-                label="Centre d'intérêt"
+                label="Interests"
                 name="activity_area_ids"
                 colXS={12}
                 colMD={6}
@@ -379,7 +379,7 @@ const InfoSettings = ({ user }: { user: any }) => {
 
             <div className="row mb-6">
               <label className="col-lg-4 col-form-label fw-bold fs-6">
-                <span className="required">Adresse</span>
+                <span className="required">Address</span>
               </label>
 
               <div className="col-lg-8 fv-row">
@@ -416,12 +416,12 @@ const InfoSettings = ({ user }: { user: any }) => {
 
                   <Col className="mt-2">
                     <label className="fw-bold fs-6">
-                      <span className="required">Adresse</span>
+                      <span className="required">Address</span>
                     </label>
                     <input
                       type="text"
                       className="form-control form-control-lg form-control-solid"
-                      placeholder="Adresse"
+                      placeholder="Address"
                       {...register("address")}
                     />
                     {errorMessage(errors, "address")}
@@ -445,7 +445,7 @@ const InfoSettings = ({ user }: { user: any }) => {
                         control={control as any}
                         data={institutions}
                         errors={errors}
-                        label="Type d'institution"
+                        label="Institution Type"
                         name="institution_type"
                         colXS={12}
                         colMD={6}
@@ -456,12 +456,12 @@ const InfoSettings = ({ user }: { user: any }) => {
 
                       <Col className="mt-2">
                         <label className="fw-bold fs-6">
-                          <span className="required">Nom de l'institution</span>
+                          <span className="required">Institution Name</span>
                         </label>
                         <input
                           type="text"
                           className="form-control form-control-lg form-control-solid"
-                          placeholder="Nom de l'institution"
+                          placeholder="Institution Name"
                           {...register("institution_name")}
                         />
                         {errorMessage(errors, "institution_name")}
@@ -478,7 +478,7 @@ const InfoSettings = ({ user }: { user: any }) => {
                 <div className="separator mb-4"></div>
                 <div className="row mb-6">
                   <label className="col-lg-4 col-form-label fw-bold fs-6">
-                    <span className="required">Étudiant</span>
+                    <span className="required">Student</span>
                   </label>
 
                   <div className="col-lg-8 fv-row">
@@ -487,7 +487,7 @@ const InfoSettings = ({ user }: { user: any }) => {
                         control={control as any}
                         data={MEMORIZED_UNIVERSITIES}
                         errors={errors}
-                        label="Université"
+                        label="University"
                         name="university_id"
                         colXS={12}
                         colMD={6}
@@ -500,7 +500,7 @@ const InfoSettings = ({ user }: { user: any }) => {
                         <Col className="mt-2">
                           <label className="fw-bold fs-6">
                             <span className="required">
-                              Université étrangère
+                              International University
                             </span>
                           </label>
                           <input
@@ -525,7 +525,7 @@ const InfoSettings = ({ user }: { user: any }) => {
                 <div className="separator mb-4"></div>
                 <div className="row mb-6">
                   <label className="col-lg-4 col-form-label fw-bold fs-6">
-                    <span className="required">Entreprise</span>
+                    <span className="required">Company</span>
                   </label>
 
                   <div className="col-lg-8 fv-row">
@@ -552,9 +552,7 @@ const InfoSettings = ({ user }: { user: any }) => {
                         (watch("occupation_id") as selectProps).value === 0 && (
                           <Col className="mt-2">
                             <label className="fw-bold fs-6">
-                              <span className="required">
-                                Nom de l'occupation
-                              </span>
+                              <span className="required">Occupation Name</span>
                             </label>
                             <input
                               type="text"
@@ -577,11 +575,7 @@ const InfoSettings = ({ user }: { user: any }) => {
               type="submit"
               className="btn btn-custom-purple-dark text-white"
             >
-              {isLoading ? (
-                <Spinner animation="border" size="sm" />
-              ) : (
-                "Soumettre"
-              )}
+              {isLoading ? <Spinner animation="border" size="sm" /> : "Submit"}
             </button>
           </div>
         </form>

@@ -51,21 +51,21 @@ const InivitationAuth = () => {
 
   return (
     <div id="form-container">
-      <h2>Se connecter</h2>
+      <h2>Login</h2>
       <p id="form-subtitle">
-        Vous n'avez pas de compte ?{" "}
+        Don’t have an account?{" "}
         <Link to="/auth/signup" id="highlight-link">
-          Inscrivez-vous maintenant
+          Sign up now
         </Link>
       </p>
 
       <form id="auth-form" onSubmit={handleSubmit(onSubmit)}>
         {}
         <div id="form-group">
-          <label htmlFor="email">Code d’invitation</label>
+          <label htmlFor="email">Invitation code</label>
           <input
             id="invitation_code"
-            placeholder="Entrez votre Code d’invitation"
+            placeholder="Enter your invitation code"
             {...register("invitation_code")}
           />
           {errors.invitation_code && (
@@ -80,13 +80,13 @@ const InivitationAuth = () => {
             {...register("general_conditions")}
           />
           <label htmlFor="signup-general_conditions">
-            J'ai lu et j'accepte les{" "}
+            I agree to the{" "}
             <Link
               to="/privacy-policy"
               target="_blank"
               id="signup-highlight-link"
             >
-              Conditions générales
+              General Conditions
             </Link>
           </label>
         </div>
@@ -108,7 +108,7 @@ const InivitationAuth = () => {
               }}
             >
               <span id="loader"></span>
-              <span>Vérification...</span>
+              <span>VVerification...</span>
             </div>
           ) : (
             "Confirmer"
@@ -116,11 +116,11 @@ const InivitationAuth = () => {
         </button>
 
         <div id="divider">
-          <span>OU Continuez avec l'Email</span>
+          <span>OR continue with Email</span>
         </div>
 
         <Link to="/auth/invitation" id="invitation-button">
-          <span>Se connecter avec l'Email</span>
+          <span>Login with Email</span>
           <MailOpen />
         </Link>
       </form>

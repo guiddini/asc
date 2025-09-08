@@ -15,7 +15,11 @@ type CounterProps = {
   start?: boolean; // animation démarre seulement si true
 };
 
-const Counter: React.FC<CounterProps> = ({ value, duration = 2000, start = false }) => {
+const Counter: React.FC<CounterProps> = ({
+  value,
+  duration = 2000,
+  start = false,
+}) => {
   const numericValue = parseInt(value.replace(/[^\d]/g, ""), 10);
   const suffix = value.replace(/[0-9\s]/g, ""); // ex: "+"
 
@@ -53,7 +57,7 @@ const Counter: React.FC<CounterProps> = ({ value, duration = 2000, start = false
 const EVENT_STATS: StatItem[] = [
   {
     icon: "/stats/startup.svg",
-    label: "Délégations ministérielles",
+    label: "Ministerial Delegations",
     value: "40+",
     alt: "Icône Startups",
   },
@@ -65,13 +69,13 @@ const EVENT_STATS: StatItem[] = [
   },
   {
     icon: "/stats/experts.svg",
-    label: "Experts Internationaux",
+    label: "International Experts",
     value: "200+",
     alt: "Icône Experts",
   },
   {
     icon: "/stats/investors.svg",
-    label: "Investisseurs",
+    label: "Investors",
     value: "150+",
     alt: "Icône Investisseurs",
   },
@@ -113,9 +117,10 @@ const EventStatsSection: React.FC = () => {
       >
         <Row className="mb-5 text-center">
           <Col>
-            <h2 className="fw-bold display-4">L’événement en chiffres</h2>
+            <h2 className="fw-bold display-4">Event Highlights in Numbers</h2>
             <p className="lead text-secondary">
-              Découvrez l’ampleur et l’impact de notre rassemblement international
+              Explore the scale, impact, and global reach of our international
+              gathering.
             </p>
           </Col>
         </Row>
@@ -137,7 +142,11 @@ const EventStatsSection: React.FC = () => {
                 className="stat-value fw-bold display-5"
                 style={{ color: "var(--bs-dark)" }}
               >
-                <Counter value={stat.value} duration={2500} start={startCounter} />
+                <Counter
+                  value={stat.value}
+                  duration={2500}
+                  start={startCounter}
+                />
               </div>
             </Col>
           ))}

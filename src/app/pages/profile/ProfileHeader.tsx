@@ -135,14 +135,14 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
                       className="opacity-25"
                       onClick={(e) => e.preventDefault()}
                     >
-                      Suivre
+                      Follow
                     </Button>
                   </OverlayTrigger>
                   <Button variant="primary" onClick={handleOpenMeetModal}>
                     Request Meeting
                   </Button>
                   <Button variant="success" onClick={handleOpenTextModal}>
-                    Envoyer un message
+                    Send a message
                   </Button>
                 </div>
               )}
@@ -162,7 +162,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
         {/* Text Message Modal */}
         <Modal show={showTextModal} onHide={handleCloseTextModal} centered>
           <Modal.Header closeButton>
-            <Modal.Title>Envoyer un message à {user.fname}</Modal.Title>
+            <Modal.Title>Send a message à {user.fname}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form.Group controlId="textMessage">

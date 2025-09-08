@@ -12,7 +12,10 @@ const PrivacyPolicy: React.FC = () => {
           content="Conditions d'utilisation pour African Startup Conference, votre solution globale pour la gestion d'événements."
         />
       </Helmet>
-      <div id="privacypolicy-page-container" style={{backgroundColor:'#002040'}}>
+      <div
+        id="privacypolicy-page-container"
+        style={{ backgroundColor: "#002040" }}
+      >
         <h1 id="privacypolicy-page-title">Conditions d'utilisation</h1>
 
         <section id="privacypolicy-page-section">
@@ -149,8 +152,8 @@ const PrivacyPolicy: React.FC = () => {
               sont collectées, utilisées et partagées.
             </li>
             <li>
-              Contrôle utilisateur : Vous avez le droit de consulter, modifier
-              ou supprimer vos informations personnelles à tout moment.
+              Contrôle utilisateur : Vous avez le droit de view, modifier ou
+              supprimer vos informations personnelles à tout moment.
             </li>
             <li>
               Conformité : Nous respectons toutes les réglementations en matière

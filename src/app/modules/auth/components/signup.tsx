@@ -162,11 +162,11 @@ export default function SignupPage() {
 
   return (
     <div id="signup-form-container">
-      <h2>S'inscrire</h2>
+      <h2>Sign Up</h2>
       <p id="signup-form-subtitle">
-        Vous avez déjà un compte ?{" "}
+        Don’t have an account?{" "}
         <Link to="/auth/login" id="signup-highlight-link">
-          Connectez-vous !
+          Login!
         </Link>
       </p>
 
@@ -174,7 +174,7 @@ export default function SignupPage() {
         <Row>
           <Col md={6}>
             <div id="signup-form-group">
-              <label>Prénom</label>
+              <label>First Name</label>
               <input type="text" {...register("fname")} />
               {errors.fname && (
                 <span id="signup-error-message">{errors.fname.message}</span>
@@ -184,7 +184,7 @@ export default function SignupPage() {
 
           <Col md={6}>
             <div id="signup-form-group">
-              <label>Nom</label>
+              <label>Last Name</label>
               <input type="text" {...register("lname")} />
               {errors.lname && (
                 <span id="signup-error-message">{errors.lname.message}</span>
@@ -206,7 +206,7 @@ export default function SignupPage() {
 
           <Col md={6}>
             <div id="signup-form-group">
-              <label>Téléphone</label>
+              <label>Phone</label>
               <input type="text" {...register("phone")} />
               {errors.phone && (
                 <span id="signup-error-message">{errors.phone.message}</span>
@@ -219,7 +219,7 @@ export default function SignupPage() {
           <Col md={12}>
             <div id="">
               <label htmlFor="linkedin_url" className="form-label">
-                LinkedIn Profile
+                LinkedIn Profil
               </label>
               <div className="input-group mb-5">
                 <input
@@ -257,7 +257,7 @@ export default function SignupPage() {
               control={control as any}
               data={activities}
               errors={errors}
-              label="Secteurs d’activité"
+              label="Industry Sectors"
               name="activity_area_ids"
               colXS={12}
               colMD={12}
@@ -278,7 +278,7 @@ export default function SignupPage() {
                 { label: "English", value: "en" },
               ]}
               errors={errors}
-              label="Langues"
+              label="Languages"
               name="languages"
               colXS={12}
               colMD={12}
@@ -291,12 +291,12 @@ export default function SignupPage() {
         <Row>
           <Col md={6}>
             <div id="signup-form-group">
-              <label htmlFor="signup-password">Mot de passe</label>
+              <label htmlFor="signup-password">Password</label>
               <div id="signup-password-input">
                 <input
                   type={showPassword ? "text" : "password"}
                   id="signup-password"
-                  placeholder="Entrez votre mot de passe"
+                  placeholder="Enter your password"
                   {...register("password")}
                 />
                 <button
@@ -316,13 +316,13 @@ export default function SignupPage() {
           <Col md={6}>
             <div id="signup-form-group">
               <label htmlFor="signup-password_confirmation">
-                Confirmer le mot de passe
+                Confirm Password
               </label>
               <div id="signup-password-input">
                 <input
                   type={showConfirmPassword ? "text" : "password"}
                   id="signup-password_confirmation"
-                  placeholder="Confirmez votre mot de passe"
+                  placeholder="Confirm your password"
                   {...register("password_confirmation")}
                 />
                 <button
@@ -351,9 +351,9 @@ export default function SignupPage() {
             <div id="signup-terms-group">
               <input type="checkbox" {...register("terms")} />
               <label>
-                J'accepte les{" "}
+                I agree to the{" "}
                 <Link to="/privacy-policy" target="_blank">
-                  Conditions générales
+                  Terms and Conditions
                 </Link>
               </label>
               {errors.terms && (
@@ -366,7 +366,7 @@ export default function SignupPage() {
         <Row>
           <Col md={12}>
             <button type="submit" id="signup-submit-button">
-              {isLoading ? "Enregistrement..." : "S'inscrire"}
+              {isLoading ? "Registering..." : "Sign Up"}
             </button>
           </Col>
         </Row>

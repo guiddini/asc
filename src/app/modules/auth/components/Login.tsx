@@ -28,9 +28,9 @@ type loginProps = {
 export function Login() {
   const { saveAuth, setCurrentUser } = useAuth();
   const dispatch = useDispatch();
-   const [showTypeComponent, setShowTypeComponent] = useState(false);
-    const handleType = () => setShowTypeComponent(true);
-    const handleCloseType = () => setShowTypeComponent(false);
+  const [showTypeComponent, setShowTypeComponent] = useState(false);
+  const handleType = () => setShowTypeComponent(true);
+  const handleCloseType = () => setShowTypeComponent(false);
   const [showPassword, setShowPassword] = useState(false);
   const { mutate, isLoading, error } = useMutation({
     mutationKey: ["login"],
@@ -98,11 +98,11 @@ export function Login() {
 
   return (
     <div id="form-container">
-      <h2>Se connecter</h2>
+      <h2>Login</h2>
       <p id="form-subtitle">
-        Vous n'avez pas de compte ?{" "}
+        Don’t have an account?{" "}
         <Link to="" onClick={handleType} id="highlight-link">
-          Inscrivez-vous maintenant
+          Sign up now
         </Link>
       </p>
 
@@ -112,7 +112,7 @@ export function Login() {
           <input
             type="email"
             id="email"
-            placeholder="Entrez votre Email"
+            placeholder="Enter your email"
             {...register("email")}
           />
           {errors.email && (
@@ -126,7 +126,7 @@ export function Login() {
             <input
               type={showPassword ? "text" : "password"}
               id="password"
-              placeholder="Entrez votre mot de passe"
+              placeholder="Enter your password"
               {...register("password")}
             />
             <button
@@ -157,25 +157,24 @@ export function Login() {
               <span>Connexion...</span>
             </div>
           ) : (
-            "Se connecter"
+            "Login"
           )}
         </button>
 
         <Link to="/auth/forgot-password" id="forgot-password">
-          Mot de passe oublié ?
+          Forgot password?
         </Link>
 
         <div id="divider">
-          <span>OU utilisez le code d'invitation</span>
+          <span>OR use the invitation code</span>
         </div>
 
         <Link to="/auth/invitation" id="invitation-button">
-          <span>Code d'invitation</span>
+          <span>Invitation code</span>
           <UserPlus />
         </Link>
       </form>
-            <UserTypeComponent show={showTypeComponent} onHide={handleCloseType} />
-
+      <UserTypeComponent show={showTypeComponent} onHide={handleCloseType} />
     </div>
   );
 }

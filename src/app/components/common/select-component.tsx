@@ -119,13 +119,11 @@ export const SelectComponent: React.FC<SelectComponentProps> = (props) => {
               onBlur={onBlur}
               ref={ref}
               noOptionsMessage={() => {
-                return (
-                  <p className="pt-3">Rien ne correspond à votre recherche</p>
-                );
+                return <p className="pt-3">No options match your search</p>;
               }}
               defaultValue={props.defaultValue}
               classNames={{}}
-              placeholder="Sélectionner..."
+              placeholder="Select..."
             />
             {errorMessage(props.errors, props.name)}
           </Col>

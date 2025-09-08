@@ -9,10 +9,10 @@ interface SearchProps {
 
 const UserTypeComponent: React.FC<SearchProps> = ({ show, onHide }) => {
   const userTypes = [
-    { label: "Visiteur", value: "visitor" },
+    { label: "Visitor", value: "visitor" },
     { label: "Sponsor", value: "sponsor" },
-    { label: "Exposant", value: "exhibitor" },
-    { label: "Investisseur", value: "investor" },
+    { label: "Exhibitor", value: "exhibitor" },
+    { label: "Investor", value: "investor" },
     { label: "Media", value: "media" },
   ];
 
@@ -36,7 +36,7 @@ const UserTypeComponent: React.FC<SearchProps> = ({ show, onHide }) => {
           />
 
           <p className="text-white text-center mb-4">
-            Choisissez votre type d’utilisateur pour continuer
+            Choose your user type to continue{" "}
           </p>
 
           <div className="d-flex flex-column gap-3 w-100">

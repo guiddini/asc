@@ -25,21 +25,21 @@ const TrendingBox = () => {
       <div className="card-header pt-5">
         <h3 className="card-title align-items-start flex-column">
           <span className="card-label fw-bold text-gray-900">
-            Produits sponsorisés
+            Sponsored Products
           </span>
           {user?.company?.id && (
             <Link
               to={`/company/${user?.company?.id}/products/create`}
               className="text-muted mt-1 fw-semibold fs-7 cursor-pointer"
             >
-              Ajouter vos produits
+              Add Your Products
             </Link>
           )}
         </h3>
 
         <div className="card-toolbar">
           <Link to="/products" className="btn btn-sm btn-light">
-            Voir tout
+            View All
           </Link>
         </div>
       </div>
@@ -74,7 +74,7 @@ const TrendingBox = () => {
               alt="no featured product found"
             />
             <span className="text-muted mt-1 fw-semibold fs-4">
-              Aucun produit trouvé
+              No Product Found
             </span>
             {user?.company?.id && (
               <span
@@ -85,7 +85,7 @@ const TrendingBox = () => {
                   }
                 }}
               >
-                Ajouter vos produits
+                Add Your Products
               </span>
             )}
           </div>

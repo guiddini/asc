@@ -9,9 +9,9 @@ const TimelineBox = () => {
     <div className="card card-flush">
       <div className="card-header pt-5">
         <h3 className="card-title align-items-start flex-column">
-          <span className="card-label fw-bold text-gray-900">Mon parcours</span>
+          <span className="card-label fw-bold text-gray-900">My Journey</span>
           <span className="text-gray-500 pt-2 fw-semibold fs-6">
-            Dernières activités
+            Recent Activities
           </span>
         </h3>
 
@@ -101,7 +101,7 @@ const TimelineBox = () => {
               <i className="ki-outline ki-abstract-8 text-gray-600 fs-3"></i>
             </div>
 
-            <div className="fw-bold text-gray-700 ps-3 fs-6">A rejoint ACS</div>
+            <div className="fw-bold text-gray-700 ps-3 fs-6">Joind ACS</div>
           </div>
 
           {/* <div className="timeline-item d-flex align-items-center">

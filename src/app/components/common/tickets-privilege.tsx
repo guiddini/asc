@@ -96,8 +96,7 @@ export const TicketsPrivilege = ({
                       Ticket {selectedTicket?.category}
                     </h1>
                     <div className="fs-5  fw-bold">
-                      Si vous avez besoin de plus d'informations sur nos tarifs,
-                      veuillez{" "}
+                      If you need more information about our pricing, please{" "}
                       <span
                         role="button"
                         onClick={() =>
@@ -105,7 +104,7 @@ export const TicketsPrivilege = ({
                         }
                         className="link-primary"
                       >
-                        consulter notre site web.
+                        visit our website
                       </span>
                     </div>
                   </div>

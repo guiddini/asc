@@ -68,7 +68,7 @@ const PrivacySettings = () => {
         data-bs-target="#kt_account_signin_method"
       >
         <div className="card-title m-0">
-          <h3 className="fw-bolder m-0">Confidentialité du compte</h3>
+          <h3 className="fw-bolder m-0">Account Privacy</h3>
         </div>
       </div>
 
@@ -79,7 +79,7 @@ const PrivacySettings = () => {
               id="kt_signin_password"
               className={" " + (showPasswordForm && "d-none")}
             >
-              <div className="fs-6 fw-bolder mb-1">Mot de passe</div>
+              <div className="fs-6 fw-bolder mb-1">Password</div>
               <div className="fw-bold text-gray-600">************</div>
             </div>
 
@@ -99,7 +99,7 @@ const PrivacySettings = () => {
                         htmlFor="currentpassword"
                         className="form-label fs-6 fw-bolder mb-3"
                       >
-                        Mot de passe actuel
+                        Current Password
                       </label>
                       <input
                         type="password"
@@ -117,7 +117,7 @@ const PrivacySettings = () => {
                         htmlFor="newpassword"
                         className="form-label fs-6 fw-bolder mb-3"
                       >
-                        Nouveau mot de passe
+                        New Password
                       </label>
                       <input
                         type="password"
@@ -135,7 +135,7 @@ const PrivacySettings = () => {
                         htmlFor="confirmpassword"
                         className="form-label fs-6 fw-bolder mb-3"
                       >
-                        Confirmer le nouveau mot de passe
+                        Confirm New Password
                       </label>
                       <input
                         type="password"
@@ -149,8 +149,8 @@ const PrivacySettings = () => {
                 </div>
 
                 <div className="form-text mb-5">
-                  Le mot de passe doit être composé d'au moins 8 caractères et
-                  contenir des symboles.
+                  The password must be at least 8 characters long and contain
+                  symbols.
                 </div>
 
                 <div className="d-flex">
@@ -159,13 +159,13 @@ const PrivacySettings = () => {
                     type="submit"
                     className="btn btn-primary me-2 px-6"
                   >
-                    {!isLoading && "Réinitialiser le mot de passe"}
+                    {!isLoading && "Reset Password"}
                     {isLoading && (
                       <span
                         className="indicator-progress"
                         style={{ display: "block" }}
                       >
-                        Veuillez patienter....{" "}
+                        Please wait....{" "}
                         <span className="spinner-border spinner-border-sm align-middle ms-2"></span>
                       </span>
                     )}
@@ -178,7 +178,7 @@ const PrivacySettings = () => {
                     type="button"
                     className="btn btn-color-gray-500 btn-active-light-primary px-6"
                   >
-                    Annuler
+                    Cancel
                   </button>
                 </div>
               </form>
@@ -194,7 +194,7 @@ const PrivacySettings = () => {
                 }}
                 className="btn btn-light btn-active-light-primary"
               >
-                Réinitialiser le mot de passe
+                Reset Password
               </button>
             </div>
           </div>

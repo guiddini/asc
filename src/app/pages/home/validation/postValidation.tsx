@@ -9,9 +9,9 @@ const createPostSchema = Yup.object().shape({
 
 const createCommentSchema = Yup.object().shape({
   comment: Yup.string()
-    .required("Le contenu du commentaire est requis")
-    .min(4, "Le contenu du commentaire doit contenir au moins 10 caractères")
-    .max(200, "Le contenu du commentaire ne doit pas dépasser 200 caractères"),
+    .required("The comment content is required")
+    .min(4, "The comment content must be at least 10 characters")
+    .max(200, "The comment content must not exceed 200 characters"),
   // other fields in your comment form, if any
 });
 

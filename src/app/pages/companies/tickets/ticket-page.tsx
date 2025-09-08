@@ -168,9 +168,11 @@ export const TicketPage = () => {
       <PageTitle breadcrumbs={servicesBreadcrumbs}>Tickets</PageTitle>
 
       <Row xs={12} md={12} className="mb-4 row-gap-4">
-        {userTickets?.map((ticket, index) => (
-          <TicketCard ticket={ticket} key={index} />
-        ))}
+        {userTickets?.map((ticket, index) =>
+          ticket.name === "Free" ? (
+            <TicketCard ticket={ticket} key={index} />
+          ) : null
+        )}
       </Row>
 
       <div className="mx-auto d-flex flex-row align-items-center justify-content-center">
@@ -191,7 +193,7 @@ export const TicketPage = () => {
               setSelectedType("assigned");
             }}
           >
-            Tickets Partagés
+            Shared Tickets
           </button>
           <button
             className={clsx("btn btn-color-gray-600 px-6 py-2 me-2 active", {
@@ -203,7 +205,7 @@ export const TicketPage = () => {
               setSelectedType("shared");
             }}
           >
-            Liens de partage
+            Share Links
           </button>
         </div>
       </div>
@@ -213,7 +215,7 @@ export const TicketPage = () => {
           columns={columns}
           data={GIFTED_USERS}
           placeholder=""
-          customPlaceholder="Créer un lien de partage"
+          customPlaceholder="Create a Share Link"
           onAddClick={() => {
             if (unassignedTicketCount > 0) {
               setShowShareTicketModal(true);

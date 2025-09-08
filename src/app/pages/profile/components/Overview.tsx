@@ -52,7 +52,7 @@ export function Overview({ user }: { user: User }) {
               alt="no post found"
             />
             <span className="text-muted mt-1 fw-semibold fs-4">
-              Cet utilisateur n'a encore partagé aucune publication
+              This user hasn’t shared any posts yet.
             </span>
           </div>
         )}
@@ -61,7 +61,7 @@ export function Overview({ user }: { user: User }) {
       <div className="col-xl-6">
         <div className="card mb-2">
           <div className="card-body">
-            <h3 className="mb-4">Centre d'intérêt :</h3>
+            <h3 className="mb-4">Interests:</h3>
             <div className="d-flex flex-wrap flex-row align-items-center fw-bold gap-4">
               {user?.activity_areas?.map((a, index) => (
                 <span
@@ -77,9 +77,7 @@ export function Overview({ user }: { user: User }) {
             </div>
           </div>
         </div>
-        <div className="mb-5 mb-xxl-8">
-          <TimelineBox />
-        </div>
+        <div className="mb-5 mb-xxl-8">{/* <TimelineBox /> */}</div>
 
         {/* <ListsWidget2 className="mb-5 mb-xxl-8" /> */}
       </div>

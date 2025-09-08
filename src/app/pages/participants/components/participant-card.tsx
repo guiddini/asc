@@ -37,7 +37,7 @@ const ParticipantCard = (props: ParticipantProps) => {
             >
               <i className="fa-regular text-white fa-eye"></i>
 
-              <span className="indicator-label">Consulter</span>
+              <span className="indicator-label">View</span>
             </Link>
 
             <OverlayTrigger
@@ -53,7 +53,7 @@ const ParticipantCard = (props: ParticipantProps) => {
                 }}
                 size="sm"
               >
-                Suivre
+                Follow
               </Button>
             </OverlayTrigger>
           </div>

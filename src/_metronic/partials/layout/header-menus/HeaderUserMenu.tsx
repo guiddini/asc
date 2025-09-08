@@ -55,7 +55,7 @@ const HeaderUserMenu: FC = () => {
 
       <div className="menu-item px-5">
         <Link to={`/profile/${user?.id}`} className="menu-link px-5">
-          Mon profil
+          My Profile
         </Link>
       </div>
 
@@ -67,7 +67,7 @@ const HeaderUserMenu: FC = () => {
           }}
           className="menu-link px-5"
         >
-          Déconnexion
+          Logout
         </a>
       </div>
     </div>

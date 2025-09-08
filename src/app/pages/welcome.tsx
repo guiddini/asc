@@ -27,9 +27,9 @@ const WelcomePage = () => {
         onClick: () => {},
         hasPassed: true,
       },
-    {
+      {
         title: "African Startup Conference 2025 ",
-       backgroundImage: "/media/afes/africainStartup.jpg",
+        backgroundImage: "/media/afes/africainStartup.jpg",
         isLocked: !userHasTicket,
         isContinue: userHasTicket,
         hasPassed: false,
@@ -51,7 +51,7 @@ const WelcomePage = () => {
         </div>
         <div className="nav-right">
           <button className="logout-button" onClick={handleLogout}>
-            Déconnexion
+            Logout
             <svg
               width="16"
               height="16"
@@ -71,21 +71,19 @@ const WelcomePage = () => {
       </nav>
 
       <main className="main-content">
-        <span className="category-label">TOUS LES ÉVÉNEMENTS</span>
+        <span className="category-label">ALL EVENTS</span>
 
         <h1 className="welcome-heading">
-          Bienvenue chez African Startup Conference !
+          Welcome to the African Startup Conference!
           <br />
-          Découvrons votre premier
-          <span className="welcome-highlight"> événement</span>
+          Let's discover your first
+          <span className="welcome-highlight"> event</span>
         </h1>
 
         <p className="welcome-description">
-          Explorez une liste organisée d'événements dans les domaines de la
-          technologie, du commerce électronique, de la fintech, des affaires,
-          des startups et des événements professionnels. Sélectionnez celui qui
-          vous enthousiasme, consultez les détails, choisissez votre ticket et
-          commencez !
+          Explore a curated list of events in technology, e-commerce, fintech,
+          business, startups, and professional networking. Select the one that
+          excites you, check the details, choose your ticket, and get started!
         </p>
 
         <div className="events-grid">

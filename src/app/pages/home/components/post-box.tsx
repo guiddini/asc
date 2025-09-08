@@ -418,12 +418,12 @@ const PostBox = ({
     };
 
     MySwal.fire({
-      title: "Êtes-vous sûr de vouloir supprimer ?",
+      title: "Are you sure you want to delete the post ?",
       icon: "error",
       heightAuto: false,
-      cancelButtonText: "Annuler",
+      cancelButtonText: "Cancel",
       showCancelButton: true,
-      confirmButtonText: "Supprimer",
+      confirmButtonText: "Delete",
       backdrop: true,
       showConfirmButton: true,
     }).then((res) => {
@@ -446,12 +446,12 @@ const PostBox = ({
 
   const handleReportPost = () => {
     MySwal.fire({
-      title: "Êtes-vous sûr de vouloir signaler le post ?",
+      title: "Are you sure you want to report the post?",
       icon: "warning",
       heightAuto: false,
-      cancelButtonText: "Annuler",
+      cancelButtonText: "Cancel",
       showCancelButton: true,
-      confirmButtonText: "Signaler",
+      confirmButtonText: "Report",
       backdrop: true,
       showConfirmButton: true,
     }).then((res) => {
@@ -459,12 +459,12 @@ const PostBox = ({
         MySwal.showLoading();
         reportMutate(id, {
           onSuccess() {
-            toast.success("La publication a été signalée !");
+            toast.success("The post has been reported!");
             MySwal.hideLoading();
           },
           onError(error: errorResponse) {
             toast?.error(
-              `Erreur lors du signal de publication : ${error.response?.data?.message}`
+              `Error reporting post: ${error.response?.data?.message}`
             );
           },
         });
@@ -527,7 +527,7 @@ const PostBox = ({
                       iconName="pencil"
                       className="fs-2 cursor-pointer m-0 text-primary"
                     />{" "}
-                    <span className="text-muted mt-1 ms-2">Modifier</span>
+                    <span className="text-muted mt-1 ms-2">Update</span>
                   </Dropdown.Item>
 
                   {/* delete post  */}
@@ -544,7 +544,7 @@ const PostBox = ({
                       iconName="trash"
                       className="fs-2 cursor-pointer m-0 text-danger"
                     />{" "}
-                    <span className="text-muted mt-1 ms-2">Supprimer</span>
+                    <span className="text-muted mt-1 ms-2">Delete</span>
                   </Dropdown.Item>
                 </div>
               ) : (
@@ -564,7 +564,7 @@ const PostBox = ({
                       className="fs-2 cursor-pointer m-0 text-warning"
                     />{" "}
                     <span className="text-muted mt-1 ms-2">
-                      Signaler la publication
+                      Report the post
                     </span>
                   </Dropdown.Item>
                 </div>
@@ -655,7 +655,7 @@ const PostBox = ({
                     "ki-solid text-danger": user_liked_the_post,
                   })}
                 ></i>
-                {likes?.length} J'aime
+                {likes?.length} Like
               </span>
             </li>
             <li className="nav-item d-none d-md-block">
@@ -665,7 +665,7 @@ const PostBox = ({
                   <span className="path2"></span>
                   <span className="path3"></span>
                 </i>
-                {comments?.length} commentaires
+                {comments?.length} comments
               </span>
             </li>
             <Dropdown className="nav-item">
@@ -674,7 +674,7 @@ const PostBox = ({
                 className="nav-link btn btn-sm btn-color-gray-600 btn-active-color-primary btn-active-light-primary fw-bold px-4 me-1 collapsible"
               >
                 <i className="fa-solid fa-share"></i>
-                {comments?.length} Partager
+                {comments?.length} Share
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 {/* Share on linkedIn */}
@@ -767,7 +767,7 @@ const PostBox = ({
             <textarea
               className="form-control form-control-solid border ps-5"
               data-kt-autosize="true"
-              placeholder="Votre commentaire.."
+              placeholder="Your comment.."
               onChange={(e) => {
                 setValue("comment", e.target.value);
               }}

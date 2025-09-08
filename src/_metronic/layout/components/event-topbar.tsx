@@ -69,12 +69,12 @@ const EventTopbar = () => {
                   className="d-none d-md-flex"
                 >
                   <Calendar />
-                  06-07-08 Décembre
+                  December 06-07-08
                 </div>
 
                 <div id="current-ticket-topbar">
                   <span id="current-ticket-topbar-ticket-label">
-                    Ticket Utilisé :
+                    Ticket Used:
                   </span>
                   <Ticket
                     id="current-ticket-topbar-ticket-icon"
@@ -128,7 +128,7 @@ const EventTopbar = () => {
                       variant="custom-purple-dark text-white"
                       id="exhibition-request-cta"
                     >
-                      Devenir exposant
+                      be Exhibitor
                     </Button>
                   )}
                 </>

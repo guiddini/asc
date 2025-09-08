@@ -24,7 +24,7 @@ export default function ComingSoon() {
           />
         </div>
         <button id="logout-button" onClick={handleLogout}>
-          Déconnexion
+          Logout
           <LogOut size={20} />
         </button>
       </nav>

@@ -36,7 +36,7 @@ const CompanyJobapplicationsActionColumn = (props: CompanyJobApplication) => {
               iconName="eye"
               className={`fs-1 cursor-pointer m-0 text-primary`}
             />
-            <span className="text-muted mt-1 ms-2">Consulter</span>
+            <span className="text-muted mt-1 ms-2">View</span>
           </Dropdown.Item>
         </div>
       </Dropdown.Menu>

@@ -70,7 +70,7 @@ const Header: React.FC<HeaderProps> = ({ className = "" }) => {
                 onClick={handleShowSearch}
               >
                 <i className="bi bi-search me-1"></i>
-                Recherche
+                Search
               </Button>
 
               {currentUser ? (
@@ -93,7 +93,7 @@ const Header: React.FC<HeaderProps> = ({ className = "" }) => {
                     onClick={() => navigate("/auth/login")}
                   >
                     <i className="bi bi-box-arrow-in-right me-1"></i>
-                    Connexion
+                    Login
                   </Button>
 
                   <Button
@@ -103,7 +103,7 @@ const Header: React.FC<HeaderProps> = ({ className = "" }) => {
                     onClick={handleType}
                   >
                     <i className="bi bi-person-plus me-1"></i>
-                    Inscription
+                    Register
                   </Button>
                 </>
               )}
@@ -111,35 +111,32 @@ const Header: React.FC<HeaderProps> = ({ className = "" }) => {
           </div>
 
           {/* Mobile Menu Toggle */}
-      <Button
-  variant="outline-secondary"
-  className="d-lg-none d-flex align-items-center justify-content-center"
-  onClick={handleToggleMobileMenu}
-  aria-label="Toggle navigation"
-  style={{
-    width: "50px",
-    height: "50px",
-    border: "1px solid #00c4c4",
-    backgroundColor: "transparent",
-    padding: 0,
-  }}
->
-  <i
-    className="bi bi-list"
-    style={{
-      fontSize: "30px",
-      color: "#00c4c4",
-      display: "flex",              // force flex
-      alignItems: "center",         // centre vertical
-      justifyContent: "center",     // centre horizontal
-      height: "100%",               // occupe toute la hauteur
-      width: "90%",                // occupe toute la largeur
-    }}
-  ></i>
-</Button>
-
-
-
+          <Button
+            variant="outline-secondary"
+            className="d-lg-none d-flex align-items-center justify-content-center"
+            onClick={handleToggleMobileMenu}
+            aria-label="Toggle navigation"
+            style={{
+              width: "50px",
+              height: "50px",
+              border: "1px solid #00c4c4",
+              backgroundColor: "transparent",
+              padding: 0,
+            }}
+          >
+            <i
+              className="bi bi-list"
+              style={{
+                fontSize: "30px",
+                color: "#00c4c4",
+                display: "flex", // force flex
+                alignItems: "center", // centre vertical
+                justifyContent: "center", // centre horizontal
+                height: "100%", // occupe toute la hauteur
+                width: "90%", // occupe toute la largeur
+              }}
+            ></i>
+          </Button>
         </Container>
       </Navbar>
 

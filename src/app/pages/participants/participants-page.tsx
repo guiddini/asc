@@ -250,7 +250,7 @@ export const ParticipantsPage = () => {
                       type="text"
                       className="form-control form-control-solid"
                       name="search"
-                      placeholder="Nom du participant"
+                      placeholder="name of participant"
                       {...register("nameFilter")}
                     />
                   </Col>
@@ -263,7 +263,7 @@ export const ParticipantsPage = () => {
                       {isFiltering ? (
                         <Spinner animation="border" size="sm" />
                       ) : (
-                        "Recherche"
+                        "Search"
                       )}
                     </button>
                     <a
@@ -273,7 +273,7 @@ export const ParticipantsPage = () => {
                       data-bs-toggle="collapse"
                       data-bs-target="#kt_advanced_search_form"
                     >
-                      Recherche avancée
+                      Advanced Search
                     </a>
                   </Col>
                 </Row>
@@ -283,12 +283,12 @@ export const ParticipantsPage = () => {
                   <div className="row g-8">
                     <div className="col-12 col-md-4">
                       <label className="fs-6 form-label fw-bold text-gray-900">
-                        Role du participant
+                        Participant Role
                       </label>
                       <select
                         className="form-select form-select-solid"
                         data-control="select2"
-                        data-placeholder="Sélectionner un rôle"
+                        data-placeholder="Select a role"
                         data-hide-search="true"
                         {...register("roleFilter")}
                       >
@@ -315,10 +315,10 @@ export const ParticipantsPage = () => {
                       {/* Interests Filter */}
                       <SelectComponent
                         errors={errors}
-                        label="Centre d'intérêt"
+                        label="Interests"
                         control={control}
                         name="interestsFilter"
-                        placeholder="Sélectionner les centres d'intérêt"
+                        placeholder="Select interests"
                         data={MEMORIZED_ACTIVITIES || []}
                         isMulti={true}
                         isLoading={loadingActivities}
@@ -353,7 +353,7 @@ export const ParticipantsPage = () => {
               }}
             >
               <div className="card-body d-flex flex-column align-items-center justify-content-center">
-                <span className="fs-3">Aucun participant disponible</span>
+                <span className="fs-3">No participants available</span>
                 <img
                   src={toAbsoluteUrl("/media/illustrations/sigma-1/9-dark.png")}
                   className="h-250px w-250px"

@@ -82,7 +82,7 @@ export const SponsorsBox = () => {
             alt="no featured product found"
           />
           <span className="text-muted mt-1 fw-semibold fs-4">
-            Aucune publicité trouvée
+            Not ads found
           </span>
           {user?.company?.id && (
             <span

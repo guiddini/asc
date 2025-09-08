@@ -49,10 +49,10 @@ export function AsideMenuMain() {
       {/* home */}
       <AsideMenuItem
         to="/home"
-        title="Accueil"
+        title="Home"
         // fontIcon="bi-house-solid fs-2"
         customIcon={<i className="fa-solid fa-house"></i>}
-        bsTitle="Accueil"
+        bsTitle="Home"
         className="py-2"
       />
       <RoleGuard allowedRoles={adminRoles}>
@@ -94,20 +94,20 @@ export function AsideMenuMain() {
 
       <AsideMenuItem
         to={`/companies`}
-        title="Exposants"
+        title="Exhibitors"
         bsTitle="Exposants"
         customIcon={<i className="fa-solid fa-handshake"></i>}
       />
 
       <AsideMenuItemWithSubMain
         to={`/products`}
-        title="Produits"
+        title="Products"
         bsTitle="Produits"
         customIcon={<i className="fa-solid fa-bag-shopping"></i>}
       >
         <AsideMenuItem
           to={`/products`}
-          title="Voir tous les produits"
+          title="View All Products"
           bsTitle="Voir tous les produits"
           hasBullet={true}
         />
@@ -115,7 +115,7 @@ export function AsideMenuMain() {
         {isCompanyStaff && (
           <AsideMenuItem
             to={`/company/${companyID}/products`}
-            title="Mes produits"
+            title="My Products"
             bsTitle="Mes produits"
             hasBullet={true}
           />
@@ -123,7 +123,7 @@ export function AsideMenuMain() {
         {isCompanyEditor && (
           <AsideMenuItem
             to={`/company/${companyID}/products/create`}
-            title="Ajouter un produit"
+            title="Add Product"
             bsTitle="Ajouter un produit"
             hasBullet={true}
           />
@@ -134,7 +134,7 @@ export function AsideMenuMain() {
 
       <AsideMenuItem
         to="/badge"
-        title="Mon badge"
+        title="My badge"
         bsTitle="Mon badge"
         customIcon={<i className="fa-solid fa-qrcode"></i>}
       />
@@ -150,14 +150,14 @@ export function AsideMenuMain() {
         <>
           <AsideMenuItem
             to={`/ads`}
-            title="Annonces"
-            bsTitle="Annonces"
+            title="Ads"
+            bsTitle="Ads"
             customIcon={<i className="fa-solid fa-tower-broadcast"></i>}
           />
           <AsideMenuItemWithSubMain
             to="/company"
-            title="Mon entreprise"
-            bsTitle="Mon entreprise"
+            title="My Company"
+            bsTitle="My Company"
             fontIcon="bi-briefcase fs-2"
             icon="briefcase"
           >
@@ -186,21 +186,21 @@ export function AsideMenuMain() {
 
       <AsideMenuItemWithSubMain
         to="/job-offers/all"
-        title="Offres d'emploi"
+        title="Job Offers"
         bsTitle="Offres d'emploi"
         customIcon={<i className="fa-solid fa-house-laptop"></i>}
         icon="briefcase"
       >
         <AsideMenuItem
           to={`/job-offers/all`}
-          title="Toutes les offres d'emploi"
+          title="All Job Offers"
           bsTitle="Toutes les offres d'emploi"
           hasBullet={true}
         />
         {!hasCompany && (
           <AsideMenuItem
             to={`/job-offers/applications`}
-            title="Mes candidatures"
+            title="My Applications"
             bsTitle="Mes candidatures"
             hasBullet={true}
           />
@@ -208,7 +208,7 @@ export function AsideMenuMain() {
         {isCompanyEditor && (
           <AsideMenuItem
             to={`/job-offers/create/${companyID}`}
-            title="Ajouter un offre d'emploi"
+            title="Add Job Offer"
             bsTitle="Ajouter un offre d'emploi"
             hasBullet={true}
           />
@@ -218,7 +218,7 @@ export function AsideMenuMain() {
           <>
             <AsideMenuItem
               to={`/job-offers/${companyID}`}
-              title="Mes offres d'emploi"
+              title="My Job Offers"
               bsTitle="Mes offres d'emploi"
               hasBullet={true}
             />
@@ -244,9 +244,9 @@ export function AsideMenuMain() {
             <>
               <AsideMenuItem
                 to="/press-conference-management"
-                title="Conférence de Presse"
+                title="Press Conference"
                 hasBullet={true}
-                bsTitle="Conférence de Presse"
+                bsTitle="Press Conference"
                 customIcon={<i className="fa-solid fa-users-rectangle"></i>}
               />
               <AsideMenuItem

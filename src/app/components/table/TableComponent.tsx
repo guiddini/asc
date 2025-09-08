@@ -240,7 +240,7 @@ export const TableComponent = ({
               }}
             >
               <div className="card-body d-flex flex-column align-items-center justify-content-center">
-                <span className="fs-3">Pas de données disponibles</span>
+                <span className="fs-3">No Data Available</span>
                 <img
                   src={toAbsoluteUrl(
                     "/media/illustrations/sigma-1/21-dark.png"

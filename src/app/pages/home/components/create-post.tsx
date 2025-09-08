@@ -126,7 +126,7 @@ const CreatePost = () => {
             id="kt_social_feeds_post_input"
             name="message"
             data-kt-autosize="true"
-            placeholder="Quoi de neuf ?!"
+            placeholder="What's new?!"
             {...register("description")}
           />
           {errorMessage(errors, "description")}
@@ -160,7 +160,7 @@ const CreatePost = () => {
             onClick={handleSubmit(createPostFn)}
             disabled={isLoading}
           >
-            {isLoading ? <Spinner animation="border" size="sm" /> : "Poster"}
+            {isLoading ? <Spinner animation="border" size="sm" /> : "Post"}
           </Button>
         </div>
       </div>

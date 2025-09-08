@@ -35,7 +35,7 @@ const DayTabs: React.FC<DayTabsProps> = ({
           className="px-4"
         >
           <i className="bi bi-calendar-check me-2" />
-          Mes réunions
+          My Meetings
           {getTotalCounts.meetings > 0 && (
             <Badge bg="warning" className="ms-2">
               {getTotalCounts.meetings}
@@ -50,7 +50,7 @@ const DayTabs: React.FC<DayTabsProps> = ({
           className="px-4"
         >
           <i className="bi bi-inbox me-2" />
-          Demandes de réunion
+          Meeting Requests
           {getTotalCounts.requests > 0 && (
             <Badge bg="warning" className="ms-2">
               {getTotalCounts.requests}

@@ -227,7 +227,7 @@ const MeetingsCalendar: React.FC = () => {
             <Card.Header className="text-center">
               <Card.Title className="mb-3">
                 <i className="bi bi-calendar-event me-2" />
-                Calendrier des réunions - {displayRange}
+                Meeting Calendar - {displayRange}
               </Card.Title>
             </Card.Header>
             <Nav variant="pills" className="justify-content-center mt-4">

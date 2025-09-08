@@ -38,10 +38,10 @@ const MeetingList: React.FC<MeetingListProps> = ({
         />
         <h6>
           {viewType === "meetings"
-            ? "Aucune réunion prévue pour cette journée"
-            : "Aucune demande de réunion pour cette journée"}
+            ? "No meetings scheduled for this day"
+            : "No meeting requests for this day"}
         </h6>
-        <p className="mb-0">Votre emploi du temps est libre !</p>
+        <p className="mb-0">Your schedule is free!</p>
       </div>
     );
   }

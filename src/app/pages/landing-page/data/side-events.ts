@@ -39,36 +39,36 @@ export const SIDE_EVENTS = [
   {
     id: 1,
     image: "/side-events/commingsoon.jpeg",
-    title: "Événements parallèles",
+    title: "Side Events",
     description:
-      "Cette section de la conférence africaine des startups sera bientôt disponible.",
+      "This section of the African Startup Conference will be available soon.",
   },
   {
     id: 2,
     image: "/side-events/commingsoon.jpeg",
-    title: "Événements parallèles",
+    title: "Side Events",
     description:
-      "Cette section de la conférence africaine des startups sera bientôt disponible.",
+      "This section of the African Startup Conference will be available soon.",
   },
   {
     id: 3,
     image: "/side-events/commingsoon.jpeg",
-    title: "Événements parallèles",
+    title: "Side Events",
     description:
-      "Cette section de la conférence africaine des startups sera bientôt disponible.",
+      "This section of the African Startup Conference will be available soon.",
   },
   {
     id: 4,
     image: "/side-events/commingsoon.jpeg",
-    title: "Événements parallèles",
+    title: "Side Events",
     description:
-      "Cette section de la conférence africaine des startups sera bientôt disponible.",
+      "This section of the African Startup Conference will be available soon.",
   },
   {
     id: 5,
     image: "/side-events/commingsoon.jpeg",
-    title: "Événements parallèles",
+    title: "Side Events",
     description:
-      "Cette section de la conférence africaine des startups sera bientôt disponible.",
+      "This section of the African Startup Conference will be available soon.",
   },
 ];
