@@ -23,16 +23,14 @@ import { Container, Row, Col } from "react-bootstrap";
 // ];
 const SPONSORS = [
   "/sponsors/commingSoon.jpeg",
- "/sponsors/commingSoon.jpeg",
- "/sponsors/commingSoon.jpeg",
   "/sponsors/commingSoon.jpeg",
- "/sponsors/commingSoon.jpeg",
- "/sponsors/commingSoon.jpeg",
- "/sponsors/commingSoon.jpeg",
- "/sponsors/commingSoon.jpeg",
- "/sponsors/commingSoon.jpeg",
-
-  
+  "/sponsors/commingSoon.jpeg",
+  "/sponsors/commingSoon.jpeg",
+  "/sponsors/commingSoon.jpeg",
+  "/sponsors/commingSoon.jpeg",
+  "/sponsors/commingSoon.jpeg",
+  "/sponsors/commingSoon.jpeg",
+  "/sponsors/commingSoon.jpeg",
 ];
 
 // Split sponsors into two groups for better visual variety
@@ -60,8 +58,7 @@ const SponsorsSection: React.FC = () => {
         {/* Section Header */}
         <Row className="mb-5">
           <Col className="text-center">
-            <h2 className="display-5 fw-bold text-dark mb-0">
-Nos sponsors            </h2>
+            <h2 className="display-5 fw-bold text-dark mb-0">Our sponsors </h2>
           </Col>
         </Row>
 
