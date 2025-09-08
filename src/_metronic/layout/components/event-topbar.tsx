@@ -128,7 +128,7 @@ const EventTopbar = () => {
                       variant="custom-purple-dark text-white"
                       id="exhibition-request-cta"
                     >
-                      be Exhibitor
+                      Be Exhibitor
                     </Button>
                   )}
                 </>
