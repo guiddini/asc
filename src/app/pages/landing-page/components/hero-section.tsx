@@ -178,7 +178,7 @@ const HeroSection: React.FC = () => {
           </span>
         </h5>
         <h6 className="text-white-50 mt-2">
-          Centre International de Conference Abdeelatif Rahal, Alger, Algérie
+          International Conference Center - CIC - Abdelatif Rahal{" "}
         </h6>
         {renderAction(item.id)}
       </div>

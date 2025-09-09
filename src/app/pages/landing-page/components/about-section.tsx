@@ -60,7 +60,7 @@ const AboutSection: React.FC = () => {
                 for innovation and entrepreneurship. From December 6–8, 2025, in
                 Algiers, its 4th edition will celebrate the “African Champions”
                 bold startups, visionary investors, forward-thinking
-                policymakers, and the vibrant diaspora all coming together to
+                policymakers, and the vibrant diaspora all,, coming together to
                 shape a competitive, sovereign, and world-class tech ecosystem
               </p>
               {/* Endorsement/Organization Banner */}

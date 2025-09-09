@@ -119,8 +119,8 @@ const EventStatsSection: React.FC = () => {
           <Col>
             <h2 className="fw-bold display-4">Event Highlights in Numbers</h2>
             <p className="lead text-secondary">
-              Explore the scale, impact, and global reach of our international
-              gathering.
+              Explore the scale, impact, and global reach of our continental
+              conference.
             </p>
           </Col>
         </Row>
