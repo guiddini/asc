@@ -75,7 +75,7 @@ const AboutSection: React.FC = () => {
                 <div className="endorsement-text text-muted">
                   <p>
                     Organized by the Ministry of Knowledge Economy, <br />
-                    Startups & Micro-Enterprises, and Algeria Venture
+                    Startups and Micro-Enterprises, and Algeria Venture
                   </p>
                 </div>
               </div>
