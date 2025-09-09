@@ -60,7 +60,7 @@ const AboutSection: React.FC = () => {
                 for innovation and entrepreneurship. From December 6–8, 2025, in
                 Algiers, its 4th edition will celebrate the “African Champions”
                 bold startups, visionary investors, forward-thinking
-                policymakers, and the vibrant diaspora all,, coming together to
+                policymakers, and the vibrant diaspora all, coming together to
                 shape a competitive, sovereign, and world-class tech ecosystem
               </p>
               {/* Endorsement/Organization Banner */}
@@ -78,6 +78,13 @@ const AboutSection: React.FC = () => {
                     Startups and Micro-Enterprises, and Algeria Venture
                   </p>
                 </div>
+                <img
+                  src="/media/algeria-venture-logo.svg.svg"
+                  alt="Ministry logo"
+                  height={48}
+                  className="ministry-logo"
+                  style={{ marginLeft: 12, height: 30, width: "auto" }}
+                />
               </div>
             </div>
           </Col>

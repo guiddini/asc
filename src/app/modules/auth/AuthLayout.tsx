@@ -17,7 +17,7 @@ const AuthLayout = () => {
               gathering for innovation and entrepreneurship. For its 4th
               edition, taking place from December 6–8, 2025 in Algiers, the
               conference will spotlight the “African Champions”: high-growth
-              startups, investors, policymakers, and the diaspora all coming
+              startups, investors, policymakers, and the diaspora all coming,
               together to build a competitive and sovereign tech ecosystem.
               Don’t miss the chance to be part of something extraordinary.
               Secure your spot today and let the journey begin!

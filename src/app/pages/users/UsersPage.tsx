@@ -74,6 +74,11 @@ const UsersPage = () => {
       sortable: true,
     },
     {
+      name: "Type",
+      selector: (row) => row?.roles[0]?.name,
+      sortable: true,
+    },
+    {
       name: "N° Tickets",
       selector: (row) => Number(row?.ticket_count),
       sortable: true,
@@ -262,6 +267,7 @@ const UsersPage = () => {
         }) || [],
     [data, isLoading]
   );
+  console.log("type user", users);
 
   return (
     <>
