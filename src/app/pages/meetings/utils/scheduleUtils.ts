@@ -8,24 +8,21 @@ export interface Day {
 }
 
 export const getThreeDayRange = (): Day[] => {
-  const today = new Date();
-  const days: Day[] = [];
+  const fixedDates = [
+    new Date("2025-12-06"),
+    new Date("2025-12-07"),
+    new Date("2025-12-09"),
+  ];
 
-  for (let i = 0; i < 3; i++) {
-    const date = new Date(today);
-    date.setDate(today.getDate() + i);
-    days.push({
-      date: date.toISOString().split("T")[0],
-      display: date.toLocaleDateString("en-GB", {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-      }),
-      fullDate: date,
-    });
-  }
-
-  return days;
+  return fixedDates.map((date) => ({
+    date: date.toISOString().split("T")[0],
+    display: date.toLocaleDateString("en-GB", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+    }),
+    fullDate: date,
+  }));
 };
 
 export interface TimeSlot {
