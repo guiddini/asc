@@ -30,6 +30,7 @@ const ProgramPage: React.FC = () => {
           </p>
           {/* Optional: Add a button instead of a simple link */}
           <Button
+            as="a"
             variant="primary"
             href="/media/asc_note_conceptuelle FINAL EN-7-8 program.pdf.pdf"
             download
