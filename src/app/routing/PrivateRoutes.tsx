@@ -62,6 +62,7 @@ import AgendaPage from "../pages/agenda/page";
 import ConferencesPage from "../pages/conference/page";
 import ConferenceDetailPage from "../pages/conference/detail/page";
 import ComingSoonASC from "../pages/commingsoonAsc/page";
+import ProgramPage from "../pages/program/page";
 
 export const adminRoles = ["admin", "super_admin", "staff"];
 
@@ -196,6 +197,14 @@ const PrivateRoutes = () => {
               element={
                 <SuspensedView>
                   <AgendaPage />
+                </SuspensedView>
+              }
+            />
+            <Route
+              path="/program"
+              element={
+                <SuspensedView>
+                  <ProgramPage />
                 </SuspensedView>
               }
             />

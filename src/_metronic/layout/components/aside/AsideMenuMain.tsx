@@ -72,6 +72,12 @@ export function AsideMenuMain() {
         customIcon={<i className="fa-solid fa-calendar"></i>}
       >
         <AsideMenuItem
+          to={`/program`}
+          title="Program"
+          bsTitle="Program"
+          hasBullet
+        />
+        <AsideMenuItem
           to={`/agenda`}
           title="Agenda"
           bsTitle="Agenda"
