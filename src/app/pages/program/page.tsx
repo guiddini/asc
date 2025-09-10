@@ -52,7 +52,9 @@ const ProgramPage: React.FC = () => {
         <Col xs={12} lg={12}>
           <Card>
             <Card.Body style={{ height: "90vh" }}>
-              <Worker workerUrl="/pdfjs/pdf.worker.min.js">
+              <Worker
+                workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
+              >
                 <Viewer
                   fileUrl="/media/asc_note_conceptuelle FINAL EN-7-8 program.pdf.pdf"
                   plugins={[defaultLayoutPluginInstance]}
