@@ -15,7 +15,7 @@ jobs:
         uses: docker/login-action@v2
         with:
           username: hikiuzrx
-          password: ${{ secrets.GHCR_TOKEN }}
+          password: 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
 
       - name: Build Docker image
         run: |
