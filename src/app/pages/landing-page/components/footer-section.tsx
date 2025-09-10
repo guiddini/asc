@@ -165,6 +165,27 @@ const Footer: React.FC = () => {
                   </button>
                 </div>
               </div>
+              <div
+                className="newsletter-signup"
+                style={{
+                  marginTop: "1rem",
+                  display: "flex",
+                  gap: "0.5rem",
+                  alignItems: "center",
+                }}
+              >
+                <a
+                  href="https://asc-android.eventili.com/"
+                  className="btn btn-link p-0"
+                  target="_blank"
+                >
+                  <img
+                    src="/media/eventili/afes/play-store.svg"
+                    alt="Play Store"
+                    style={{ width: "120px" }}
+                  />
+                </a>
+              </div>
             </div>
           </Col>
         </Row>
