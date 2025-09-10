@@ -20,8 +20,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/guiddini/asc-web:latest .
+          docker build -t ghcr.io/hikiuzrx/asc-web:latest .
 
       - name: Push Docker image to GHCR
         run: |
-          docker push ghcr.io/guiddini/asc-web:latest
+          docker push ghcr.io/hikiuzrx/asc-web:latest
