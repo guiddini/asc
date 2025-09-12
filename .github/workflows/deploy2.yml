@@ -20,7 +20,14 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/hikiuzrx/asc-web:latest .
+          docker build \
+            --build-arg VITE_APP_API_URL="${{ secrets.VITE_APP_API_URL }}" \
+            --build-arg VITE_APP_HTTP_API_URL="${{ secrets.VITE_APP_HTTP_API_URL }}" \
+            --build-arg VITE_APP_STORAGE_URL="${{ secrets.VITE_APP_STORAGE_URL }}" \
+            --build-arg VITE_APP_ENCRYPTION_KEY="${{ secrets.VITE_APP_ENCRYPTION_KEY }}" \
+            --build-arg VITE_APP_BASE_LAYOUT_CONFIG_KEY="${{ secrets.VITE_APP_BASE_LAYOUT_CONFIG_KEY }}" \
+            --build-arg VITE_APP_I18N_CONFIG_KEY="${{ secrets.VITE_APP_I18N_CONFIG_KEY }}" \
+            -t ghcr.io/hikiuzrx/asc-web:latest .
 
       - name: Push Docker image to GHCR
         run: |
