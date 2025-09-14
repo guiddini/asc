@@ -23,6 +23,7 @@ import LandingPage from "../pages/landing-page/page";
 import BlogsPage from "../pages/blogs/page";
 import LandingLayout from "../pages/landing-page/layout/layout-landing";
 import BLogDetailsPage from "../pages/blogs/slug/page";
+import PublicProgramPage from "../pages/landing-page/components/public-program";
 
 const AppRoutes: FC = () => {
   const { user } = useSelector((state: UserResponse) => state.user);
@@ -41,6 +42,8 @@ const AppRoutes: FC = () => {
           >
             <Route path="/" element={<LandingPage />} />
             <Route path="/blogs" element={<BlogsPage />} />
+            <Route path="/public-program" element={<PublicProgramPage />} />
+
             <Route path="/blogs/:slug" element={<BLogDetailsPage />} />
             <Route path="/speakers/:id" element={<SpeakerDetail />} />
           </Route>

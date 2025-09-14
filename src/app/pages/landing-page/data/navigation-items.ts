@@ -8,6 +8,7 @@ export const navigationItems: NavigationItem[] = [
     label: "Program",
     dropdown: [
       { label: "Agenda", href: "/programme#agenda" },
+      { label: "The program", href: "/public-program" },
       { label: "Keynote", href: "/programme#keynotes" },
       { label: "Workshop", href: "/programme#ateliers" },
       { label: "Panels", href: "/programme#panels" },
