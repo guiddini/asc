@@ -75,7 +75,7 @@ const UsersPage = () => {
     },
     {
       name: "Type",
-      selector: (row) => row?.roles[0]?.name,
+      selector: (row) => row?.info?.type,
       sortable: true,
     },
     {
