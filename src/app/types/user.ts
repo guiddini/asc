@@ -1,6 +1,7 @@
 import { Role as UserRole } from "./roles";
 
 export interface User {
+  job_title: string;
   id: string;
   fname: string;
   lname: string;
@@ -44,6 +45,12 @@ export interface User {
 }
 
 type InfoType = {
+  activity_areas: any;
+  about_you: string;
+  job_title: string;
+  company_name: string;
+  linkedin_url: string;
+  participation_goals: any;
   phone: string | null;
   address: string | null;
   country_id: string | null;
