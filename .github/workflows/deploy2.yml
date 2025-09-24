@@ -16,7 +16,7 @@ jobs:
         with:
           registry: ghcr.io
           username: hikiuzrx
-          password: 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
+          password: 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
 
       - name: Build Docker image
         run: |
