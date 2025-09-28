@@ -10,11 +10,9 @@ interface SearchProps {
 const UserTypeComponent: React.FC<SearchProps> = ({ show, onHide }) => {
   const userTypes = [
     { label: "Visitor", value: "visitor" },
-    { label: "Sponsor", value: "sponsor" },
     { label: "Exhibitor", value: "exhibitor" },
     { label: "Investor", value: "investor" },
     { label: "Media", value: "media" },
-    { label: "African Champion", value: "african-champion" },
   ];
 
   return (

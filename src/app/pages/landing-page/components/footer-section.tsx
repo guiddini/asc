@@ -126,19 +126,49 @@ const Footer: React.FC = () => {
             <div className="footer-section">
               <h5 className="footer-title fw-bold mb-3">Follow Us</h5>
               <div className="social-links mb-4">
-                <a href="#" aria-label="Facebook" className="social-link">
+                <a
+                  href="https://www.facebook.com/africanstartupconference"
+                  aria-label="Facebook"
+                  className="social-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <i className="bi bi-facebook"></i>
                 </a>
-                <a href="#" aria-label="Twitter" className="social-link">
+                <a
+                  href="https://x.com/africanstartupc"
+                  aria-label="Twitter / X"
+                  className="social-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <i className="bi bi-twitter"></i>
                 </a>
-                <a href="#" aria-label="LinkedIn" className="social-link">
+                <a
+                  href="https://www.linkedin.com/company/the-african-startup-conference"
+                  aria-label="LinkedIn"
+                  className="social-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <i className="bi bi-linkedin"></i>
                 </a>
-                <a href="#" aria-label="Instagram" className="social-link">
+                <a
+                  href="https://www.instagram.com/africanstartupconference"
+                  aria-label="Instagram"
+                  className="social-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <i className="bi bi-instagram"></i>
                 </a>
-                <a href="#" aria-label="YouTube" className="social-link">
+                <a
+                  href="https://www.youtube.com/@AfricanStartupConference"
+                  aria-label="YouTube"
+                  className="social-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <i className="bi bi-youtube"></i>
                 </a>
               </div>

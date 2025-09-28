@@ -77,7 +77,9 @@ export function Login() {
           );
 
           const isAdmin = userData?.user?.roleValues?.name === "super_admin";
-          if (isAdmin) {
+          const hasAtLeastOneTicket = Number(userData?.user?.ticket_count) > 0;
+
+          if (isAdmin || hasAtLeastOneTicket) {
             navigate("/home");
           } else {
             navigate("/welcome");

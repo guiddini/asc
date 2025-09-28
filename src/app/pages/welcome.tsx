@@ -20,14 +20,6 @@ const WelcomePage = () => {
   const events = useMemo(
     () => [
       {
-        title: "African Startup Conference 2024",
-        backgroundImage: "/media/afes/Conference-africaine-des-start-up.jpg",
-        isLocked: false,
-        isContinue: false,
-        onClick: () => {},
-        hasPassed: true,
-      },
-      {
         title: "African Startup Conference 2025 ",
         backgroundImage: "/media/afes/africainStartup.jpg",
         isLocked: !userHasTicket,
@@ -86,19 +78,19 @@ const WelcomePage = () => {
           excites you, check the details, choose your ticket, and get started!
         </p>
 
-        <div className="events-grid">
+        <div className="row">
           {events.map((event, index) => (
-            <EventCard
-              key={index}
-              title={event.title}
-              backgroundImage={event.backgroundImage}
-              isLocked={event.isLocked}
-              isContinue={event.isContinue}
-              isFetching={!user}
-              canOpenModal={!userHasTicket}
-              onClick={event.onClick}
-              hasPassed={event.hasPassed}
-            />
+            <div key={index} className="col-6 mx-auto">
+              <EventCard
+                title={event.title}
+                backgroundImage={event.backgroundImage}
+                isLocked={event.isLocked}
+                isContinue={event.isContinue}
+                isFetching={!user}
+                canOpenModal={!userHasTicket}
+                hasPassed={event.hasPassed}
+              />
+            </div>
           ))}
         </div>
       </main>

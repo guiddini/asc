@@ -5,6 +5,7 @@ import SearchComponent from "./search-component";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { UserResponse } from "../../../types/reducers";
+import UserTypeComponent from "./type-user-component";
 
 interface MobileMenuProps {
   show: boolean;
@@ -17,6 +18,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ show, onHide }) => {
 
   const handleShowSearch = () => setShowSearch(true);
   const handleCloseSearch = () => setShowSearch(false);
+  const [showTypeComponent, setShowTypeComponent] = useState(false);
+  const handleCloseType = () => setShowTypeComponent(false);
 
   const { user: currentUser } = useSelector(
     (state: UserResponse) => state.user
@@ -99,8 +102,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ show, onHide }) => {
                     variant="secondary"
                     size="sm"
                     onClick={() => {
-                      navigate("/auth/signup");
-                      onHide();
+                      setShowTypeComponent(true);
                     }}
                   >
                     <i className="bi bi-person-plus me-2"></i>
@@ -126,6 +128,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ show, onHide }) => {
       </Offcanvas.Body>
 
       <SearchComponent show={showSearch} onHide={handleCloseSearch} />
+      <UserTypeComponent show={showTypeComponent} onHide={handleCloseType} />
     </Offcanvas>
   );
 };
