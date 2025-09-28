@@ -1,0 +1,297 @@
+// Theme variables
+$primary: #00c4c4;
+$primary-active: #009797;
+$primary-light: #eefdf7;
+$dark: #0a2540;
+$white: #ffffff;
+
+// Additional UI variables for enhanced design
+$shadow-light: rgba(0, 0, 0, 0.08);
+$shadow-medium: rgba(0, 0, 0, 0.12);
+$shadow-strong: rgba(0, 0, 0, 0.25);
+$border-radius: 12px;
+$border-radius-small: 8px;
+
+// Cookie Consent Toast Styles
+#cookieConsentToast {
+  background: linear-gradient(
+    145deg,
+    $primary-light,
+    lighten($primary-light, 2%)
+  ) !important;
+  border: none !important;
+  border-left: 4px solid $primary !important;
+  border-radius: $border-radius !important;
+  box-shadow: 0 8px 32px $shadow-medium, 0 2px 8px $shadow-light,
+    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  max-width: 400px !important;
+  min-width: 350px !important;
+  backdrop-filter: blur(10px) !important;
+  overflow: hidden !important;
+
+  // Remove default toast styles
+  .toast-header,
+  .toast-body {
+    border: none !important;
+    background: transparent !important;
+  }
+}
+
+// Toast Header Styles
+#cookieConsentToastHeader {
+  padding: 1rem 1.25rem 0.5rem !important;
+  border-bottom: 1px solid rgba($primary, 0.1) !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+#cookieConsentIcon {
+  font-size: 1.5rem !important;
+  filter: drop-shadow(0 1px 2px $shadow-light) !important;
+}
+
+#cookieConsentTitle {
+  color: $dark !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+}
+
+// Toast Body Styles
+#cookieConsentToastBody {
+  padding: 0.5rem 1.25rem 1.25rem !important;
+}
+
+#cookieConsentText {
+  color: $dark !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+}
+
+#cookieConsentSubtext {
+  color: lighten($dark, 20%) !important;
+  font-size: 0.8rem !important;
+  font-weight: 400 !important;
+  opacity: 0.85 !important;
+}
+
+// Action Buttons Container
+#cookieConsentActions {
+  margin-top: 0.75rem !important;
+}
+
+// Primary Accept Button
+#cookieConsentAcceptBtn {
+  background: linear-gradient(
+    135deg,
+    $primary,
+    darken($primary, 5%)
+  ) !important;
+  border: none !important;
+  color: $white !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  padding: 0.75rem 1.25rem !important;
+  border-radius: $border-radius-small !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  box-shadow: 0 2px 8px rgba($primary, 0.3), 0 1px 3px rgba($primary, 0.4) !important;
+
+  // Hover effects
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      $primary-active,
+      darken($primary-active, 5%)
+    ) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba($primary, 0.4), 0 2px 8px rgba($primary, 0.3) !important;
+  }
+
+  &:focus {
+    background: linear-gradient(
+      135deg,
+      $primary-active,
+      darken($primary-active, 5%)
+    ) !important;
+    box-shadow: 0 0 0 3px rgba($primary, 0.3), 0 6px 20px rgba($primary, 0.4) !important;
+    outline: none !important;
+  }
+
+  &:active {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 3px 12px rgba($primary, 0.4), 0 1px 4px rgba($primary, 0.3) !important;
+  }
+
+  // Ripple effect
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: width 0.5s;
+  }
+
+  &:hover::before {
+    width: 100%;
+  }
+}
+
+#cookieConsentAcceptIcon {
+  font-weight: bold !important;
+  font-size: 0.9rem !important;
+}
+
+// Secondary Decline Button
+#cookieConsentDeclineBtn {
+  background: transparent !important;
+  border: 2px solid rgba($primary, 0.3) !important;
+  color: $primary !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  padding: 0.75rem 1rem !important;
+  border-radius: $border-radius-small !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  backdrop-filter: blur(10px) !important;
+
+  &:hover {
+    background: rgba($primary, 0.1) !important;
+    border-color: rgba($primary, 0.6) !important;
+    color: darken($primary, 10%) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba($primary, 0.2) !important;
+  }
+
+  &:focus {
+    background: rgba($primary, 0.1) !important;
+    border-color: $primary !important;
+    color: darken($primary, 10%) !important;
+    box-shadow: 0 0 0 3px rgba($primary, 0.2) !important;
+    outline: none !important;
+  }
+
+  &:active {
+    background: rgba($primary, 0.15) !important;
+    transform: translateY(0) !important;
+  }
+}
+
+// Enhanced Animation
+.toast-container {
+  z-index: 9999 !important;
+}
+
+#cookieConsentToast.show {
+  animation: slideInUpBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
+}
+
+@keyframes slideInUpBounce {
+  0% {
+    opacity: 0;
+    transform: translateY(100%) scale(0.8);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-5%) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// Micro-interactions
+#cookieConsentToast {
+  &:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 12px 40px $shadow-medium, 0 4px 12px $shadow-light,
+      inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+}
+
+// Progressive Enhancement - Glassmorphism effect
+@supports (backdrop-filter: blur(10px)) {
+  #cookieConsentToast {
+    background: rgba(238, 253, 247, 0.85) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+  }
+}
+
+// Dark mode support (optional enhancement)
+@media (prefers-color-scheme: dark) {
+  #cookieConsentToast {
+    background: linear-gradient(145deg, darken($dark, 5%), $dark) !important;
+    color: $white !important;
+    border-left-color: lighten($primary, 10%) !important;
+  }
+
+  #cookieConsentTitle,
+  #cookieConsentText {
+    color: $white !important;
+  }
+
+  #cookieConsentSubtext {
+    color: darken($white, 30%) !important;
+  }
+}
+
+// Enhanced Responsive Design
+@media (max-width: 576px) {
+  #cookieConsentToast {
+    max-width: calc(100vw - 2rem) !important;
+    min-width: calc(100vw - 2rem) !important;
+    margin: 0 1rem !important;
+    border-radius: $border-radius-small !important;
+  }
+
+  #cookieConsentToastHeader,
+  #cookieConsentToastBody {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  #cookieConsentActions {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+
+  #cookieConsentAcceptBtn,
+  #cookieConsentDeclineBtn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  #cookieConsentText {
+    font-size: 0.85rem !important;
+  }
+
+  #cookieConsentSubtext {
+    font-size: 0.75rem !important;
+  }
+}
+
+@media (max-width: 375px) {
+  #cookieConsentToast {
+    margin: 0 0.5rem !important;
+    max-width: calc(100vw - 1rem) !important;
+    min-width: calc(100vw - 1rem) !important;
+  }
+
+  #cookieConsentToastHeader,
+  #cookieConsentToastBody {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+}

@@ -193,7 +193,7 @@ export const BadgePage = () => {
 
                   <div className="w-100 h-50 d-flex flex-column align-items-start justify-content-center gap-4 align-self-start">
                     <LinkedinShareButton
-                      url={`https://app.algeriafintech.com/`}
+                      url={`https://asc.eventili.com/`}
                       title="Je participe à l'événement 'Algeria Fintech & E-commerce Summit' organisé par 'Guiddini'. 🚀 Rejoignez-moi pour explorer les dernières tendances et innovations dans le domaine de la fintech et du commerce électronique en consultant le site web : https://algeriafintech.com/💻🌐 #AFES2024 #Guiddini #groupetelecomalgérie #icosnet #saa #caat #bea #Saticom
 #allianceassrances"
                     >
@@ -203,7 +203,7 @@ export const BadgePage = () => {
                     {/*  */}
                     {/* Share on Facebook */}
                     <FacebookShareButton
-                      url={`https://app.algeriafintech.com/`}
+                      url={`https://asc.eventili.com/`}
                       title="Je participe à l'événement 'Algeria Fintech & E-commerce Summit' organisé par 'Guiddini'. 🚀 Rejoignez-moi pour explorer les dernières tendances et innovations dans le domaine de la fintech et du commerce électronique en consultant le site web : https://algeriafintech.com/💻🌐 #AFES2024 #Guiddini #groupetelecomalgérie #icosnet #saa #caat #bea #Saticom
 #allianceassrances"
                     >
@@ -213,7 +213,7 @@ export const BadgePage = () => {
                     {/*  */}
                     {/* Share on Twitter */}
                     <TwitterShareButton
-                      url={`https://app.algeriafintech.com/`}
+                      url={`https://asc.eventili.com/`}
                       title="Je participe à l'événement 'Algeria Fintech & E-commerce Summit' organisé par 'Guiddini'. 🚀 Rejoignez-moi pour explorer les dernières tendances et innovations dans le domaine de la fintech et du commerce électronique en consultant le site web :"
                     >
                       <TwitterIcon size={32} round />
