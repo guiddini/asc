@@ -36,26 +36,25 @@ const SelectMediaModal: React.FC<SelectMediaModalProps> = (props) => {
   };
 
   const onDrop = async (acceptedFiles: File[]) => {
-    let mediaArray = [];
-    acceptedFiles?.forEach(async (file) => {
-      selectMedia({
-        file: file,
-        id: null,
-      });
-      if (!props.uploadedMedia.includes(file.name)) {
-        await uploadImageApi(file)
-          .then(({ data }: { data: uploadMediaResponseType }) => {
-            props.setUploadedMedia((prev) => [...prev, file.name]);
-            mediaArray.push({
-              file: file,
-              id: data.mediaTemp?.id,
-            });
-            props.setValue("media", [...media, ...mediaArray]);
-          })
-          .catch((error) => {});
-      } else {
-      }
-    });
+    let mediaArray: { file: File; id: number | null }[] = [];
+
+    for (const file of acceptedFiles) {
+      selectMedia({ file, id: null });
+
+      try {
+        const { data }: { data: uploadMediaResponseType } =
+          await uploadImageApi(file);
+
+        props.setUploadedMedia((prev) => [...prev, file.name]);
+
+        mediaArray.push({
+          file: file,
+          id: data.mediaTemp?.id,
+        });
+
+        props.setValue("media", [...(media || []), ...mediaArray]);
+      } catch (error) {}
+    }
   };
 
   return (
@@ -84,8 +83,8 @@ const SelectMediaModal: React.FC<SelectMediaModalProps> = (props) => {
             multiple: true,
             onDrop: onDrop,
             onError(err) {},
-            onDropRejected(fileRejections, event) {
-              fileRejections?.forEach((file) => {
+            onDropRejected(fileRejections) {
+              fileRejections?.forEach(() => {
                 toast.error(`Le fichier sélectionné n'est pas supporté`);
               });
             },

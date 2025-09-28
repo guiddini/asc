@@ -22,7 +22,7 @@ const SelectedMediaList = ({
   const { deleteTempMedia } = useMedia();
 
   const media: { file: File; id: number | null }[] = formdata?.media || [];
-
+  console.log("media : ", media);
   const removeSelectedMedia = (file: File, id: number | string) => {
     deleteTempMedia(id, {
       onSuccess() {

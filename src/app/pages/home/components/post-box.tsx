@@ -239,68 +239,122 @@ const PostBox = ({
         return (
           <>
             <div className="col-6">
-              {media_path[0]?.type === "video" ? (
-                <div className="card-rounded">
+              <div
+                className="position-relative h-100"
+                style={{ minHeight: "300px" }}
+              >
+                {media_path[0]?.type === "video" ? (
                   <video
                     controls
                     src={getMediaUrl(media_path[0]?.path)}
-                    className={videoClass}
+                    className="w-100 h-100 rounded-3 shadow-sm"
                     style={{
-                      height: "auto",
-                      objectFit: "contain",
+                      objectFit: "cover",
+                      minHeight: "300px",
                     }}
                   ></video>
-                </div>
-              ) : (
-                <a
-                  className="d-block card-rounded overlay h-100"
-                  data-fslightbox={`lightbox-projects-0`}
-                >
-                  <div
-                    className="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-100"
-                    style={{
-                      backgroundImage: `url(${getMediaUrl(
-                        media_path[0]?.path
-                      )})`,
-                    }}
-                  ></div>
-                  <div className="overlay-layer card-rounded bg-dark bg-opacity-25">
-                    <i className="ki-outline ki-eye fs-3x text-white"></i>
-                  </div>
-                </a>
-              )}
+                ) : (
+                  <a
+                    className="d-block position-relative overflow-hidden rounded-3 shadow-sm h-100 text-decoration-none"
+                    data-fslightbox={`lightbox-projects-0`}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <div
+                      className="w-100 h-100 bg-light d-flex align-items-center justify-content-center"
+                      style={{
+                        backgroundImage: `url(${getMediaUrl(
+                          media_path[0]?.path
+                        )})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        minHeight: "300px",
+                        transition: "transform 0.3s ease",
+                      }}
+                      onMouseOver={(e) =>
+                        (e.currentTarget.style.transform = "scale(1.05)")
+                      }
+                      onMouseOut={(e) =>
+                        (e.currentTarget.style.transform = "scale(1)")
+                      }
+                    >
+                      <div
+                        className="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-0 d-flex align-items-center justify-content-center opacity-0 hover-opacity-100"
+                        style={{ transition: "opacity 0.3s ease" }}
+                      >
+                        <div className="bg-white bg-opacity-90 rounded-circle p-3">
+                          <svg
+                            width="24"
+                            height="24"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                )}
+              </div>
             </div>
             <div className="col-6">
-              {media_path[1]?.type === "video" ? (
-                <div className="card-rounded">
+              <div
+                className="position-relative h-100"
+                style={{ minHeight: "300px" }}
+              >
+                {media_path[1]?.type === "video" ? (
                   <video
                     controls
                     src={getMediaUrl(media_path[1]?.path)}
-                    className={videoClass}
+                    className="w-100 h-100 rounded-3 shadow-sm"
                     style={{
-                      height: "auto",
-                      objectFit: "contain",
+                      objectFit: "cover",
+                      minHeight: "300px",
                     }}
                   ></video>
-                </div>
-              ) : (
-                <a
-                  className="d-block card-rounded overlay h-100"
-                  data-fslightbox={`lightbox-projects-1`}
-                >
-                  <div
-                    className="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-100"
-                    style={{
-                      backgroundImage: `url(${getMediaUrl(
-                        media_path[1]?.path
-                      )})`,
-                    }}
-                  ></div>
-                  <div className="overlay-layer card-rounded bg-dark bg-opacity-25">
-                    <i className="ki-outline ki-eye fs-3x text-white"></i>
-                  </div>
-                </a>
-              )}
+                ) : (
+                  <a
+                    className="d-block position-relative overflow-hidden rounded-3 shadow-sm h-100 text-decoration-none"
+                    data-fslightbox={`lightbox-projects-1`}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <div
+                      className="w-100 h-100 bg-light d-flex align-items-center justify-content-center"
+                      style={{
+                        backgroundImage: `url(${getMediaUrl(
+                          media_path[1]?.path
+                        )})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        minHeight: "300px",
+                        transition: "transform 0.3s ease",
+                      }}
+                      onMouseOver={(e) =>
+                        (e.currentTarget.style.transform = "scale(1.05)")
+                      }
+                      onMouseOut={(e) =>
+                        (e.currentTarget.style.transform = "scale(1)")
+                      }
+                    >
+                      <div
+                        className="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-0 d-flex align-items-center justify-content-center opacity-0 hover-opacity-100"
+                        style={{ transition: "opacity 0.3s ease" }}
+                      >
+                        <div className="bg-white bg-opacity-90 rounded-circle p-3">
+                          <svg
+                            width="24"
+                            height="24"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                )}
+              </div>
             </div>
           </>
         );
@@ -308,100 +362,219 @@ const PostBox = ({
       case mediaCount >= 3:
         return (
           <>
-            <div className="col-6">
-              {media_path[0]?.type === "video" ? (
-                <div className="card-rounded">
+            {/* Main/Featured Media - Takes up left side */}
+            <div className="col-md-8 col-12">
+              <div
+                className="position-relative h-100"
+                style={{ minHeight: "400px" }}
+              >
+                {media_path[0]?.type === "video" ? (
                   <video
                     controls
                     src={getMediaUrl(media_path[0]?.path)}
-                    className={videoClass}
+                    className="w-100 h-100 rounded-3 shadow-sm"
                     style={{
-                      height: "auto",
-                      objectFit: "contain",
+                      objectFit: "cover",
+                      minHeight: "400px",
                     }}
                   ></video>
-                </div>
-              ) : (
-                <a
-                  className="d-block card-rounded overlay h-100"
-                  data-fslightbox={`lightbox-projects-0`}
-                >
-                  <div
-                    className="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-100"
-                    style={{
-                      backgroundImage: `url(${getMediaUrl(
-                        media_path[0]?.path
-                      )})`,
-                    }}
-                  ></div>
-                  <div className="overlay-layer card-rounded bg-dark bg-opacity-25">
-                    <i className="ki-outline ki-eye fs-3x text-white"></i>
-                  </div>
-                </a>
-              )}
-            </div>
-            <div className="col-6">
-              <div className="row g-1 h-250px h-md-375px">
-                <div className="col-lg-12 h-50">
-                  {media_path[1]?.type === "video" ? (
-                    <div className="card-rounded">
-                      <video
-                        controls
-                        src={getMediaUrl(media_path[1]?.path)}
-                        className={videoClass}
-                        style={{
-                          maxHeight: "400px",
-                          objectFit: "contain",
-                        }}
-                      ></video>
-                    </div>
-                  ) : (
-                    <a
-                      className="d-block card-rounded overlay h-100"
-                      data-fslightbox={`lightbox-projects-1`}
+                ) : (
+                  <a
+                    className="d-block position-relative overflow-hidden rounded-3 shadow-sm h-100 text-decoration-none"
+                    data-fslightbox={`lightbox-projects-0`}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <div
+                      className="w-100 h-100 bg-light"
+                      style={{
+                        backgroundImage: `url(${getMediaUrl(
+                          media_path[0]?.path
+                        )})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        minHeight: "400px",
+                        transition: "transform 0.3s ease",
+                      }}
+                      onMouseOver={(e) =>
+                        (e.currentTarget.style.transform = "scale(1.02)")
+                      }
+                      onMouseOut={(e) =>
+                        (e.currentTarget.style.transform = "scale(1)")
+                      }
                     >
                       <div
-                        className="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-100"
+                        className="position-absolute top-50 start-50 translate-middle opacity-0 hover-opacity-100"
+                        style={{ transition: "opacity 0.3s ease" }}
+                      >
+                        <div className="bg-white bg-opacity-90 rounded-circle p-3 shadow">
+                          <svg
+                            width="28"
+                            height="28"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                )}
+              </div>
+            </div>
+
+            {/* Secondary Media Grid - Right side */}
+            <div className="col-md-4 col-12">
+              <div
+                className="d-flex flex-column h-100"
+                style={{ gap: "8px", minHeight: "400px" }}
+              >
+                {/* Second Media Item */}
+                <div
+                  className="flex-fill position-relative"
+                  style={{ minHeight: "190px" }}
+                >
+                  {media_path[1]?.type === "video" ? (
+                    <video
+                      controls
+                      src={getMediaUrl(media_path[1]?.path)}
+                      className="w-100 h-100 rounded-3 shadow-sm"
+                      style={{
+                        objectFit: "cover",
+                        minHeight: "190px",
+                      }}
+                    ></video>
+                  ) : (
+                    <a
+                      className="d-block position-relative overflow-hidden rounded-3 shadow-sm h-100 text-decoration-none"
+                      data-fslightbox={`lightbox-projects-1`}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <div
+                        className="w-100 h-100 bg-light"
                         style={{
                           backgroundImage: `url(${getMediaUrl(
                             media_path[1]?.path
                           )})`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                          minHeight: "190px",
+                          transition: "transform 0.3s ease",
                         }}
-                      ></div>
-                      <div className="overlay-layer card-rounded bg-dark bg-opacity-25">
-                        <i className="ki-outline ki-eye fs-3x text-white"></i>
+                        onMouseOver={(e) =>
+                          (e.currentTarget.style.transform = "scale(1.05)")
+                        }
+                        onMouseOut={(e) =>
+                          (e.currentTarget.style.transform = "scale(1)")
+                        }
+                      >
+                        <div
+                          className="position-absolute top-50 start-50 translate-middle opacity-0 hover-opacity-100"
+                          style={{ transition: "opacity 0.3s ease" }}
+                        >
+                          <div className="bg-white bg-opacity-90 rounded-circle p-2">
+                            <svg
+                              width="20"
+                              height="20"
+                              fill="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                            </svg>
+                          </div>
+                        </div>
                       </div>
                     </a>
                   )}
                 </div>
-                <div className="col-lg-12 h-50">
+
+                {/* Third Media Item with "+X more" overlay */}
+                <div
+                  className="flex-fill position-relative"
+                  style={{ minHeight: "190px" }}
+                >
                   {media_path[2]?.type === "video" ? (
-                    <div className="card-rounded">
+                    <div className="position-relative h-100">
                       <video
                         controls
                         src={getMediaUrl(media_path[2]?.path)}
-                        className={videoClass}
+                        className="w-100 h-100 rounded-3 shadow-sm"
                         style={{
-                          maxHeight: "400px",
-                          objectFit: "contain",
+                          objectFit: "cover",
+                          minHeight: "190px",
                         }}
                       ></video>
+                      {mediaCount > 3 && (
+                        <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-60 rounded-3 d-flex align-items-center justify-content-center">
+                          <div className="text-center text-white">
+                            <div
+                              className="fw-bold"
+                              style={{ fontSize: "24px" }}
+                            >
+                              +{mediaCount - 2}
+                            </div>
+                            <div className="small">more</div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ) : (
                     <a
-                      className="d-block card-rounded overlay h-100"
+                      className="d-block position-relative overflow-hidden rounded-3 shadow-sm h-100 text-decoration-none"
                       data-fslightbox={`lightbox-projects-2`}
+                      style={{ cursor: "pointer" }}
                     >
                       <div
-                        className="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-100"
+                        className="w-100 h-100 bg-light"
                         style={{
                           backgroundImage: `url(${getMediaUrl(
                             media_path[2]?.path
                           )})`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                          minHeight: "190px",
+                          transition: "transform 0.3s ease",
                         }}
-                      ></div>
-                      <div className="overlay-layer card-rounded bg-dark bg-opacity-25">
-                        <p className="fs-3x text-white">{mediaCount} +</p>
+                        onMouseOver={(e) =>
+                          (e.currentTarget.style.transform = "scale(1.05)")
+                        }
+                        onMouseOut={(e) =>
+                          (e.currentTarget.style.transform = "scale(1)")
+                        }
+                      >
+                        {/* "+X more" overlay for 3+ images */}
+                        {mediaCount > 3 && (
+                          <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-70 d-flex align-items-center justify-content-center">
+                            <div className="text-center text-white">
+                              <div
+                                className="fw-bold"
+                                style={{ fontSize: "28px" }}
+                              >
+                                +{mediaCount - 2}
+                              </div>
+                              <div className="small opacity-90">more</div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Eye icon for single third image */}
+                        {mediaCount === 3 && (
+                          <div
+                            className="position-absolute top-50 start-50 translate-middle opacity-0 hover-opacity-100"
+                            style={{ transition: "opacity 0.3s ease" }}
+                          >
+                            <div className="bg-white bg-opacity-90 rounded-circle p-2">
+                              <svg
+                                width="20"
+                                height="20"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                              </svg>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </a>
                   )}
