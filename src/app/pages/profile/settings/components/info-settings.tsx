@@ -34,16 +34,9 @@ const InfoSettings = ({ user }: { user: any }) => {
 
   const institutions = [
     { label: "Public", value: "public" },
-    { label: "Ministere", value: "ministere" },
+    { label: "Ministry", value: "ministere" },
     { label: "Association", value: "association" },
-    { label: "Organisme", value: "organisme" },
-  ];
-
-  const participationGoals = [
-    { label: "Networking", value: "networking" },
-    { label: "Find Investors", value: "investors" },
-    { label: "Partnerships", value: "partnerships" },
-    { label: "Learning", value: "learning" },
+    { label: "Organization", value: "organisme" },
   ];
 
   const defaultActivitiesAreas = user.activity_areas?.map((a) => ({
@@ -61,7 +54,7 @@ const InfoSettings = ({ user }: { user: any }) => {
 
   const defaultOccupation = {
     label: !is_occupation_name
-      ? "Autre"
+      ? "Other"
       : user?.info?.occupationFound?.label_fr,
     value: !is_occupation_name ? 0 : user?.info?.occupationFound?.id,
   };
@@ -79,7 +72,7 @@ const InfoSettings = ({ user }: { user: any }) => {
   const is_other_university = user?.info?.university_id === null;
 
   const defaultUniversity = {
-    label: user?.info?.university?.name || "Autre",
+    label: user?.info?.university?.name || "Other",
     value: user?.info?.university?.id || 0,
   };
 
@@ -106,10 +99,6 @@ const InfoSettings = ({ user }: { user: any }) => {
     institution_type: defaultInstitution,
     institution_name: user.info?.institution_name,
     activity_area_ids: defaultActivitiesAreas,
-    job_title: user.info?.job_title || "",
-    company: user.info?.company || "",
-    participation_goal: user.info?.participation_goal || "",
-    about_me: user.info?.about_me || "",
   };
 
   const {
@@ -155,7 +144,7 @@ const InfoSettings = ({ user }: { user: any }) => {
   }, [watch("avatar"), user?.id]);
 
   const user_type = user.info?.type;
-  const is_algeria = watch("country")?.label === "Algérie";
+  const is_algeria = watch("country")?.label === "Algeria";
 
   const handleUpdate = async (data) => {
     const formdata = new FormData();
@@ -166,7 +155,6 @@ const InfoSettings = ({ user }: { user: any }) => {
     }
 
     data?.country && formdata.append("country_id", data.country?.value);
-
     if (is_algeria) {
       data?.wilaya?.value && formdata.append("wilaya_id", data.wilaya?.value);
       data?.commune?.value &&
@@ -178,11 +166,6 @@ const InfoSettings = ({ user }: { user: any }) => {
     formdata.append("lname", data.lname);
     formdata.append("type", data.type);
     formdata.append("address", data.address);
-
-    formdata.append("job_title", data.job_title);
-    formdata.append("company", data.company);
-    formdata.append("participation_goal", data.participation_goal);
-    formdata.append("about_me", data.about_me);
 
     if (user_type === "institution") {
       data?.institution_type?.value &&
@@ -197,35 +180,34 @@ const InfoSettings = ({ user }: { user: any }) => {
     }
 
     if (user_type === "corporate" || user_type === "independant") {
-      data?.occupation_id?.value &&
+      data?.occupation_id &&
         data?.occupation_id?.value !== 0 &&
         formdata.append("occupation_id", data?.occupation_id?.value);
 
       if (data?.occupation_id?.value !== 0) {
-        formdata.append("occupation", null);
+        formdata.append("occupation", "");
       } else {
         formdata.append("occupation", data?.occupation);
       }
 
-      data?.activity_area_ids?.forEach((element, i) => {
-        formdata.append(`activity_area_ids[${i}]`, element?.value);
-      });
+      data?.activity_area_ids &&
+        data?.activity_area_ids?.forEach((element, i) => {
+          formdata.append(`activity_area_ids[${i}]`, element?.value);
+        });
     }
 
     mutate(formdata, {
       onSuccess() {
-        toast.success("Le profil a été mis à jour avec succès");
+        toast.success("Profile updated successfully");
       },
       onError(error: errorResponse) {
-        toast.error(
-          `Erreur de mise à jour du profil ${error?.response?.data?.message}`
-        );
+        toast.error(`Profile update failed ${error?.response?.data?.message}`);
       },
     });
   };
 
   return (
-    <div className="card mb-5 mb-xl-10">
+    <div className="card mb-5 mb-xl-10" id="edit-profile">
       <div
         className="card-header border-0 cursor-pointer"
         role="button"
@@ -235,83 +217,329 @@ const InfoSettings = ({ user }: { user: any }) => {
         aria-controls="kt_account_profile_details"
       >
         <div className="card-title m-0">
-          <h3 className="fw-bolder m-0">Profile Details</h3>
+          <h3 className="fw-bolder m-0">Edit Profile</h3>
         </div>
       </div>
 
-      <div id="kt_account_profile_details" className="collapse show">
+      <div id="kt_account_profile_details" className="collapse">
         <form onSubmit={handleSubmit(handleUpdate)} className="form">
           <div className="card-body border-top p-9">
-            {/* Avatar */}
-            {/* ... reste de ton code pour avatar et info basiques ... */}
-
-            {/* Job Title */}
             <div className="row mb-6">
               <label className="col-lg-4 col-form-label fw-bold fs-6">
-                Job Title
+                Avatar
               </label>
+              <div className="col-lg-8">
+                <div
+                  className="image-input image-input-outline"
+                  data-kt-image-input="true"
+                >
+                  <div className="symbol symbol-100px w-100 bg-light overlay">
+                    <div
+                      className="image-input-wrapper w-125px h-125px"
+                      style={{ backgroundImage: `url(${logo_image})` }}
+                    ></div>
+
+                    <div className="overlay-layer card-rounded bg-dark bg-opacity-25">
+                      <label htmlFor="company_logo">
+                        <span
+                          className="btn btn-primary d-flex align-items-center justify-content-center"
+                          style={{ padding: "0.5rem" }}
+                        >
+                          <i className="ki-duotone ki-pencil p-0">
+                            <span className="path1"></span>
+                            <span className="path2"></span>
+                          </i>
+                        </span>
+
+                        <input
+                          type="file"
+                          name="file"
+                          id="company_logo"
+                          accept="image/png, image/jpg, image/jpeg"
+                          className="btn btn-primary"
+                          onChange={(e) =>
+                            setValue("avatar", e.target.files[0])
+                          }
+                        />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {errorMessage(errors, "avatar")}
+            </div>
+
+            <div className="row mb-6">
+              <label className="col-lg-4 col-form-label required fw-bold fs-6">
+                Full Name
+              </label>
+
+              <div className="col-lg-8">
+                <div className="row">
+                  <div className="col-lg-6 fv-row">
+                    <input
+                      type="text"
+                      className="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
+                      placeholder="First Name"
+                      {...register("fname")}
+                    />
+                    {errorMessage(errors, "fname")}
+                  </div>
+
+                  <div className="col-lg-6 fv-row">
+                    <input
+                      type="text"
+                      className="form-control form-control-lg form-control-solid"
+                      placeholder="Last Name"
+                      {...register("lname")}
+                    />
+                    {errorMessage(errors, "lname")}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="row mb-6">
+              <label className="col-lg-4 col-form-label required fw-bold fs-6">
+                Email
+              </label>
+
               <div className="col-lg-8 fv-row">
                 <input
-                  type="text"
-                  className="form-control form-control-lg form-control-solid"
-                  placeholder="Job Title"
-                  {...register("job_title")}
+                  type="email"
+                  disabled
+                  className="form-control form-control-lg form-control-solid disabled"
+                  placeholder="Email Address"
+                  {...register("email")}
                 />
-                {errorMessage(errors, "job_title")}
+                {errorMessage(errors, "email")}
               </div>
             </div>
 
-            {/* Company */}
             <div className="row mb-6">
               <label className="col-lg-4 col-form-label fw-bold fs-6">
-                Company
+                <span className="required">Phone Number</span>
               </label>
+
               <div className="col-lg-8 fv-row">
                 <input
-                  type="text"
+                  type="tel"
                   className="form-control form-control-lg form-control-solid"
-                  placeholder="Company"
-                  {...register("company")}
+                  placeholder="Phone Number"
+                  {...register("phone")}
                 />
-                {errorMessage(errors, "company")}
+                {errorMessage(errors, "phone")}
               </div>
             </div>
 
-            {/* Participation Goals */}
             <div className="row mb-6">
               <label className="col-lg-4 col-form-label fw-bold fs-6">
-                Participation Goals
+                <span className="required">Interests</span>
               </label>
+
+              <SelectComponent
+                control={control as any}
+                data={MEMORIZED_ACTIVITIES}
+                errors={errors}
+                label="Interests"
+                name="activity_area_ids"
+                colXS={12}
+                colMD={6}
+                isLoading={loadingActivities}
+                noOptionMessage="No interests found"
+                required
+                isMulti
+                defaultValue={defaultActivitiesAreas}
+              />
+            </div>
+
+            <div className="separator mb-4"></div>
+
+            <div className="row mb-6">
+              <label className="col-lg-4 col-form-label fw-bold fs-6">
+                <span className="required">Address</span>
+              </label>
+
               <div className="col-lg-8 fv-row">
-                <SelectComponent
-                  control={control as any}
-                  data={participationGoals}
-                  errors={errors}
-                  label="Participation Goals"
-                  name="participation_goal"
-                  colXS={12}
-                  colMD={6}
-                  noOptionMessage="No goals found"
-                  required
-                />
+                <Row>
+                  <CountriesSelect
+                    control={control as any}
+                    errors={errors}
+                    colMD={6}
+                    colXS={6}
+                    defaultValue={defaultCountry}
+                  />
+
+                  {is_algeria && (
+                    <>
+                      <WillayasSelect
+                        control={control as any}
+                        errors={errors}
+                        colMD={6}
+                        colXS={6}
+                        defaultValue={defaultWillaya}
+                      />
+
+                      <CommuneSelect
+                        willaya_id={willaya_id}
+                        control={control as any}
+                        errors={errors}
+                        colMD={6}
+                        colXS={6}
+                        key={String(willaya_id)}
+                        defaultValue={defaultCommune}
+                      />
+                    </>
+                  )}
+
+                  <Col className="mt-2">
+                    <label className="fw-bold fs-6">
+                      <span className="required">Address</span>
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control form-control-lg form-control-solid"
+                      placeholder="Address"
+                      {...register("address")}
+                    />
+                    {errorMessage(errors, "address")}
+                  </Col>
+                </Row>
               </div>
             </div>
 
-            {/* About Me */}
-            <div className="row mb-6">
-              <label className="col-lg-4 col-form-label fw-bold fs-6">
-                About Me
-              </label>
-              <div className="col-lg-8 fv-row">
-                <textarea
-                  className="form-control form-control-lg form-control-solid"
-                  placeholder="Tell us about yourself..."
-                  rows={4}
-                  {...register("about_me")}
-                />
-                {errorMessage(errors, "about_me")}
-              </div>
-            </div>
+            {user?.info?.type === "institution" && (
+              <>
+                <div className="separator mb-4"></div>
+                <div className="row mb-6">
+                  <label className="col-lg-4 col-form-label fw-bold fs-6">
+                    <span className="required">Institution</span>
+                  </label>
+
+                  <div className="col-lg-8 fv-row">
+                    <Row>
+                      <SelectComponent
+                        control={control as any}
+                        data={institutions}
+                        errors={errors}
+                        label="Institution Type"
+                        name="institution_type"
+                        colXS={12}
+                        colMD={6}
+                        defaultValue={defaultInstitution}
+                        noOptionMessage="No type found"
+                        required
+                      />
+
+                      <Col className="mt-2">
+                        <label className="fw-bold fs-6">
+                          <span className="required">Institution Name</span>
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control form-control-lg form-control-solid"
+                          placeholder="Institution Name"
+                          {...register("institution_name")}
+                        />
+                        {errorMessage(errors, "institution_name")}
+                      </Col>
+                    </Row>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {user?.info?.type === "student" && (
+              <>
+                <div className="separator mb-4"></div>
+                <div className="row mb-6">
+                  <label className="col-lg-4 col-form-label fw-bold fs-6">
+                    <span className="required">Student</span>
+                  </label>
+
+                  <div className="col-lg-8 fv-row">
+                    <Row>
+                      <SelectComponent
+                        control={control as any}
+                        data={MEMORIZED_UNIVERSITIES}
+                        errors={errors}
+                        label="University"
+                        name="university_id"
+                        colXS={12}
+                        colMD={6}
+                        defaultValue={defaultUniversity}
+                        noOptionMessage="No university found"
+                        required
+                      />
+
+                      {is_other_university && (
+                        <Col className="mt-2">
+                          <label className="fw-bold fs-6">
+                            <span className="required">Foreign University</span>
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control form-control-lg form-control-solid"
+                            placeholder="Foreign University"
+                            {...register("foreign_university")}
+                          />
+                          {errorMessage(errors, "foreign_university")}
+                        </Col>
+                      )}
+                    </Row>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {(user?.info?.type === "independant" ||
+              user?.info?.type === "corporate") && (
+              <>
+                <div className="separator mb-4"></div>
+                <div className="row mb-6">
+                  <label className="col-lg-4 col-form-label fw-bold fs-6">
+                    <span className="required">Company</span>
+                  </label>
+
+                  <div className="col-lg-8 fv-row">
+                    <Row>
+                      {occupation && (
+                        <SelectComponent
+                          control={control as any}
+                          data={MEMORIZED_OCCUPATIONS}
+                          errors={errors}
+                          defaultValue={defaultOccupation}
+                          label="Occupation"
+                          name="occupation_id"
+                          colXS={12}
+                          colMD={6}
+                          isLoading={loadingOccupations}
+                          noOptionMessage="No occupation found"
+                          required
+                        />
+                      )}
+
+                      {watch("occupation_id") &&
+                        typeof watch("occupation_id") === "object" &&
+                        (watch("occupation_id") as selectProps).value === 0 && (
+                          <Col className="mt-2">
+                            <label className="fw-bold fs-6">
+                              <span className="required">Occupation Name</span>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control form-control-lg form-control-solid"
+                              placeholder="Occupation Name"
+                              {...register("occupation")}
+                            />
+                            {errorMessage(errors, "occupation")}
+                          </Col>
+                        )}
+                    </Row>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
 
           <div className="card-footer d-flex justify-content-end py-6 px-9">

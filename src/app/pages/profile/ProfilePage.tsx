@@ -37,27 +37,7 @@ const ProfilePage = () => {
       ) : (
         <>
           <ProfileHeader user={USER_DATA} />
-          <Tabs
-            id="controlled-tab-example"
-            activeKey={key}
-            onSelect={(k) => setKey(k)}
-            className="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap bg-white mb-6 px-9 h-40px"
-          >
-            <Tab eventKey="overview" title="Overview">
-              <Overview user={USER_DATA} />
-            </Tab>
-            {/* <Tab eventKey="connections" title="Suggestions">
-                <Connections />
-              </Tab> */}
-
-            {user?.id === USER_DATA?.id && (
-              <Tab eventKey="settings" title="Settings">
-                <>
-                  <AccountSettings {...USER_DATA} />
-                </>
-              </Tab>
-            )}
-          </Tabs>
+          {user?.id === USER_DATA?.id && <AccountSettings {...USER_DATA} />}
         </>
       )}
     </>
