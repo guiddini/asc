@@ -197,23 +197,29 @@ const PostBox = ({
       path: e?.path,
       type: e?.type,
     }));
+
+    const videoClass = "w-100 rounded-1";
+
     switch (true) {
       case mediaCount === 1:
         return (
           <div className="col-12">
             {media_path[0]?.type === "video" ? (
-              <div className="card-rounded h-100">
+              <div className="card-rounded">
                 <video
                   controls
                   src={getMediaUrl(media_path[0]?.path)}
-                  className="w-100 h-100 object-fit-cover rounded-1"
+                  className={videoClass}
+                  style={{
+                    maxHeight: "400px",
+                    objectFit: "contain",
+                  }}
                 ></video>
               </div>
             ) : (
               <a
                 className="d-block card-rounded overlay h-100"
                 data-fslightbox="lightbox-projects"
-                // href={getMediaUrl(postMedia[0])}
               >
                 <div
                   className="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-100"
@@ -221,7 +227,6 @@ const PostBox = ({
                     backgroundImage: `url(${getMediaUrl(media_path[0]?.path)})`,
                   }}
                 ></div>
-
                 <div className="overlay-layer card-rounded bg-dark bg-opacity-25">
                   <i className="ki-outline ki-eye fs-3x text-white"></i>
                 </div>
@@ -235,18 +240,21 @@ const PostBox = ({
           <>
             <div className="col-6">
               {media_path[0]?.type === "video" ? (
-                <div className="card-rounded h-100">
+                <div className="card-rounded">
                   <video
                     controls
                     src={getMediaUrl(media_path[0]?.path)}
-                    className="w-100 h-100 object-fit-cover rounded-1"
+                    className={videoClass}
+                    style={{
+                      height: "auto",
+                      objectFit: "contain",
+                    }}
                   ></video>
                 </div>
               ) : (
                 <a
                   className="d-block card-rounded overlay h-100"
                   data-fslightbox={`lightbox-projects-0`}
-                  // href={getMediaUrl(postMedia[0])}
                 >
                   <div
                     className="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-100"
@@ -256,7 +264,6 @@ const PostBox = ({
                       )})`,
                     }}
                   ></div>
-
                   <div className="overlay-layer card-rounded bg-dark bg-opacity-25">
                     <i className="ki-outline ki-eye fs-3x text-white"></i>
                   </div>
@@ -265,18 +272,21 @@ const PostBox = ({
             </div>
             <div className="col-6">
               {media_path[1]?.type === "video" ? (
-                <div className="card-rounded h-100">
+                <div className="card-rounded">
                   <video
                     controls
                     src={getMediaUrl(media_path[1]?.path)}
-                    className="w-100 h-100 object-fit-cover rounded-1"
+                    className={videoClass}
+                    style={{
+                      height: "auto",
+                      objectFit: "contain",
+                    }}
                   ></video>
                 </div>
               ) : (
                 <a
                   className="d-block card-rounded overlay h-100"
                   data-fslightbox={`lightbox-projects-1`}
-                  // href={getMediaUrl(media_path[1]?.path)}
                 >
                   <div
                     className="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-100"
@@ -286,7 +296,6 @@ const PostBox = ({
                       )})`,
                     }}
                   ></div>
-
                   <div className="overlay-layer card-rounded bg-dark bg-opacity-25">
                     <i className="ki-outline ki-eye fs-3x text-white"></i>
                   </div>
@@ -301,18 +310,21 @@ const PostBox = ({
           <>
             <div className="col-6">
               {media_path[0]?.type === "video" ? (
-                <div className="card-rounded h-100">
+                <div className="card-rounded">
                   <video
                     controls
                     src={getMediaUrl(media_path[0]?.path)}
-                    className="w-100 h-100 object-fit-cover rounded-1"
+                    className={videoClass}
+                    style={{
+                      height: "auto",
+                      objectFit: "contain",
+                    }}
                   ></video>
                 </div>
               ) : (
                 <a
                   className="d-block card-rounded overlay h-100"
                   data-fslightbox={`lightbox-projects-0`}
-                  // href={getMediaUrl(media_path[0]?.path)}
                 >
                   <div
                     className="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-100"
@@ -332,18 +344,21 @@ const PostBox = ({
               <div className="row g-1 h-250px h-md-375px">
                 <div className="col-lg-12 h-50">
                   {media_path[1]?.type === "video" ? (
-                    <div className="card-rounded h-100">
+                    <div className="card-rounded">
                       <video
                         controls
                         src={getMediaUrl(media_path[1]?.path)}
-                        className="w-100 h-100 object-fit-cover rounded-1"
+                        className={videoClass}
+                        style={{
+                          maxHeight: "400px",
+                          objectFit: "contain",
+                        }}
                       ></video>
                     </div>
                   ) : (
                     <a
                       className="d-block card-rounded overlay h-100"
                       data-fslightbox={`lightbox-projects-1`}
-                      // href={getMediaUrl(media_path[1]?.path)}
                     >
                       <div
                         className="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-100"
@@ -353,7 +368,6 @@ const PostBox = ({
                           )})`,
                         }}
                       ></div>
-
                       <div className="overlay-layer card-rounded bg-dark bg-opacity-25">
                         <i className="ki-outline ki-eye fs-3x text-white"></i>
                       </div>
@@ -362,18 +376,21 @@ const PostBox = ({
                 </div>
                 <div className="col-lg-12 h-50">
                   {media_path[2]?.type === "video" ? (
-                    <div className="card-rounded h-100">
+                    <div className="card-rounded">
                       <video
                         controls
                         src={getMediaUrl(media_path[2]?.path)}
-                        className="w-100 h-100 object-fit-cover rounded-1"
+                        className={videoClass}
+                        style={{
+                          maxHeight: "400px",
+                          objectFit: "contain",
+                        }}
                       ></video>
                     </div>
                   ) : (
                     <a
                       className="d-block card-rounded overlay h-100"
                       data-fslightbox={`lightbox-projects-2`}
-                      // href={getMediaUrl(media_path[2]?.path)}
                     >
                       <div
                         className="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-100"
@@ -383,9 +400,8 @@ const PostBox = ({
                           )})`,
                         }}
                       ></div>
-
                       <div className="overlay-layer card-rounded bg-dark bg-opacity-25">
-                        <p className="fs-3x text-white">{mediaCount} +</p> +
+                        <p className="fs-3x text-white">{mediaCount} +</p>
                       </div>
                     </a>
                   )}
@@ -594,8 +610,11 @@ const PostBox = ({
             description
           )} */}
         </div>
+        {/* Media Section */}
         {postMedia?.length > 0 && (
-          <div className="row g-7 h-250px h-md-375px">{renderPostMedia()}</div>
+          <div className="row g-2 mb-3" style={{ minHeight: "250px" }}>
+            {renderPostMedia()}
+          </div>
         )}
       </div>
 
