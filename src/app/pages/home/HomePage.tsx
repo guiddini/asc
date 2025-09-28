@@ -17,6 +17,8 @@ import {
 import { getAllPostsApi } from "../../apis";
 import { Col, Row, Spinner } from "react-bootstrap";
 import { toAbsoluteUrl } from "../../../_metronic/helpers";
+import RoleGuard from "../../components/role-guard";
+import { adminRoles } from "../../routing/PrivateRoutes";
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -109,7 +111,9 @@ const HomePage = () => {
             className="w-100 flex-lg-row-fluid mx-lg-13"
             id="home-feed-posts"
           >
-            <CreatePost />
+            <RoleGuard allowedRoles={adminRoles}>
+              <CreatePost />
+            </RoleGuard>
             <Row className="d-lg-none">
               <Col md={6}>
                 <SponsorsBox />

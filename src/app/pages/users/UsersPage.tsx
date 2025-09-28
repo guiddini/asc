@@ -72,6 +72,11 @@ const UsersPage = () => {
       name: "Email",
       selector: (row) => row?.email,
       sortable: true,
+      wrap: true,
+      style: {
+        whiteSpace: "normal",
+        wordBreak: "break-word",
+      },
     },
     {
       name: "Type",
@@ -267,7 +272,6 @@ const UsersPage = () => {
         }) || [],
     [data, isLoading]
   );
-  console.log("type user", users);
 
   return (
     <>

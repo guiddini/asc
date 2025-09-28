@@ -40,6 +40,7 @@ export function AsideMenuMain() {
   const isCompanyEditor = useSelector((state) =>
     canEditCompany(state, companyID)
   );
+
   const isCompanyStaff = useSelector((state) =>
     canViewCompany(state, companyID)
   );
