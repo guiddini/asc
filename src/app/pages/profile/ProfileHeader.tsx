@@ -1,6 +1,5 @@
 import type React from "react";
 import { useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
 import { KTIcon } from "../../../_metronic/helpers";
 import clsx from "clsx";
 import type { User } from "../../types/user";
@@ -8,7 +7,6 @@ import getMediaUrl from "../../helpers/getMediaUrl";
 import { Button, Modal, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import type { UserResponse } from "../../types/reducers";
-import { updateUserLogo } from "../../apis";
 import toast from "react-hot-toast";
 import { MeetingBookingModal } from "./components/meeting/meeting-booking-modal";
 
@@ -21,33 +19,10 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
     (state: UserResponse) => state.user
   );
   const is_owner = currentUser?.id === user.id;
-  const queryClient = useQueryClient();
   // Modal states
   const [showMeetModal, setShowMeetModal] = useState(false);
   const [showTextModal, setShowTextModal] = useState(false);
   const [textMessage, setTextMessage] = useState<string>("");
-
-  const updateAvatarMutation = useMutation(
-    (formData: FormData) => updateUserLogo(formData),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["user", user.id]);
-        toast.success("Profile picture updated successfully!");
-      },
-      onError: () => {
-        toast.error("An error occurred while updating the profile picture.");
-      },
-    }
-  );
-
-  const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append("avatar", file);
-      updateAvatarMutation.mutate(formData);
-    }
-  };
 
   const handleOpenMeetModal = () => setShowMeetModal(true);
   const handleCloseMeetModal = () => setShowMeetModal(false);
@@ -62,7 +37,6 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
     toast.success(`Message sent to ${user.fname}: "${textMessage}"`);
     handleCloseTextModal();
   };
-  console.log("Rendering ProfileHeader for user:", user);
   return (
     <div className="container-fluid px-0 mb-4">
       {/* Main Profile Card */}

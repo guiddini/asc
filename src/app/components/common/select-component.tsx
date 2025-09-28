@@ -14,10 +14,10 @@ interface SelectComponentProps {
   noOptionMessage?: string;
   placeholder?: string;
   className?: string;
-  defaultValue?: {
-    label: string | any;
-    value: string | any;
-  };
+  defaultValue?:
+    | { label: string | any; value: string | any }
+    | { label: string | any; value: string | any }[];
+
   colXS?: number;
   colMD?: number;
   isLoading?: boolean;

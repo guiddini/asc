@@ -16,7 +16,6 @@ import { errorResponse } from "../../../../types/responses";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { updateProfileSchema } from "../validation/updateProfileSchema";
 import { errorMessage } from "../../../../helpers/errorMessage";
-import { compressImage } from "../../../../utils/compress-image";
 
 type selectProps = {
   label: string;
@@ -80,6 +79,18 @@ const InfoSettings = ({ user }: { user: any }) => {
     (e) => e.value === user?.info?.institution_type
   );
 
+  const LANG_OPTIONS = [
+    { label: "Arabic", value: "ar" },
+    { label: "French", value: "fr" },
+    { label: "English", value: "en" },
+  ];
+
+  const defaultLanguages = user?.info?.languages
+    ? LANG_OPTIONS.filter((opt) =>
+        JSON.parse(user?.info?.languages).includes(opt.value)
+      )
+    : [];
+
   const defaultValues = {
     avatar: user.avatar,
     fname: user.fname,
@@ -99,6 +110,12 @@ const InfoSettings = ({ user }: { user: any }) => {
     institution_type: defaultInstitution,
     institution_name: user.info?.institution_name,
     activity_area_ids: defaultActivitiesAreas,
+    linkedin_url: user.info?.linkedin_url,
+    job_title: user.info?.job_title,
+    company_name: user.info?.company_name,
+    participation_goals: user.info?.participation_goals,
+    about_you: user.info?.about_you,
+    languages: defaultLanguages,
   };
 
   const {
@@ -166,6 +183,18 @@ const InfoSettings = ({ user }: { user: any }) => {
     formdata.append("lname", data.lname);
     formdata.append("type", data.type);
     formdata.append("address", data.address);
+    data?.linkedin_url && formdata.append("linkedin_url", data.linkedin_url);
+    data?.job_title && formdata.append("job_title", data.job_title);
+    data?.company_name && formdata.append("company_name", data.company_name);
+    data?.about_you && formdata.append("about_you", data.about_you);
+
+    data?.languages?.forEach((lang: { value: string }, i: number) => {
+      formdata.append(`languages[${i}]`, lang.value);
+    });
+
+    data?.participation_goals?.forEach((goal: string, i: number) => {
+      formdata.append(`participation_goals[${i}]`, goal);
+    });
 
     if (user_type === "institution") {
       data?.institution_type?.value &&
@@ -189,12 +218,12 @@ const InfoSettings = ({ user }: { user: any }) => {
       } else {
         formdata.append("occupation", data?.occupation);
       }
-
-      data?.activity_area_ids &&
-        data?.activity_area_ids?.forEach((element, i) => {
-          formdata.append(`activity_area_ids[${i}]`, element?.value);
-        });
     }
+
+    data?.activity_area_ids &&
+      data?.activity_area_ids?.forEach((element, i) => {
+        formdata.append(`activity_area_ids[${i}]`, element?.value);
+      });
 
     mutate(formdata, {
       onSuccess() {
@@ -333,10 +362,6 @@ const InfoSettings = ({ user }: { user: any }) => {
             </div>
 
             <div className="row mb-6">
-              <label className="col-lg-4 col-form-label fw-bold fs-6">
-                <span className="required">Interests</span>
-              </label>
-
               <SelectComponent
                 control={control as any}
                 data={MEMORIZED_ACTIVITIES}
@@ -540,6 +565,105 @@ const InfoSettings = ({ user }: { user: any }) => {
                 </div>
               </>
             )}
+
+            <div className="separator mb-4"></div>
+
+            <div className="row mb-6">
+              <label className="col-lg-4 col-form-label fw-bold fs-6">
+                LinkedIn URL
+              </label>
+              <div className="col-lg-8 fv-row">
+                <input
+                  type="url"
+                  className="form-control form-control-lg form-control-solid"
+                  placeholder="LinkedIn URL"
+                  {...register("linkedin_url")}
+                />
+                {errorMessage(errors, "linkedin_url")}
+              </div>
+            </div>
+
+            <div className="row mb-6">
+              <label className="col-lg-4 col-form-label fw-bold fs-6">
+                Languages
+              </label>
+              <div className="col-lg-8 fv-row">
+                <SelectComponent
+                  control={control}
+                  data={[
+                    { label: "Arabic", value: "ar" },
+                    { label: "French", value: "fr" },
+                    { label: "English", value: "en" },
+                  ]}
+                  errors={errors}
+                  label=""
+                  name="languages"
+                  colXS={12}
+                  colMD={12}
+                  isMulti
+                  defaultValue={defaultLanguages}
+                />
+              </div>
+            </div>
+
+            <div className="row mb-6">
+              <label className="col-lg-4 col-form-label fw-bold fs-6">
+                Job Title
+              </label>
+              <div className="col-lg-8 fv-row">
+                <input
+                  type="text"
+                  className="form-control form-control-lg form-control-solid"
+                  placeholder="Job Title"
+                  {...register("job_title")}
+                />
+                {errorMessage(errors, "job_title")}
+              </div>
+            </div>
+
+            <div className="row mb-6">
+              <label className="col-lg-4 col-form-label fw-bold fs-6">
+                Company Name
+              </label>
+              <div className="col-lg-8 fv-row">
+                <input
+                  type="text"
+                  className="form-control form-control-lg form-control-solid"
+                  placeholder="Company Name"
+                  {...register("company_name")}
+                />
+                {errorMessage(errors, "company_name")}
+              </div>
+            </div>
+
+            <div className="row mb-6">
+              <label className="col-lg-4 col-form-label fw-bold fs-6">
+                Participation Goals
+              </label>
+              <div className="col-lg-8 fv-row">
+                <input
+                  type="text"
+                  className="form-control form-control-lg form-control-solid"
+                  placeholder="Participation Goals (comma separated)"
+                  {...register("participation_goals")}
+                />
+                {errorMessage(errors, "participation_goals")}
+              </div>
+            </div>
+
+            <div className="row mb-6">
+              <label className="col-lg-4 col-form-label fw-bold fs-6">
+                About You
+              </label>
+              <div className="col-lg-8 fv-row">
+                <textarea
+                  className="form-control form-control-lg form-control-solid"
+                  placeholder="Tell us about yourself"
+                  {...register("about_you")}
+                />
+                {errorMessage(errors, "about_you")}
+              </div>
+            </div>
           </div>
 
           <div className="card-footer d-flex justify-content-end py-6 px-9">
