@@ -42,7 +42,7 @@ const ConfirmTicketPayment = () => {
         paymentParams.orderNumber
       }&returnUrl=${
         import.meta.env.VITE_APP_PANEL_BASEURL
-      }/profiles/afes/tickets/results/${orderID}`;
+      }/profiles/asc/tickets/results/${orderID}`;
       window.location.href = redirect;
     }
   }, [paymentParams, navigate]);

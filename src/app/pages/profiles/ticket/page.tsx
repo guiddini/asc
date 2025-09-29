@@ -7,49 +7,38 @@ import TicketSection from "./ticket-payment-results/_components/ticket-section";
 import { Event } from "../page";
 import { useNavigate, useParams } from "react-router-dom";
 import { Ticket } from "lucide-react";
+import { GALLERY_IMAGES } from "../../landing-page/data/gallery-images";
 
 const TicketsPage = () => {
   const { slug } = useParams();
-
   const navigate = useNavigate();
 
-  if (slug !== "afes") {
+  if (slug !== "asc") {
     return <div>Not found</div>;
   }
+
   const data: Event[] = [
     {
-      slug: "afes",
-      title: "Algeria Fintech & E-commerce Summit",
-      description: `Algeria Fintech & E-commerce Summit événement réunira des experts, des entrepreneurs et des investisseurs autour des enjeux clés de la fintech et du e-commerce. Préparez-vous à une expérience immersive de conférences, ateliers et réseautage pour découvrir l’avenir de ces secteurs en pleine croissance.`,
-      date: "30-31 Jan & 01 Fev",
-      gallery: [
-        "/media/eventili/afes/14.jpg",
-        "/media/eventili/afes/15.jpg",
-        "/media/eventili/afes/1.jpg",
-        "/media/eventili/afes/2.jpg",
-        "/media/eventili/afes/3.jpg",
-        "/media/eventili/afes/4.jpg",
-        "/media/eventili/afes/5.jpg",
-        "/media/eventili/afes/6.jpg",
-        "/media/eventili/afes/7.jpg",
-        "/media/eventili/afes/8.jpg",
-        "/media/eventili/afes/9.jpg",
-        "/media/eventili/afes/10.jpg",
-        "/media/eventili/afes/11.jpg",
-        "/media/eventili/afes/12.jpg",
-        "/media/eventili/afes/13.jpg",
-      ],
-      info: "Algeria Fintech & E-commerce Summit revient pour sa 3ème édition ! Du 30 janvier au 1er février 2025, au Centre Culturel de la Grande Mosquée d'Alger, cet événement réunira des experts, des entrepreneurs et des investisseurs autour des enjeux clés de la fintech et du e-commerce.",
-      location: "Cultural Center of the Great Mosque of Algiers",
-      website: "https://algeriafintech.com",
-      email: "Contact@algeriafintech.com",
+      slug: "asc",
+      title: "African Startup Conference",
+      description: `The African Startup Conference has established itself as the leading pan-African gathering dedicated to innovation, entrepreneurship, and future technologies. Since its inception, it has brought together national and continental ecosystems, governments, investors, and the African diaspora around a shared ambition: to build a technologically sovereign and inclusive Africa.
+Edition after edition, the African Startup Conference has become a high-level platform for dialogue and cooperation, where strategic initiatives for the continent’s future are shaped. The Algiers Declaration on Startup Development, the African Charter for Talent Retention, and more recently the continental Public Policy Framework on Artificial Intelligence all testify to the structuring impact of this event on the pan-African ecosystem.
+In 2025, the Conference returns for its 4th edition, under the theme “Raising African Champions”. This edition will shine a spotlight on high-growth African startups, those already positioning themselves as major players on the continent and beyond. It will also analyze the key success factors behind these champions, access to financing, regional integration, and the adoption of advanced technologies — while strengthening the strategic bond with the African diaspora.`,
+      date: "December 6 - 8, 2025",
+      gallery: GALLERY_IMAGES,
+      info: "Join the biggest gathering of African champions in innovation and entrepreneurship.",
+      location:
+        "Centre International de Conference Abdeelatif Rahal, Algiers, Algeria",
+      website: "https://africanstartupconference.org",
+      email: "contact@africanstartupconference.org",
       organizers: ["/media/eventili/logos/algeria-venture-logo.svg"],
-      onClick: () => navigate("/profiles/afes"),
-      hero: "/media/eventili/afes/bg.jpg",
-      cta: "Retour",
+      onClick: () => navigate("/profiles/asc"),
+      hero: "/media/eventili/cover.webp",
+      cta: "Back",
       showIcon: false,
     },
   ];
+
   const event = data?.find((e) => e.slug === slug);
 
   return (
@@ -74,7 +63,7 @@ const TicketsPage = () => {
           <div id="svg-container">
             <Ticket />
           </div>
-          <h2>Ticket d'événement</h2>
+          <h2>Event Tickets</h2>
         </div>
         <TicketSection />
       </div>

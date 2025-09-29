@@ -130,7 +130,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     mutate(formdata, {
       onSuccess(data) {
         if (ticketData?.slug === "free") {
-          navigate("/profiles/afes/tickets/success");
+          navigate("/profiles/asc/tickets/success");
         } else {
           const satimLink = data?.data;
           toast.success("Redirection vers le paiement...");

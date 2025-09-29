@@ -67,7 +67,7 @@ export default function ConfirmTicketModal({
     mutate(formdata, {
       onSuccess(data) {
         if (values?.slug === "free") {
-          navigate("/profiles/afes/tickets/success");
+          navigate("/profiles/asc/tickets/success");
         } else {
           const satimLink = data?.data;
           window.location.href = satimLink;
@@ -186,7 +186,7 @@ export default function ConfirmTicketModal({
 
             <div id="confirm-ticket-modal-actions">
               <Link
-                to="/profiles/afes"
+                to="/profiles/asc"
                 type="button"
                 id="confirm-ticket-modal-event-profile-btn"
               >

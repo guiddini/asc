@@ -100,7 +100,7 @@ export const TicketsPrivilege = ({
                       <span
                         role="button"
                         onClick={() =>
-                          navigateAndScroll("/profiles/afes/tickets#tickets")
+                          navigateAndScroll("/profiles/asc/tickets#tickets")
                         }
                         className="link-primary"
                       >

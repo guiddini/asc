@@ -1,9 +1,6 @@
-// utils/agendaUtils.ts
-import React from "react";
-
 export interface Day {
-  date: string; // ISO string YYYY-MM-DD
-  display: string; // e.g. "dimanche 31 août"
+  date: string;
+  display: string;
   fullDate: Date;
 }
 
@@ -11,7 +8,7 @@ export const getThreeDayRange = (): Day[] => {
   const fixedDates = [
     new Date("2025-12-06"),
     new Date("2025-12-07"),
-    new Date("2025-12-09"),
+    new Date("2025-12-08"),
   ];
 
   return fixedDates.map((date) => ({
@@ -67,25 +64,25 @@ export const timeSlots: TimeSlot[] = [
 ];
 
 export const locations: string[] = [
-  "Salle de conférence A",
-  "Salle de conférence B",
-  "Salle de réunion 1",
-  "Salle de réunion 2",
-  "Salle du conseil",
-  "Salon exécutif",
-  "Espace de coworking",
-  "Bureau privé",
-  "Réunion virtuelle",
-  "Café - Rez-de-chaussée",
-  "Zone de réception",
-  "Laboratoire d'innovation",
+  "Conference Room A",
+  "Conference Room B",
+  "Meeting Room 1",
+  "Meeting Room 2",
+  "Board Room",
+  "Executive Lounge",
+  "Coworking Space",
+  "Private Office",
+  "Virtual Meeting",
+  "Cafe - Ground Floor",
+  "Reception Area",
+  "Innovation Lab",
 ];
 
 // Format Meeting Date + Time nicely
 export const formatMeetingDateTime = (date: string, time: string) => {
   if (!date || !time) return "";
   const dt = new Date(`${date}T${time}`);
-  return dt.toLocaleString("fr-FR", {
+  return dt.toLocaleString("en-GB", {
     weekday: "long",
     month: "long",
     day: "numeric",

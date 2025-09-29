@@ -23,7 +23,7 @@ const FailedPayment = ({ subscriptionData }: PaymentSuccessProps) => {
         />
       </div>
 
-      <Link to="/profiles/afes/tickets" className="retry-button">
+      <Link to="/profiles/asc/tickets" className="retry-button">
         Retour à la page des tickets
       </Link>
     </div>

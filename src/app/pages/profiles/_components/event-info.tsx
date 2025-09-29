@@ -13,8 +13,8 @@ export default function EventCard({ event }: { event: Event }) {
   return (
     <div className="event-card">
       <img
-        src={toAbsoluteUrl("/media/eventili/logos/afes-long.png")}
-        alt="FINTECH & E-commerce Summit"
+        src={toAbsoluteUrl("/media/eventili/logos/logo.svg")}
+        alt="ASC"
         className="logo"
       />
 
@@ -23,7 +23,7 @@ export default function EventCard({ event }: { event: Event }) {
           <CalendarDays />
         </div>
         <div>
-          <h2 className="event-title">Date de l'Événement</h2>
+          <h2 className="event-title">Event Date</h2>
           <p className="event-date">{event?.date}</p>
         </div>
       </div>
@@ -48,7 +48,7 @@ export default function EventCard({ event }: { event: Event }) {
       </div>
 
       <div className="organizers-section">
-        <h3 className="organizers-title">ORGANISATEURS D'ÉVÉNEMENTS</h3>
+        <h3 className="organizers-title">EVENT ORGANIZERS</h3>
         {event?.organizers?.map((img, idx) => (
           <img
             key={idx}
