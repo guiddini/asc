@@ -14,6 +14,12 @@ interface ProfileHeaderProps {
   user: User;
 }
 
+function decodeUnicode(str: string) {
+  return str.replace(/\\u[\dA-F]{4}/gi, (match) =>
+    String.fromCharCode(parseInt(match.replace("\\u", ""), 16))
+  );
+}
+
 const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
   const { user: currentUser } = useSelector(
     (state: UserResponse) => state.user
@@ -179,10 +185,12 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
           <div className="card shadow-sm border-0 rounded-4">
             <div className="card-body p-4">
               <h5 className="fw-bold text-primary mb-3">About</h5>
-              <p className="text-muted mb-4">
-                {user.info?.about_you ||
-                  "Event participant looking forward to networking and learning opportunities."}
-              </p>
+              <p
+                className="text-muted mb-4"
+                dangerouslySetInnerHTML={{
+                  __html: decodeUnicode(user.info?.about_you || ""),
+                }}
+              />
 
               {/* Contact Information */}
               <h6 className="fw-bold text-dark mb-3">Contact Information</h6>
