@@ -128,62 +128,13 @@ export const BadgePage = () => {
               minHeight: "75vh",
             }}
           >
-            <Col xs={12} md={12} lg={8}>
+            <Col xs={12} md={4} lg={4}>
               <div className="card w-100 h-100 d-flex align-items-center justify-content-center">
-                {loadingBadge ? (
-                  <div
-                    style={{
-                      height: "70vh",
-                    }}
-                    className="w-100 d-flex flex-column gap-3 justify-content-center align-items-center bg-white"
-                  >
-                    <Spinner animation="border" color="#000" />
-                    <span>Génération de votre badge électronique</span>
-                  </div>
-                ) : (
-                  <>
-                    {!isMobile ? (
-                      <>
-                        {pdfSource && (
-                          <iframe
-                            title="PDF Viewer"
-                            style={{ width: "100%", height: "100%" }}
-                            src={`${pdfSource}`}
-                            allowFullScreen
-                          />
-                        )}
-                      </>
-                    ) : (
-                      <div className="overlay d-flex flex-row align-items-center justify-content-center">
-                        <img
-                          className="card-rounded mx-auto w-100 position-relative"
-                          src={
-                            toAbsoluteUrl("media/afes/badge.png") ||
-                            "/placeholder.svg"
-                          }
-                          style={{
-                            minHeight: "50vh",
-                            maxHeight: "70vh",
-                            objectFit: "cover",
-                            aspectRatio: "16/9",
-                            height: "100%",
-                          }}
-                        />
-                        <p className="position-absolute text-white fs-3x fw-bold">
-                          Mon badge
-                        </p>
-                        <div className="overlay-layer card-rounded bg-dark bg-opacity-25 gap-2 d-flex flex-column">
-                          <Button onClick={handlePrintPdf}>
-                            Imprimer mon badge
-                          </Button>
-                          <Button onClick={handleDownloadPdf}>
-                            Télécharger mon badge
-                          </Button>
-                        </div>
-                      </div>
-                    )}
-                  </>
-                )}
+                <img
+                  src="/side-events/commingsoon.jpeg"
+                  alt="Coming Soon"
+                  className="w-100 h-100 object-fit-cover rounded"
+                />
               </div>
             </Col>
             <Col xs={12} md={4} lg={4}>
