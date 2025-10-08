@@ -93,9 +93,7 @@ export const SpeakersTable: React.FC<SpeakersTableProps> = ({
           conferenceId={conferenceId}
           show={showAddSpeakerModal}
           onClose={() => setShowAddSpeakerModal(false)}
-          onAdded={() => {
-            setShowAddSpeakerModal(false);
-          }}
+          onAdded={() => {}}
         />
       )}
 
