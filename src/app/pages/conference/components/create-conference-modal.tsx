@@ -11,10 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
   title: yup.string().required("Le titre est obligatoire"),
-  description: yup
-    .string()
-    .required("La description est obligatoire")
-    .max(250, "La description ne peut pas dépasser 250 caractères"),
+  description: yup.string().required("La description est obligatoire"),
   start_time: yup.string().required("L'heure de début est obligatoire"),
   end_time: yup
     .string()
@@ -138,17 +135,11 @@ const CreateConferenceModal: React.FC<Props> = ({ show, onClose }) => {
 
           <Form.Group className="mb-3">
             <Form.Label>Lieu</Form.Label>
-            <Form.Select
-              isInvalid={!!errors.location}
+            <Form.Control
+              type="text"
+              isInvalid={!!errors.title}
               {...register("location")}
-            >
-              <option value="">Sélectionnez un lieu...</option>
-              {["1", "2"].map((loc) => (
-                <option key={loc} value={loc}>
-                  {loc}
-                </option>
-              ))}
-            </Form.Select>
+            />
             <Form.Control.Feedback type="invalid">
               {errors.location?.message}
             </Form.Control.Feedback>
