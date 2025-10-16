@@ -1,10 +1,6 @@
 import { createCompanyProps } from "./../types/company";
 import axiosInstance from "./axios";
 
-const createCompanyApi = async (data: createCompanyProps) => {
-  return axiosInstance.post("/company/create", data);
-};
-
 const getAllCompaniesApi = async () => {
   return axiosInstance.get("/company/all");
 };
@@ -85,4 +81,13 @@ export {
   removeStaffCompanyApi,
   getAllNotInCompanyStaffApi,
   createOrUpdateCompanyApi,
+};
+
+// V2
+const createCompanyApi = async (data: FormData) => {
+  return axiosInstance.post("/company/create", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };

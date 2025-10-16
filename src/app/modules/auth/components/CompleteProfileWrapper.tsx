@@ -5,7 +5,6 @@ import UserTicket from "./complete-profile/user-ticket";
 import UserType from "./complete-profile/user-type";
 import { useForm } from "react-hook-form";
 import CompletedProfile from "./complete-profile/completed-profile";
-import ExhibitorCompany from "./complete-profile/exhibitor-company";
 import { useCompleteProfile } from "../../../hooks";
 import { toAbsoluteUrl } from "../../../../_metronic/helpers";
 import { useSelector } from "react-redux";
@@ -284,14 +283,6 @@ const CompleteProfileWrapper = () => {
                 >
                   <UserTicket next={() => stepper.goNext()} />
                 </div>
-                {can_create_company && (
-                  <div
-                    data-kt-stepper-element="content"
-                    id="exhibitor-info-container"
-                  >
-                    <ExhibitorCompany next={() => stepper.goNext()} />
-                  </div>
-                )}
 
                 <div
                   data-kt-stepper-element="content"

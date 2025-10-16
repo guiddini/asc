@@ -113,7 +113,7 @@ const EventTopbar = () => {
                   {hasDemand ? (
                     <Button
                       onClick={() => {
-                        navigate("/company/stand/reservations");
+                        navigate("/startup/demand");
                       }}
                       variant="custom-purple-dark text-white"
                       id="exhibition-request-cta"
@@ -123,7 +123,7 @@ const EventTopbar = () => {
                   ) : (
                     <Button
                       onClick={() => {
-                        navigate("/commingSoon");
+                        navigate("/startup/create");
                       }}
                       variant="custom-purple-dark text-white"
                       id="exhibition-request-cta"

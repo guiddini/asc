@@ -45,11 +45,8 @@ import WelcomePage from "../pages/welcome";
 import ComingSoon from "../pages/coming-soon";
 import PRessConferencePage from "../pages/press-conference/page";
 import TicketTransactionsPage from "../pages/ticket-transactions/page";
-import ExhibitionRequest from "../pages/exhibitor/demand";
 import EventManagement from "../pages/event-management/page";
 import ExhibitionRequests from "../pages/exhibition-requests/page";
-import ExhibitionConfirmation from "../pages/exhibitor/confirm";
-import ExhibitorOnlinePaymentResults from "../pages/exhibitor/results";
 import CompanyReservationPage from "../pages/reservations/page";
 import { TicketWrapper } from "../helpers/ticket-wrapper";
 import UserProfileWrapper from "../utils/user-profile-wrapper";
@@ -63,6 +60,7 @@ import ConferencesPage from "../pages/conference/page";
 import ConferenceDetailPage from "../pages/conference/detail/page";
 import ComingSoonASC from "../pages/commingsoonAsc/page";
 import ProgramPage from "../pages/program/page";
+import CreateStartupPage from "../pages/startup/create-startup-page";
 
 export const adminRoles = ["admin", "super_admin", "staff"];
 
@@ -97,16 +95,7 @@ const PrivateRoutes = () => {
           {/* <Route path="/coming-soon" element={<ComingSoon />} /> */}
           <Route path="/comingSoon" element={<ComingSoonASC />} />
 
-          <Route path="/exhibition/request" element={<ExhibitionRequest />} />
-          <Route
-            path="/exhibition/confirm/:companyId"
-            element={<ExhibitionConfirmation />}
-          />
           <Route path="/events/manage" element={<EventManagement />} />
-          <Route
-            path="/exhibition/request/results/:transactionID"
-            element={<ExhibitorOnlinePaymentResults />}
-          />
 
           <Route element={<MasterLayout />}>
             {/* Redirect to Dashboard after success login/registartion */}
@@ -305,6 +294,16 @@ const PrivateRoutes = () => {
               }
             />
 
+            {/* Startups */}
+            <Route
+              path="/startup/create"
+              element={
+                <SuspensedView>
+                  <CreateStartupPage />
+                </SuspensedView>
+              }
+            />
+
             {/* companies routes */}
             <Route
               path="/companies"
@@ -331,7 +330,7 @@ const PrivateRoutes = () => {
               }
             />
             <Route
-              path="/company/stand/reservations"
+              path="/startup/demand"
               element={
                 <SuspensedView>
                   <CompanyReservationPage />

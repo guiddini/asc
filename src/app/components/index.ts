@@ -17,8 +17,5 @@ export * from "./common/user-permissions";
 export * from "./common/tickets-privilege";
 export * from "./common/disable-input-noform";
 
-// forms
-export * from "./forms/CreateCompanyForm";
-
 // table
 export * from "./table/TableComponent";

@@ -169,7 +169,7 @@ export function AsideMenuMain() {
             icon="briefcase"
           >
             <AsideMenuItem
-              to={`/company/stand/reservations`}
+              to={`/startup/demand`}
               title="Reservations"
               bsTitle="Reservations"
               hasBullet={true}
