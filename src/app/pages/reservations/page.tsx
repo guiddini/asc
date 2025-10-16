@@ -4,24 +4,40 @@ import {
   Ticket,
   BriefcaseBusiness,
   Users,
+  CreditCard,
+  Banknote,
+  Edit,
 } from "lucide-react";
 import { useQuery } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { getCompanyExhibitionDemand } from "../../apis/exhibition";
 import { AxiosResponse } from "axios";
+import { getCompanyApi } from "../../apis";
 import { getStandTypeLabel } from "../../utils/standsData";
 import { useSelector } from "react-redux";
 import { UserResponse } from "../../types/reducers";
 import { companyOwner } from "../../features/userSlice";
+import getMediaUrl from "../../helpers/getMediaUrl";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Table,
+  Button,
+  Spinner,
+  Dropdown,
+} from "react-bootstrap";
+import ExhibitionTypeModal from "./components/exhibition-type-modal";
+import { useState } from "react";
 
 interface ExhibitionDemand {
   id: string;
-  exhibition_demand_transaction_id: string;
+  exhibition_demand_transaction_id: string | null;
   company_id: string;
   user_id: string;
-  stand_type: string;
-  stand_size: string;
-  status: string;
+  exhibition_type: string;
+  status: "pending" | "refused" | "accepted" | string;
   created_at: string;
   updated_at: string;
 }
@@ -32,159 +48,283 @@ interface ExhibitionTransaction {
   status: string;
 }
 
+interface Company {
+  id: string;
+  logo: string;
+  name: string;
+  founded_date: string;
+  phone_1: string | null;
+  email: string | null;
+  city: string;
+  address: string;
+  activity_areas: string;
+  country: {
+    name_fr: string;
+    name_en: string;
+    code: string;
+  };
+}
+
 interface ApiResponse {
-  status: string;
-  demand: ExhibitionDemand;
-  transaction: ExhibitionTransaction;
+  company: Company;
+  demand: ExhibitionDemand | null;
+  transaction: ExhibitionTransaction | null;
 }
 
 const CompanyReservationPage = () => {
   const navigate = useNavigate();
-
   const { user } = useSelector((state: UserResponse) => state.user);
   const companyID = user?.company?.id;
-  const hasCompany = user?.company ? true : false;
-
+  const hasCompany = !!user?.company;
   const isCompanyOwner = useSelector((state) => companyOwner(state, companyID));
+  const [showModal, setShowModal] = useState(false);
+  const [mode, setMode] = useState<"create" | "update">("create");
+  const [demandId, setDemandId] = useState<string | null>(null);
 
-  const { data, isLoading, isError, isSuccess } = useQuery<
-    AxiosResponse<ApiResponse>
-  >({
+  const { data, isLoading } = useQuery<AxiosResponse<ApiResponse>>({
     queryFn: getCompanyExhibitionDemand,
     queryKey: ["company-exhibition-demand"],
   });
 
   const reservationData = data?.data;
+  const company = reservationData?.company;
+  const demand = reservationData?.demand;
+  const transaction = reservationData?.transaction;
 
-  if (isLoading) {
+  const formatExhibitionType = (type?: string) => {
+    if (!type) return "-";
+    const explicitMap: Record<string, string> = {
+      premium_exhibition_space: "Premium Exhibition Space",
+      connect_desk: "Connect Desk",
+    };
+    if (explicitMap[type]) return explicitMap[type];
+    return type
+      .split("_")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ");
+  };
+
+  const renderStatusBadge = (status?: string) => {
+    const normalized = (status || "").toLowerCase();
+    const colorMap: Record<string, string> = {
+      pending: "warning",
+      accepted: "success",
+      approved: "success",
+      refused: "danger",
+      rejected: "danger",
+    };
+    const variant = colorMap[normalized] || "secondary";
     return (
-      <div id="company-reservation-loading">
-        <div id="company-reservation-loading-spinner"></div>
-        <p>Chargement de vos réservations...</p>
+      <span
+        className={`badge rounded-pill bg-${variant}`}
+        style={{ textTransform: "capitalize" }}
+      >
+        {status || "-"}
+      </span>
+    );
+  };
+
+  const { data: companyData } = useQuery<AxiosResponse<Company>>({
+    queryFn: () => getCompanyApi(company?.id),
+    queryKey: ["company", company?.id],
+    enabled: !!company?.id,
+  });
+
+  const companyInfo = companyData?.data;
+
+  if (isLoading)
+    return (
+      <div className="d-flex flex-column align-items-center justify-content-center py-5">
+        <Spinner animation="border" variant="primary" />
+        <p className="mt-3">Loading...</p>
       </div>
     );
-  }
 
-  if (isError || !reservationData) {
-    return (
-      <div id="company-reservation-error">
-        <div id="company-reservation-error-content">
-          <h1 id="company-reservation-error-title">
-            Aucune demande de réservation trouvée
-          </h1>
-          <p id="company-reservation-error-description">
-            Vous n'avez pas encore fait de demande de réservation de stand.
-            Commencez par réserver votre espace d'exposition.
-          </p>
-          <button
-            id="company-reservation-error-button"
-            onClick={() => navigate("/exhibition/request")}
-          >
-            Réserver un stand
-            <ArrowRight size={20} />
-          </button>
-        </div>
-      </div>
-    );
-  }
+  const handleEdit = () => {
+    setMode("update");
+    setDemandId(demand?.id ?? "");
+    setShowModal(true);
+  };
+
+  const handlePayOnline = () => {
+    navigate(`/payment/online/${demand?.id}`);
+  };
+
+  const handlePayTransfer = () => {
+    navigate(`/payment/transfer/${demand?.id}`);
+  };
 
   return (
     <div id="company-reservation-container">
       {isCompanyOwner && (
-        <div id="company-reservation-table-card">
-          <div id="company-reservation-header">
-            <h1 id="company-reservation-title">Gérez vos réservations</h1>
-            <p id="company-reservation-description">
-              Suivez l'état de vos demandes de réservation, prenez les mesures
-              nécessaires et accédez aux fonctionnalités supplémentaires
-              d'African Startup Conference en toute transparence.
-            </p>
-          </div>
+        <>
+          <Card>
+            <Card.Body>
+              <div className="mb-5">
+                <h1 className="display-5 fw-bold mb-2">Manage Your Startup</h1>
+                <p className="lead text-muted">
+                  Manage your company details, exhibition requests, and track
+                  your payment status.
+                </p>
+              </div>
 
-          <div id="company-reservation-table-container">
-            <table id="company-reservation-table">
-              <thead>
-                <tr>
-                  <th>ID Réservation</th>
-                  <th>Type de Stand</th>
-                  <th>Taille du Stand</th>
-                  <th>Status</th>
-                  <th>Status Paiement</th>
-                  <th>Numéro d'Autorisation</th>
-                  <th>Date de Création</th>
-                </tr>
-              </thead>
-              <tbody>
-                {reservationData && (
-                  <tr>
-                    <td>{reservationData.demand.id.substring(0, 8)}</td>
-                    <td>
-                      {getStandTypeLabel(reservationData.demand.stand_type)}
-                    </td>
-                    <td>{reservationData.demand.stand_size} m²</td>
-                    <td>
-                      <span
-                        id={`reservation-status-${reservationData.demand.status.toLowerCase()}`}
-                      >
-                        {reservationData.demand.status}
-                      </span>
-                    </td>
-                    <td>
-                      <span
-                        id={`reservation-transaction-${reservationData?.transaction?.status?.toLowerCase()}`}
-                      >
-                        {reservationData?.transaction?.status}
-                      </span>
-                    </td>
-                    <td>
-                      {reservationData?.transaction?.gateway_code || "N/A"}
-                    </td>
-                    <td>
-                      {new Date(
-                        reservationData.demand.created_at
-                      ).toLocaleDateString()}
-                    </td>
-                    {/* <td id="reservation-action-buttons">
-                    <Button
-                      size="sm"
-                      variant="light"
-                      disabled={reservationData.demand.status === "Accepted"}
-                      onClick={() => setShowUpdateModal(true)}
-                    >
-                      <Pencil size={16} />
-                    </Button>
+              <h4 className="mb-2">Company Information</h4>
+              <p className="text-muted mb-4">
+                Review the main information of your participating company.
+              </p>
 
-                    <Button
-                      size="sm"
-                      variant="danger"
-                      disabled={reservationData.demand.status === "Accepted"}
-                    >
-                      <Trash2 size={16} />
-                    </Button>
-                  </td> */}
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
+              {companyInfo && (
+                <div className="table-responsive">
+                  <Table bordered hover>
+                    <thead className="table-light">
+                      <tr>
+                        <th>Logo</th>
+                        <th>Name</th>
+                        <th>Founded Date</th>
+                        <th>Country</th>
+                        <th>City</th>
+                        <th>Address</th>
+                        <th>Activity Areas</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <img
+                            src={getMediaUrl(companyInfo.logo)}
+                            alt={companyInfo.name}
+                            style={{
+                              width: 35,
+                              height: 35,
+                              borderRadius: "50%",
+                              objectFit: "cover",
+                            }}
+                          />
+                        </td>
+                        <td>{companyInfo.name}</td>
+                        <td>
+                          {new Date(
+                            companyInfo.founded_date
+                          ).toLocaleDateString()}
+                        </td>
+                        <td>{companyInfo.country?.name_en}</td>
+                        <td>{companyInfo.city}</td>
+                        <td>{companyInfo.address}</td>
+                        <td>
+                          {Array.isArray(companyInfo.activity_areas)
+                            ? companyInfo.activity_areas.join(", ")
+                            : JSON.parse(
+                                companyInfo.activity_areas || "[]"
+                              ).join(", ")}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </Table>
+                </div>
+              )}
+
+              {demand ? (
+                <>
+                  <h4 className="mb-4">Exhibition Reservation Request</h4>
+                  <div className="table-responsive">
+                    <Table bordered hover>
+                      <thead className="table-light">
+                        <tr>
+                          <th>Reservation ID</th>
+                          <th>Type</th>
+                          <th>Status</th>
+                          <th>Created On</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{demand.id.substring(0, 8)}</td>
+                          <td>
+                            {formatExhibitionType(demand.exhibition_type)}
+                          </td>
+                          <td>{renderStatusBadge(demand.status)}</td>
+
+                          <td>
+                            {new Date(demand.created_at).toLocaleDateString()}
+                          </td>
+                          <td>
+                            {["pending", "refused"].includes(demand.status) ? (
+                              <Button
+                                size="sm"
+                                variant="outline-primary"
+                                onClick={handleEdit}
+                              >
+                                <Edit size={16} className="me-1" />
+                                Edit
+                              </Button>
+                            ) : demand.status === "accepted" ? (
+                              <Dropdown>
+                                <Dropdown.Toggle
+                                  size="sm"
+                                  variant="success"
+                                  id="dropdown-basic"
+                                >
+                                  Pay
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                  <Dropdown.Item onClick={handlePayOnline}>
+                                    <CreditCard size={14} className="me-2" />
+                                    Pay Online
+                                  </Dropdown.Item>
+                                  <Dropdown.Item onClick={handlePayTransfer}>
+                                    <Banknote size={14} className="me-2" />
+                                    Bank Transfer
+                                  </Dropdown.Item>
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            ) : (
+                              "-"
+                            )}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                  </div>
+                </>
+              ) : (
+                <div className="text-center p-5 mb-5">
+                  <h5 className="mb-3">No Exhibition Demand Found</h5>
+                  <p className="text-muted mb-4">
+                    You haven’t submitted any exhibition demand yet.
+                  </p>
+                  <Button
+                    style={{ width: "fit-content" }}
+                    variant="primary"
+                    onClick={() => {
+                      setMode("create");
+                      setShowModal(true);
+                    }}
+                    className="d-inline-flex align-items-center gap-2 mx-auto"
+                  >
+                    Request a Stand <ArrowRight size={18} />
+                  </Button>
+                </div>
+              )}
+            </Card.Body>
+          </Card>
+        </>
       )}
 
-      <div id="company-features-grid">
+      <div style={{ marginTop: "20px" }} id="company-features-grid">
         <div id="feature-card">
           <div id="feature-icon">
             <BriefcaseBusiness size={24} />
           </div>
-          <h2 id="feature-title">Offres d'emploi</h2>
+          <h2 id="feature-title">Job Offers</h2>
           <p id="feature-description">
-            Découvrez et publiez des opportunités d'emploi pour les participants
-            à l'événement.
+            Discover and post job opportunities for event participants.
           </p>
           <Link
             to={hasCompany ? `/job-offers/${companyID}` : ""}
             id="feature-link"
           >
-            Gérer les offres d'emploi
+            Manage Job Offers
             <span id="feature-link-arrow">→</span>
           </Link>
         </div>
@@ -193,16 +333,16 @@ const CompanyReservationPage = () => {
           <div id="feature-icon">
             <Package size={24} />
           </div>
-          <h2 id="feature-title">Produits et services</h2>
+          <h2 id="feature-title">Products and Services</h2>
           <p id="feature-description">
-            Présentez vos produits ou services aux autres exposants et
+            Showcase your products or services to other exhibitors and
             participants.
           </p>
           <Link
             to={hasCompany ? `/company/${companyID}/products` : ""}
             id="feature-link"
           >
-            Ajouter des produits et services
+            Manage Products and Services
             <span id="feature-link-arrow">→</span>
           </Link>
         </div>
@@ -211,12 +351,12 @@ const CompanyReservationPage = () => {
           <div id="feature-icon">
             <Ticket size={24} />
           </div>
-          <h2 id="feature-title">Gestion des tickets</h2>
+          <h2 id="feature-title">Ticket Management</h2>
           <p id="feature-description">
-            Distribuez et gérez les tickets attribués à votre entreprise.
+            Distribute and manage the tickets assigned to your company.
           </p>
           <Link to="/tickets" id="feature-link">
-            Gérer les tickets
+            Manage Tickets
             <span id="feature-link-arrow">→</span>
           </Link>
         </div>
@@ -225,26 +365,24 @@ const CompanyReservationPage = () => {
           <div id="feature-icon">
             <Users size={24} />
           </div>
-          <h2 id="feature-title">Gérer votre équipe</h2>
+          <h2 id="feature-title">Team Management</h2>
           <p id="feature-description">
-            Ajouter rapidement des membres du l’équipe et contrôlez leurs
-            permissions en toute simplicité.
+            Quickly add team members and manage their permissions with ease.
           </p>
           <Link to={`/company/${companyID}/staff`} id="feature-link">
-            Gérer mon équipe
+            Manage My Team
             <span id="feature-link-arrow">→</span>
           </Link>
         </div>
       </div>
 
-      {/* {showUpdateModal && (
-        <UpdateStandReservationModal
-          show={showUpdateModal}
-          currentSpaceSize={reservationData?.demand.stand_size}
-          currentStandType={reservationData?.demand.stand_type}
-          onHide={() => setShowUpdateModal(false)}
-        />
-      )} */}
+      <ExhibitionTypeModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        mode={mode}
+        demandId={demandId ?? ""}
+        currentExhibitionType={demand?.exhibition_type}
+      />
     </div>
   );
 };

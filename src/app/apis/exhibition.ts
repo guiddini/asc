@@ -8,6 +8,10 @@ const createExhibitionDemandApi = async (data: FormData) => {
   return axiosInstance.post(`/exhibition-demand/create`, data);
 };
 
+const updateExhibitionDemandApi = async (data: FormData) => {
+  return axiosInstance.post(`/exhibition-demand/update`, data);
+};
+
 const getAllExhibitionDemandsApi = async () => {
   return axiosInstance.get(`/exhibition-demand/all`);
 };
@@ -44,4 +48,5 @@ export {
   refuseExhibitionDemandApi,
   getExhibitionDemandTransactionApi,
   checkExhibitionDemandTransactionApi,
+  updateExhibitionDemandApi,
 };
