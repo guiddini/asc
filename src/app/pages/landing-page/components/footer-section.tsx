@@ -173,48 +173,26 @@ const Footer: React.FC = () => {
                 </a>
               </div>
 
-              <div className="newsletter-signup">
-                <p className="small mb-2">Stay updated with latest news</p>
-                <div className="input-group input-group-sm">
-                  <input
-                    type="email"
-                    className="form-control"
-                    placeholder="Your email"
-                    style={{
-                      background: "rgba(255,255,255,0.1)",
-                      border: "1px solid rgba(255,255,255,0.3)",
-                      color: "white",
-                    }}
-                  />
-                  <button
-                    className="btn btn-primary"
-                    type="button"
-                    style={{ fontSize: "0.8rem" }}
-                  >
-                    Subscribe
-                  </button>
-                </div>
-              </div>
-              <div
-                className="newsletter-signup"
-                style={{
-                  marginTop: "1rem",
-                  display: "flex",
-                  gap: "0.5rem",
-                  alignItems: "center",
-                }}
-              >
+              <div className="d-flex flex-column align-items-center align-md-start gap-4 gap-md-3">
                 <a
-                  href="https://asc-android.eventili.com/"
+                  href="https://play.google.com/store/apps/details?id=com.africanstartupconference.app&pli=1"
                   className="btn btn-link p-0"
                   target="_blank"
                 >
                   <img
-                    src="/media/eventili/afes/play-store.svg"
+                    src="/media/play-store.svg"
                     alt="Play Store"
-                    style={{ width: "120px" }}
+                    style={{ width: "150px" }}
                   />
                 </a>
+
+                <span className="btn btn-link p-0">
+                  <img
+                    src="/media/app-store.svg"
+                    alt="App Store"
+                    style={{ width: "150px" }}
+                  />
+                </span>
               </div>
             </div>
           </Col>

@@ -115,6 +115,7 @@ export const ParticipantsPage = () => {
     setValue,
     control,
     formState: { errors },
+    getValues,
   } = useForm({
     defaultValues: {
       roleFilter: "",
@@ -127,8 +128,6 @@ export const ParticipantsPage = () => {
       prevInterestsFilter: null,
     },
   });
-
-  const { nameFilter, roleFilter, country, interestsFilter } = watch();
 
   const handleFilter = async (data: {
     roleFilter?: string;
@@ -161,7 +160,6 @@ export const ParticipantsPage = () => {
       dispatch(resetCurrentPage());
     }
 
-    // Prepare interests filter - extract values from selected options
     const interestsArray =
       interestsFilter?.map((interest: selectProps) => String(interest.value)) ||
       [];
@@ -194,7 +192,6 @@ export const ParticipantsPage = () => {
           }
         }
       },
-      onError(error, variables, context) {},
     });
   };
 
@@ -203,26 +200,36 @@ export const ParticipantsPage = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
+        if (entries[0].isIntersecting && !isFiltering && !initialLoading) {
+          const prevNameFilter = getValues("prevNameFilter");
+          const prevRoleFilter = getValues("prevRoleFilter");
+          const prevCountry = getValues("prevCountry");
+          const prevInterestsFilter = getValues("prevInterestsFilter");
+
+          dispatch(nextPage());
+
           handleFilter({
-            nameFilter,
-            roleFilter,
-            country,
-            interestsFilter,
+            nameFilter: getValues("nameFilter"),
+            roleFilter: getValues("roleFilter"),
+            country: getValues("country"),
+            interestsFilter: getValues("interestsFilter"),
+            prevNameFilter,
+            prevRoleFilter,
+            prevCountry,
+            prevInterestsFilter,
           });
+
+          observer.unobserve(entries[0].target);
+          setTimeout(() => observer.observe(entries[0].target), 1000);
         }
       },
       { threshold: 1 }
     );
 
-    if (observerTarget.current) {
-      observer.observe(observerTarget.current);
-    }
+    if (observerTarget.current) observer.observe(observerTarget.current);
 
     return () => {
-      if (observerTarget.current) {
-        observer.unobserve(observerTarget.current);
-      }
+      if (observerTarget.current) observer.unobserve(observerTarget.current);
     };
   }, [USERS?.length, initialLoading]);
 

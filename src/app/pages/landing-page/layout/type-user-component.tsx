@@ -13,6 +13,7 @@ const UserTypeComponent: React.FC<SearchProps> = ({ show, onHide }) => {
     { label: "Exhibitor", value: "exhibitor" },
     { label: "Investor", value: "investor" },
     { label: "Media", value: "media" },
+    { label: "Policy Makers", value: "policy_makers" },
   ];
 
   return (

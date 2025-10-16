@@ -145,8 +145,11 @@ export const BadgePage = () => {
                   <div className="w-100 h-50 d-flex flex-column align-items-start justify-content-center gap-4 align-self-start">
                     <LinkedinShareButton
                       url={`https://asc.eventili.com/`}
-                      title="Je participe à l'événement 'Algeria Fintech & E-commerce Summit' organisé par 'Guiddini'. 🚀 Rejoignez-moi pour explorer les dernières tendances et innovations dans le domaine de la fintech et du commerce électronique en consultant le site web : https://algeriafintech.com/💻🌐 #AFES2024 #Guiddini #groupetelecomalgérie #icosnet #saa #caat #bea #Saticom
-#allianceassrances"
+                      title="I'm attending the African Startup Conference — the leading pan-African gathering dedicated to innovation, entrepreneurship, and future technologies. 🌍✨ Since its inception, it has united ecosystems, governments, investors, and the African diaspora around a shared vision: building a technologically sovereign and inclusive Africa. 
+                    
+                    Edition after edition, the Conference has become a key platform for dialogue and collaboration, shaping strategic initiatives such as the Algiers Declaration on Startup Development, the African Charter for Talent Retention, and the continental Public Policy Framework on Artificial Intelligence — all highlighting its transformative impact on Africa’s innovation landscape. 
+                    
+                    In 2025, the Conference returns for its 4th edition under the theme 'Raising African Champions' 🚀 — celebrating high-growth African startups driving progress across the continent and beyond. Join us at https://asc.eventili.com/ to be part of this movement. 💡#ASC2025 #AfricanStartups #Innovation #TechInAfrica #Entrepreneurship #PanAfrican #Guiddini"
                     >
                       <LinkedinIcon size={32} round />
                       <span className="text-muted ms-2">LinkedIn</span>
@@ -155,8 +158,11 @@ export const BadgePage = () => {
                     {/* Share on Facebook */}
                     <FacebookShareButton
                       url={`https://asc.eventili.com/`}
-                      title="Je participe à l'événement 'Algeria Fintech & E-commerce Summit' organisé par 'Guiddini'. 🚀 Rejoignez-moi pour explorer les dernières tendances et innovations dans le domaine de la fintech et du commerce électronique en consultant le site web : https://algeriafintech.com/💻🌐 #AFES2024 #Guiddini #groupetelecomalgérie #icosnet #saa #caat #bea #Saticom
-#allianceassrances"
+                      title="I'm attending the African Startup Conference — the leading pan-African gathering dedicated to innovation, entrepreneurship, and future technologies. 🌍✨ Since its inception, it has united ecosystems, governments, investors, and the African diaspora around a shared vision: building a technologically sovereign and inclusive Africa. 
+                  
+                  Edition after edition, the Conference has become a key platform for dialogue and collaboration, shaping strategic initiatives such as the Algiers Declaration on Startup Development, the African Charter for Talent Retention, and the continental Public Policy Framework on Artificial Intelligence — all highlighting its transformative impact on Africa’s innovation landscape. 
+                  
+                  In 2025, the Conference returns for its 4th edition under the theme 'Raising African Champions' 🚀 — celebrating high-growth African startups driving progress across the continent and beyond. Join us at https://asc.eventili.com/ to be part of this movement. 💡#ASC2025 #AfricanStartups #Innovation #TechInAfrica #Entrepreneurship #PanAfrican #Guiddini"
                     >
                       <FacebookIcon size={32} round />
                       <span className="text-muted ms-2">Facebook</span>
@@ -165,7 +171,11 @@ export const BadgePage = () => {
                     {/* Share on Twitter */}
                     <TwitterShareButton
                       url={`https://asc.eventili.com/`}
-                      title="Je participe à l'événement 'Algeria Fintech & E-commerce Summit' organisé par 'Guiddini'. 🚀 Rejoignez-moi pour explorer les dernières tendances et innovations dans le domaine de la fintech et du commerce électronique en consultant le site web :"
+                      title="I'm attending the African Startup Conference — the leading pan-African gathering dedicated to innovation, entrepreneurship, and future technologies. 🌍✨ Since its inception, it has united ecosystems, governments, investors, and the African diaspora around a shared vision: building a technologically sovereign and inclusive Africa. 
+                    
+                    Edition after edition, the Conference has become a key platform for dialogue and collaboration, shaping strategic initiatives such as the Algiers Declaration on Startup Development, the African Charter for Talent Retention, and the continental Public Policy Framework on Artificial Intelligence — all highlighting its transformative impact on Africa’s innovation landscape. 
+                    
+                    In 2025, the Conference returns for its 4th edition under the theme 'Raising African Champions' 🚀 — celebrating high-growth African startups driving progress across the continent and beyond. Join us at https://asc.eventili.com/ to be part of this movement. 💡#ASC2025 #AfricanStartups #Innovation #TechInAfrica #Entrepreneurship #PanAfrican #Guiddini"
                     >
                       <TwitterIcon size={32} round />
                       <span className="text-muted ms-2">Twitter</span>

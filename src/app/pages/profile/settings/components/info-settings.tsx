@@ -85,9 +85,33 @@ const InfoSettings = ({ user }: { user: any }) => {
     { label: "English", value: "en" },
   ];
 
+  const PARTICIPATION_GOAL_OPTIONS = [
+    { label: "Networking", value: "Networking" },
+    { label: "B2B Meeting", value: "B2B Meeting" },
+    {
+      label: "Looking for Investors",
+      value: "Looking for Investors",
+    },
+    {
+      label: "Partnership Opportunities",
+      value: "Partnership Opportunities",
+    },
+    {
+      label: "Investing in Startups",
+      value: "Investing in Startups",
+    },
+    { label: "Media Coverage", value: "Media Coverage" },
+  ];
+
   const defaultLanguages = user?.info?.languages
     ? LANG_OPTIONS.filter((opt) =>
         JSON.parse(user?.info?.languages).includes(opt.value)
+      )
+    : [];
+
+  const defaultParticipationGoals = user?.info?.participation_goals
+    ? PARTICIPATION_GOAL_OPTIONS.filter((opt) =>
+        JSON.parse(user.info.participation_goals).includes(opt.value)
       )
     : [];
 
@@ -113,7 +137,7 @@ const InfoSettings = ({ user }: { user: any }) => {
     linkedin_url: user.info?.linkedin_url,
     job_title: user.info?.job_title,
     company_name: user.info?.company_name,
-    participation_goals: user.info?.participation_goals,
+    participation_goals: defaultParticipationGoals,
     about_you: user.info?.about_you,
     languages: defaultLanguages,
   };
@@ -192,9 +216,11 @@ const InfoSettings = ({ user }: { user: any }) => {
       formdata.append(`languages[${i}]`, lang.value);
     });
 
-    data?.participation_goals?.forEach((goal: string, i: number) => {
-      formdata.append(`participation_goals[${i}]`, goal);
-    });
+    data?.participation_goals?.forEach(
+      (goal: { label: string; value: string }, i: number) => {
+        formdata.append(`participation_goals[${i}]`, goal.value);
+      }
+    );
 
     if (user_type === "institution") {
       data?.institution_type?.value &&
@@ -250,7 +276,7 @@ const InfoSettings = ({ user }: { user: any }) => {
         </div>
       </div>
 
-      <div id="kt_account_profile_details" className="collapse">
+      <div id="kt_account_profile_details" className="collapse show">
         <form onSubmit={handleSubmit(handleUpdate)} className="form">
           <div className="card-body border-top p-9">
             <div className="row mb-6">
@@ -641,13 +667,17 @@ const InfoSettings = ({ user }: { user: any }) => {
                 Participation Goals
               </label>
               <div className="col-lg-8 fv-row">
-                <input
-                  type="text"
-                  className="form-control form-control-lg form-control-solid"
-                  placeholder="Participation Goals (comma separated)"
-                  {...register("participation_goals")}
+                <SelectComponent
+                  control={control}
+                  data={PARTICIPATION_GOAL_OPTIONS}
+                  errors={errors}
+                  label=""
+                  name="participation_goals"
+                  colXS={12}
+                  colMD={12}
+                  isMulti
+                  defaultValue={defaultParticipationGoals}
                 />
-                {errorMessage(errors, "participation_goals")}
               </div>
             </div>
 

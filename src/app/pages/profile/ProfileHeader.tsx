@@ -55,7 +55,8 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
               <div className="d-flex align-items-center">
                 <div className="d-flex flex-column align-items-center mb-4">
                   <div className="position-relative mb-3">
-                    <div
+                    <a
+                      href="#edit-profile"
                       className={clsx(
                         "symbol symbol-100px symbol-fixed position-relative",
                         {
@@ -70,7 +71,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
                         className="object-fit-cover rounded-circle border shadow-sm"
                         style={{ width: "100px", height: "100px" }}
                       />
-                    </div>
+                    </a>
                   </div>
                 </div>
 
