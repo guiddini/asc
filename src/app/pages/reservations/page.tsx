@@ -30,6 +30,7 @@ import {
 } from "react-bootstrap";
 import ExhibitionTypeModal from "./components/exhibition-type-modal";
 import { useState } from "react";
+import { UploadTransferModal } from "./components/upload-exhibition-transfer-document-modal";
 
 interface ExhibitionDemand {
   id: string;
@@ -37,7 +38,12 @@ interface ExhibitionDemand {
   company_id: string;
   user_id: string;
   exhibition_type: string;
-  status: "pending" | "refused" | "accepted" | string;
+  status:
+    | "pending"
+    | "refused"
+    | "accepted"
+    | "Pending transfer confirmation"
+    | string;
   created_at: string;
   updated_at: string;
 }
@@ -80,7 +86,7 @@ const CompanyReservationPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [mode, setMode] = useState<"create" | "update">("create");
   const [demandId, setDemandId] = useState<string | null>(null);
-
+  const [showTransferModal, setShowTransferModal] = useState(false);
   const { data, isLoading } = useQuery<AxiosResponse<ApiResponse>>({
     queryFn: getCompanyExhibitionDemand,
     queryKey: ["company-exhibition-demand"],
@@ -105,13 +111,14 @@ const CompanyReservationPage = () => {
   };
 
   const renderStatusBadge = (status?: string) => {
-    const normalized = (status || "").toLowerCase();
+    const normalized = (status || "").toLowerCase().replace(/_/g, " ").trim();
     const colorMap: Record<string, string> = {
       pending: "warning",
       accepted: "success",
       approved: "success",
       refused: "danger",
       rejected: "danger",
+      "pending transfer confirmation": "info",
     };
     const variant = colorMap[normalized] || "secondary";
     return (
@@ -119,7 +126,7 @@ const CompanyReservationPage = () => {
         className={`badge rounded-pill bg-${variant}`}
         style={{ textTransform: "capitalize" }}
       >
-        {status || "-"}
+        {(status || "-").replace(/_/g, " ")}
       </span>
     );
   };
@@ -147,11 +154,11 @@ const CompanyReservationPage = () => {
   };
 
   const handlePayOnline = () => {
-    navigate(`/payment/online/${demand?.id}`);
+    // navigate(`/payment/online/${demand?.id}`);
   };
 
   const handlePayTransfer = () => {
-    navigate(`/payment/transfer/${demand?.id}`);
+    setShowTransferModal(true);
   };
 
   return (
@@ -249,7 +256,28 @@ const CompanyReservationPage = () => {
                             {new Date(demand.created_at).toLocaleDateString()}
                           </td>
                           <td>
-                            {["pending", "refused"].includes(demand.status) ? (
+                            {demand.status === "accepted" ? (
+                              <div className="d-flex gap-2 align-items-center justify-content-center">
+                                <Button
+                                  size="sm"
+                                  variant="primary"
+                                  onClick={handlePayOnline}
+                                >
+                                  <CreditCard size={14} className="me-1" />
+                                  Pay Online
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="secondary"
+                                  onClick={handlePayTransfer}
+                                >
+                                  <Banknote size={14} className="me-1" />
+                                  Bank Transfer
+                                </Button>
+                              </div>
+                            ) : ["pending", "refused"].includes(
+                                demand.status
+                              ) ? (
                               <Button
                                 size="sm"
                                 variant="outline-primary"
@@ -258,26 +286,6 @@ const CompanyReservationPage = () => {
                                 <Edit size={16} className="me-1" />
                                 Edit
                               </Button>
-                            ) : demand.status === "accepted" ? (
-                              <Dropdown>
-                                <Dropdown.Toggle
-                                  size="sm"
-                                  variant="success"
-                                  id="dropdown-basic"
-                                >
-                                  Pay
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                  <Dropdown.Item onClick={handlePayOnline}>
-                                    <CreditCard size={14} className="me-2" />
-                                    Pay Online
-                                  </Dropdown.Item>
-                                  <Dropdown.Item onClick={handlePayTransfer}>
-                                    <Banknote size={14} className="me-2" />
-                                    Bank Transfer
-                                  </Dropdown.Item>
-                                </Dropdown.Menu>
-                              </Dropdown>
                             ) : (
                               "-"
                             )}
@@ -308,6 +316,11 @@ const CompanyReservationPage = () => {
               )}
             </Card.Body>
           </Card>
+          <UploadTransferModal
+            demand_id={demand?.id ?? ""}
+            show={showTransferModal}
+            onHide={() => setShowTransferModal(false)}
+          />
         </>
       )}
 

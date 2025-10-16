@@ -38,6 +38,16 @@ const getExhibitionDemandTransactionApi = async (id: string) =>
 const checkExhibitionDemandTransactionApi = async () =>
   await axiosInstance.post(`/exhibition-demand/check`);
 
+const uploadExhibitionDemandTransferDocument = async (data: FormData) =>
+  await axiosInstance.post(`/exhibition-demand/uploadTransferDocument`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+const payOnlineExhibitionDemandApi = async (demand_id: string) =>
+  await axiosInstance.post(`/exhibition-demand/payOnline`);
+
 export {
   calculateExhibitionDemandTotal,
   createExhibitionDemandApi,
@@ -48,4 +58,6 @@ export {
   getExhibitionDemandTransactionApi,
   checkExhibitionDemandTransactionApi,
   updateExhibitionDemandApi,
+  uploadExhibitionDemandTransferDocument,
+  payOnlineExhibitionDemandApi,
 };
