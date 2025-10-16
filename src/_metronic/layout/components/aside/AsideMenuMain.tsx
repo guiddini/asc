@@ -1,6 +1,5 @@
 import { AsideMenuItemWithSubMain } from "./AsideMenuItemWithSubMain";
 import { AsideMenuItem } from "./AsideMenuItem";
-import { Can } from "../../../../app/utils/ability-context";
 import { UserResponse } from "../../../../app/types/reducers";
 import { useSelector } from "react-redux";
 import {
@@ -10,27 +9,7 @@ import {
 import RoleGuard from "../../../../app/components/role-guard";
 import { adminRoles } from "../../../../app/routing/PrivateRoutes";
 
-const isAdmin = (permissions) => {
-  const adminPermissions = [
-    "list_usersadmin",
-    "list_guests",
-    "list_roles",
-    "list_companyproductsservicesadmin",
-    "list_featuredproducts",
-    "list_companyproductsservicecategories",
-    "list_adsadmin",
-    "list_reports",
-    "list_activities",
-    "list_occupations",
-    "list_legalstatus",
-  ];
-
-  const hasAdminPermission = adminPermissions.some((permission) =>
-    permissions.some((userPermission) => userPermission.name === permission)
-  );
-
-  return hasAdminPermission;
-};
+// Permission checks are handled via RoleGuard using adminRoles
 
 export function AsideMenuMain() {
   const { user } = useSelector((state: UserResponse) => state.user);
@@ -233,7 +212,7 @@ export function AsideMenuMain() {
         )}
       </AsideMenuItemWithSubMain>
 
-      {isAdmin(user?.permissions) && (
+      <RoleGuard allowedRoles={adminRoles}>
         <AsideMenuItemWithSubMain
           to="/config"
           title="Admin"
@@ -247,31 +226,27 @@ export function AsideMenuMain() {
             bsTitle="User management"
             customIcon={<i className="fa-solid fa-user"></i>}
           />
-          {user?.roleValues?.name === "super_admin" && (
-            <>
-              <AsideMenuItem
-                to="/press-conference-management"
-                title="Press Conference"
-                hasBullet={true}
-                bsTitle="Press Conference"
-                customIcon={<i className="fa-solid fa-users-rectangle"></i>}
-              />
-              <AsideMenuItem
-                to="/ticket-transactions"
-                title="Ticket Transactions"
-                hasBullet={true}
-                bsTitle="Ticket Transactions"
-                customIcon={<i className="fa-solid fa-ticket"></i>}
-              />
-              <AsideMenuItem
-                to="/exhibition-requests"
-                title="Exhibition Requests"
-                hasBullet={true}
-                bsTitle="Exhibition Requests"
-                customIcon={<i className="fa-solid fa-users"></i>}
-              />
-            </>
-          )}
+          <AsideMenuItem
+            to="/press-conference-management"
+            title="Press Conference"
+            hasBullet={true}
+            bsTitle="Press Conference"
+            customIcon={<i className="fa-solid fa-users-rectangle"></i>}
+          />
+          <AsideMenuItem
+            to="/ticket-transactions"
+            title="Ticket Transactions"
+            hasBullet={true}
+            bsTitle="Ticket Transactions"
+            customIcon={<i className="fa-solid fa-ticket"></i>}
+          />
+          <AsideMenuItem
+            to="/exhibition-requests"
+            title="Exhibition Requests"
+            hasBullet={true}
+            bsTitle="Exhibition Requests"
+            customIcon={<i className="fa-solid fa-users"></i>}
+          />
 
           <AsideMenuItem
             to="/conferences-management"
@@ -281,102 +256,80 @@ export function AsideMenuMain() {
             customIcon={<i className="fa-solid fa-calendar-days"></i>}
           />
 
-          {/* <Can I="list" a="usersadmin">
-          </Can> */}
-          <Can I="list" a="guests">
-            <AsideMenuItem
-              to="/guests"
-              title="Guests management"
-              hasBullet={true}
-              bsTitle="User management"
-              customIcon={<i className="fa-solid fa-user-check"></i>}
-            />
-          </Can>
-          <Can I="list" a="roles">
-            <AsideMenuItem
-              to="/roles"
-              title="Roles management"
-              hasBullet={true}
-              bsTitle="Roles management"
-              customIcon={<i className="fa-solid fa-user-shield"></i>}
-            />
-          </Can>
+          <AsideMenuItem
+            to="/guests"
+            title="Guests management"
+            hasBullet={true}
+            bsTitle="User management"
+            customIcon={<i className="fa-solid fa-user-check"></i>}
+          />
+          <AsideMenuItem
+            to="/roles"
+            title="Roles management"
+            hasBullet={true}
+            bsTitle="Roles management"
+            customIcon={<i className="fa-solid fa-user-shield"></i>}
+          />
 
-          <Can I="list" a="companyproductsservicesadmin">
-            <AsideMenuItem
-              to="/config/products"
-              title="Products management"
-              fontIcon="bi-cart fs-3"
-              hasBullet
-            />
-          </Can>
+          <AsideMenuItem
+            to="/config/products"
+            title="Products management"
+            fontIcon="bi-cart fs-3"
+            hasBullet
+          />
 
-          <Can I="list" a="featuredproducts">
-            <AsideMenuItem
-              to="/config/featured-products"
-              title="Featured Products"
-              customIcon={<i className="fa-solid fa-star"></i>}
-              hasBullet
-            />
-          </Can>
-          <Can I="list" a="companyproductsservicecategories">
-            <AsideMenuItem
-              to="/config/productsCategories"
-              title="Products categories"
-              customIcon={<i className="fa-solid fa-list" />}
-              hasBullet
-            />
-          </Can>
+          <AsideMenuItem
+            to="/config/featured-products"
+            title="Featured Products"
+            customIcon={<i className="fa-solid fa-star"></i>}
+            hasBullet
+          />
+          <AsideMenuItem
+            to="/config/productsCategories"
+            title="Products categories"
+            customIcon={<i className="fa-solid fa-list" />}
+            hasBullet
+          />
 
-          <Can I="list" a="adsadmin">
-            <AsideMenuItem
-              to="/config/ads"
-              title="Advertisements"
-              customIcon={<i className="fa-solid fa-bullhorn"></i>}
-              hasBullet
-            />
-          </Can>
+          <AsideMenuItem
+            to="/config/ads"
+            title="Advertisements"
+            customIcon={<i className="fa-solid fa-bullhorn"></i>}
+            hasBullet
+          />
 
-          <Can I="list" a="reports">
-            <AsideMenuItem
-              to="/config/reports"
-              title="Reports"
-              customIcon={<i className="fa-solid fa-flag"></i>}
-              hasBullet
-            />
-          </Can>
+          <AsideMenuItem
+            to="/config/reports"
+            title="Reports"
+            customIcon={<i className="fa-solid fa-flag"></i>}
+            hasBullet
+          />
 
-          <Can I="list" a="activities">
-            <AsideMenuItem
-              to="/config/activities"
-              title="Activities"
-              // fontIcon="bi-chart-line fs-3"
-              customIcon={<i className="fa-solid fa-chart-line me-2"></i>}
-              hasBullet
-            />
-          </Can>
+          <AsideMenuItem
+            to="/config/activities"
+            title="Activities"
+            // fontIcon="bi-chart-line fs-3"
+            customIcon={<i className="fa-solid fa-chart-line me-2"></i>}
+            hasBullet
+          />
 
-          <Can I="list" a="occupations">
-            <AsideMenuItem
-              to="/config/occupations"
-              title="Occupations"
-              customIcon={<i className="fa-solid fa-briefcase"></i>}
-              // fontIcon="bi-cart fs-3"
-              hasBullet
-            />
-          </Can>
+          <AsideMenuItem
+            to="/config/occupations"
+            title="Occupations"
+            customIcon={<i className="fa-solid fa-briefcase"></i>}
+            // fontIcon="bi-cart fs-3"
+            hasBullet
+          />
 
-          {user?.roleValues?.name === "super_admin" && (
-            <AsideMenuItem
-              to="/config/legal-status"
-              title="Legal Statut"
-              customIcon={<i className="fa-solid fa-scale-balanced"></i>}
-              // fontIcon="bi-cart fs-3"
-              hasBullet
-            />
-          )}
+          <AsideMenuItem
+            to="/config/legal-status"
+            title="Legal Statut"
+            customIcon={<i className="fa-solid fa-scale-balanced"></i>}
+            // fontIcon="bi-cart fs-3"
+            hasBullet
+          />
         </AsideMenuItemWithSubMain>
-      )}
+      </RoleGuard>
     </>
   );
 }

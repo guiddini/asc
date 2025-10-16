@@ -9,7 +9,6 @@ import {
 } from "../../../apis/exhibition";
 import { Modal, Button, Spinner } from "react-bootstrap";
 import { KTIcon } from "../../../../_metronic/helpers";
-import { useForm } from "react-hook-form";
 
 interface ExhibitionRequestActionsProps {
   row: ExhibitionDemand;
@@ -20,84 +19,77 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
   const [showRejectModal, setShowRejectModal] = useState(false);
   const queryClient = useQueryClient();
 
-  const { register, handleSubmit, watch, reset } = useForm<{
-    role: string;
-    refusal_reason?: string;
-  }>({
-    defaultValues: { role: "exhibitor" },
-  });
-
   const acceptMutation = useMutation({
-    mutationFn: ({ role, id }: { id: string; role: string }) =>
-      acceptExhibitionDemandApi(id, role),
+    mutationFn: (id: string) => acceptExhibitionDemandApi(id),
     mutationKey: ["accept-exhibition-demand", row.id],
     onSuccess: () => {
       queryClient.invalidateQueries("exhibition-requests");
-      toast.success("Demande acceptée avec succès");
+      toast.success("Request accepted successfully");
       setShowAcceptModal(false);
-      reset();
     },
     onError: () => {
-      toast.error("Erreur lors de l'acceptation de la demande");
+      toast.error("Error while accepting the request");
     },
   });
 
   const rejectMutation = useMutation(refuseExhibitionDemandApi, {
     onSuccess: () => {
       queryClient.invalidateQueries("exhibition-requests");
-      toast.success("Demande rejetée avec succès");
+      toast.success("Request rejected successfully");
       setShowRejectModal(false);
-      reset();
     },
     onError: () => {
-      toast.error("Erreur lors du rejet de la demande");
+      toast.error("Error while rejecting the request");
     },
   });
 
-  const handleAccept = (data: { role: string }) => {
-    if (row.status === "Pending") {
-      acceptMutation.mutate({ id: row.id, role: data.role });
+  const handleAccept = () => {
+    if (row.status !== "accepted") {
+      acceptMutation.mutate(row.id);
     }
   };
 
   const handleReject = () => {
-    if (row.status === "Pending") {
+    if (row.status !== "refused") {
       rejectMutation.mutate(row.id);
     }
   };
+
+  const disableAccept = row?.status === "accepted";
+  const disableReject = row?.status === "refused";
 
   return (
     <>
       <div className="d-flex align-items-center justify-content-center gap-3">
         <button
+          disabled={disableAccept}
           onClick={() => setShowAcceptModal(true)}
           className={`btn btn-sm btn-icon ${
-            row?.status === "Pending" ? "btn-light-success" : "btn-light"
+            !disableAccept ? "btn-light-success" : "btn-light"
           }`}
         >
           <Check
             size={16}
-            color={row.status === "Pending" ? "#00c4c4" : "#ccc"}
-            onClick={() => row.status === "Pending" && setShowAcceptModal(true)}
+            color={!disableAccept ? "#00c4c4" : "#ccc"}
             role="button"
             style={{
-              cursor: row.status === "Pending" ? "pointer" : "not-allowed",
+              cursor: !disableAccept ? "pointer" : "not-allowed",
             }}
           />
         </button>
         <button
+          disabled={disableReject}
           onClick={() => setShowRejectModal(true)}
           className={`btn btn-sm btn-icon ${
-            row?.status === "Pending" ? "btn-light-danger" : "btn-light"
+            !disableReject ? "btn-light-danger" : "btn-light"
           }`}
         >
           <X
             size={16}
-            color={row.status === "Pending" ? "#f8285a" : "#ccc"}
-            onClick={() => row.status === "Pending" && setShowRejectModal(true)}
+            color={!disableReject ? "#f8285a" : "#ccc"}
             role="button"
             style={{
-              cursor: row.status === "Pending" ? "pointer" : "not-allowed",
+              cursor: !disableReject ? "pointer" : "not-allowed",
             }}
           />
         </button>
@@ -108,14 +100,11 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
         show={showAcceptModal}
         onHide={() => setShowAcceptModal(false)}
         backdrop={true}
-        id="kt_modal_accept_exhibition"
-        tabIndex={-1}
-        aria-hidden="true"
         dialogClassName="modal-dialog modal-dialog-centered mw-600px"
       >
-        <form onSubmit={handleSubmit(handleAccept)} className="modal-content">
+        <div className="modal-content">
           <div className="modal-header">
-            <h2 className="fw-bolder">Accepter la demande d'exposition</h2>
+            <h2 className="fw-bolder">Accept Exhibition Request</h2>
             <div
               className="btn btn-icon btn-sm btn-active-icon-primary"
               style={{ cursor: "pointer" }}
@@ -127,54 +116,10 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
 
           <Modal.Body className="pb-0 px-16 w-100">
             <div className="mb-5">
-              <h3>Détails de la demande</h3>
-              <p>Entreprise: {row.company?.name}</p>
-              <p>Type de stand: {row.stand_type}</p>
-              <p>Taille du stand: {row.stand_size} m²</p>
-            </div>
-
-            <div className="spearator my-4" />
-
-            <h3>Role :</h3>
-            <div className="d-flex flex-column flex-md-row align-items-center gap-4 my-8">
-              <div className="form-check form-check-custom form-check-solid">
-                <input
-                  {...register("role")}
-                  className="form-check-input"
-                  type="radio"
-                  value="exhibitor"
-                  id="exhibitorRadio"
-                />
-                <label className="form-check-label" htmlFor="exhibitorRadio">
-                  Exhibitor
-                </label>
-              </div>
-
-              <div className="form-check form-check-custom form-check-solid">
-                <input
-                  {...register("role")}
-                  className="form-check-input"
-                  type="radio"
-                  value="sponsor"
-                  id="sponsorRadio"
-                />
-                <label className="form-check-label" htmlFor="sponsorRadio">
-                  Sponsor
-                </label>
-              </div>
-
-              <div className="form-check form-check-custom form-check-solid">
-                <input
-                  {...register("role")}
-                  className="form-check-input"
-                  type="radio"
-                  value="startup"
-                  id="startupRadio"
-                />
-                <label className="form-check-label" htmlFor="startupRadio">
-                  Startup
-                </label>
-              </div>
+              <h3>Request Details</h3>
+              <p>Company: {row.company?.name}</p>
+              <p>Exhibition Type: {row.exhibition_type}</p>
+              <p>Status: {row.status}</p>
             </div>
           </Modal.Body>
 
@@ -183,21 +128,21 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
               variant="secondary"
               onClick={() => setShowAcceptModal(false)}
             >
-              Annuler
+              Cancel
             </Button>
             <Button
               variant="primary"
-              type="submit"
+              onClick={handleAccept}
               disabled={acceptMutation.isLoading}
             >
               {acceptMutation.isLoading ? (
                 <Spinner animation="border" size="sm" />
               ) : (
-                "Confirmer"
+                "Confirm"
               )}
             </Button>
           </Modal.Footer>
-        </form>
+        </div>
       </Modal>
 
       {/* Reject Modal */}
@@ -205,14 +150,11 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
         show={showRejectModal}
         onHide={() => setShowRejectModal(false)}
         backdrop={true}
-        id="kt_modal_reject_exhibition"
-        tabIndex={-1}
-        aria-hidden="true"
         dialogClassName="modal-dialog modal-dialog-centered mw-600px"
       >
-        <form onSubmit={handleSubmit(handleReject)} className="modal-content">
+        <div className="modal-content">
           <div className="modal-header">
-            <h2 className="fw-bolder">Refuser la demande d'exposition</h2>
+            <h2 className="fw-bolder">Reject Exhibition Request</h2>
             <div
               className="btn btn-icon btn-sm btn-active-icon-primary"
               style={{ cursor: "pointer" }}
@@ -227,20 +169,19 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
               <AlertTriangle className="text-warning me-4" />
               <div className="d-flex flex-stack flex-grow-1">
                 <div className="fw-semibold">
-                  <h4 className="text-gray-900 fw-bold">Attention</h4>
+                  <h4 className="text-gray-900 fw-bold">Warning</h4>
                   <div className="fs-6 text-gray-700">
-                    Êtes-vous sûr de vouloir refuser cette demande d'exposition
-                    ? Cette action est irréversible.
+                    Are you sure you want to reject this exhibition request?
+                    This action cannot be undone.
                   </div>
                 </div>
               </div>
             </div>
 
             <div className="mb-5">
-              <h3>Détails de la demande</h3>
-              <p>Entreprise: {row.company?.name}</p>
-              <p>Type de stand: {row.stand_type}</p>
-              <p>Taille du stand: {row.stand_size} m²</p>
+              <h3>Request Details</h3>
+              <p>Company: {row.company?.name}</p>
+              <p>Exhibition Type: {row.exhibition_type}</p>
             </div>
           </Modal.Body>
 
@@ -249,21 +190,21 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
               variant="secondary"
               onClick={() => setShowRejectModal(false)}
             >
-              Annuler
+              Cancel
             </Button>
             <Button
               variant="danger"
-              type="submit"
+              onClick={handleReject}
               disabled={rejectMutation.isLoading}
             >
               {rejectMutation.isLoading ? (
                 <Spinner animation="border" size="sm" />
               ) : (
-                "Refuser la demande"
+                "Reject Request"
               )}
             </Button>
           </Modal.Footer>
-        </form>
+        </div>
       </Modal>
     </>
   );

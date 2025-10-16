@@ -12,14 +12,16 @@ export interface Company {
 
 export interface ExhibitionDemand {
   id: string;
+  exhibition_demand_transaction_id: string | undefined;
   company_id: string;
   user_id: string;
-  exhibition_demand_transaction_id: string;
-  stand_type: string;
-  stand_size: string;
-  status: "Pending" | "Accepted" | "Refused";
+  status: "pending" | "accepted" | "refused" | string;
   created_at: string;
   updated_at: string;
+  exhibition_type: string;
+  payment_method: string | undefined;
+  order_id: string | undefined;
+  transfer_document: string | undefined;
   company: Company;
   transaction: Transaction;
 }

@@ -20,10 +20,9 @@ const getCompanyExhibitionDemand = async () => {
   return axiosInstance.get(`/exhibition-demand/company`);
 };
 
-const acceptExhibitionDemandApi = async (id: string, role: string) => {
+const acceptExhibitionDemandApi = async (id: string) => {
   return axiosInstance.post(`/exhibition-demand/accept`, {
     demand_id: id,
-    role,
   });
 };
 
