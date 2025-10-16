@@ -9,7 +9,7 @@ const createExhibitionDemandApi = async (data: FormData) => {
 };
 
 const updateExhibitionDemandApi = async (data: FormData) => {
-  return axiosInstance.post(`/exhibition-demand/update`, data);
+  return axiosInstance.post(`/exhibition-demand/edit`, data);
 };
 
 const getAllExhibitionDemandsApi = async () => {
