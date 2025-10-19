@@ -1,6 +1,9 @@
 name: Deploy Web Frontend
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:   # Manual trigger from GitHub UI
 
 jobs:
