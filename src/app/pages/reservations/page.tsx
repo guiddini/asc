@@ -9,28 +9,22 @@ import {
   Edit,
 } from "lucide-react";
 import { useQuery } from "react-query";
-import { Link, useNavigate } from "react-router-dom";
-import { getCompanyExhibitionDemand } from "../../apis/exhibition";
+import { Link } from "react-router-dom";
+import {
+  getCompanyExhibitionDemand,
+  payOnlineExhibitionDemandApi,
+} from "../../apis/exhibition";
 import { AxiosResponse } from "axios";
 import { getCompanyApi } from "../../apis";
-import { getStandTypeLabel } from "../../utils/standsData";
 import { useSelector } from "react-redux";
 import { UserResponse } from "../../types/reducers";
 import { companyOwner } from "../../features/userSlice";
 import getMediaUrl from "../../helpers/getMediaUrl";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Table,
-  Button,
-  Spinner,
-  Dropdown,
-} from "react-bootstrap";
+import { Card, Table, Button, Spinner } from "react-bootstrap";
 import ExhibitionTypeModal from "./components/exhibition-type-modal";
 import { useState } from "react";
 import { UploadTransferModal } from "./components/upload-exhibition-transfer-document-modal";
+import toast from "react-hot-toast";
 
 interface ExhibitionDemand {
   id: string;
@@ -78,7 +72,6 @@ interface ApiResponse {
 }
 
 const CompanyReservationPage = () => {
-  const navigate = useNavigate();
   const { user } = useSelector((state: UserResponse) => state.user);
   const companyID = user?.company?.id;
   const hasCompany = !!user?.company;
@@ -87,6 +80,7 @@ const CompanyReservationPage = () => {
   const [mode, setMode] = useState<"create" | "update">("create");
   const [demandId, setDemandId] = useState<string | null>(null);
   const [showTransferModal, setShowTransferModal] = useState(false);
+  const [isInitiatingPayment, setIsInitiatingPayment] = useState(false);
   const { data, isLoading } = useQuery<AxiosResponse<ApiResponse>>({
     queryFn: getCompanyExhibitionDemand,
     queryKey: ["company-exhibition-demand"],
@@ -112,6 +106,7 @@ const CompanyReservationPage = () => {
 
   const renderStatusBadge = (status?: string) => {
     const normalized = (status || "").toLowerCase().replace(/_/g, " ").trim();
+
     const colorMap: Record<string, string> = {
       pending: "warning",
       accepted: "success",
@@ -119,8 +114,12 @@ const CompanyReservationPage = () => {
       refused: "danger",
       rejected: "danger",
       "pending transfer confirmation": "info",
+      paid: "primary",
+      unpaid: "secondary",
     };
-    const variant = colorMap[normalized] || "secondary";
+
+    const variant = colorMap[normalized] || "dark";
+
     return (
       <span
         className={`badge rounded-pill bg-${variant}`}
@@ -154,7 +153,26 @@ const CompanyReservationPage = () => {
   };
 
   const handlePayOnline = () => {
-    // navigate(`/payment/online/${demand?.id}`);
+    if (!demand?.id) return;
+    setIsInitiatingPayment(true);
+    payOnlineExhibitionDemandApi(demand?.id)
+      .then((res) => {
+        const formUrl = res?.data?.data?.attributes?.form_url;
+        if (formUrl) {
+          toast.success("Redirecting to payment...");
+          window.location.href = formUrl;
+        } else {
+          toast.error("Payment initiation failed: missing form URL");
+          console.log("Unexpected payment response:", res?.data);
+        }
+      })
+      .catch((err) => {
+        toast.error("Failed to initiate payment");
+        console.error(err);
+      })
+      .finally(() => {
+        setIsInitiatingPayment(false);
+      });
   };
 
   const handlePayTransfer = () => {
@@ -262,9 +280,19 @@ const CompanyReservationPage = () => {
                                   size="sm"
                                   variant="primary"
                                   onClick={handlePayOnline}
+                                  disabled={isInitiatingPayment}
                                 >
-                                  <CreditCard size={14} className="me-1" />
-                                  Pay Online
+                                  {isInitiatingPayment ? (
+                                    <>
+                                      <Spinner animation="border" size="sm" className="me-1" />
+                                      Redirecting...
+                                    </>
+                                  ) : (
+                                    <>
+                                      <CreditCard size={14} className="me-1" />
+                                      Pay Online
+                                    </>
+                                  )}
                                 </Button>
                                 <Button
                                   size="sm"

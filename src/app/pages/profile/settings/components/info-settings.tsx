@@ -116,7 +116,7 @@ const InfoSettings = ({ user }: { user: any }) => {
     : [];
 
   const defaultValues = {
-    avatar: user.avatar,
+    avatar: user?.avatar,
     fname: user.fname,
     lname: user.lname,
     email: user.email,

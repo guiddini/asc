@@ -61,6 +61,7 @@ import ConferenceDetailPage from "../pages/conference/detail/page";
 import ComingSoonASC from "../pages/commingsoonAsc/page";
 import ProgramPage from "../pages/program/page";
 import CreateStartupPage from "../pages/startup/create-startup-page";
+import OnlinePaymentResultsPage from "../pages/payment/results/page";
 
 export const adminRoles = ["admin", "super_admin", "staff"];
 
@@ -334,6 +335,15 @@ const PrivateRoutes = () => {
               element={
                 <SuspensedView>
                   <CompanyReservationPage />
+                </SuspensedView>
+              }
+            />
+
+            <Route
+              path="/payment/results"
+              element={
+                <SuspensedView>
+                  <OnlinePaymentResultsPage />
                 </SuspensedView>
               }
             />

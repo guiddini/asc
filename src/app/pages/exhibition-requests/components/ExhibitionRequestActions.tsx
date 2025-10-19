@@ -1,13 +1,15 @@
 import { useState } from "react";
-import { Check, X, AlertTriangle } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 import { useMutation, useQueryClient } from "react-query";
 import toast from "react-hot-toast";
 import { ExhibitionDemand } from "../../../types/exhibition";
 import {
   acceptExhibitionDemandApi,
   refuseExhibitionDemandApi,
+  markExhibitionDemandAsPaidApi,
+  markExhibitionDemandAsUnpaidApi,
 } from "../../../apis/exhibition";
-import { Modal, Button, Spinner } from "react-bootstrap";
+import { Modal, Button, Spinner, Dropdown, Form } from "react-bootstrap";
 import { KTIcon } from "../../../../_metronic/helpers";
 
 interface ExhibitionRequestActionsProps {
@@ -17,6 +19,8 @@ interface ExhibitionRequestActionsProps {
 const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
   const [showAcceptModal, setShowAcceptModal] = useState(false);
   const [showRejectModal, setShowRejectModal] = useState(false);
+  const [showUnpaidModal, setShowUnpaidModal] = useState(false);
+  const [unpaidNotes, setUnpaidNotes] = useState("");
   const queryClient = useQueryClient();
 
   const acceptMutation = useMutation({
@@ -43,6 +47,33 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
     },
   });
 
+  const markPaidMutation = useMutation({
+    mutationFn: (id: string) => markExhibitionDemandAsPaidApi(id),
+    mutationKey: ["mark-exhibition-demand-paid", row.id],
+    onSuccess: () => {
+      queryClient.invalidateQueries("exhibition-requests");
+      toast.success("Marked as paid successfully");
+    },
+    onError: () => {
+      toast.error("Error while marking as paid");
+    },
+  });
+
+  const markUnpaidMutation = useMutation({
+    mutationFn: (payload: { id: string; notes: string }) =>
+      markExhibitionDemandAsUnpaidApi(payload.id, payload.notes),
+    mutationKey: ["mark-exhibition-demand-unpaid", row.id],
+    onSuccess: () => {
+      queryClient.invalidateQueries("exhibition-requests");
+      toast.success("Marked as unpaid successfully");
+      setShowUnpaidModal(false);
+      setUnpaidNotes("");
+    },
+    onError: () => {
+      toast.error("Error while marking as unpaid");
+    },
+  });
+
   const handleAccept = () => {
     if (row.status !== "accepted") {
       acceptMutation.mutate(row.id);
@@ -55,45 +86,94 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
     }
   };
 
+  const handleMarkPaid = () => {
+    markPaidMutation.mutate(row.id);
+  };
+
+  const handleOpenUnpaidModal = () => {
+    setShowUnpaidModal(true);
+  };
+
+  const handleConfirmUnpaid = () => {
+    const notes = unpaidNotes.trim();
+    if (!notes) {
+      toast.error("Please enter notes for marking as unpaid.");
+      return;
+    }
+    markUnpaidMutation.mutate({ id: row.id, notes });
+  };
+
   const disableAccept = row?.status === "accepted";
   const disableReject = row?.status === "refused";
 
   return (
     <>
-      <div className="d-flex align-items-center justify-content-center gap-3">
-        <button
-          disabled={disableAccept}
-          onClick={() => setShowAcceptModal(true)}
-          className={`btn btn-sm btn-icon ${
-            !disableAccept ? "btn-light-success" : "btn-light"
-          }`}
+      {/* Actions Dropdown */}
+      <Dropdown placement="top-start">
+        <Dropdown.Toggle
+          variant="transparent"
+          color="#fff"
+          id="exhibition-request-actions-dropdown"
+          className="btn btn-icon btn-color-gray-500 btn-active-color-primary justify-content-end"
         >
-          <Check
-            size={16}
-            color={!disableAccept ? "#00c4c4" : "#ccc"}
-            role="button"
-            style={{
-              cursor: !disableAccept ? "pointer" : "not-allowed",
-            }}
-          />
-        </button>
-        <button
-          disabled={disableReject}
-          onClick={() => setShowRejectModal(true)}
-          className={`btn btn-sm btn-icon ${
-            !disableReject ? "btn-light-danger" : "btn-light"
-          }`}
-        >
-          <X
-            size={16}
-            color={!disableReject ? "#f8285a" : "#ccc"}
-            role="button"
-            style={{
-              cursor: !disableReject ? "pointer" : "not-allowed",
-            }}
-          />
-        </button>
-      </div>
+          <i className="ki-duotone ki-dots-square fs-1">
+            <span className="path1"></span>
+            <span className="path2"></span>
+            <span className="path3"></span>
+            <span className="path4"></span>
+          </i>
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu>
+          <Dropdown.Item
+            onClick={() => setShowAcceptModal(true)}
+            disabled={disableAccept}
+            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
+          >
+            <div className="cursor-pointer d-flex flex-row align-items-center">
+              <KTIcon iconName="check" className="fs-1 cursor-pointer m-0 text-success" />
+              <span className="text-muted ms-2">Accept Request</span>
+            </div>
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() => setShowRejectModal(true)}
+            disabled={disableReject}
+            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
+          >
+            <div className="cursor-pointer d-flex flex-row align-items-center">
+              <KTIcon iconName="cross" className="fs-1 cursor-pointer m-0 text-danger" />
+              <span className="text-muted ms-2">Reject Request</span>
+            </div>
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={handleMarkPaid}
+            disabled={markPaidMutation.isLoading}
+            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
+          >
+            <div className="cursor-pointer d-flex flex-row align-items-center">
+              <KTIcon iconName="credit-cart" className="fs-1 cursor-pointer m-0 text-primary" />
+              <span className="text-muted ms-2">
+                {markPaidMutation.isLoading ? "Marking as Paid..." : "Mark as Paid"}
+              </span>
+            </div>
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={handleOpenUnpaidModal}
+            disabled={markUnpaidMutation.isLoading}
+            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
+          >
+            <div className="cursor-pointer d-flex flex-row align-items-center">
+              <KTIcon iconName="credit-cart" className="fs-1 cursor-pointer m-0 text-warning" />
+              <span className="text-muted ms-2">
+                {markUnpaidMutation.isLoading ? "Marking as Unpaid..." : "Mark as Unpaid"}
+              </span>
+            </div>
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
 
       {/* Accept Modal */}
       <Modal
@@ -201,6 +281,60 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
                 <Spinner animation="border" size="sm" />
               ) : (
                 "Reject Request"
+              )}
+            </Button>
+          </Modal.Footer>
+        </div>
+      </Modal>
+
+      {/* Mark as Unpaid Modal */}
+      <Modal
+        show={showUnpaidModal}
+        onHide={() => setShowUnpaidModal(false)}
+        backdrop={true}
+        dialogClassName="modal-dialog modal-dialog-centered mw-600px"
+      >
+        <div className="modal-content">
+          <div className="modal-header">
+            <h2 className="fw-bolder">Mark as Unpaid</h2>
+            <div
+              className="btn btn-icon btn-sm btn-active-icon-primary"
+              style={{ cursor: "pointer" }}
+              onClick={() => setShowUnpaidModal(false)}
+            >
+              <KTIcon iconName="cross" className="fs-1" />
+            </div>
+          </div>
+
+          <Modal.Body className="pb-0 px-16 w-100">
+            <div className="mb-5">
+              <h3>Notes</h3>
+              <p className="text-muted">Add a reason or context for setting this request to unpaid.</p>
+              <Form.Group controlId="unpaidNotes">
+                <Form.Control
+                  as="textarea"
+                  rows={4}
+                  placeholder="Enter notes here..."
+                  value={unpaidNotes}
+                  onChange={(e) => setUnpaidNotes(e.target.value)}
+                />
+              </Form.Group>
+            </div>
+          </Modal.Body>
+
+          <Modal.Footer className="w-100 d-flex flex-row align-items-center justify-content-between">
+            <Button variant="secondary" onClick={() => setShowUnpaidModal(false)}>
+              Cancel
+            </Button>
+            <Button
+              variant="warning"
+              onClick={handleConfirmUnpaid}
+              disabled={markUnpaidMutation.isLoading}
+            >
+              {markUnpaidMutation.isLoading ? (
+                <Spinner animation="border" size="sm" />
+              ) : (
+                "Confirm Unpaid"
               )}
             </Button>
           </Modal.Footer>

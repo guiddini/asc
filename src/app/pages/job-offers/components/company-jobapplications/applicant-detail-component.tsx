@@ -42,7 +42,7 @@ const ApplicantDetailComponent = (jobApplication: CompanyJobApplication) => {
           className={clsx("symbol w-100 h-100 symbol-fixed position-relative")}
         >
           <img
-            src={getMediaUrl(user.avatar)}
+            src={getMediaUrl(user?.avatar)}
             alt={`Photo de profile de ${user?.fname}`}
             className="object-fit-cover w-100 h-100"
           />

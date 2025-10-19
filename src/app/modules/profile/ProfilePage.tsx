@@ -6,7 +6,6 @@ import { Campaigns } from "./components/Campaigns";
 import { Documents } from "./components/Documents";
 import { Connections } from "./components/Connections";
 import { ProfileHeader } from "./ProfileHeader";
-import Company from "./components/Company";
 
 const profileBreadCrumbs: Array<PageLink> = [
   {
@@ -78,15 +77,7 @@ const ProfilePage = () => (
           </>
         }
       />
-      <Route
-        path="company"
-        element={
-          <>
-            <PageTitle breadcrumbs={profileBreadCrumbs}>Connections</PageTitle>
-            <Company />
-          </>
-        }
-      />
+
       <Route
         index
         element={<Navigate to="/crafted/pages/profile/overview" />}

@@ -142,7 +142,7 @@ const EventTopbar = () => {
               data-kt-menu-placement="bottom-end"
             >
               <img
-                src={getMediaUrl(user.avatar)}
+                src={getMediaUrl(user?.avatar)}
                 alt="Profile"
                 // id="event-management-nav-profile"
                 id="event-management-nav-profile"

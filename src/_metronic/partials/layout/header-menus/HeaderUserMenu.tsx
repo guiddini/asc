@@ -35,7 +35,7 @@ const HeaderUserMenu: FC = () => {
           <div className="symbol symbol-50px me-5">
             <img
               alt="Logo"
-              src={getMediaUrl(user.avatar)}
+              src={getMediaUrl(user?.avatar)}
               className="object-fit-cover"
             />
           </div>

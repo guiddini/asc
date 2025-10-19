@@ -113,7 +113,7 @@ const CreatePost = () => {
         <div className="card-header justify-content-start align-items-center pt-4">
           <div className="symbol symbol-45px me-5">
             <img
-              src={getMediaUrl(user.avatar)}
+              src={getMediaUrl(user?.avatar)}
               className="object-fit-cover"
               alt=""
             />

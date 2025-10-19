@@ -66,7 +66,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
                       )}
                     >
                       <img
-                        src={getMediaUrl(user.avatar) || "/placeholder.svg"}
+                        src={getMediaUrl(user?.avatar) || "/placeholder.svg"}
                         alt={`Profile photo of ${user?.fname}`}
                         className="object-fit-cover rounded-circle border shadow-sm"
                         style={{ width: "100px", height: "100px" }}

@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 const ExhibitionRequests = () => {
   const [filterStatus, setFilterStatus] = useState<
-    "all" | "pending" | "accepted" | "refused"
+    "all" | "pending" | "accepted" | "refused" | "paid" | "unpaid"
   >("all");
 
   const { isLoading, data } = useQuery({
@@ -20,25 +20,42 @@ const ExhibitionRequests = () => {
 
   const list: ExhibitionDemand[] = data?.data || [];
 
-  const statusOptions: ("all" | "pending" | "accepted" | "refused")[] = [
-    "all",
-    "pending",
-    "accepted",
-    "refused",
-  ];
+  const statusOptions: (
+    | "all"
+    | "pending"
+    | "accepted"
+    | "refused"
+    | "paid"
+    | "unpaid"
+  )[] = ["all", "pending", "accepted", "refused", "paid", "unpaid"];
 
   const getStatusCounts = useMemo(() => {
-    const counts = { all: list.length, pending: 0, accepted: 0, refused: 0 };
+    const counts = {
+      all: list.length,
+      pending: 0,
+      accepted: 0,
+      refused: 0,
+      paid: 0,
+      unpaid: 0,
+    };
     list.forEach((item) => {
       const status = item.status.toLowerCase();
-      if (counts[status as keyof typeof counts] !== undefined)
+      if (counts[status as keyof typeof counts] !== undefined) {
         counts[status as keyof typeof counts]++;
+      }
+      const isPaid = item.transaction?.status === "Success";
+      if (isPaid) counts.paid++;
+      else counts.unpaid++;
     });
     return counts;
   }, [list]);
 
   const filteredList = useMemo(() => {
     if (filterStatus === "all") return list;
+    if (filterStatus === "paid")
+      return list.filter((item) => item.transaction?.status === "Success");
+    if (filterStatus === "unpaid")
+      return list.filter((item) => item.transaction?.status !== "Success");
     return list.filter((item) => item.status.toLowerCase() === filterStatus);
   }, [list, filterStatus]);
 
@@ -92,7 +109,13 @@ const ExhibitionRequests = () => {
               ? "bg-warning text-dark"
               : row.status === "accepted"
               ? "bg-success text-white"
-              : "bg-danger text-white"
+              : row.status === "rejected"
+              ? "bg-danger text-white"
+              : row.status === "paid"
+              ? "bg-primary text-white"
+              : row.status === "unpaid"
+              ? "bg-secondary text-white"
+              : "bg-light text-dark"
           }`}
         >
           {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
@@ -101,24 +124,7 @@ const ExhibitionRequests = () => {
       selector: (row: ExhibitionDemand) => row.status,
       sortable: true,
     },
-    {
-      name: "Payment Status",
-      cell: (row: ExhibitionDemand) => (
-        <span
-          className={`px-2 py-1 rounded-pill small fw-medium ${
-            row.transaction?.status === "Proccessing"
-              ? "bg-warning text-dark"
-              : row.transaction?.status === "Success"
-              ? "bg-success text-white"
-              : "bg-danger text-white"
-          }`}
-        >
-          {row.transaction?.status || "Unpaid"}
-        </span>
-      ),
-      selector: (row: ExhibitionDemand) => row.transaction?.status || "Unpaid",
-      sortable: true,
-    },
+
     {
       name: "Date",
       cell: (row: ExhibitionDemand) =>

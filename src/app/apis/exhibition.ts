@@ -46,7 +46,23 @@ const uploadExhibitionDemandTransferDocument = async (data: FormData) =>
   });
 
 const payOnlineExhibitionDemandApi = async (demand_id: string) =>
-  await axiosInstance.post(`/exhibition-demand/payOnline`);
+  await axiosInstance.post(`/exhibition-demand/pay`, {
+    demand_id,
+  });
+
+const markExhibitionDemandAsPaidApi = async (demand_id: string) =>
+  await axiosInstance.post(`/exhibition-demand/markAsPaid`, {
+    demand_id,
+  });
+
+const markExhibitionDemandAsUnpaidApi = async (
+  demand_id: string,
+  notes: string
+) =>
+  await axiosInstance.post(`/exhibition-demand/markAsUnpaid`, {
+    demand_id,
+    notes,
+  });
 
 export {
   calculateExhibitionDemandTotal,
@@ -60,4 +76,6 @@ export {
   updateExhibitionDemandApi,
   uploadExhibitionDemandTransferDocument,
   payOnlineExhibitionDemandApi,
+  markExhibitionDemandAsPaidApi,
+  markExhibitionDemandAsUnpaidApi,
 };

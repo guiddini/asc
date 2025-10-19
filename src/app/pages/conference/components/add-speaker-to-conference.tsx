@@ -179,7 +179,7 @@ const AddSpeakerToConferenceModal: React.FC<
                   <Row className="align-items-center w-100 g-2">
                     <Col xs="auto" className="pe-0 me-3">
                       <Image
-                        src={getMediaUrl(user.avatar)}
+                        src={getMediaUrl(user?.avatar)}
                         roundedCircle
                         width={50}
                         height={50}
