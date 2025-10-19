@@ -64,19 +64,19 @@ const EVENT_STATS: StatItem[] = [
   {
     icon: "/stats/visitors.svg",
     label: "Participants",
-    value: "20 000+",
+    value: "25 000+",
     alt: "Icône Visiteurs",
   },
   {
     icon: "/stats/experts.svg",
     label: "International Experts",
-    value: "200+",
+    value: "300+",
     alt: "Icône Experts",
   },
   {
     icon: "/stats/investors.svg",
     label: "Investors",
-    value: "150+",
+    value: "200+",
     alt: "Icône Investisseurs",
   },
 ];
