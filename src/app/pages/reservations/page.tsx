@@ -112,6 +112,7 @@ const CompanyReservationPage = () => {
       accepted: "success",
       approved: "success",
       refused: "danger",
+      failed: "danger",
       rejected: "danger",
       "pending transfer confirmation": "info",
       paid: "primary",
@@ -122,7 +123,7 @@ const CompanyReservationPage = () => {
 
     return (
       <span
-        className={`badge rounded-pill bg-${variant}`}
+        className={`badge rounded-pill bg-${variant} text-white`}
         style={{ textTransform: "capitalize" }}
       >
         {(status || "-").replace(/_/g, " ")}
@@ -160,7 +161,7 @@ const CompanyReservationPage = () => {
         const formUrl = res?.data?.data?.attributes?.form_url;
         if (formUrl) {
           toast.success("Redirecting to payment...");
-          window.location.href = formUrl;
+          window.open(formUrl, "_blank");
         } else {
           toast.error("Payment initiation failed: missing form URL");
           console.log("Unexpected payment response:", res?.data);
@@ -274,7 +275,9 @@ const CompanyReservationPage = () => {
                             {new Date(demand.created_at).toLocaleDateString()}
                           </td>
                           <td>
-                            {demand.status === "accepted" ? (
+                            {demand.status === "accepted" ||
+                            demand.status === "failed" ||
+                            demand.status === "unpaid" ? (
                               <div className="d-flex gap-2 align-items-center justify-content-center">
                                 <Button
                                   size="sm"
@@ -284,16 +287,30 @@ const CompanyReservationPage = () => {
                                 >
                                   {isInitiatingPayment ? (
                                     <>
-                                      <Spinner animation="border" size="sm" className="me-1" />
+                                      <Spinner
+                                        animation="border"
+                                        size="sm"
+                                        className="me-1"
+                                      />
                                       Redirecting...
                                     </>
                                   ) : (
                                     <>
-                                      <CreditCard size={14} className="me-1" />
-                                      Pay Online
+                                      <img
+                                        src="/media/eventili/dahabia.png"
+                                        alt="Dahabia"
+                                        className="me-2"
+                                        style={{
+                                          width: 18,
+                                          height: 18,
+                                          objectFit: "contain",
+                                        }}
+                                      />
+                                      Pay Online (CIB/DAHABIA)
                                     </>
                                   )}
                                 </Button>
+
                                 <Button
                                   size="sm"
                                   variant="secondary"

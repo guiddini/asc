@@ -64,6 +64,13 @@ const markExhibitionDemandAsUnpaidApi = async (
     notes,
   });
 
+const showExhibitionDemandApi = async (demand_id: string) => {
+  const res = await axiosInstance.post(`/exhibition-demand/show`, {
+    demand_id,
+  });
+  return res?.data;
+};
+
 export {
   calculateExhibitionDemandTotal,
   createExhibitionDemandApi,
@@ -78,4 +85,5 @@ export {
   payOnlineExhibitionDemandApi,
   markExhibitionDemandAsPaidApi,
   markExhibitionDemandAsUnpaidApi,
+  showExhibitionDemandApi,
 };

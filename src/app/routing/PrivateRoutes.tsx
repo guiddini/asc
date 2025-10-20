@@ -340,7 +340,7 @@ const PrivateRoutes = () => {
             />
 
             <Route
-              path="/payment/results"
+              path="/payment/results/:demand_id"
               element={
                 <SuspensedView>
                   <OnlinePaymentResultsPage />
