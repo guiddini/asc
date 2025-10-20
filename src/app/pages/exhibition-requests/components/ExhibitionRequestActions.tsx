@@ -11,6 +11,7 @@ import {
 } from "../../../apis/exhibition";
 import { Modal, Button, Spinner, Dropdown, Form } from "react-bootstrap";
 import { KTIcon } from "../../../../_metronic/helpers";
+import { useNavigate } from "react-router-dom";
 
 interface ExhibitionRequestActionsProps {
   row: ExhibitionDemand;
@@ -22,6 +23,7 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
   const [showUnpaidModal, setShowUnpaidModal] = useState(false);
   const [unpaidNotes, setUnpaidNotes] = useState("");
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const acceptMutation = useMutation({
     mutationFn: (id: string) => acceptExhibitionDemandApi(id),
@@ -103,6 +105,10 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
     markUnpaidMutation.mutate({ id: row.id, notes });
   };
 
+  const handleRedirectToPaymentResults = () => {
+    navigate(`/payment/results/${row.id}`);
+  };
+
   const disableAccept = row?.status === "accepted";
   const disableReject = row?.status === "refused";
 
@@ -131,7 +137,10 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
             className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
           >
             <div className="cursor-pointer d-flex flex-row align-items-center">
-              <KTIcon iconName="check" className="fs-1 cursor-pointer m-0 text-success" />
+              <KTIcon
+                iconName="check"
+                className="fs-1 cursor-pointer m-0 text-success"
+              />
               <span className="text-muted ms-2">Accept Request</span>
             </div>
           </Dropdown.Item>
@@ -142,7 +151,10 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
             className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
           >
             <div className="cursor-pointer d-flex flex-row align-items-center">
-              <KTIcon iconName="cross" className="fs-1 cursor-pointer m-0 text-danger" />
+              <KTIcon
+                iconName="cross"
+                className="fs-1 cursor-pointer m-0 text-danger"
+              />
               <span className="text-muted ms-2">Reject Request</span>
             </div>
           </Dropdown.Item>
@@ -153,9 +165,14 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
             className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
           >
             <div className="cursor-pointer d-flex flex-row align-items-center">
-              <KTIcon iconName="credit-cart" className="fs-1 cursor-pointer m-0 text-primary" />
+              <KTIcon
+                iconName="credit-cart"
+                className="fs-1 cursor-pointer m-0 text-primary"
+              />
               <span className="text-muted ms-2">
-                {markPaidMutation.isLoading ? "Marking as Paid..." : "Mark as Paid"}
+                {markPaidMutation.isLoading
+                  ? "Marking as Paid..."
+                  : "Mark as Paid"}
               </span>
             </div>
           </Dropdown.Item>
@@ -166,12 +183,32 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
             className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
           >
             <div className="cursor-pointer d-flex flex-row align-items-center">
-              <KTIcon iconName="credit-cart" className="fs-1 cursor-pointer m-0 text-warning" />
+              <KTIcon
+                iconName="credit-cart"
+                className="fs-1 cursor-pointer m-0 text-warning"
+              />
               <span className="text-muted ms-2">
-                {markUnpaidMutation.isLoading ? "Marking as Unpaid..." : "Mark as Unpaid"}
+                {markUnpaidMutation.isLoading
+                  ? "Marking as Unpaid..."
+                  : "Mark as Unpaid"}
               </span>
             </div>
           </Dropdown.Item>
+
+          {row?.status === "paid" && (
+            <Dropdown.Item
+              onClick={handleRedirectToPaymentResults}
+              className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
+            >
+              <div className="cursor-pointer d-flex flex-row align-items-center">
+                <KTIcon
+                  iconName="eye"
+                  className="fs-1 cursor-pointer m-0 text-warning"
+                />
+                <span className="text-muted ms-2">View Payment Results</span>
+              </div>
+            </Dropdown.Item>
+          )}
         </Dropdown.Menu>
       </Dropdown>
 
@@ -309,7 +346,9 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
           <Modal.Body className="pb-0 px-16 w-100">
             <div className="mb-5">
               <h3>Notes</h3>
-              <p className="text-muted">Add a reason or context for setting this request to unpaid.</p>
+              <p className="text-muted">
+                Add a reason or context for setting this request to unpaid.
+              </p>
               <Form.Group controlId="unpaidNotes">
                 <Form.Control
                   as="textarea"
@@ -323,7 +362,10 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
           </Modal.Body>
 
           <Modal.Footer className="w-100 d-flex flex-row align-items-center justify-content-between">
-            <Button variant="secondary" onClick={() => setShowUnpaidModal(false)}>
+            <Button
+              variant="secondary"
+              onClick={() => setShowUnpaidModal(false)}
+            >
               Cancel
             </Button>
             <Button
