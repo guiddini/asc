@@ -52,10 +52,10 @@ export const selectUser = (state) => state.user.user;
 // };
 
 export const canEditCompany = (state, companyId) => {
-  const user = state.user.user;
+  const user = state?.user?.user;
   if (user?.roleValues?.name === "super_admin") return true;
   if (!user || !user.companyStaffRole) return false;
-  if (user.company.id === companyId) {
+  if (user?.company?.id === companyId) {
     const role = user.companyStaffRole.name;
     return role === "company_editor";
   }
@@ -72,7 +72,7 @@ export const canViewCompany = (state, companyId) => {
   if (!user || !user.companyStaffRole) return false;
 
   // Grant access only if the user's company matches the current company page
-  if (user.company.id === companyId) {
+  if (user?.company?.id === companyId) {
     const role = user.companyStaffRole.name;
     return role === "company_editor" || role === "company_staff";
   }
@@ -85,7 +85,7 @@ export const companyOwner = (state, companyId) => {
   const user = state.user.user;
   if (user?.roleValues?.name === "super_admin") return true;
   if (!user) return false;
-  if (user.company.id === companyId) {
+  if (user?.company?.id === companyId) {
     return true;
   }
   return false;

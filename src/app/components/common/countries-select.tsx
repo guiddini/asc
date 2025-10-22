@@ -35,11 +35,12 @@ export const CountriesSelect = ({
           willaya: {
             id: string;
             name_fr: string;
+            name_en: string;
           },
           index: number
         ) => {
           return {
-            label: willaya.name_fr,
+            label: willaya.name_en,
             value: willaya.id,
           };
         }

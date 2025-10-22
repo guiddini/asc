@@ -36,7 +36,7 @@ const step1Schema = yup.object({
 });
 
 const step2Schema = yup.object({
-  linkedin_url: yup.string().url().required("LinkedIn profile is required."),
+  linkedin_url: yup.string().url().notRequired(),
   country: yup
     .object({
       label: yup.string().required(),
@@ -90,7 +90,7 @@ export default function SignupPage() {
   });
 
   const activities = data?.data?.map((item: activity) => ({
-    label: item.label_fr,
+    label: item.label_en,
     value: item.id,
   }));
 
@@ -161,8 +161,6 @@ export default function SignupPage() {
     }
   };
 
-  const handleIconClick = () => fileInputRef.current?.click();
-
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -182,7 +180,9 @@ export default function SignupPage() {
     formdata.append("password", values.password);
     formdata.append("password_confirmation", values.password_confirmation);
     formdata.append("phone", values.phone);
-    formdata.append("linkedin_url", values.linkedin_url);
+    if (values?.linkedin_url) {
+      formdata.append("linkedin_url", values.linkedin_url);
+    }
     if (values.country?.value)
       formdata.append("country_id", values.country.value);
     formdata.append("job_title", values.job_title);
@@ -221,7 +221,7 @@ export default function SignupPage() {
           dispatch(setReduxCurrentUser(userData));
           saveAuth(userData.token);
           setCurrentUser(userData.user);
-          navigate("/welcome");
+          navigate("/home");
         }
       },
       onError(error: AxiosError<BackendError>) {

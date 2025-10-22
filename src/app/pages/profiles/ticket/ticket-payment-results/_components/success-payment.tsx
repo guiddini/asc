@@ -99,7 +99,7 @@ const SuccessPayment: React.FC<PaymentSuccessProps> = ({
                 marginTop: "8px",
               }}
               onClick={() => {
-                navigate("/welcome");
+                navigate("/home");
               }}
               className="action-button download"
             >
