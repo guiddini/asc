@@ -109,7 +109,7 @@ const ExhibitionRequests = () => {
               ? "bg-warning text-dark"
               : row.status === "accepted"
               ? "bg-success text-white"
-              : row.status === "rejected"
+              : row.status === "refused"
               ? "bg-danger text-white"
               : row.status === "paid"
               ? "bg-primary text-white"

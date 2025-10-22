@@ -20,7 +20,8 @@ export interface ExhibitionDemand {
     | "accepted"
     | "refused"
     | "Pending transfer confirmation"
-    | "paid";
+    | "paid"
+    | "unpaid";
   created_at: string;
   updated_at: string;
   exhibition_type: string;
