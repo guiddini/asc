@@ -34,11 +34,16 @@ const Footer: React.FC = () => {
                 investors, partners, and industry leaders to build the future of
                 the African tech ecosystem.
               </p>
-              <div className="footer-logo mt-3">
+              <div className="footer-logo mt-3 gap-4">
                 <img
                   src="/sponsors/a-venture.webp"
                   alt="Algeria Venture Logo"
                   style={{ height: "80px", width: "auto", opacity: 0.8 }}
+                />
+                <img
+                  src="/media/startups.png"
+                  alt="Algeria Venture Logo"
+                  style={{ height: "80px", width: "auto", marginLeft: "10px" }}
                 />
               </div>
             </div>

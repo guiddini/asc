@@ -60,10 +60,10 @@ const validationSchema = Yup.object().shape({
     is: (country: any) => country?.label === "Algeria",
     then: (schema) =>
       schema
-        .required("Label number is required")
         .length(10, "Label number must be exactly 10 digits")
-        .matches(/^\d+$/, "Label number must contain only digits"),
-    otherwise: (schema) => schema.notRequired(),
+        .matches(/^\d+$/, "Label number must contain only digits")
+        .nullable(),
+    otherwise: (schema) => schema.notRequired().nullable(),
   }),
 
   exhibition_type: Yup.string()
@@ -156,7 +156,9 @@ const CreateStartupPage = () => {
     }
     formData.append("city", data.city);
     formData.append("address", data.address);
-    formData.append("label_number", data.label_number);
+    if (data.label_number) {
+      formData.append("label_number", data.label_number);
+    }
     if (data.logo instanceof File) formData.append("logo", data.logo);
     data.activity_areas.forEach((area, index) => {
       formData.append(`activity_areas[${index}]`, area);
@@ -230,11 +232,10 @@ const CreateStartupPage = () => {
             <InputComponent
               control={control}
               name="label_number"
-              label="Label Number"
+              label="Label Number (optional)"
               errors={errors}
               type="text"
               placeholder="Enter label number"
-              required
               colXS={12}
               colMD={12}
             />
