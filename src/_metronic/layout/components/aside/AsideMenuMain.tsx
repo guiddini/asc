@@ -35,7 +35,38 @@ export function AsideMenuMain() {
         bsTitle="Home"
         className="py-2"
       />
-      <RoleGuard allowedRoles={adminRoles}>
+      {isCompanyStaff && (
+        <>
+          <AsideMenuItemWithSubMain
+            to="/company"
+            title="My Company"
+            bsTitle="My Company"
+            fontIcon="bi-briefcase fs-2"
+            icon="briefcase"
+          >
+            <AsideMenuItem
+              to={`/startup/demand`}
+              title="Reservations"
+              bsTitle="Reservations"
+              hasBullet={true}
+            />
+            <AsideMenuItem
+              to={`/company/${companyID}`}
+              title="Profile"
+              bsTitle="Profile"
+              hasBullet={true}
+            />
+
+            <AsideMenuItem
+              to={`/company/${companyID}/staff`}
+              title="Staff"
+              bsTitle="Staff"
+              hasBullet={true}
+            />
+          </AsideMenuItemWithSubMain>
+        </>
+      )}
+      {/* <RoleGuard allowedRoles={adminRoles}>
         <AsideMenuItem
           to="/blogs-management"
           title="Blogs"
@@ -43,7 +74,7 @@ export function AsideMenuMain() {
           bsTitle="Blogs"
           className="py-2"
         />
-      </RoleGuard>
+      </RoleGuard> */}
 
       <AsideMenuItemWithSubMain
         to={`/agenda`}
@@ -133,41 +164,12 @@ export function AsideMenuMain() {
       />
 
       {isCompanyStaff && (
-        <>
-          <AsideMenuItem
-            to={`/ads`}
-            title="Ads"
-            bsTitle="Ads"
-            customIcon={<i className="fa-solid fa-tower-broadcast"></i>}
-          />
-          <AsideMenuItemWithSubMain
-            to="/company"
-            title="My Company"
-            bsTitle="My Company"
-            fontIcon="bi-briefcase fs-2"
-            icon="briefcase"
-          >
-            <AsideMenuItem
-              to={`/startup/demand`}
-              title="Reservations"
-              bsTitle="Reservations"
-              hasBullet={true}
-            />
-            <AsideMenuItem
-              to={`/company/${companyID}`}
-              title="Profile"
-              bsTitle="Profile"
-              hasBullet={true}
-            />
-
-            <AsideMenuItem
-              to={`/company/${companyID}/staff`}
-              title="Staff"
-              bsTitle="Staff"
-              hasBullet={true}
-            />
-          </AsideMenuItemWithSubMain>
-        </>
+        <AsideMenuItem
+          to={`/ads`}
+          title="Ads"
+          bsTitle="Ads"
+          customIcon={<i className="fa-solid fa-tower-broadcast"></i>}
+        />
       )}
 
       <AsideMenuItemWithSubMain

@@ -46,7 +46,7 @@ const uploadExhibitionDemandTransferDocument = async (data: FormData) =>
   });
 
 const payOnlineExhibitionDemandApi = async (demand_id: string) =>
-  await axiosInstance.post(`/exhibition-demand/pay`, {
+  await axiosInstance.post(`/exhibition-demand/online/pay`, {
     demand_id,
   });
 

@@ -130,10 +130,11 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
 
   // Open transfer document in a new tab (uses REACT_APP_API_URL if provided)
   const handleOpenTransferDocument = () => {
-    const baseUrl = import.meta.env.VITE_APP_API_URL;
     const docPath = row?.transfer_document;
     if (!docPath) return;
-    const link = `${baseUrl}admin/file?path=${encodeURIComponent(docPath)}`;
+    const link = `https://asc.api.eventili.com/admin/file?path=${encodeURIComponent(
+      docPath
+    )}`;
     window.open(link, "_blank", "noopener,noreferrer");
   };
 

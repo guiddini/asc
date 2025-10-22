@@ -7,6 +7,7 @@ import {
   CreditCard,
   Banknote,
   Edit,
+  Download,
 } from "lucide-react";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
@@ -72,6 +73,12 @@ interface ApiResponse {
   transaction: ExhibitionTransaction | null;
 }
 
+// Pricing configuration
+const EXHIBITION_PRICES: Record<string, { dzd: number; euro: number; usd: number }> = {
+  premium_exhibition_space: { dzd: 299900, euro: 1999, usd: 1999 },
+  connect_desk: { dzd: 29900, euro: 199, usd: 199 },
+};
+
 const CompanyReservationPage = () => {
   const { user } = useSelector((state: UserResponse) => state.user);
   const companyID = user?.company?.id;
@@ -103,6 +110,15 @@ const CompanyReservationPage = () => {
       .split("_")
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
       .join(" ");
+  };
+
+  const getPrice = (exhibitionType?: string) => {
+    if (!exhibitionType) return null;
+    return EXHIBITION_PRICES[exhibitionType] || null;
+  };
+
+  const formatPrice = (price: { dzd: number; euro: number; usd: number }) => {
+    return `${price.dzd.toLocaleString()} DZD / $${price.usd.toLocaleString()}`;
   };
 
   const renderStatusBadge = (status?: string) => {
@@ -253,7 +269,6 @@ const CompanyReservationPage = () => {
               {demand ? (
                 <>
                   <h4 className="mb-4">Exhibition Reservation Request</h4>
-                  {/* Admin note / motif — show prominently when status is pending and notes exist */}
                   {demand?.notes &&
                     (demand.status || "").toLowerCase().trim() ===
                       "pending" && (
@@ -270,6 +285,7 @@ const CompanyReservationPage = () => {
                         <tr>
                           <th>Reservation ID</th>
                           <th>Type</th>
+                          <th>Price</th>
                           <th>Status</th>
                           <th>Created On</th>
                           <th>Actions</th>
@@ -281,8 +297,12 @@ const CompanyReservationPage = () => {
                           <td>
                             {formatExhibitionType(demand.exhibition_type)}
                           </td>
+                          <td>
+                            {getPrice(demand.exhibition_type)
+                              ? formatPrice(getPrice(demand.exhibition_type)!)
+                              : "-"}
+                          </td>
                           <td>{renderStatusBadge(demand.status)}</td>
-
                           <td>
                             {new Date(demand.created_at).toLocaleDateString()}
                           </td>
@@ -318,7 +338,7 @@ const CompanyReservationPage = () => {
                                           objectFit: "contain",
                                         }}
                                       />
-                                      Pay Online (CIB/DAHABIA)
+                                      Pay Online (USD)
                                     </>
                                   )}
                                 </Button>
@@ -329,7 +349,7 @@ const CompanyReservationPage = () => {
                                   onClick={handlePayTransfer}
                                 >
                                   <Banknote size={14} className="me-1" />
-                                  Bank Transfer
+                                  Bank Transfer (EUR)
                                 </Button>
                               </div>
                             ) : ["pending", "refused"].includes(
@@ -356,7 +376,7 @@ const CompanyReservationPage = () => {
                 <div className="text-center p-5 mb-5">
                   <h5 className="mb-3">No Exhibition Demand Found</h5>
                   <p className="text-muted mb-4">
-                    You haven’t submitted any exhibition demand yet.
+                    You haven't submitted any exhibition demand yet.
                   </p>
                   <Button
                     style={{ width: "fit-content" }}
@@ -377,6 +397,7 @@ const CompanyReservationPage = () => {
             demand_id={demand?.id ?? ""}
             show={showTransferModal}
             onHide={() => setShowTransferModal(false)}
+            price={getPrice(demand?.exhibition_type)}
           />
         </>
       )}
