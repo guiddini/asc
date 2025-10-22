@@ -12,6 +12,7 @@ import {
 import { Modal, Button, Spinner, Dropdown, Form } from "react-bootstrap";
 import { KTIcon } from "../../../../_metronic/helpers";
 import { useNavigate } from "react-router-dom";
+import getMediaUrl from "../../../helpers/getMediaUrl";
 
 interface ExhibitionRequestActionsProps {
   row: ExhibitionDemand;
@@ -24,6 +25,24 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
   const [unpaidNotes, setUnpaidNotes] = useState("");
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+
+  // --- added: normalize status helpers & constants ---
+  const normalizeStatus = (s?: string) => (s || "").toLowerCase().trim();
+  const STATUS_PENDING = "pending";
+  const STATUS_PENDING_TRANSFER_CONFIRMATION = "pending transfer confirmation";
+  const STATUS_ACCEPTED = "accepted";
+  const STATUS_REFUSED = "refused";
+  const STATUS_PAID = "paid";
+  const STATUS_UNPAID = "unpaid";
+
+  const rowStatus = normalizeStatus(row?.status);
+  const isPending = rowStatus === STATUS_PENDING;
+  const isPendingTransfer = rowStatus === STATUS_PENDING_TRANSFER_CONFIRMATION;
+  const isUnpaid = rowStatus === STATUS_UNPAID;
+  // helper for places where either transfer-confirmation or unpaid should show mark-as-paid
+  const showMarkPaidState = isPendingTransfer || isUnpaid;
+  // helper used by accept/reject handlers (pending OR pending-transfer-confirmation)
+  const isPendingOrPendingTransfer = isPending || isPendingTransfer;
 
   const acceptMutation = useMutation({
     mutationFn: (id: string) => acceptExhibitionDemandApi(id),
@@ -77,13 +96,13 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
   });
 
   const handleAccept = () => {
-    if (row.status !== "accepted") {
+    if (rowStatus !== STATUS_ACCEPTED && isPendingOrPendingTransfer) {
       acceptMutation.mutate(row.id);
     }
   };
 
   const handleReject = () => {
-    if (row.status !== "refused") {
+    if (rowStatus !== STATUS_REFUSED && isPendingOrPendingTransfer) {
       rejectMutation.mutate(row.id);
     }
   };
@@ -109,8 +128,15 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
     navigate(`/payment/results/${row.id}`);
   };
 
-  const disableAccept = row?.status === "accepted";
-  const disableReject = row?.status === "refused";
+  // Open transfer document in a new tab (uses REACT_APP_API_URL if provided)
+  const handleOpenTransferDocument = () => {
+    const docPath = row?.transfer_document;
+    if (!docPath) return;
+    window.open(encodeURI(docPath), "_blank", "noopener,noreferrer");
+  };
+
+  const disableAccept = rowStatus === STATUS_ACCEPTED;
+  const disableReject = rowStatus === STATUS_REFUSED;
 
   return (
     <>
@@ -130,20 +156,72 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
           </i>
         </Dropdown.Toggle>
 
-        <Dropdown.Menu>
+        {/* force a clean white background and subtle shadow for the dropdown */}
+        <Dropdown.Menu className="bg-white rounded shadow-sm">
+          {/* Show Founder */}
           <Dropdown.Item
-            onClick={() => setShowAcceptModal(true)}
-            disabled={disableAccept}
+            onClick={() => navigate(`/profile/${row.user_id}`)}
+            disabled={!row?.user_id}
             className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
           >
             <div className="cursor-pointer d-flex flex-row align-items-center">
               <KTIcon
-                iconName="check"
-                className="fs-1 cursor-pointer m-0 text-success"
+                iconName="user"
+                className="fs-1 cursor-pointer m-0 text-info"
               />
-              <span className="text-muted ms-2">Accept Request</span>
+              <span className="text-muted ms-2">Show Founder</span>
             </div>
           </Dropdown.Item>
+
+          {/* Show Startup */}
+          <Dropdown.Item
+            onClick={() => navigate(`/company/${row.company_id}`)}
+            disabled={!row?.company_id}
+            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
+          >
+            <div className="cursor-pointer d-flex flex-row align-items-center">
+              <KTIcon
+                iconName="building"
+                className="fs-1 cursor-pointer m-0 text-secondary"
+              />
+              <span className="text-muted ms-2">Show Startup</span>
+            </div>
+          </Dropdown.Item>
+
+          {/* View transfer document (only when present) */}
+          {row?.transfer_document && (
+            <Dropdown.Item
+              onClick={handleOpenTransferDocument}
+              className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
+            >
+              <div className="cursor-pointer d-flex flex-row align-items-center">
+                <KTIcon
+                  iconName="document"
+                  className="fs-1 cursor-pointer m-0 text-info"
+                />
+                <span className="text-muted ms-2">View Transfer Document</span>
+              </div>
+            </Dropdown.Item>
+          )}
+
+          {/* Accept / Reject only for pending */}
+          {isPending && (
+            <>
+              <Dropdown.Item
+                onClick={() => setShowAcceptModal(true)}
+                disabled={disableAccept}
+                className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
+              >
+                <div className="cursor-pointer d-flex flex-row align-items-center">
+                  <KTIcon
+                    iconName="check"
+                    className="fs-1 cursor-pointer m-0 text-success"
+                  />
+                  <span className="text-muted ms-2">Accept Request</span>
+                </div>
+              </Dropdown.Item>
+            </>
+          )}
 
           <Dropdown.Item
             onClick={() => setShowRejectModal(true)}
@@ -159,23 +237,30 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
             </div>
           </Dropdown.Item>
 
-          <Dropdown.Item
-            onClick={handleMarkPaid}
-            disabled={markPaidMutation.isLoading}
-            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
-          >
-            <div className="cursor-pointer d-flex flex-row align-items-center">
-              <KTIcon
-                iconName="credit-cart"
-                className="fs-1 cursor-pointer m-0 text-primary"
-              />
-              <span className="text-muted ms-2">
-                {markPaidMutation.isLoading
-                  ? "Marking as Paid..."
-                  : "Mark as Paid"}
-              </span>
-            </div>
-          </Dropdown.Item>
+          {/* Mark as Paid / Unpaid — show only for pending transfer confirmation OR unpaid */}
+          {showMarkPaidState &&
+            (rowStatus === "unpaid" ||
+              rowStatus === "pending transfer confirmation") && (
+              <>
+                <Dropdown.Item
+                  onClick={handleMarkPaid}
+                  disabled={markPaidMutation.isLoading}
+                  className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
+                >
+                  <div className="cursor-pointer d-flex flex-row align-items-center">
+                    <KTIcon
+                      iconName="credit-cart"
+                      className="fs-1 cursor-pointer m-0 text-primary"
+                    />
+                    <span className="text-muted ms-2">
+                      {markPaidMutation.isLoading
+                        ? "Marking as Paid..."
+                        : "Mark as Paid"}
+                    </span>
+                  </div>
+                </Dropdown.Item>
+              </>
+            )}
 
           <Dropdown.Item
             onClick={handleOpenUnpaidModal}
@@ -195,7 +280,8 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
             </div>
           </Dropdown.Item>
 
-          {row?.status === "paid" && (
+          {/* View Payment Results only when paid */}
+          {rowStatus === STATUS_PAID && !row?.transfer_document && (
             <Dropdown.Item
               onClick={handleRedirectToPaymentResults}
               className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"

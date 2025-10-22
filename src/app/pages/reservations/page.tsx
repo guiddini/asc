@@ -20,7 +20,7 @@ import { useSelector } from "react-redux";
 import { UserResponse } from "../../types/reducers";
 import { companyOwner } from "../../features/userSlice";
 import getMediaUrl from "../../helpers/getMediaUrl";
-import { Card, Table, Button, Spinner } from "react-bootstrap";
+import { Card, Table, Button, Spinner, Alert } from "react-bootstrap";
 import ExhibitionTypeModal from "./components/exhibition-type-modal";
 import { useState } from "react";
 import { UploadTransferModal } from "./components/upload-exhibition-transfer-document-modal";
@@ -32,6 +32,7 @@ interface ExhibitionDemand {
   company_id: string;
   user_id: string;
   exhibition_type: string;
+  notes?: string;
   status:
     | "pending"
     | "refused"
@@ -252,6 +253,17 @@ const CompanyReservationPage = () => {
               {demand ? (
                 <>
                   <h4 className="mb-4">Exhibition Reservation Request</h4>
+                  {/* Admin note / motif — show prominently when status is pending and notes exist */}
+                  {demand?.notes &&
+                    (demand.status || "").toLowerCase().trim() ===
+                      "pending" && (
+                      <Alert variant="warning" className="mb-4">
+                        <strong>
+                          The payment is declined and here is the reason :
+                        </strong>
+                        <span className="ms-2">{demand.notes}</span>
+                      </Alert>
+                    )}
                   <div className="table-responsive">
                     <Table bordered hover>
                       <thead className="table-light">

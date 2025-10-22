@@ -15,7 +15,12 @@ export interface ExhibitionDemand {
   exhibition_demand_transaction_id: string | undefined;
   company_id: string;
   user_id: string;
-  status: "pending" | "accepted" | "refused" | string;
+  status:
+    | "pending"
+    | "accepted"
+    | "refused"
+    | "Pending transfer confirmation"
+    | "paid";
   created_at: string;
   updated_at: string;
   exhibition_type: string;

@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -49,22 +50,20 @@ const Footer: React.FC = () => {
               <h5 className="footer-title fw-bold mb-3">Navigate</h5>
               <ul className="footer-links">
                 <li>
-                  <a href="/">Home</a>
+                  <Link to="/">Home</Link>
                 </li>
                 <li>
-                  <a href="/about/event">About</a>
+                  <Link to="/about/event">About</Link>
                 </li>
                 <li>
-                  <a href="/about/speakers">Speakers</a>
+                  <Link to="/about/speakers">Speakers</Link>
                 </li>
                 <li>
-                  <a href="/about/program">Program</a>
+                  <Link to="/about/program">Program</Link>
                 </li>
+
                 <li>
-                  <a href="/blog">Blog</a>
-                </li>
-                <li>
-                  <a href="/contact">Contact</a>
+                  <Link to="/contact">Contact</Link>
                 </li>
               </ul>
             </div>
@@ -76,19 +75,19 @@ const Footer: React.FC = () => {
               <h5 className="footer-title fw-bold mb-3">Get Involved</h5>
               <ul className="footer-links">
                 <li>
-                  <a href="/partners/packages">Become a Sponsor</a>
+                  <Link to="/partners/packages">Become a Sponsor</Link>
                 </li>
                 <li>
-                  <a href="/partners/spaces">Exhibition Spaces</a>
+                  <Link to="/partners/spaces">Exhibition Spaces</Link>
                 </li>
                 <li>
-                  <a href="/partners/startup-factory">Startup Factory</a>
+                  <Link to="/partners/startup-factory">Startup Factory</Link>
                 </li>
                 <li>
-                  <a href="/about/startups">Exhibiting Startups</a>
+                  <Link to="/about/startups">Exhibiting Startups</Link>
                 </li>
                 <li>
-                  <a href="/press">Press</a>
+                  <Link to="/press">Press</Link>
                 </li>
               </ul>
             </div>
@@ -101,21 +100,32 @@ const Footer: React.FC = () => {
               <div className="contact-info">
                 <div className="contact-item mb-2">
                   <i className="bi bi-geo-alt me-2"></i>
-                  <span>CIC,Algeria</span>
+                  <span>
+                    International Conference Center – CIC – Abdelatif Rahal,
+                    Algiers, Algeria
+                  </span>
                 </div>
                 <div className="contact-item mb-2">
                   <i className="bi bi-calendar-event me-2"></i>
-                  <span>06-07-08 December</span>
+                  <span>06–07–08 December</span>
                 </div>
                 <div className="contact-item mb-2">
                   <i className="bi bi-envelope me-2"></i>
-                  <a href="mailto:contact@africanstartupconference.org">
-                    contact@africanstartupconference.org
-                  </a>
+                  <div className="d-flex flex-column">
+                    <a href="mailto:info-africanstartupconference@startup.dz">
+                      info-africanstartupconference@startup.dz
+                    </a>
+                    <a href="mailto:exibition-africanstartupconference@startup.dz">
+                      exibition-africanstartupconference@startup.dz
+                    </a>
+                    <a href="mailto:sponsoring-africanstartupconference@startup.dz">
+                      sponsoring-africanstartupconference@startup.dz
+                    </a>
+                  </div>
                 </div>
                 <div className="contact-item">
                   <i className="bi bi-telephone me-2"></i>
-                  <a href="tel:+213770737483">+213 (0) 770 22 21 49</a>
+                  <a href="tel:+213770222149">+213 (0) 770 22 21 49</a>
                 </div>
               </div>
             </div>
@@ -126,56 +136,56 @@ const Footer: React.FC = () => {
             <div className="footer-section">
               <h5 className="footer-title fw-bold mb-3">Follow Us</h5>
               <div className="social-links mb-4">
-                <a
-                  href="https://www.facebook.com/africanstartupconference"
+                <Link
+                  to="https://www.facebook.com/africanstartupconference"
                   aria-label="Facebook"
                   className="social-link"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <i className="bi bi-facebook"></i>
-                </a>
-                <a
-                  href="https://x.com/africanstartupc"
+                </Link>
+                <Link
+                  to="https://x.com/africanstartupc"
                   aria-label="Twitter / X"
                   className="social-link"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <i className="bi bi-twitter"></i>
-                </a>
-                <a
-                  href="https://www.linkedin.com/company/the-african-startup-conference"
+                </Link>
+                <Link
+                  to="https://www.linkedin.com/company/the-african-startup-conference"
                   aria-label="LinkedIn"
                   className="social-link"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <i className="bi bi-linkedin"></i>
-                </a>
-                <a
-                  href="https://www.instagram.com/africanstartupconference"
+                </Link>
+                <Link
+                  to="https://www.instagram.com/africanstartupconference"
                   aria-label="Instagram"
                   className="social-link"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <i className="bi bi-instagram"></i>
-                </a>
-                <a
-                  href="https://www.youtube.com/@AfricanStartupConference"
+                </Link>
+                <Link
+                  to="https://www.youtube.com/@AfricanStartupConference"
                   aria-label="YouTube"
                   className="social-link"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <i className="bi bi-youtube"></i>
-                </a>
+                </Link>
               </div>
 
               <div className="d-flex flex-column align-items-center align-md-start gap-4 gap-md-3">
-                <a
-                  href="https://play.google.com/store/apps/details?id=com.africanstartupconference.app&pli=1"
+                <Link
+                  to="https://play.google.com/store/apps/details?id=com.africanstartupconference.app&pli=1"
                   className="btn btn-link p-0"
                   target="_blank"
                 >
@@ -184,7 +194,7 @@ const Footer: React.FC = () => {
                     alt="Play Store"
                     style={{ width: "150px" }}
                   />
-                </a>
+                </Link>
 
                 <span className="btn btn-link p-0">
                   <img
@@ -209,15 +219,15 @@ const Footer: React.FC = () => {
           </Col>
           <Col md={6}>
             <div className="footer-legal text-md-end">
-              <a href="#privacy" className="legal-link me-3">
+              <Link to="#privacy" className="legal-link me-3">
                 Privacy Policy
-              </a>
-              <a href="#terms" className="legal-link me-3">
+              </Link>
+              <Link to="#terms" className="legal-link me-3">
                 Terms of Service
-              </a>
-              <a href="#cookies" className="legal-link">
+              </Link>
+              <Link to="#cookies" className="legal-link">
                 Cookie Policy
-              </a>
+              </Link>
             </div>
           </Col>
         </Row>

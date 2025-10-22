@@ -72,7 +72,7 @@ const EventTopbar = () => {
                   December 06-07-08
                 </div>
 
-                <div id="current-ticket-topbar">
+                {/* <div id="current-ticket-topbar">
                   <span id="current-ticket-topbar-ticket-label">
                     Ticket Used:
                   </span>
@@ -89,7 +89,7 @@ const EventTopbar = () => {
                     {user?.ticket?.name}
                     <ChevronRight id="current-ticket-topbar-ticket-arrow" />
                   </span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

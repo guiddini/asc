@@ -41,7 +41,6 @@ import {
 } from "../pages";
 import ReportsPage from "../pages/configurations/reports/reports-page";
 import EventPage from "../pages/event/event-page";
-import WelcomePage from "../pages/welcome";
 import ComingSoon from "../pages/coming-soon";
 import PRessConferencePage from "../pages/press-conference/page";
 import TicketTransactionsPage from "../pages/ticket-transactions/page";
@@ -84,8 +83,6 @@ const PrivateRoutes = () => {
           </TicketWrapper>
         }
       >
-        <Route path="/welcome" element={<WelcomePage />} />
-
         <Route
           element={
             <UserProfileWrapper>
