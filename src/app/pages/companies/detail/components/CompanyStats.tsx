@@ -24,7 +24,7 @@ const CompanyStats: React.FC<CompanyStatsProps> = ({ company }) => {
                     </div>
                   </div>
                   <span className="text-gray-600 fw-semibold fs-5 lh-0">
-                    Produits
+                    Products
                   </span>
                 </div>
               </div>

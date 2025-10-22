@@ -53,7 +53,7 @@ const CompanyTeam: React.FC<CompanyTeamProps> = ({ companyId }) => {
         className="w-100 d-flex flex-column justify-content-center align-items-center bg-light"
       >
         <Spinner animation="border" color="#000" />
-        <span className="mt-3">Chargement du staff</span>
+        <span className="mt-3">Loading team</span>
       </div>
     );
   }
@@ -63,19 +63,15 @@ const CompanyTeam: React.FC<CompanyTeamProps> = ({ companyId }) => {
       {COMPANY_STAFF?.length > 0 && (
         <div className="mb-18">
           <div className="text-center mb-12">
-            <h3 className="fs-2hx text-dark mb-5">Notre équipe</h3>
+            <h3 className="fs-2hx text-dark mb-5">Our Team</h3>
           </div>
           <Carousel
             id="company-staff-carousel"
             style={{
               accentColor: "#000",
             }}
-            nextIcon={
-              <i className="fa-solid fa-chevron-right text-black fs-1"></i>
-            }
-            prevIcon={
-              <i className="fa-solid fa-chevron-left text-black fs-1"></i>
-            }
+            nextIcon={<i className="fa-solid fa-chevron-right text-black fs-1"></i>}
+            prevIcon={<i className="fa-solid fa-chevron-left text-black fs-1"></i>}
           >
             {COMPANY_STAFF.map((staffGroup, index) => (
               <Carousel.Item key={index}>

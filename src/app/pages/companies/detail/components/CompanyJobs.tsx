@@ -21,11 +21,7 @@ interface CompanyJobsProps {
   companyName: string;
 }
 
-const CompanyJobs: React.FC<CompanyJobsProps> = ({
-  companyId,
-  logo_image,
-  companyName,
-}) => {
+const CompanyJobs: React.FC<CompanyJobsProps> = ({ companyId, logo_image, companyName }) => {
   const dispatch = useDispatch();
 
   const { data: activeJobs, isLoading: loadingActiveJobs } = useQuery({
@@ -52,9 +48,7 @@ const CompanyJobs: React.FC<CompanyJobsProps> = ({
   );
 
   const getWillaya = (id: string) => {
-    const defaultWillaya = WILLAYAS?.find(
-      (willaya) => Number(willaya?.value) === Number(id)
-    );
+    const defaultWillaya = WILLAYAS?.find((willaya) => Number(willaya?.value) === Number(id));
     return defaultWillaya?.label;
   };
 
@@ -69,7 +63,7 @@ const CompanyJobs: React.FC<CompanyJobsProps> = ({
         className="w-100 d-flex flex-column justify-content-center align-items-center bg-light"
       >
         <Spinner animation="border" color="#000" />
-        <span className="mt-3">Chargement d'offres</span>
+        <span className="mt-3">Loading offers</span>
       </div>
     );
   }
@@ -79,19 +73,11 @@ const CompanyJobs: React.FC<CompanyJobsProps> = ({
       {jobOffers?.length > 0 && (
         <div className="mb-18">
           <div className="text-center mb-12">
-            <h3 className="fs-2hx text-dark mb-5">Offre d'emplois</h3>
+            <h3 className="fs-2hx text-dark mb-5">Job Offers</h3>
           </div>
           <Row>
             {jobOffers?.map((res) => (
-              <Col
-                xs={12}
-                sm={12}
-                md={6}
-                lg={4}
-                xl={3}
-                xxl={3}
-                className="mt-4"
-              >
+              <Col xs={12} sm={12} md={6} lg={4} xl={3} xxl={3} className="mt-4">
                 <Link
                   to={`/job-offers/${companyId}/detail/${res?.id}`}
                   className="card w-100 border rounded-3 border-hover-custom-blue-dark hover-border-5 cursor-pointer"
@@ -99,27 +85,19 @@ const CompanyJobs: React.FC<CompanyJobsProps> = ({
                   <div className="card-body p-5 pb-2 w-100 d-flex flex-row align-items-start justify-content-between">
                     <div className="">
                       <p className="fs-3 fw-bold">{res?.name}</p>
-                      <p>Type d'emploi : {res?.work_type}</p>
-                      <p>Position de travail : {res?.work_position}</p>
+                      <p>Job type: {res?.work_type}</p>
+                      <p>Work position: {res?.work_position}</p>
                     </div>
-                    <img
-                      src={getMediaUrl(logo_image)}
-                      alt={`${companyName}-logo`}
-                      className="w-50px"
-                    />
+                    <img src={getMediaUrl(logo_image)} alt={`${companyName}-logo`} className="w-50px" />
                   </div>
                   <div className="card-footer d-flex flex-column align-items-start p-5 pb-1">
                     <p>
-                      <KTIcon
-                        iconName="brifecase-timer"
-                        className="fs-4 m-0 me-1"
-                      />
+                      <KTIcon iconName="brifecase-timer" className="fs-4 m-0 me-1" />
                       <TimeAgo date={res?.updated_at} formatter={formatter} />
                     </p>
                     <p>
                       <KTIcon iconName="geolocation" className="fs-4 me-1" />
-                      {getWillaya(res?.workplace_wilaya_id)} /{" "}
-                      {res?.workplace_address}
+                      {getWillaya(res?.workplace_wilaya_id)} / {res?.workplace_address}
                     </p>
                   </div>
                 </Link>

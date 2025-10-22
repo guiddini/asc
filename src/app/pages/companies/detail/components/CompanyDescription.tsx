@@ -1,42 +1,18 @@
 import React from "react";
 
-import clsx from "clsx";
 import { CompanyDetailProps } from "../../../../types/company";
-import { TextEditor } from "../../../../components";
 
 interface CompanyDescriptionProps {
   company: CompanyDetailProps;
-  editable: boolean;
-  watch: any;
-  control: any;
-  setValue: any;
 }
 
-const CompanyDescription: React.FC<CompanyDescriptionProps> = ({
-  company,
-  editable,
-  watch,
-  control,
-  setValue,
-}) => {
+const CompanyDescription: React.FC<CompanyDescriptionProps> = ({ company }) => {
   return (
     <div className="fs-5 fw-semibold text-gray-600">
       <p
-        dangerouslySetInnerHTML={{
-          __html: watch("desc"),
-        }}
-        className={clsx("mb-8 p-2", {
-          "border border-primary ": editable,
-        })}
+        dangerouslySetInnerHTML={{ __html: company?.desc }}
+        className="mb-8 p-2"
       />
-      {editable && (
-        <TextEditor
-          control={control}
-          name="description"
-          setValue={setValue}
-          withPreview={false}
-        />
-      )}
     </div>
   );
 };
