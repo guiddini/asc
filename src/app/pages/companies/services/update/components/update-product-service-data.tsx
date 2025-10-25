@@ -53,9 +53,8 @@ const UpdateProductServiceData = ({
         return getMediaUrl(DATA?.featured_image);
       case "object":
         return watchedImage;
-
       default:
-        getMediaUrl(DATA?.featured_image);
+        return getMediaUrl(DATA?.featured_image);
     }
   }, [formdata?.featured_image, DATA, id]);
 
@@ -153,14 +152,13 @@ const UpdateProductServiceData = ({
                 <div className="card card-flush py-4">
                   <div className="card-header">
                     <div className="card-title">
-                      <h2>Image en vedette</h2>
+                      <h2>Featured Image</h2>
                     </div>
                   </div>
                   <div className="card-body text-center pt-0">
                     {PRODUCT_IMAGE}
                     <div className="text-muted fs-7">
-                      Définir l'image du produit/service. Seules les images
-                      *.png, *.jpg et *.jpeg sont acceptées.
+                      Set the product/service image. Only *.png, *.jpg and *.jpeg are accepted.
                     </div>
                   </div>
                 </div>
@@ -172,7 +170,7 @@ const UpdateProductServiceData = ({
                       control={control as any}
                       data={CATEGORIES}
                       errors={errors}
-                      label="Catégorie"
+                      label="Category"
                       name="category_id"
                       noOptionMessage=""
                       isLoading={loadingCategories}
@@ -192,7 +190,7 @@ const UpdateProductServiceData = ({
                       control={control as any}
                       data={[
                         {
-                          label: "Produit",
+                          label: "Product",
                           value: "Product",
                         },
                         {
@@ -213,6 +211,7 @@ const UpdateProductServiceData = ({
                   </div>
                 </div>
               </div>
+
               <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
                 <div className="tab-content">
                   <div
@@ -224,18 +223,18 @@ const UpdateProductServiceData = ({
                       <div className="card card-flush py-4">
                         <div className="card-header">
                           <div className="card-title">
-                            <h2>Général</h2>
+                            <h2>General</h2>
                           </div>
                         </div>
                         <div className="card-body pt-0">
                           <InputComponent
                             control={control as any}
                             errors={errors}
-                            label="Nom"
+                            label="Name"
                             name="name"
                             type="text"
                             required
-                            description="Nom du produit/service"
+                            description="Product/Service Name"
                             className="mb-10 fv-row"
                             colMD={12}
                             colXS={12}
@@ -261,7 +260,7 @@ const UpdateProductServiceData = ({
                             name="yt_link"
                             control={control as any}
                             errors={errors}
-                            label="Vidéo (lien youtube)"
+                            label="Video (YouTube link)"
                             type="text"
                             defaultValue={DATA?.yt_link}
                           />
@@ -271,7 +270,7 @@ const UpdateProductServiceData = ({
                       <div className="card card-flush py-4">
                         <div className="card-header">
                           <div className="card-title">
-                            <h2>Appel à l'action</h2>
+                            <h2>Call to action</h2>
                           </div>
                         </div>
                         <div className="card-body pt-0">
@@ -283,7 +282,7 @@ const UpdateProductServiceData = ({
                                 name="email"
                                 control={control as any}
                                 errors={errors}
-                                label="Adresse Email"
+                                label="Email Address"
                                 type="email"
                               />
                               <InputComponent
@@ -292,7 +291,7 @@ const UpdateProductServiceData = ({
                                 name="phone_1"
                                 control={control as any}
                                 errors={errors}
-                                label="Numéro de téléphone"
+                                label="Phone Number"
                                 type="number"
                               />
                               <InputComponent
@@ -301,7 +300,7 @@ const UpdateProductServiceData = ({
                                 name="external_link"
                                 control={control as any}
                                 errors={errors}
-                                label="Lien externe"
+                                label="External Link"
                                 type="text"
                               />
                             </Row>
@@ -316,7 +315,7 @@ const UpdateProductServiceData = ({
                                 isChecked={DATA?.promotion_flag === "Promoted"}
                               >
                                 <span className="fs-4 no-wrap mx-3">
-                                  Promouvoir ce service/produit
+                                  Promote this service/product
                                 </span>
                               </Checkbox>
                             </Row>

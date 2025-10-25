@@ -108,7 +108,7 @@ const UpdateProductServiceMedia = ({
       <div className="card card-flush py-4">
         <div className="card-header">
           <div className="card-title">
-            <h2>Les médias</h2>
+            <h2>Media</h2>
           </div>
         </div>
         <div className="card-body pt-0">
@@ -128,7 +128,7 @@ const UpdateProductServiceMedia = ({
                   });
                 },
               }}
-              description="Seules les images, les vidéos et les documents sont acceptés"
+              description="Only images, videos and documents are accepted"
             />
 
             <SelectedMediaList

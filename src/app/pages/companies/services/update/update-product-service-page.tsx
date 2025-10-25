@@ -3,7 +3,7 @@ import { Spinner, Tab, Tabs } from "react-bootstrap";
 import UpdateProductServiceData from "./components/update-product-service-data";
 import UpdateProductServiceMedia from "./components/update-product-service-media";
 import { Link, useParams } from "react-router-dom";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
   getOneProductServiceApi,
   updateProductServiceApi,
@@ -47,6 +47,8 @@ export const UpdateProductServicePage = () => {
   });
 
   const [key, setKey] = useState<string>("overview");
+  const queryClient = useQueryClient();
+  const [didInit, setDidInit] = useState(false);
 
   const { mutate, isLoading: isUpdating } = useMutation({
     mutationKey: ["update-product-service", productID],
@@ -81,10 +83,12 @@ export const UpdateProductServicePage = () => {
   });
 
   useEffect(() => {
-    if (reset) {
+    // Initialize form once with fetched data; do not keep resetting after submit
+    if (isFetched && DATA && !didInit) {
       reset(DATA);
+      setDidInit(true);
     }
-  }, [reset, productID, DATA]);
+  }, [isFetched, DATA, reset, didInit]);
 
   const handleUpdate = (data: any) => {
     const formdata = new FormData();
@@ -103,6 +107,7 @@ export const UpdateProductServicePage = () => {
     formdata.append("email", data.email);
     formdata.append("phone_1", data.phone_1);
     formdata.append("type", data.type);
+    formdata.append("yt_link", data.yt_link);
     formdata.append("external_link", data.external_link);
     formdata.append(
       "promotion_flag",
@@ -118,8 +123,10 @@ export const UpdateProductServicePage = () => {
     );
 
     mutate(formdata, {
-      onSuccess(data, variables, context) {
+      onSuccess(updated, variables, context) {
         toast.success("Product updated successfully");
+        // Refresh the product detail so DATA is up to date
+        queryClient.invalidateQueries(["get-one-product-service-detail", productID]);
       },
       onError(error, variables, context) {
         toast.error("Error while updating product :");
@@ -163,7 +170,7 @@ export const UpdateProductServicePage = () => {
           id="kt_ecommerce_add_product_cancel"
           className="btn btn-light me-5"
         >
-          Annuler
+          Cancel
         </Link>
         <button
           onClick={handleSubmit(handleUpdate)}
@@ -172,7 +179,7 @@ export const UpdateProductServicePage = () => {
           {isLoading ? (
             <Spinner animation="border" color="#fff" size="sm" />
           ) : (
-            <span className="indicator-label">Modifier</span>
+            <span className="indicator-label">Update</span>
           )}
         </button>
       </div>
