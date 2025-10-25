@@ -105,6 +105,7 @@ const PrivateRoutes = () => {
             <Button
               variant="secondary"
               className="position-fixed bottom-0 end-0 m-4 px-4 py-3"
+              style={{ zIndex: 99999 }}
               type="button"
               onClick={() => setShowAppModal(true)}
             >
@@ -114,6 +115,7 @@ const PrivateRoutes = () => {
               </i>
               <span className="fw-bold">Get Application</span>
             </Button>
+
             <Outlet />
             <AppModal
               onHide={() => setShowAppModal(false)}
