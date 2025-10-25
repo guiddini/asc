@@ -189,8 +189,8 @@ const Footer: React.FC = () => {
               </div>
 
               <div className="d-flex flex-column align-items-center align-md-start gap-4 gap-md-3">
-                <Link
-                  to="https://play.google.com/store/apps/details?id=com.africanstartupconference.app&pli=1"
+                <a
+                  href="https://play.google.com/store/apps/details?id=com.africanstartupconference.app&pli=1"
                   className="btn btn-link p-0"
                   target="_blank"
                 >
@@ -199,7 +199,7 @@ const Footer: React.FC = () => {
                     alt="Play Store"
                     style={{ width: "150px" }}
                   />
-                </Link>
+                </a>
 
                 <span className="btn btn-link p-0">
                   <img
