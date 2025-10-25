@@ -1,4 +1,4 @@
-import { FC, lazy, Suspense } from "react";
+import { FC, lazy, Suspense, useEffect, useState } from "react";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { MasterLayout } from "../../_metronic/layout/MasterLayout";
 import TopBarProgress from "react-topbar-progress-indicator";
@@ -61,10 +61,14 @@ import ComingSoonASC from "../pages/commingsoonAsc/page";
 import ProgramPage from "../pages/program/page";
 import CreateStartupPage from "../pages/startup/create-startup-page";
 import OnlinePaymentResultsPage from "../pages/payment/results/page";
+import AppModal from "../components/app-modal";
+import { Calendar, Phone } from "lucide-react";
+import { Button } from "react-bootstrap";
 
 export const adminRoles = ["admin", "super_admin", "staff"];
 
 const PrivateRoutes = () => {
+  const [showAppModal, setShowAppModal] = useState(false);
   const ProfilePage = lazy(() => import("../pages/profile/ProfilePage"));
   const WizardsPage = lazy(() => import("../modules/wizards/WizardsPage"));
   const AccountPage = lazy(() => import("../modules/accounts/AccountPage"));
@@ -73,14 +77,49 @@ const PrivateRoutes = () => {
   const Users2Page = lazy(
     () => import("../modules/apps/user-management/UsersPage")
   );
+  const MODAL_STORAGE_KEY = "asc_app_modal_last_seen";
+  const MODAL_COOLDOWN_MS = 60 * 60 * 1000; // 1 hour
+
+  useEffect(() => {
+    try {
+      const lastSeenStr = localStorage.getItem(MODAL_STORAGE_KEY);
+      const now = Date.now();
+      const lastSeen = lastSeenStr ? parseInt(lastSeenStr, 10) : 0;
+
+      // Show if never seen or cooldown expired
+      if (!lastSeenStr || now - lastSeen >= MODAL_COOLDOWN_MS) {
+        setShowAppModal(true);
+        // Mark as viewed immediately to avoid re-show on refresh
+        localStorage.setItem(MODAL_STORAGE_KEY, String(now));
+      }
+    } catch {
+      // Ignore localStorage errors (e.g., privacy mode)
+    }
+  }, []);
 
   return (
     <Routes>
       <Route
         element={
-          <TicketWrapper>
+          <div className="w-100 h-100">
+            <Button
+              variant="secondary"
+              className="position-fixed bottom-0 end-0 m-4 px-4 py-3"
+              type="button"
+              onClick={() => setShowAppModal(true)}
+            >
+              <i className="ki-duotone ki-phone fs-2">
+                <span className="path1"></span>
+                <span className="path2"></span>
+              </i>
+              <span className="fw-bold">Get Application</span>
+            </Button>
             <Outlet />
-          </TicketWrapper>
+            <AppModal
+              onHide={() => setShowAppModal(false)}
+              show={showAppModal}
+            />
+          </div>
         }
       >
         <Route
