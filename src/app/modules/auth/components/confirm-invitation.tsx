@@ -12,24 +12,23 @@ const schema = yup.object({
   type: yup
     .string()
     .oneOf(["confirm", "delegate"])
-    .required("Veuillez sélectionner une option"),
+    .required("Please select an option"),
   email: yup.string().when("type", {
     is: (type) => type === "confirm",
     then: (schema) =>
       schema
-        .email("Veuillez entrer une adresse email valide")
-        .required("L'email est requis"),
+        .email("Please enter a valid email address")
+        .required("Email is required"),
     otherwise: (schema) => schema.notRequired(),
   }),
   fname: yup.string().when("type", {
     is: (type) => type === "delegate",
-    then: (schema) =>
-      schema.required("Le prénom est requis pour la délégation"),
+    then: (schema) => schema.required("First name is required for delegation"),
     otherwise: (schema) => schema.notRequired(),
   }),
   lname: yup.string().when("type", {
     is: (type) => type === "delegate",
-    then: (schema) => schema.required("Le nom est requis pour la délégation"),
+    then: (schema) => schema.required("Last name is required for delegation"),
     otherwise: (schema) => schema.notRequired(),
   }),
 });
@@ -101,16 +100,13 @@ const ConfirmInvitation = () => {
           Log out →
         </button>
       </nav>
-
       <main className="confirm-content">
         <span className="welcome-text">WELCOME TO EVENTILI</span>
-
         <h1>
-          Veuillez confirmer votre présence ou désigner
+          Please confirm your attendance or designate
           <br />
-          un représentant de votre entité
+          a representative for your entity
         </h1>
-
         <form onSubmit={handleSubmit(onSubmit)} className="confirm-form">
           <div className="options-container">
             <label
@@ -132,11 +128,10 @@ const ConfirmInvitation = () => {
                 )}
               </div>
               <div className="option-content">
-                <h3>Valider Ma Presence</h3>
-                <p>Je confirme ma presence a l'evenement</p>
+                <h3>Confirm My Presence</h3>
+                <p>I confirm my attendance at the event</p>
               </div>
             </label>
-
             <label
               className={`option-card ${
                 selectedOption === "delegate" ? "active" : ""
@@ -156,15 +151,14 @@ const ConfirmInvitation = () => {
                 )}
               </div>
               <div className="option-content">
-                <h3>Deleguer Ma Participation</h3>
-                <p>Je delegue ma place a une autre personne</p>
+                <h3>Delegate My Participation</h3>
+                <p>I delegate my spot to another person</p>
               </div>
             </label>
           </div>
           {errors.type && (
             <span className="error-message">{errors.type.message}</span>
           )}
-
           {selectedOption === "delegate" && (
             <>
               <div className="form-group">
@@ -172,7 +166,7 @@ const ConfirmInvitation = () => {
                 <input
                   type="email"
                   id="email"
-                  placeholder="Entrez votre Email"
+                  placeholder="Enter your email"
                   {...register("email")}
                   className={errors.email ? "error" : ""}
                 />
@@ -180,13 +174,12 @@ const ConfirmInvitation = () => {
                   <span className="error-message">{errors.email.message}</span>
                 )}
               </div>
-
               <div className="form-group">
                 <label htmlFor="email">Email</label>
                 <input
                   type="email"
                   id="email"
-                  placeholder="Entrez votre Email"
+                  placeholder="Enter your email"
                   {...register("email")}
                   className={errors.email ? "error" : ""}
                 />
@@ -196,13 +189,12 @@ const ConfirmInvitation = () => {
               </div>
             </>
           )}
-
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
               type="email"
               id="email"
-              placeholder="Entrez votre Email"
+              placeholder="Enter your email"
               {...register("email")}
               className={errors.email ? "error" : ""}
             />
@@ -210,9 +202,8 @@ const ConfirmInvitation = () => {
               <span className="error-message">{errors.email.message}</span>
             )}
           </div>
-
           <button type="submit" className="submit-button">
-            Valider l'invitation
+            Confirm Invitation
           </button>
         </form>
       </main>

@@ -231,11 +231,11 @@ export const CreateService = () => {
 
     mutate(formdata, {
       onSuccess() {
-        toast.success(`Le produit a été créé avec succès !`);
+        toast.success(`Product created successfully!`);
         navigate(`/company/${id}/products`);
       },
       onError(error, variables, context) {
-        toast.error(`Erreur lors de la création d'un produit`);
+        toast.error(`Error creating product`);
       },
     });
   };
@@ -252,15 +252,14 @@ export const CreateService = () => {
           <div className="card card-flush py-4">
             <div className="card-header">
               <div className="card-title">
-                <h2>Image en vedette</h2>
+                <h2>Featured Image</h2>
               </div>
             </div>
             <div className="card-body text-center pt-0">
               {PRODUCT_IMAGE}
               {errorMessage(errors, "featured_image")}
               <div className="text-muted fs-7">
-                Définir l'image du produit/service. Seules les images *.png,
-                *.jpg et *.jpeg sont acceptées.
+                Set the product/service image. Only *.png, *.jpg, and *.jpeg are accepted.
               </div>
             </div>
           </div>
@@ -272,7 +271,7 @@ export const CreateService = () => {
                 control={control as any}
                 data={CATEGORIES}
                 errors={errors}
-                label="Catégorie"
+                label="Category"
                 name="category_id"
                 noOptionMessage=""
                 isLoading={loadingCategories}
@@ -287,14 +286,8 @@ export const CreateService = () => {
                 colXS={12}
                 control={control as any}
                 data={[
-                  {
-                    label: "Produit",
-                    value: "Product",
-                  },
-                  {
-                    label: "Service",
-                    value: "Service",
-                  },
+                  { label: "Product", value: "Product" },
+                  { label: "Service", value: "Service" },
                 ]}
                 errors={errors}
                 label="Type"
@@ -305,118 +298,65 @@ export const CreateService = () => {
             </div>
           </div>
         </div>
+
         <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
           <div className="tab-content">
-            <div
-              className="tab-pane fade show active"
-              id="kt_ecommerce_add_product_general"
-              role="tab-panel"
-            >
+            <div className="tab-pane fade show active" id="kt_ecommerce_add_product_general" role="tab-panel">
               <div className="d-flex flex-column gap-7 gap-lg-10">
                 <div className="card card-flush py-4">
                   <div className="card-header">
                     <div className="card-title">
-                      <h2>Général</h2>
+                      <h2>General</h2>
                     </div>
                   </div>
                   <div className="card-body pt-0">
                     <InputComponent
                       control={control as any}
                       errors={errors}
-                      label="Nom"
+                      label="Name"
                       name="name"
                       type="text"
                       required
-                      description="Nom du produit/service"
+                      description="Product/Service name"
                       className="mb-10 fv-row"
                       colMD={12}
                       colXS={12}
                     />
                     <div>
                       <label className="form-label">Description</label>
-                      <TextEditor
-                        control={control as any}
-                        name="description"
-                        setValue={setValue}
-                        withPreview={false}
-                        // withPreview={false}
-                      />
+                      <TextEditor control={control as any} name="description" setValue={setValue} withPreview={false} />
                       {errorMessage(errors, "desc")}
                     </div>
                   </div>
                 </div>
+
                 <div className="card card-flush py-4">
                   <div className="card-header">
                     <div className="card-title">
-                      <h2>Galerie photos</h2>
+                      <h2>Photo Gallery</h2>
                     </div>
                   </div>
                   <div className="card-body pt-0">
                     <div className="fv-row mb-2">
                       <Dropzone
                         dropzone={{
-                          accept: {
-                            "image/*": [],
-                            "video/*": [],
-                          },
+                          accept: { "image/*": [], "video/*": [] },
                           multiple: true,
                           onDrop: onDrop,
                           onError(err) {},
                           onDropRejected(fileRejections, event) {
-                            fileRejections?.forEach((file) => {
+                            fileRejections?.forEach(() => {
                               toast.error(`The selected file is not supported`);
                             });
                           },
                         }}
-                        description="Seules les images, les vidéos et les documents sont acceptés"
+                        description="Only images and videos are accepted"
                       />
                       {errorMessage(errors, "media")}
-
-                      <SelectedMediaList
-                        setUploadedMedia={setUploadedMedia}
-                        control={control as any}
-                        setValue={setValue}
-                      />
+                      <SelectedMediaList setUploadedMedia={setUploadedMedia} control={control as any} setValue={setValue} />
                     </div>
                   </div>
                 </div>
-
-                {/* <div className="card card-flush py-4">
-                  <div className="card-header">
-                    <div className="card-title">
-                      <h2>Documents (pdf)</h2>
-                    </div>
-                  </div>
-                  <div className="card-body pt-0">
-                    <div className="fv-row mb-2">
-                      <Dropzone
-                        dropzone={{
-                          accept: {
-                            "image/*": [],
-                            "video/*": [],
-                          },
-                          multiple: true,
-                          onDrop: onDrop,
-                          onError(err) {
-                            
-                          },
-                          onDropRejected(fileRejections, event) {
-                            fileRejections?.forEach((file) => {
-                              toast.error(`The selected file is not supported`);
-                            });
-                          },
-                        }}
-                        description="Seules les images, les vidéos et les documents sont acceptés"
-                      />
-
-                      <SelectedMediaList
-                        setUploadedMedia={setUploadedMedia}
-                        control={control as any}
-                        setValue={setValue}
-                      />
-                    </div>
-                  </div>
-                </div> */}
 
                 <div className="card card-flush py-4">
                   <div className="card-body">
@@ -426,15 +366,16 @@ export const CreateService = () => {
                       name="yt_link"
                       control={control as any}
                       errors={errors}
-                      label="Vidéo (lien youtube)"
+                      label="Video (YouTube link)"
                       type="text"
                     />
                   </div>
                 </div>
+
                 <div className="card card-flush py-4">
                   <div className="card-header">
                     <div className="card-title">
-                      <h2>Appel à l'action</h2>
+                      <h2>Call to Action</h2>
                     </div>
                   </div>
                   <div className="card-body pt-0">
@@ -446,7 +387,7 @@ export const CreateService = () => {
                           name="email"
                           control={control as any}
                           errors={errors}
-                          label="Adresse Email"
+                          label="Email Address"
                           type="email"
                         />
                         <InputComponent
@@ -455,7 +396,7 @@ export const CreateService = () => {
                           name="phone_1"
                           control={control as any}
                           errors={errors}
-                          label="Numéro de téléphone"
+                          label="Phone Number"
                           type="number"
                         />
                         <InputComponent
@@ -464,7 +405,7 @@ export const CreateService = () => {
                           name="external_link"
                           control={control as any}
                           errors={errors}
-                          label="Lien externe"
+                          label="External Link"
                           type="text"
                         />
                       </Row>
@@ -474,20 +415,13 @@ export const CreateService = () => {
                           <div className="notice d-flex bg-light-warning rounded border-warning border border-dashed mb-12 p-6 my-6">
                             <div className="d-flex flex-stack flex-grow-1 ">
                               <div className=" fw-semibold">
-                                <h4 className="text-gray-900 fw-bold">
-                                  Nous avons besoin de votre attention !
-                                </h4>
-
+                                <h4 className="text-gray-900 fw-bold">We need your attention!</h4>
                                 <div className="fs-6 text-gray-700 ">
-                                  Si vous souhaitez promouvoir cette{" "}
-                                  {watch("type")} cochez cette case (le tarif
-                                  sera inclus){" "}
+                                  If you want to promote this {watch("type")} check this box (the fee will be included){" "}
                                   <input
                                     className="form-check-input"
                                     type="checkbox"
-                                    onChange={(e) =>
-                                      setValue("is_promoted", e.target.checked)
-                                    }
+                                    onChange={(e) => setValue("is_promoted", e.target.checked)}
                                   />
                                   {/* <Checkbox
                                     colMD={4}
@@ -497,7 +431,7 @@ export const CreateService = () => {
                                     errors={errors}
                                   >
                                     <span className="fs-4 no-wrap mx-3">
-                                      Promouvoir ce service/produit
+                                      Promote this service/product
                                     </span>
                                   </Checkbox> */}
                                 </div>
@@ -512,23 +446,13 @@ export const CreateService = () => {
               </div>
             </div>
           </div>
+
           <div className="d-flex justify-content-end">
-            <Link
-              to={`/company/${id}/services`}
-              id="kt_ecommerce_add_product_cancel"
-              className="btn btn-light me-5"
-            >
-              Annuler
+            <Link to={`/company/${id}/services`} id="kt_ecommerce_add_product_cancel" className="btn btn-light me-5">
+              Cancel
             </Link>
-            <button
-              onClick={handleSubmit(handleCreateService)}
-              className="btn btn-primary"
-            >
-              {isLoading ? (
-                <Spinner animation="border" color="#fff" size="sm" />
-              ) : (
-                <span className="indicator-label">Créer</span>
-              )}
+            <button onClick={handleSubmit(handleCreateService)} className="btn btn-primary">
+              {isLoading ? <Spinner animation="border" color="#fff" size="sm" /> : <span className="indicator-label">Create</span>}
             </button>
           </div>
         </div>

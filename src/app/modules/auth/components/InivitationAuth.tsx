@@ -41,8 +41,7 @@ const InivitationAuth = () => {
         onError(error) {
           const errorResponse = error as any;
           const errorMessage =
-            errorResponse?.response?.data?.message || "Code invalide";
-
+            errorResponse?.response?.data?.message || "Invalid code";
           toast.error(errorMessage);
         },
       }
@@ -108,10 +107,10 @@ const InivitationAuth = () => {
               }}
             >
               <span id="loader"></span>
-              <span>VVerification...</span>
+              <span>Verifying...</span>
             </div>
           ) : (
-            "Confirmer"
+            "Confirm"
           )}
         </button>
 

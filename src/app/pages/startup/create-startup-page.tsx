@@ -60,9 +60,12 @@ const validationSchema = Yup.object().shape({
     is: (country: any) => country?.label === "Algeria",
     then: (schema) =>
       schema
-        .length(10, "Label number must be exactly 10 digits")
-        .matches(/^\d+$/, "Label number must contain only digits")
-        .nullable(),
+        .notRequired()
+        .nullable()
+        .matches(/^\d{10}$/, {
+          message: "Label number must be exactly 10 digits",
+          excludeEmptyString: true,
+        }),
     otherwise: (schema) => schema.notRequired().nullable(),
   }),
 
@@ -497,7 +500,6 @@ const CreateStartupPage = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      ;
     </div>
   );
 };

@@ -1,14 +1,8 @@
-import {
-  ArrowLeftRight,
-  Calendar,
-  ChevronRight,
-  Menu,
-  Ticket,
-} from "lucide-react";
+import { ArrowLeftRight, Calendar, Menu } from "lucide-react";
 import { Button, Spinner } from "react-bootstrap";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { checkExhibitionDemandTransactionApi } from "../../../app/apis/exhibition";
+import { getCompanyExhibitionDemand } from "../../../app/apis/exhibition";
 import { useSelector } from "react-redux";
 import { UserResponse } from "../../../app/types/reducers";
 import { TicketsPrivilege } from "../../../app/components";
@@ -21,19 +15,37 @@ const EventTopbar = () => {
   const { user } = useSelector((state: UserResponse) => state.user);
   const navigate = useNavigate();
 
-  const { data: hasDemand, isLoading } = useQuery(
-    "checkExhibitionDemand",
-    async () => {
-      const res = await checkExhibitionDemandTransactionApi();
-      return res?.data || false;
+  // Fetch company/demand info
+  const { data, isLoading } = useQuery({
+    queryFn: getCompanyExhibitionDemand,
+    queryKey: ["company-exhibition-demand"],
+    retry: 1,
+    onError: (error) => {
+      console.error("Error fetching company exhibition demand:", error);
     },
-    {
-      retry: 1,
-      onError: (error) => {
-        console.error("Error checking exhibition demand:", error);
-      },
-    }
+  });
+
+  // Unpack response data
+  const reservationData = data?.data;
+  const company = reservationData?.company;
+  const demand = reservationData?.demand;
+
+  // Evaluate paid status defensively (supports multiple backend shapes)
+  const isDemandPaid = Boolean(
+    demand &&
+      (demand?.isPaid ||
+        demand?.paid ||
+        demand?.payment_status === "paid" ||
+        demand?.status === "paid" ||
+        demand?.transaction?.status === "paid")
   );
+
+  // Decide CTA label and destination
+  const cta = !company
+    ? { label: "Be Exhibitor", to: "/startup/create" }
+    : isDemandPaid
+    ? { label: "My Startup", to: "/startup/demand" }
+    : { label: "My exhibition request", to: "/startup/demand" };
 
   const [showTicketPrivileges, setShowTicketPrivileges] = useState(false);
 
@@ -109,29 +121,13 @@ const EventTopbar = () => {
               {isLoading ? (
                 <Spinner animation="border" />
               ) : (
-                <>
-                  {hasDemand ? (
-                    <Button
-                      onClick={() => {
-                        navigate("/startup/demand");
-                      }}
-                      variant="custom-purple-dark text-white"
-                      id="exhibition-request-cta"
-                    >
-                      Mon entreprise
-                    </Button>
-                  ) : (
-                    <Button
-                      onClick={() => {
-                        navigate("/startup/create");
-                      }}
-                      variant="custom-purple-dark text-white"
-                      id="exhibition-request-cta"
-                    >
-                      Be Exhibitor
-                    </Button>
-                  )}
-                </>
+                <Button
+                  onClick={() => navigate(cta.to)}
+                  variant="custom-purple-dark text-white"
+                  id="exhibition-request-cta"
+                >
+                  {cta.label}
+                </Button>
               )}
             </div>
 

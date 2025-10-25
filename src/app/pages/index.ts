@@ -59,3 +59,4 @@ export * from "./job-offers/devtalent-subsciptions";
 
 // Entity infos
 export * from "./profiles/page";
+export * from "./about/page";

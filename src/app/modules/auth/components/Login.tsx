@@ -116,7 +116,7 @@ export function Login() {
         </div>
 
         <div id="form-group">
-          <label htmlFor="password">Mot de passe</label>
+          <label htmlFor="password">Password</label>
           <div id="password-input">
             <input
               type={showPassword ? "text" : "password"}
@@ -149,7 +149,7 @@ export function Login() {
               }}
             >
               <span id="loader"></span>
-              <span>Connexion...</span>
+              <span>Signing in...</span>
             </div>
           ) : (
             "Login"

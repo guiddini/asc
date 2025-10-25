@@ -16,7 +16,7 @@ interface UploadTransferModalProps {
   show: boolean;
   onHide: () => void;
   demand_id: string;
-  price: { dzd: number; euro: number } | null;
+  price: { dzd: number; usd: number } | null;
 }
 
 export const UploadTransferModal: React.FC<UploadTransferModalProps> = ({
@@ -53,7 +53,7 @@ export const UploadTransferModal: React.FC<UploadTransferModalProps> = ({
     mutation.mutate(formData);
   };
 
-  const handleDownloadRIB = (currency: "dzd" | "euro") => {
+  const handleDownloadRIB = (currency: "dzd" | "usd") => {
     const ribPath =
       currency === "dzd" ? "/payment/rib-dzd.pdf" : "/payment/rib-euro.pdf";
     const link = document.createElement("a");
@@ -105,7 +105,7 @@ export const UploadTransferModal: React.FC<UploadTransferModalProps> = ({
                       Or equivalent
                     </small>
                     <h4 className="mb-0 fw-bold">
-                      €{price.euro.toLocaleString()}
+                      ${price.usd.toLocaleString()}
                     </h4>
                   </div>
                 </div>
@@ -158,16 +158,14 @@ export const UploadTransferModal: React.FC<UploadTransferModalProps> = ({
                   <Card
                     className="border hover-shadow h-100"
                     style={{ cursor: "pointer", transition: "all 0.2s" }}
-                    onClick={() => handleDownloadRIB("euro")}
+                    onClick={() => handleDownloadRIB("usd")}
                   >
                     <Card.Body className="text-center p-4">
                       <div className="bg-success bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
                         <Download className="text-success" size={24} />
                       </div>
-                      <h6 className="mb-1">EURO</h6>
-                      <p className="text-muted small mb-0">
-                        RIB - EURO Account
-                      </p>
+                      <h6 className="mb-1">usd</h6>
+                      <p className="text-muted small mb-0">RIB - usd Account</p>
                     </Card.Body>
                   </Card>
                 </div>

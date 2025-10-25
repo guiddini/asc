@@ -6,24 +6,24 @@ const ResetPasswordSuccess = () => {
     <div className="reset-success-container">
       <img src="/media/eventili/illustrations/success.svg" alt="" width={200} />
 
-      <h1>Mot de passe mis à jour avec succès ! 🎉</h1>
+      <h1>Password updated successfully! 🎉</h1>
 
       <p>
-        Votre mot de passe a été changé avec succès.
+        Your password has been changed successfully.
         <br />
-        Vous pouvez maintenant vous connecter avec votre nouveau mot de passe
-        pour accéder
-        <br />à votre compte en toute sécurité.
+        You can now log in with your new password to access
+        <br />
+        your account securely.
       </p>
 
       <div className="buttons-container">
         <Link to="/auth/login" className="primary-button">
-          Connectez-vous à votre compte
+          Sign in to your account
           <ArrowRight size={20} />
         </Link>
 
         <Link to="/" className="secondary-button">
-          Retour à l'accueil
+          Back to home
         </Link>
       </div>
     </div>

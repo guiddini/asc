@@ -2,7 +2,17 @@ import React, { useState } from "react";
 import { Container, Row, Col, Modal, Button } from "react-bootstrap";
 import { GALLERY_IMAGES } from "../data/gallery-images";
 
-const EventGallerySection: React.FC = () => {
+type EventGallerySectionProps = {
+  heading?: string;
+  subheading?: string;
+  withBG?: boolean;
+};
+
+const EventGallerySection: React.FC<EventGallerySectionProps> = ({
+  heading,
+  subheading,
+  withBG = true,
+}) => {
   const [showModal, setShowModal] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
@@ -69,7 +79,7 @@ const EventGallerySection: React.FC = () => {
         width: "100vw",
         margin: "0 calc(-50vw + 50%)",
         padding: "5rem 0",
-        backgroundColor: "var(--bs-light)",
+        backgroundColor: withBG ? "var(--bs-light)" : "transparent",
       }}
     >
       <Container
@@ -79,15 +89,11 @@ const EventGallerySection: React.FC = () => {
           padding: "0 15px",
         }}
       >
-        {/* Section Header */}
+        {/* Section heading */}
         <Row className="mb-5">
           <Col className="text-center">
-            <h2 className="display-5 fw-bold text-dark mb-3">
-              ASC 2024 IN PICTURES
-            </h2>
-            <p className="lead text-muted">
-              Relive the moments from our previous events
-            </p>
+            <h2 className="display-5 fw-bold text-dark mb-3">{heading}</h2>
+            <p className="lead text-muted">{subheading}</p>
           </Col>
         </Row>
 

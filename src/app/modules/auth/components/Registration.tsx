@@ -13,16 +13,16 @@ import { Eye, EyeOff } from "lucide-react";
 
 const registrationSchema = Yup.object().shape({
   password: Yup.string()
-    .min(8, "Minimum de 8 caractères")
-    .max(50, "Maximum de 50 caractères")
-    .required("Le mot de passe est requis"),
+    .min(8, "Minimum 8 characters")
+    .max(50, "Maximum 50 characters")
+    .required("Password is required"),
   password_confirmation: Yup.string()
-    .min(8, "Minimum de 8 caractères")
-    .max(50, "Maximum de 50 caractères")
-    .required("La confirmation du mot de passe est requise")
+    .min(8, "Minimum 8 characters")
+    .max(50, "Maximum 50 characters")
+    .required("Password confirmation is required")
     .oneOf(
       [Yup.ref("password")],
-      "Le mot de passe et la confirmation ne correspondent pas"
+      "Passwords do not match"
     ),
 });
 
@@ -66,7 +66,7 @@ export function Registration() {
             email: getEmailFromQueryString(),
           })
           .then(async (res) => {
-            toast.success("Vous avez créé avec succès votre mot de passe");
+            toast.success("You have successfully created your password");
             navigate("/auth/reset-password-success");
           });
       } catch (error) {
@@ -129,24 +129,24 @@ export function Registration() {
       <div id="registration-expired">
         <h1>Link Expired</h1>
         <p>
-          Le lien de réinitialisation de votre mot de passe a expiré.
+          Your password reset link has expired.
           <br />
-          Veuillez vous rendre sur la page{" "}
+          Please go to the{" "}
           <Link to="/auth/forgot-password" className="link">
-            Mot de passe oublié
+            Forgot Password
           </Link>{" "}
-          pour générer un nouveau lien de réinitialisation.
+          page to generate a new reset link.
         </p>
         <p>
-          Si vous rencontrez toujours des difficultés, veuillez contacter notre{" "}
+          If you still experience difficulties, please contact our{" "}
           <a
             href="https://algeriafintech.com/"
             target="_blank"
             className="link"
           >
-            service d'assistance
+            support service
           </a>{" "}
-          technique pour obtenir de l'aide supplémentaire
+          for additional assistance.
         </p>
       </div>
     );
@@ -154,14 +154,14 @@ export function Registration() {
 
   return (
     <div id="registration-container">
-      <h1>Créez votre nouveau mot de passe</h1>
+      <h1>Create your new password</h1>
       <p id="registration-subtitle">
-        Pour votre sécurité, veuillez créer un mot de passe fort et unique.
+        For your security, please create a strong and unique password.
       </p>
 
       <form id="registration-form" onSubmit={handleSubmit(handleRegister)}>
         <div className="input-group">
-          <label htmlFor="password">Nouveau mot de passe</label>
+          <label htmlFor="password">New password</label>
           <div className="password-input">
             <input
               type={showPassword ? "text" : "password"}
@@ -212,21 +212,20 @@ export function Registration() {
           {isLoading ? (
             <>
               <span className="button-loader"></span>
-              <span>Enregistrement...</span>
+              <span>Saving...</span>
             </>
           ) : (
-            "Enregistrer le mot de passe"
+            "Save password"
           )}
         </button>
       </form>
 
       <p id="support-text">
-        Si vous rencontrez toujours des problèmes, n'hésitez pas à contacter
-        notre{" "}
+        If you still encounter issues, don’t hesitate to contact our{" "}
         <Link to="/support" className="link">
-          équipe de support
+          support team
         </Link>{" "}
-        pour assistance. Nous sommes là pour vous aider !
+        for assistance. We’re here to help!
       </p>
     </div>
   );

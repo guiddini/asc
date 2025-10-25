@@ -74,9 +74,9 @@ interface ApiResponse {
 }
 
 // Pricing configuration
-const EXHIBITION_PRICES: Record<string, { dzd: number; euro: number; usd: number }> = {
-  premium_exhibition_space: { dzd: 299900, euro: 1999, usd: 1999 },
-  connect_desk: { dzd: 29900, euro: 199, usd: 199 },
+const EXHIBITION_PRICES: Record<string, { dzd: number; usd: number }> = {
+  premium_exhibition_space: { dzd: 299900, usd: 1999 },
+  connect_desk: { dzd: 29900, usd: 199 },
 };
 
 const CompanyReservationPage = () => {
@@ -97,7 +97,6 @@ const CompanyReservationPage = () => {
   const reservationData = data?.data;
   const company = reservationData?.company;
   const demand = reservationData?.demand;
-  const transaction = reservationData?.transaction;
 
   const formatExhibitionType = (type?: string) => {
     if (!type) return "-";
@@ -117,7 +116,7 @@ const CompanyReservationPage = () => {
     return EXHIBITION_PRICES[exhibitionType] || null;
   };
 
-  const formatPrice = (price: { dzd: number; euro: number; usd: number }) => {
+  const formatPrice = (price: { dzd: number; usd: number }) => {
     return `${price.dzd.toLocaleString()} DZD / $${price.usd.toLocaleString()}`;
   };
 
@@ -338,7 +337,7 @@ const CompanyReservationPage = () => {
                                           objectFit: "contain",
                                         }}
                                       />
-                                      Pay Online (USD)
+                                      Pay Online (DZD)
                                     </>
                                   )}
                                 </Button>
@@ -349,7 +348,7 @@ const CompanyReservationPage = () => {
                                   onClick={handlePayTransfer}
                                 >
                                   <Banknote size={14} className="me-1" />
-                                  Bank Transfer (EUR)
+                                  Bank Transfer (DZD/USD)
                                 </Button>
                               </div>
                             ) : ["pending", "refused"].includes(

@@ -15,10 +15,10 @@ type ForgotPasswordProps = {
 
 const forgotPasswordSchema = Yup.object().shape({
   email: Yup.string()
-    .email("Format d'email incorrect")
-    .min(5, "Minimum 3 caractères")
-    .max(50, "Maximum 50 caractères")
-    .required("Email requis"),
+    .email("Invalid email format")
+    .min(5, "Minimum 5 characters")
+    .max(50, "Maximum 50 characters")
+    .required("Email is required"),
 });
 
 export function ForgotPassword() {
@@ -54,12 +54,12 @@ export function ForgotPassword() {
         onError(error) {
           backendErrorHandler(setError, error);
           setLastSuccessTimestamp();
-          toast.error("Impossible d'envoyer le lien de réinitialisation");
+          toast.error("Unable to send the reset link");
         },
         onSuccess(data) {
           setLastSuccessTimestamp();
           toast.success(
-            " Un email de réinitialisation de mot de passe a été envoyé à votre adresse e-mail"
+            "A password reset email has been sent to your email address"
           );
         },
       }
@@ -79,37 +79,35 @@ export function ForgotPassword() {
 
   return (
     <div id="form-container">
-      <h2>Mot de passe oublié</h2>
+      <h2>Forgot Password</h2>
       <p id="form-subtitle">
-        Vous vous souvenez de votre mot de passe ?{" "}
+        Remember your password?{" "}
         <Link to="/auth/login" id="highlight-link">
-          se connecter
+          Sign in
         </Link>
       </p>
-
       <form id="auth-form" onSubmit={handleSubmit(handleResetPassword)}>
         <div id="form-group">
           <label htmlFor="email">Email</label>
           <input
             type="email"
             id="email"
-            placeholder="Entrez votre Email"
+            placeholder="Enter your email"
             {...register("email")}
           />
           {errors.email && (
             <span id="error-message">{errors.email.message}</span>
           )}
         </div>
-
         <button type="submit" id="forgot-password-submit-button">
-          <span>Envoyer le lien de réinitialisation</span>
+          <span>Send reset link</span>
           <MailOpen />
         </button>
       </form>
       <p id="forgot-password-notice">
-        Si vous avez encore des problèmes, n'hésitez pas à contacter notre{" "}
-        <a href="mailto:support@eventili.com">équipe de support </a>
-        pour assistance. Nous sommes là pour vous aider !
+        If you still have issues, feel free to contact our{" "}
+        <a href="mailto:support@eventili.com">support team</a> for assistance.
+        We’re here to help!
       </p>
     </div>
   );

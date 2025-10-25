@@ -136,9 +136,9 @@ const CompleteProfileWrapper = () => {
                       <span className="stepper-number">1</span>
                     </div>
                     <div className="stepper-label">
-                      <h3 className="stepper-title fs-2">Type de compte</h3>
+                      <h3 className="stepper-title fs-2">Account Type</h3>
                       <div className="stepper-desc fw-normal">
-                        Sélectionnez votre type de compte
+                        Select your type of account
                       </div>
                     </div>
                   </div>
@@ -152,11 +152,9 @@ const CompleteProfileWrapper = () => {
                       <span className="stepper-number">2</span>
                     </div>
                     <div className="stepper-label">
-                      <h3 className="stepper-title fs-2">
-                        Informations sur le compte
-                      </h3>
+                      <h3 className="stepper-title fs-2">Account Information</h3>
                       <div className="stepper-desc fw-normal">
-                        Configurez les informations de votre compte
+                        Set up your account information
                       </div>
                     </div>
                   </div>
@@ -176,12 +174,8 @@ const CompleteProfileWrapper = () => {
                       <span className="stepper-number">3</span>
                     </div>
                     <div className="stepper-label">
-                      <h3 className="stepper-title fs-2">
-                        Détails des tickets
-                      </h3>
-                      <div className="stepper-desc fw-normal">
-                        Assignez un ticket
-                      </div>
+                      <h3 className="stepper-title fs-2">Ticket Details</h3>
+                      <div className="stepper-desc fw-normal">Assign a ticket</div>
                     </div>
                   </div>
                   <div className="stepper-line h-40px"></div>
@@ -201,11 +195,9 @@ const CompleteProfileWrapper = () => {
                         </span>
                       </div>
                       <div className="stepper-label">
-                        <h3 className="stepper-title fs-2">
-                          Détails de l'entreprise
-                        </h3>
+                        <h3 className="stepper-title fs-2">Company Details</h3>
                         <div className="stepper-desc fw-normal">
-                          Ajoutez les détails de l'entreprise
+                          Add company details
                         </div>
                       </div>
                     </div>
@@ -224,10 +216,8 @@ const CompleteProfileWrapper = () => {
                       <span className="stepper-number">{lastStep}</span>
                     </div>
                     <div className="stepper-label">
-                      <h3 className="stepper-title">Terminé</h3>
-                      <div className="stepper-desc fw-normal">
-                        Votre compte est créé
-                      </div>
+                      <h3 className="stepper-title">Completed</h3>
+                      <div className="stepper-desc fw-normal">Your account is created</div>
                     </div>
                   </div>
                 </div>
@@ -240,14 +230,14 @@ const CompleteProfileWrapper = () => {
                   className="text-light px-5"
                   target="_blank"
                 >
-                  Conditions
+                  Terms
                 </Link>
                 <a
                   href="https://algeriafintech.com/"
                   className="text-light px-5"
                   target="_blank"
                 >
-                  Contactez-nous
+                  Contact us
                 </a>
               </div>
             </div>

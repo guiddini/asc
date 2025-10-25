@@ -22,7 +22,7 @@ const AsideDefault: FC = () => {
     >
       {/* begin::Brand */}
       <div className="aside-logo py-8 mt-4" id="kt_aside_logo">
-        <Link to="/home" className="d-flex flex-column align-items-center">
+        <Link to="/" className="d-flex flex-column align-items-center">
           <img
             src={toAbsoluteUrl("/media/eventili/logos/logo-white.svg")}
             alt="logo"

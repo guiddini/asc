@@ -20,7 +20,10 @@ const LandingPage: React.FC = () => {
 
       <SpeakerSection />
       <SponsorsSection />
-      <EventGallerySection />
+      <EventGallerySection
+        heading="Highlights from ASC"
+        subheading="A quick look at memorable moments"
+      />
       <SideEventsSection />
     </div>
   );
