@@ -1,6 +1,5 @@
 import React from "react";
 import { Modal, Button, Container, Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
 
 interface AppModalProps {
   show: boolean;
@@ -105,18 +104,17 @@ const AppModal: React.FC<AppModalProps> = ({
                 <Row className="g-3 justify-content-center mb-4">
                   {isAndroid && (
                     <Col xs={12} sm={6}>
-                      <Link
-                        to={androidDownloadUrl}
+                      <a
+                        href="https://play.google.com/store/apps/details?id=com.africanstartupconference.app&pli=1"
+                        className="btn btn-link p-0"
                         target="_blank"
-                        rel="noopener noreferrer"
-                        style={{ minHeight: "60px" }}
                       >
                         <img
                           src="/media/play-store.svg"
                           alt="Download on Google Play"
                           className="me-3"
                         />
-                      </Link>
+                      </a>
                     </Col>
                   )}
 
