@@ -348,19 +348,17 @@ const CompanyReservationPage = () => {
                                   disabled={true}
                                   title="Visa payment coming soon"
                                 >
-                                  <>
-                                    <img
-                                      src="/media/eventili/visa.png"
-                                      alt="Visa payment"
-                                      className="me-2"
-                                      style={{
-                                        width: 22,
-                                        height: 22,
-                                        objectFit: "contain",
-                                      }}
-                                    />
-                                    VISA ($/€)
-                                  </>
+                                  <img
+                                    src="/media/eventili/visa.png"
+                                    alt="Visa payment"
+                                    className="me-2"
+                                    style={{
+                                      width: 22,
+                                      height: 22,
+                                      objectFit: "contain",
+                                    }}
+                                  />
+                                  VISA ($/€)
                                 </Button>
 
                                 <Button
