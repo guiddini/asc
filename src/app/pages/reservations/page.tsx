@@ -344,6 +344,27 @@ const CompanyReservationPage = () => {
 
                                 <Button
                                   size="sm"
+                                  variant="primary"
+                                  disabled={true}
+                                  title="Visa payment coming soon"
+                                >
+                                  <>
+                                    <img
+                                      src="/media/eventili/visa.png"
+                                      alt="Visa payment"
+                                      className="me-2"
+                                      style={{
+                                        width: 22,
+                                        height: 22,
+                                        objectFit: "contain",
+                                      }}
+                                    />
+                                    VISA ($/€)
+                                  </>
+                                </Button>
+
+                                <Button
+                                  size="sm"
                                   variant="secondary"
                                   onClick={handlePayTransfer}
                                 >
