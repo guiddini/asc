@@ -228,13 +228,13 @@ export function AsideMenuMain() {
             bsTitle="User management"
             customIcon={<i className="fa-solid fa-user"></i>}
           />
-          <AsideMenuItem
+          {/* <AsideMenuItem
             to="/press-conference-management"
             title="Press Conference"
             hasBullet={true}
             bsTitle="Press Conference"
             customIcon={<i className="fa-solid fa-users-rectangle"></i>}
-          />
+          /> */}
           <AsideMenuItem
             to="/ticket-transactions"
             title="Ticket Transactions"
@@ -256,6 +256,14 @@ export function AsideMenuMain() {
             hasBullet={true}
             bsTitle="Conferences"
             customIcon={<i className="fa-solid fa-calendar-days"></i>}
+          />
+
+          <AsideMenuItem
+            to="/workshop-management"
+            title="Workshops"
+            hasBullet={true}
+            bsTitle="Workshops"
+            customIcon={<i className="fa-solid fa-chalkboard-user"></i>}
           />
 
           <AsideMenuItem

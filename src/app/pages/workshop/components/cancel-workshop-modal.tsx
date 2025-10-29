@@ -1,37 +1,37 @@
-import React, { useState } from "react";
+import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useMutation, useQueryClient } from "react-query";
 import toast from "react-hot-toast";
-import { cancelConference } from "../../../apis/conference";
+import { cancelWorkshop } from "../../../apis/workshop";
 
-interface CancelConfirmationModalProps {
+interface CancelWorkshopModalProps {
   show: boolean;
   onHide: () => void;
-  conferenceId: string;
-  conferenceTitle: string;
+  workshopId: string;
+  workshopTitle: string;
   onDeleted: () => void;
 }
 
-const CancelConfirmationModal: React.FC<CancelConfirmationModalProps> = ({
+const CancelWorkshopModal: React.FC<CancelWorkshopModalProps> = ({
   show,
   onHide,
-  conferenceId,
-  conferenceTitle,
+  workshopId,
+  workshopTitle,
   onDeleted,
 }) => {
   const queryClient = useQueryClient();
 
   const { mutate: cancelMutate, isLoading: canceling } = useMutation(
-    () => cancelConference(conferenceId),
+    () => cancelWorkshop(workshopId),
     {
       onSuccess: () => {
-        toast.success("Conference canceled successfully");
-        queryClient.invalidateQueries(["conferences"]);
+        toast.success("Workshop canceled successfully");
+        queryClient.invalidateQueries(["workshops"]);
         onDeleted();
         onHide();
       },
       onError: () => {
-        toast.error("Error canceling the conference.");
+        toast.error("Error canceling the workshop.");
       },
     }
   );
@@ -42,23 +42,23 @@ const CancelConfirmationModal: React.FC<CancelConfirmationModalProps> = ({
         <Modal.Title>Confirm cancellation</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        Are you sure you want to cancel the conference{" "}
-        <strong>{conferenceTitle}</strong>?
+        Are you sure you want to cancel the workshop{" "}
+        <strong>{workshopTitle}</strong>?
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide} disabled={canceling}>
-          Cancel
+          Close
         </Button>
         <Button
           variant="warning"
           onClick={() => cancelMutate()}
           disabled={canceling}
         >
-          {canceling ? "Canceling..." : "Cancel conference"}
+          {canceling ? "Canceling..." : "Cancel workshop"}
         </Button>
       </Modal.Footer>
     </Modal>
   );
 };
 
-export default CancelConfirmationModal;
+export default CancelWorkshopModal;

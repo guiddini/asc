@@ -106,7 +106,7 @@ export const TableComponent = ({
                   type="text"
                   data-kt-user-table-filter="search"
                   className="form-control form-control-solid w-250px ps-14"
-                  placeholder={`Recherche `}
+                  placeholder={`Search`}
                   value={searchQuery}
                   onChange={(e) => handleSearch(e.target.value)}
                 />
@@ -118,7 +118,7 @@ export const TableComponent = ({
             {showExport && (
               <button type="button" className="btn btn-light-primary me-3">
                 <KTIcon iconName="exit-up" className="fs-2" />
-                Exporter
+                Export
               </button>
             )}
             {canI === null ? (
@@ -132,7 +132,7 @@ export const TableComponent = ({
                     <KTIcon iconName="plus" className="fs-2 text-white" />
                     {customPlaceholder
                       ? customPlaceholder
-                      : `Ajouter ${placeholder}`}
+                      : `Add ${placeholder}`}
                   </button>
                 )}
               </>
@@ -147,7 +147,7 @@ export const TableComponent = ({
                     <KTIcon iconName="plus" className="fs-2 text-white" />
                     {customPlaceholder
                       ? customPlaceholder
-                      : `Ajouter ${placeholder}`}
+                      : `Add ${placeholder}`}
                   </button>
                 )}
               </Can>

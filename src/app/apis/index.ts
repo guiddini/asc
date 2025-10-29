@@ -16,3 +16,4 @@ export * from "./report";
 export * from "./notifications";
 export * from "./job-offers";
 export * from "./blog";
+export * from "./workshop";

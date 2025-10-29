@@ -16,6 +16,11 @@ const TrendingBox = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["get-all-promoted-products-services"],
     queryFn: getAllPromotedProductServiceApi,
+    retry: 1,
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   const PRODUCTS: ServiceProductCardType[] = useMemo(() => data?.data, [data]);

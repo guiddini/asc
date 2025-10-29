@@ -1,15 +1,15 @@
 import moment from "moment";
-import { Conference } from "../../../types/conference";
-import DeleteConfirmationModal from "./delete-conference-modal";
-import CancelConfirmationModal from "./cancel-conference-modal";
+import { Workshop } from "../../../types/workshop";
+import DeleteConfirmationModal from "./delete-workshop-modal";
+import CancelConfirmationModal from "./cancel-workshop-modal";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const ConferenceHeader = ({
-  conference,
+  workshop,
   onUpdate,
 }: {
-  conference: Conference;
+  workshop: Workshop;
   onUpdate: () => void;
 }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -18,10 +18,10 @@ const ConferenceHeader = ({
   const navigation = useNavigate();
 
   return (
-    <section aria-labelledby="conference-title">
+    <section aria-labelledby="workshop-title">
       <div className="d-flex justify-content-between align-items-start flex-wrap mb-3 gap-3">
-        <h2 id="conference-title" className="mb-0 flex-grow-1">
-          {conference.title}
+        <h2 id="workshop-title" className="mb-0 flex-grow-1">
+          {workshop.title}
         </h2>
         <div className="d-flex gap-2 flex-wrap">
           <button
@@ -36,7 +36,7 @@ const ConferenceHeader = ({
             className="btn btn-outline-warning btn-sm"
             onClick={() => setOpenCancelModal(true)}
           >
-            Cancel conference
+            Cancel Workshop
           </button>
           <button
             type="button"
@@ -49,24 +49,24 @@ const ConferenceHeader = ({
       </div>
 
       <div className="mb-4">
-        <p className="card-text mb-3">{conference.description}</p>
+        <p className="card-text mb-3">{workshop.description}</p>
 
         <dl className="row mb-0">
           <dt className="col-sm-3 fw-semibold">Location:</dt>
-          <dd className="col-sm-9">{conference.location}</dd>
+          <dd className="col-sm-9">{workshop.location}</dd>
 
-          <dt className="col-sm-3 fw-semibold">Start date:</dt>
+          <dt className="col-sm-3 fw-semibold">Start Date:</dt>
           <dd className="col-sm-9">
-            {moment(conference.start_time).format("DD/MM/YYYY HH:mm")}
+            {moment(workshop.start_time).format("DD/MM/YYYY HH:mm")}
           </dd>
 
-          <dt className="col-sm-3 fw-semibold">End date:</dt>
+          <dt className="col-sm-3 fw-semibold">End Date:</dt>
           <dd className="col-sm-9">
-            {moment(conference.end_time).format("DD/MM/YYYY HH:mm")}
+            {moment(workshop.end_time).format("DD/MM/YYYY HH:mm")}
           </dd>
 
           <dt className="col-sm-3 fw-semibold">Status:</dt>
-          <dd className="col-sm-9 text-capitalize">{conference.status}</dd>
+          <dd className="col-sm-9 text-capitalize">{workshop.status}</dd>
         </dl>
       </div>
 
@@ -74,10 +74,10 @@ const ConferenceHeader = ({
       <DeleteConfirmationModal
         show={openDeleteModal}
         onHide={() => setOpenDeleteModal(false)}
-        conferenceId={conference.id}
-        conferenceTitle={conference.title}
+        workshopId={workshop.id}
+        workshopTitle={workshop.title}
         onDeleted={() => {
-          navigation("/conferences-management");
+          navigation("/workshop-management");
         }}
       />
 
@@ -85,8 +85,8 @@ const ConferenceHeader = ({
       <CancelConfirmationModal
         show={openCancelModal}
         onHide={() => setOpenCancelModal(false)}
-        conferenceId={conference.id}
-        conferenceTitle={conference.title}
+        workshopId={workshop.id}
+        workshopTitle={workshop.title}
         onDeleted={() => setOpenCancelModal(false)}
       />
     </section>

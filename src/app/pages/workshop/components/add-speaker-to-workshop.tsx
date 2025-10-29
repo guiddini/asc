@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+// AddSpeakerToWorkshopModal component
+import React, { useState } from "react";
 import {
   Modal,
   Button,
@@ -14,26 +15,27 @@ import {
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import toast from "react-hot-toast";
 import { getAllSpeakers, SpeakersResponse } from "../../../apis/speaker";
-import { addSpeakerToConference } from "../../../apis/conference";
+import { addSpeakerToWorkshop } from "../../../apis/workshop";
 import getMediaUrl from "../../../helpers/getMediaUrl";
 
-interface AddSpeakerToConferenceModalProps {
-  conferenceId: string;
+interface AddSpeakerToWorkshopModalProps {
+  workshopId: string;
   show: boolean;
   onClose: () => void;
   onAdded: () => void;
 }
 
-const AddSpeakerToConferenceModal: React.FC<
-  AddSpeakerToConferenceModalProps
-> = ({ conferenceId, show, onClose, onAdded }) => {
+const AddSpeakerToWorkshopModal: React.FC<AddSpeakerToWorkshopModalProps> = ({
+  workshopId,
+  show,
+  onClose,
+  onAdded,
+}) => {
   const queryClient = useQueryClient();
 
-  // Pagination & Search state
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Fetch speakers (paginated)
   const { data, isLoading, isError } = useQuery<SpeakersResponse>(
     ["speakers", page],
     () => getAllSpeakers(page),
@@ -44,13 +46,12 @@ const AddSpeakerToConferenceModal: React.FC<
     }
   );
 
-  // Mutation to add speaker to conference
   const { mutate, isLoading: isAssigning } = useMutation(
-    (userId: string) => addSpeakerToConference(conferenceId, userId),
+    (userId: string) => addSpeakerToWorkshop(workshopId, userId),
     {
       onSuccess: () => {
         toast.success("Speaker added successfully");
-        queryClient.invalidateQueries(["conferences", conferenceId]);
+        queryClient.invalidateQueries(["show-workshop", workshopId]);
         onAdded();
       },
       onError: () => {
@@ -69,24 +70,10 @@ const AddSpeakerToConferenceModal: React.FC<
     mutate(userId);
   };
 
-  // Client-side filtering by name
-  const filteredSpeakers =
-    !isLoading && data
-      ? data.data.filter((u) => {
-          const q = searchTerm.trim().toLowerCase();
-          if (!q) return true;
-          return (
-            u.fname.toLowerCase().includes(q) || u.lname.toLowerCase().includes(q)
-          );
-        })
-      : [];
-
-  // Pagination items
   const renderPagination = () => {
     if (!data || data.last_page <= 1) return null;
 
     const items = [];
-
     const startPage = Math.max(1, page - 2);
     const endPage = Math.min(data.last_page, page + 2);
 
@@ -123,27 +110,26 @@ const AddSpeakerToConferenceModal: React.FC<
     return <Pagination>{items}</Pagination>;
   };
 
+  const filteredSpeakers =
+    !isLoading && data
+      ? data.data.filter((s) => {
+          const q = searchTerm.trim().toLowerCase();
+          if (!q) return true;
+          return (
+            s.fname.toLowerCase().includes(q) ||
+            s.lname.toLowerCase().includes(q)
+          );
+        })
+      : [];
+
   return (
-    <Modal
-      show={show}
-      onHide={onClose}
-      size="lg"
-      scrollable
-      centered
-      aria-labelledby="add-speaker-modal-title"
-    >
+    <Modal show={show} onHide={onClose} size="lg" scrollable centered>
       <Modal.Header closeButton>
-        <Modal.Title id="add-speaker-modal-title">
-          Add a speaker
-        </Modal.Title>
+        <Modal.Title>Add a speaker</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
-        <InputGroup
-          className="mb-3"
-          role="search"
-          aria-label="Search speakers"
-        >
+        <InputGroup className="mb-3" role="search" aria-label="Search speakers">
           <FormControl
             placeholder="Search by first or last name"
             value={searchTerm}
@@ -189,7 +175,7 @@ const AddSpeakerToConferenceModal: React.FC<
                         roundedCircle
                         width={50}
                         height={50}
-                        alt={`Avatar de ${speaker.fname} ${speaker.lname}`}
+                        alt={`Avatar of ${speaker.fname} ${speaker.lname}`}
                       />
                     </Col>
                     <Col xs className="mb-1 mb-sm-0">
@@ -213,7 +199,7 @@ const AddSpeakerToConferenceModal: React.FC<
             </ListGroup>
             <div
               className="d-flex justify-content-center mt-3"
-              aria-label="Pagination des conférenciers"
+              aria-label="Speakers pagination"
             >
               {renderPagination()}
             </div>
@@ -230,4 +216,4 @@ const AddSpeakerToConferenceModal: React.FC<
   );
 };
 
-export default AddSpeakerToConferenceModal;
+export default AddSpeakerToWorkshopModal;

@@ -17,22 +17,22 @@ interface UpdateConference {
 }
 
 const schema = yup.object().shape({
-  title: yup.string().required("Le titre est obligatoire"),
-  description: yup.string().required("La description est obligatoire"),
-  start_time: yup.string().required("L'heure de début est obligatoire"),
+  title: yup.string().required("Title is required"),
+  description: yup.string().required("Description is required"),
+  start_time: yup.string().required("Start time is required"),
   end_time: yup
     .string()
-    .required("L'heure de fin est obligatoire")
+    .required("End time is required")
     .test(
       "is-after",
-      "L'heure de fin doit être après l'heure de début",
+      "End time must be after start time",
       function (value) {
         const { start_time } = this.parent;
         return new Date(value) > new Date(start_time);
       }
     ),
-  location: yup.string().required("Le lieu est obligatoire"),
-  status: yup.string().required("Le statut est obligatoire"),
+  location: yup.string().required("Location is required"),
+  status: yup.string().required("Status is required"),
 });
 
 const toDateTimeLocal = (dateStr: string) => {
@@ -80,11 +80,11 @@ const UpdateConferenceModal: React.FC<Props> = ({
     {
       onSuccess() {
         queryClient.invalidateQueries("conferences");
-        toast.success("Conférence mise à jour avec succès");
+        toast.success("Conference updated successfully");
         onClose();
       },
       onError() {
-        toast.error("Échec de la mise à jour de la conférence");
+        toast.error("Failed to update the conference");
       },
     }
   );
@@ -124,7 +124,7 @@ const UpdateConferenceModal: React.FC<Props> = ({
     <Modal show={show} onHide={onClose} size="lg" backdrop="static" centered>
       <Form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Modal.Header closeButton>
-          <Modal.Title>Modifier la conférence</Modal.Title>
+          <Modal.Title>Update conference</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {isLoading ? (
@@ -133,12 +133,12 @@ const UpdateConferenceModal: React.FC<Props> = ({
             </div>
           ) : error ? (
             <Alert variant="danger" className="text-center my-3">
-              Impossible de charger les données de la conférence.
+              Unable to load conference data.
             </Alert>
           ) : (
             <>
               <Form.Group className="mb-3">
-                <Form.Label>Titre</Form.Label>
+                <Form.Label>Title</Form.Label>
                 <Form.Control
                   type="text"
                   isInvalid={!!errors.title}
@@ -163,7 +163,7 @@ const UpdateConferenceModal: React.FC<Props> = ({
               </Form.Group>
 
               <Form.Group className="mb-3">
-                <Form.Label>Heure de début</Form.Label>
+                <Form.Label>Start time</Form.Label>
                 <Form.Control
                   type="datetime-local"
                   isInvalid={!!errors.start_time}
@@ -175,7 +175,7 @@ const UpdateConferenceModal: React.FC<Props> = ({
               </Form.Group>
 
               <Form.Group className="mb-3">
-                <Form.Label>Heure de fin</Form.Label>
+                <Form.Label>End time</Form.Label>
                 <Form.Control
                   type="datetime-local"
                   isInvalid={!!errors.end_time}
@@ -187,7 +187,7 @@ const UpdateConferenceModal: React.FC<Props> = ({
               </Form.Group>
 
               <Form.Group className="mb-3">
-                <Form.Label>Lieu</Form.Label>
+                <Form.Label>Location</Form.Label>
                 <Form.Control
                   type="text"
                   isInvalid={!!errors.title}
@@ -199,14 +199,14 @@ const UpdateConferenceModal: React.FC<Props> = ({
               </Form.Group>
 
               <Form.Group className="mb-3">
-                <Form.Label>Statut</Form.Label>
+                <Form.Label>Status</Form.Label>
                 <Form.Select
                   isInvalid={!!errors.status}
                   {...register("status")}
                 >
-                  <option value="">Sélectionnez un statut...</option>
-                  <option value="draft">Brouillon</option>
-                  <option value="published">Publié</option>
+                  <option value="">Select a status...</option>
+                  <option value="draft">Draft</option>
+                  <option value="published">Published</option>
                 </Form.Select>
                 <Form.Control.Feedback type="invalid">
                   {errors.status?.message}
@@ -221,14 +221,14 @@ const UpdateConferenceModal: React.FC<Props> = ({
             onClick={onClose}
             disabled={mutation.isLoading}
           >
-            Annuler
+            Cancel
           </Button>
           <Button
             type="submit"
             variant="primary"
             disabled={mutation.isLoading || isLoading}
           >
-            {mutation.isLoading ? "Mise à jour..." : "Mettre à jour"}
+            {mutation.isLoading ? "Updating..." : "Update"}
           </Button>
         </Modal.Footer>
       </Form>

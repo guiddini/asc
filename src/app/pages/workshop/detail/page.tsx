@@ -1,25 +1,22 @@
-// ConferenceDetailPage.tsx
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
-import { showConferenceById } from "../../../apis/conference";
-import ConferenceHeader from "../components/conference-header";
-import ConferenceDetailTabs from "../components/conference-detail-tabs";
+import { showWorkshopById } from "../../../apis/workshop";
+import WorkshopHeader from "../components/workshop-header";
+import WorkshopDetailTabs from "../components/workshop-detail-tabs";
 import { KTCard, KTCardBody } from "../../../../_metronic/helpers";
 import { useState } from "react";
-import UpdateConferenceModal from "../components/update-conference-modal";
+import UpdateWorkshopModal from "../components/update-workshop-modal";
+import type { Workshop } from "../../../types/workshop";
 
-const ConferenceDetailPage = () => {
+function WorkshopDetailPage() {
   const { id } = useParams<{ id: string }>();
 
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [updateTargetId, setUpdateTargetId] = useState<string | null>(null);
-  const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const [openCancelModal, setOpenCancelModal] = useState(false);
 
   const { data, isLoading, error } = useQuery({
-    queryFn: () => showConferenceById(id ?? ""),
-    queryKey: ["conferences", id],
-    enabled: !!id,
+    queryKey: ["show-workshop", id],
+    queryFn: () => showWorkshopById(id ?? ""),
   });
 
   if (isLoading) {
@@ -38,9 +35,7 @@ const ConferenceDetailPage = () => {
 
   if (error) {
     return (
-      <div className="alert alert-danger">
-        Error loading the conference.
-      </div>
+      <div className="alert alert-danger">Error loading the workshop.</div>
     );
   }
 
@@ -48,24 +43,24 @@ const ConferenceDetailPage = () => {
     <div className="">
       <KTCard className="mb-4">
         <KTCardBody>
-          <ConferenceHeader
-            conference={data?.conference}
+          <WorkshopHeader
+            workshop={data?.workshop as Workshop}
             onUpdate={() => {
-              setUpdateTargetId(data?.conference.id);
+              setUpdateTargetId(data?.workshop.id);
               setUpdateModalOpen(true);
             }}
           />
         </KTCardBody>
       </KTCard>
-      <ConferenceDetailTabs conference={data?.conference} />
+      <WorkshopDetailTabs workshop={data?.workshop as Workshop} />
 
-      <UpdateConferenceModal
+      <UpdateWorkshopModal
         show={updateModalOpen}
         onClose={() => setUpdateModalOpen(false)}
-        conferenceId={updateTargetId ?? ""}
+        workshopId={updateTargetId ?? ""}
       />
     </div>
   );
-};
+}
 
-export default ConferenceDetailPage;
+export default WorkshopDetailPage;

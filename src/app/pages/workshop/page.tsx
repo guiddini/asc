@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { TableComponent } from "../../components";
 import { useMutation } from "react-query";
-import { getAllConference } from "../../apis/conference";
+import { getAllWorkshops } from "../../apis/workshop";
 import moment from "moment";
 import getMediaUrl from "../../helpers/getMediaUrl";
-import ConferenceActionColumn from "./components/conference-action-column";
-import CreateConferenceModal from "./components/create-conference-modal";
-import UpdateConferenceModal from "./components/update-conference-modal";
-import { Conference } from "../../types/conference";
+import WorkshopActionColumn from "./components/workshop-action-column";
+import CreateWorkshopModal from "./components/create-workshop-modal";
+import UpdateWorkshopModal from "./components/update-workshop-modal";
+import { Workshop } from "../../types/workshop";
 
-const ConferencesManagementPage = () => {
+function WorkshopsManagementPage() {
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [updateTargetId, setUpdateTargetId] = useState<string | null>(null);
 
-  const conferencesMutation = useMutation({
-    mutationFn: getAllConference,
-    mutationKey: ["conferences"],
+  const workshopsMutation = useMutation({
+    mutationFn: getAllWorkshops,
+    mutationKey: ["workshops"],
   });
 
   useEffect(() => {
-    conferencesMutation.mutate();
+    workshopsMutation.mutate();
   }, []);
 
-  const data = conferencesMutation.data?.data || [];
+  const data = workshopsMutation.data?.data || [];
 
   const openUpdateModal = (id: string) => {
     setUpdateTargetId(id);
@@ -33,7 +33,7 @@ const ConferencesManagementPage = () => {
   const columns = [
     {
       name: "",
-      selector: (row: Conference) =>
+      selector: (row: Workshop) =>
         row.speakers?.[0]?.avatar ? (
           <div className="symbol symbol-circle symbol-40px overflow-hidden me-3 my-2">
             <div className="symbol-label">
@@ -50,36 +50,35 @@ const ConferencesManagementPage = () => {
       sortable: false,
       width: "60px",
     },
-    { name: "Title", selector: (row: Conference) => row.title, sortable: true },
+    { name: "Title", selector: (row: Workshop) => row.title, sortable: true },
     {
       name: "Location",
-      selector: (row: Conference) => row.location,
+      selector: (row: Workshop) => row.location,
       sortable: true,
     },
     {
       name: "Start Date",
-      selector: (row: Conference) =>
-        moment(row.start_time).format("DD/MM/YYYY"),
+      selector: (row: Workshop) => moment(row.start_time).format("DD/MM/YYYY"),
       sortable: true,
     },
     {
       name: "End Date",
-      selector: (row: Conference) => moment(row.end_time).format("DD/MM/YYYY"),
+      selector: (row: Workshop) => moment(row.end_time).format("DD/MM/YYYY"),
       sortable: true,
     },
     {
       name: "Status",
-      selector: (row: Conference) => row.status,
+      selector: (row: Workshop) => row.status,
       sortable: true,
     },
     {
       name: "Actions",
-      selector: (row: Conference) => (
-        <ConferenceActionColumn
+      selector: (row: Workshop) => (
+        <WorkshopActionColumn
           showView={true}
           conference={row}
           onEdit={() => openUpdateModal(row.id)}
-          onDeleted={() => conferencesMutation.mutate()}
+          onDeleted={() => workshopsMutation.mutate()}
         />
       ),
       sortable: false,
@@ -94,28 +93,28 @@ const ConferencesManagementPage = () => {
       <TableComponent
         columns={columns as any}
         data={data}
-        placeholder="conferences"
+        placeholder="workshops"
         onAddClick={() => setCreateModalOpen(true)}
         showSearch
         canA={null}
         canI={null}
         searchKeys={["title", "location", "status"]}
         showCreate
-        isLoading={conferencesMutation.isLoading}
+        isLoading={workshopsMutation.isLoading}
       />
 
-      <CreateConferenceModal
+      <CreateWorkshopModal
         show={createModalOpen}
         onClose={() => setCreateModalOpen(false)}
       />
 
-      <UpdateConferenceModal
+      <UpdateWorkshopModal
         show={updateModalOpen}
         onClose={() => setUpdateModalOpen(false)}
-        conferenceId={updateTargetId ?? ""}
+        workshopId={updateTargetId ?? ""}
       />
     </>
   );
-};
+}
 
-export default ConferencesManagementPage;
+export default WorkshopsManagementPage;

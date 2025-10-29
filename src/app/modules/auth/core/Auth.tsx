@@ -12,12 +12,12 @@ import { LayoutSplashScreen } from "../../../../_metronic/layout/core";
 import * as authHelper from "./AuthHelpers";
 import { WithChildren } from "../../../../_metronic/helpers";
 import { useDispatch } from "react-redux";
+import { useQuery } from "react-query";
 import {
-  setAuth as setReduxAuth,
   clearAuth as clearReduxAuth,
   setCurrentUser as setReduxCurrentUser,
 } from "../../../features/userSlice";
-import { getAuthenticatedUserDataApi, getUserDataApi } from "../../../apis";
+import { getAuthenticatedUserDataApi } from "../../../apis";
 import { User } from "../../../types/user";
 import { Ability, AbilityBuilder } from "@casl/ability";
 import ability from "../../../utils/ability";
@@ -80,13 +80,25 @@ const AuthInit: FC<WithChildren> = ({ children }) => {
   const [showSplashScreen, setShowSplashScreen] = useState(true);
   const dispatch = useDispatch();
 
+  const { refetch: fetchAuthenticatedUser } = useQuery({
+    queryKey: ["authenticated-user"],
+    queryFn: getAuthenticatedUserDataApi,
+    enabled: false,
+    retry: 1,
+    staleTime: 10 * 60 * 1000,
+    cacheTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
+
   // We should request user by authToken before rendering the application
   const requestUser = async (authToken: string) => {
     try {
       if (!currentUser) {
-        const { data } = await getAuthenticatedUserDataApi();
-        if (data) {
-          const userData = data as User;
+        const result = await fetchAuthenticatedUser();
+        const apiResponse = result.data;
+        if (apiResponse?.data) {
+          const userData = apiResponse.data as User;
           const permissions = userData?.permissions;
           const { can, rules } = new AbilityBuilder(Ability);
           permissions.forEach((permission) => {

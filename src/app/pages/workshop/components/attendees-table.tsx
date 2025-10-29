@@ -1,11 +1,11 @@
-// attendees-table.tsx
+// attendees-table.tsx (workshop)
 import React from "react";
-import { ConferenceAttendee } from "../../../types/conference";
+import { WorkshopAttendee } from "../../../types/workshop";
 import { TableComponent } from "../../../components";
 import getMediaUrl from "../../../helpers/getMediaUrl";
 
 interface AttendeesTableProps {
-  attendees: ConferenceAttendee[];
+  attendees: WorkshopAttendee[];
 }
 
 export const AttendeesTable: React.FC<AttendeesTableProps> = ({
@@ -14,7 +14,7 @@ export const AttendeesTable: React.FC<AttendeesTableProps> = ({
   const columns = [
     {
       name: "",
-      cell: (row: ConferenceAttendee) =>
+      cell: (row: WorkshopAttendee) =>
         row.avatar ? (
           <img
             src={getMediaUrl(row.avatar)}
@@ -36,12 +36,12 @@ export const AttendeesTable: React.FC<AttendeesTableProps> = ({
     },
     {
       name: "First Name",
-      selector: (row: ConferenceAttendee) => row.fname,
+      selector: (row: WorkshopAttendee) => row.fname,
       sortable: true,
     },
     {
       name: "Last Name",
-      selector: (row: ConferenceAttendee) => row.lname,
+      selector: (row: WorkshopAttendee) => row.lname,
       sortable: true,
     },
   ];

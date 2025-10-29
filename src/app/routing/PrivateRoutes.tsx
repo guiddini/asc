@@ -64,6 +64,8 @@ import OnlinePaymentResultsPage from "../pages/payment/results/page";
 import AppModal from "../components/app-modal";
 import { Calendar, Phone } from "lucide-react";
 import { Button } from "react-bootstrap";
+import WorkshopsManagementPage from "../pages/workshop/page";
+import WorkshopDetailPage from "../pages/workshop/detail/page";
 
 export const adminRoles = ["admin", "super_admin", "staff"];
 
@@ -178,6 +180,26 @@ const PrivateRoutes = () => {
                 <RoleGuard allowedRoles={adminRoles} showError>
                   <SuspensedView>
                     <UpdateBlogPage />
+                  </SuspensedView>
+                </RoleGuard>
+              }
+            />
+            <Route
+              path="/workshop-management"
+              element={
+                <RoleGuard allowedRoles={adminRoles} showError>
+                  <SuspensedView>
+                    <WorkshopsManagementPage />
+                  </SuspensedView>
+                </RoleGuard>
+              }
+            />
+            <Route
+              path="/workshop-management/:id"
+              element={
+                <RoleGuard allowedRoles={adminRoles} showError>
+                  <SuspensedView>
+                    <WorkshopDetailPage />
                   </SuspensedView>
                 </RoleGuard>
               }

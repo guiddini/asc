@@ -49,12 +49,12 @@ export const SpeakersTable: React.FC<SpeakersTableProps> = ({
       width: "60px",
     },
     {
-      name: "Prénom",
+      name: "First Name",
       selector: (row: ConferenceSpeaker) => row.fname,
       sortable: true,
     },
     {
-      name: "Nom",
+      name: "Last Name",
       selector: (row: ConferenceSpeaker) => row.lname,
       sortable: true,
     },
@@ -66,7 +66,7 @@ export const SpeakersTable: React.FC<SpeakersTableProps> = ({
           type="button"
           className="btn btn-danger btn-sm"
         >
-          Retirer
+          Remove
         </button>
       ),
       ignoreRowClick: true,
@@ -85,7 +85,7 @@ export const SpeakersTable: React.FC<SpeakersTableProps> = ({
         canI={null}
         showCreate
         onAddClick={() => setShowAddSpeakerModal(true)}
-        placeholder="intervenant"
+        placeholder="speaker"
       />
 
       {showAddSpeakerModal && (

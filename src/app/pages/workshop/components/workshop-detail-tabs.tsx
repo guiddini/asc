@@ -1,16 +1,15 @@
-// conference-detail-tabs.tsx
 import React, { useState } from "react";
 import { Tab, Nav } from "react-bootstrap";
-import { Conference } from "../../../types/conference";
 import { AttendeesTable } from "./attendees-table";
 import { SpeakersTable } from "./speakers-table";
+import { Workshop } from "../../../types/workshop";
 
-interface ConferenceDetailTabsProps {
-  conference: Conference;
+interface WorkshopDetailTabsProps {
+  workshop: Workshop;
 }
 
-const ConferenceDetailTabs: React.FC<ConferenceDetailTabsProps> = ({
-  conference,
+const WorkshopDetailTabs: React.FC<WorkshopDetailTabsProps> = ({
+  workshop,
 }) => {
   const [activeKey, setActiveKey] = useState("speakers");
 
@@ -31,17 +30,17 @@ const ConferenceDetailTabs: React.FC<ConferenceDetailTabsProps> = ({
       <Tab.Content>
         <Tab.Pane eventKey="speakers">
           <SpeakersTable
-            conferenceId={conference.id}
-            speakers={conference.speakers}
+            workshopId={workshop.id}
+            speakers={workshop.speakers}
           />
         </Tab.Pane>
 
         <Tab.Pane eventKey="attendees">
-          <AttendeesTable attendees={conference.attendees} />
+          <AttendeesTable attendees={workshop.attendees} />
         </Tab.Pane>
       </Tab.Content>
     </Tab.Container>
   );
 };
 
-export default ConferenceDetailTabs;
+export default WorkshopDetailTabs;

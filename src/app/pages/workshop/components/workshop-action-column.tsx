@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { Conference } from "../../../types/conference";
-import DeleteConfirmationModal from "./delete-conference-modal";
-import CancelConfirmationModal from "./cancel-conference-modal";
+import DeleteWorkshopModal from "./delete-workshop-modal";
+import CancelWorkshopModal from "./cancel-workshop-modal";
 import { Link } from "react-router-dom";
 
-interface ConferenceActionColumnProps {
+interface WorkshopActionColumnProps {
   conference: Conference;
   onEdit: () => void;
   onDeleted: () => void;
   showView?: boolean;
 }
 
-const ConferenceActionColumn: React.FC<ConferenceActionColumnProps> = ({
+const WorkshopActionColumn: React.FC<WorkshopActionColumnProps> = ({
   conference,
   onEdit,
   onDeleted,
@@ -30,7 +30,7 @@ const ConferenceActionColumn: React.FC<ConferenceActionColumnProps> = ({
           {showView && (
             <Dropdown.Item
               as={Link}
-              to={`/conferences-management/${conference.id}`}
+              to={`/workshop-management/${conference.id}`}
               className="d-flex align-items-center"
             >
               View
@@ -43,7 +43,7 @@ const ConferenceActionColumn: React.FC<ConferenceActionColumnProps> = ({
             onClick={() => setOpenCancelModal(true)}
             className="d-flex align-items-center"
           >
-            Cancel conference
+            Cancel workshop
           </Dropdown.Item>
           <Dropdown.Item
             onClick={() => setOpenDeleteModal(true)}
@@ -54,8 +54,7 @@ const ConferenceActionColumn: React.FC<ConferenceActionColumnProps> = ({
         </Dropdown.Menu>
       </Dropdown>
 
-      {/* Delete Confirmation Modal */}
-      <DeleteConfirmationModal
+      <DeleteWorkshopModal
         show={openDeleteModal}
         onHide={() => setOpenDeleteModal(false)}
         conferenceId={conference.id}
@@ -63,8 +62,7 @@ const ConferenceActionColumn: React.FC<ConferenceActionColumnProps> = ({
         onDeleted={onDeleted}
       />
 
-      {/* Cancel Confirmation Modal */}
-      <CancelConfirmationModal
+      <CancelWorkshopModal
         show={openCancelModal}
         onHide={() => setOpenCancelModal(false)}
         conferenceId={conference.id}
@@ -75,4 +73,4 @@ const ConferenceActionColumn: React.FC<ConferenceActionColumnProps> = ({
   );
 };
 
-export default ConferenceActionColumn;
+export default WorkshopActionColumn;

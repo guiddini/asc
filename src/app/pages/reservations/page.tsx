@@ -4,10 +4,8 @@ import {
   Ticket,
   BriefcaseBusiness,
   Users,
-  CreditCard,
   Banknote,
   Edit,
-  Download,
 } from "lucide-react";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
@@ -92,6 +90,11 @@ const CompanyReservationPage = () => {
   const { data, isLoading } = useQuery<AxiosResponse<ApiResponse>>({
     queryFn: getCompanyExhibitionDemand,
     queryKey: ["company-exhibition-demand"],
+    retry: 1,
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   const reservationData = data?.data;

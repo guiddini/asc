@@ -10,22 +10,22 @@ import { Conference } from "../../../types/conference";
 import { useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
-  title: yup.string().required("Le titre est obligatoire"),
-  description: yup.string().required("La description est obligatoire"),
-  start_time: yup.string().required("L'heure de début est obligatoire"),
+  title: yup.string().required("Title is required"),
+  description: yup.string().required("Description is required"),
+  start_time: yup.string().required("Start time is required"),
   end_time: yup
     .string()
-    .required("L'heure de fin est obligatoire")
+    .required("End time is required")
     .test(
       "is-after",
-      "L'heure de fin doit être après l'heure de début",
+      "End time must be after start time",
       function (value) {
         const { start_time } = this.parent;
         return new Date(value) > new Date(start_time);
       }
     ),
-  location: yup.string().required("Le lieu est obligatoire"),
-  status: yup.string().required("Le statut est obligatoire"),
+  location: yup.string().required("Location is required"),
+  status: yup.string().required("Status is required"),
 });
 
 const formatForBackend = (dtLocal: string) => {
@@ -48,12 +48,12 @@ const CreateConferenceModal: React.FC<Props> = ({ show, onClose }) => {
   const mutation = useMutation(createConference, {
     onSuccess(data: Conference) {
       queryClient.invalidateQueries("conferences");
-      toast.success("Conférence créée avec succès");
+      toast.success("Conference created successfully");
       onClose();
       navigation(`/conferences-management/${data?.id}`);
     },
     onError() {
-      toast.error("Échec de la création de la conférence");
+      toast.error("Failed to create the conference");
     },
   });
 
@@ -81,11 +81,11 @@ const CreateConferenceModal: React.FC<Props> = ({ show, onClose }) => {
     <Modal show={show} onHide={onClose} backdrop="static" size="lg" centered>
       <Form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Modal.Header closeButton>
-          <Modal.Title>Créer une conférence</Modal.Title>
+          <Modal.Title>Create conference</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Group className="mb-3">
-            <Form.Label>Titre</Form.Label>
+            <Form.Label>Title</Form.Label>
             <Form.Control
               type="text"
               isInvalid={!!errors.title}
@@ -110,7 +110,7 @@ const CreateConferenceModal: React.FC<Props> = ({ show, onClose }) => {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Heure de début</Form.Label>
+            <Form.Label>Start time</Form.Label>
             <Form.Control
               type="datetime-local"
               isInvalid={!!errors.start_time}
@@ -122,7 +122,7 @@ const CreateConferenceModal: React.FC<Props> = ({ show, onClose }) => {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Heure de fin</Form.Label>
+            <Form.Label>End time</Form.Label>
             <Form.Control
               type="datetime-local"
               isInvalid={!!errors.end_time}
@@ -134,7 +134,7 @@ const CreateConferenceModal: React.FC<Props> = ({ show, onClose }) => {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Lieu</Form.Label>
+            <Form.Label>Location</Form.Label>
             <Form.Control
               type="text"
               isInvalid={!!errors.title}
@@ -146,11 +146,11 @@ const CreateConferenceModal: React.FC<Props> = ({ show, onClose }) => {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Statut</Form.Label>
+            <Form.Label>Status</Form.Label>
             <Form.Select isInvalid={!!errors.status} {...register("status")}>
-              <option value="">Sélectionnez un statut...</option>
-              <option value="draft">Brouillon</option>
-              <option value="published">Publié</option>
+              <option value="">Select a status...</option>
+              <option value="draft">Draft</option>
+              <option value="published">Published</option>
             </Form.Select>
             <Form.Control.Feedback type="invalid">
               {errors.status?.message}
@@ -163,10 +163,10 @@ const CreateConferenceModal: React.FC<Props> = ({ show, onClose }) => {
             onClick={onClose}
             disabled={mutation.isLoading}
           >
-            Annuler
+            Cancel
           </Button>
           <Button type="submit" variant="primary" disabled={mutation.isLoading}>
-            {mutation.isLoading ? "Création..." : "Créer la conférence"}
+            {mutation.isLoading ? "Creating..." : "Create conference"}
           </Button>
         </Modal.Footer>
       </Form>

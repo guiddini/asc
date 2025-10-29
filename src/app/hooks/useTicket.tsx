@@ -37,6 +37,11 @@ export const useTicket = () => {
   } = useQuery({
     queryKey: ["get-all-unassigned-tickets"],
     queryFn: () => getAllUnassignedTickets(user?.id),
+    retry: 1,
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   const {
@@ -46,6 +51,11 @@ export const useTicket = () => {
   } = useQuery({
     queryKey: ["get-all-ticket-types"],
     queryFn: () => getAllTicketTypeApi(),
+    retry: 1,
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   const TICKETS = useMemo(() => data?.data, [data, isFetched]);

@@ -2,28 +2,28 @@ import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useMutation, useQueryClient } from "react-query";
 import toast from "react-hot-toast";
-import { removeSpeakerFromConference } from "../../../apis/conference";
+import { removeSpeakerFromWorkshop } from "../../../apis/workshop";
 import { ConferenceSpeaker } from "../../../types/conference";
 
-interface RemoveSpeakerFromConferenceModalProps {
-  conferenceId: string;
+interface RemoveSpeakerFromWorkshopModalProps {
+  workshopId: string;
   speaker: ConferenceSpeaker | null;
   show: boolean;
   onClose: () => void;
   onRemoved: () => void;
 }
 
-const RemoveSpeakerFromConferenceModal: React.FC<
-  RemoveSpeakerFromConferenceModalProps
-> = ({ conferenceId, speaker, show, onClose, onRemoved }) => {
+const RemoveSpeakerFromWorkshopModal: React.FC<
+  RemoveSpeakerFromWorkshopModalProps
+> = ({ workshopId, speaker, show, onClose, onRemoved }) => {
   const queryClient = useQueryClient();
 
   const { mutate, isLoading } = useMutation(
-    () => removeSpeakerFromConference(conferenceId, speaker!.id),
+    () => removeSpeakerFromWorkshop(workshopId, speaker!.id),
     {
       onSuccess: () => {
         toast.success("Speaker removed successfully");
-        queryClient.invalidateQueries(["conferences", conferenceId]);
+        queryClient.invalidateQueries(["conferences", workshopId]);
         onRemoved();
         onClose();
       },
@@ -45,7 +45,7 @@ const RemoveSpeakerFromConferenceModal: React.FC<
             <strong>
               {speaker.fname} {speaker.lname}
             </strong>{" "}
-            from the conference?
+            from the workshop?
           </p>
         )}
       </Modal.Body>
@@ -61,4 +61,4 @@ const RemoveSpeakerFromConferenceModal: React.FC<
   );
 };
 
-export default RemoveSpeakerFromConferenceModal;
+export default RemoveSpeakerFromWorkshopModal;
