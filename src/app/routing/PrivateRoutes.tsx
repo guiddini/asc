@@ -67,6 +67,7 @@ import { Button } from "react-bootstrap";
 import WorkshopsManagementPage from "../pages/workshop/page";
 import WorkshopDetailPage from "../pages/workshop/detail/page";
 import VisaDemandsManagementPage from "../pages/visa-demands-management/page";
+import VisaDemandPage from "../pages/visa-demand/page";
 
 export const adminRoles = ["admin", "super_admin", "staff"];
 
@@ -191,6 +192,16 @@ const PrivateRoutes = () => {
                 <RoleGuard allowedRoles={adminRoles} showError>
                   <SuspensedView>
                     <VisaDemandsManagementPage />
+                  </SuspensedView>
+                </RoleGuard>
+              }
+            />
+            <Route
+              path="/visa-demand"
+              element={
+                <RoleGuard allowedRoles={adminRoles} showError>
+                  <SuspensedView>
+                    <VisaDemandPage />
                   </SuspensedView>
                 </RoleGuard>
               }

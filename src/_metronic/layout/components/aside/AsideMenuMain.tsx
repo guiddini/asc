@@ -157,6 +157,13 @@ export function AsideMenuMain() {
       />
 
       <AsideMenuItem
+        to={`/visa-demand`}
+        title="Visa Demand"
+        bsTitle="Visa Demand"
+        customIcon={<i className="fa-solid fa-id-card"></i>}
+      />
+
+      <AsideMenuItem
         to={`/tickets`}
         title="Tickets"
         bsTitle="Tickets"
