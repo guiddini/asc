@@ -33,16 +33,16 @@ const AgendaPage: React.FC = () => {
         end: slot.end_time,
         backgroundColor:
           slot.slotable_type === "App\\Models\\Conference"
-            ? "var(--bs-info)"
+            ? "var(--bs-danger)" // Conference: red
             : slot.slotable_type === "App\\Models\\Workshop"
-            ? "var(--bs-success)"
-            : "var(--bs-primary)",
+            ? "var(--bs-warning)" // Workshop: yellow
+            : "var(--bs-secondary)", // Meeting: gray
         borderColor:
           slot.slotable_type === "App\\Models\\Conference"
-            ? "var(--bs-info)"
+            ? "var(--bs-danger)"
             : slot.slotable_type === "App\\Models\\Workshop"
-            ? "var(--bs-success)"
-            : "var(--bs-primary)",
+            ? "var(--bs-warning)"
+            : "var(--bs-secondary)",
       })),
     [slots]
   );
