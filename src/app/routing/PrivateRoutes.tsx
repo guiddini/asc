@@ -66,6 +66,7 @@ import { Calendar, Phone } from "lucide-react";
 import { Button } from "react-bootstrap";
 import WorkshopsManagementPage from "../pages/workshop/page";
 import WorkshopDetailPage from "../pages/workshop/detail/page";
+import VisaDemandsManagementPage from "../pages/visa-demands-management/page";
 
 export const adminRoles = ["admin", "super_admin", "staff"];
 
@@ -180,6 +181,16 @@ const PrivateRoutes = () => {
                 <RoleGuard allowedRoles={adminRoles} showError>
                   <SuspensedView>
                     <UpdateBlogPage />
+                  </SuspensedView>
+                </RoleGuard>
+              }
+            />
+            <Route
+              path="/visa-demand-management"
+              element={
+                <RoleGuard allowedRoles={adminRoles} showError>
+                  <SuspensedView>
+                    <VisaDemandsManagementPage />
                   </SuspensedView>
                 </RoleGuard>
               }

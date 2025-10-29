@@ -267,6 +267,14 @@ export function AsideMenuMain() {
           />
 
           <AsideMenuItem
+            to="/visa-demand-management"
+            title="Visa Demands"
+            hasBullet={true}
+            bsTitle="Visa Demands"
+            customIcon={<i className="fa-solid fa-person-chalkboard"></i>}
+          />
+
+          <AsideMenuItem
             to="/guests"
             title="Guests management"
             hasBullet={true}
