@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button, Form, Row, Col } from "react-bootstrap";
+import { Modal, Button, Form, Row, Col, Card, InputGroup } from "react-bootstrap";
 import { MeetingDetail } from "../../../types/meetings";
 
 interface EditMeetingModalProps {
@@ -56,107 +56,190 @@ const EditMeetingModal: React.FC<EditMeetingModalProps> = ({
   };
 
   return (
-    <Modal show={show} onHide={onHide} size="lg" centered>
-      <Modal.Header closeButton>
-        <Modal.Title>
-          <i className="bi bi-pencil me-2 text-primary" />
-          Modifier la réunion
+    <Modal show={show} onHide={onHide} size="lg" centered backdrop="static">
+      <Modal.Header closeButton className="border-0 pb-0">
+        <Modal.Title className="d-flex align-items-center">
+          <div
+            className="d-flex align-items-center justify-content-center rounded-circle me-3"
+            style={{
+              width: "40px",
+              height: "40px",
+              backgroundColor: "#e7f3ff",
+            }}
+          >
+            <i className="bi bi-pencil-square text-primary" style={{ fontSize: "1.2rem" }} />
+          </div>
+          <div>
+            <h5 className="mb-0 fw-bold">Edit Meeting</h5>
+            <small className="text-muted">Update meeting details</small>
+          </div>
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <Form onSubmit={handleSubmit}>
-          <Row>
-            <Col md={12}>
-              <Form.Group className="mb-3">
-                <Form.Label>
-                  <i className="bi bi-chat-text me-1" />
-                  Sujet de la réunion
-                </Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={2}
-                  name="topic"
-                  value={formData.topic}
-                  onChange={handleChange}
-                  placeholder="Entrez le sujet de la réunion"
-                  required
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>
-                  <i className="bi bi-calendar me-1" />
-                  Heure de début
-                </Form.Label>
-                <Form.Control
-                  type="datetime-local"
-                  name="start_time"
-                  value={formData.start_time}
-                  onChange={handleChange}
-                  required
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>
-                  <i className="bi bi-clock me-1" />
-                  Heure de fin
-                </Form.Label>
-                <Form.Control
-                  type="datetime-local"
-                  name="end_time"
-                  value={formData.end_time}
-                  onChange={handleChange}
-                  required
-                />
-              </Form.Group>
-            </Col>
-            <Col md={12}>
-              <Form.Group className="mb-3">
-                <Form.Label>
-                  <i className="bi bi-geo-alt me-1" />
-                  Lieu
-                </Form.Label>
-                <Form.Select
-                  name="location"
-                  value={formData.location}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Choisissez un lieu...</option>
-                  {locations.map((location) => (
-                    <option key={location} value={location}>
-                      {location}
-                    </option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-            </Col>
-          </Row>
-        </Form>
+      
+      <Modal.Body className="px-4 py-4">
+        <Card className="border-0 shadow-sm">
+          <Card.Body className="p-4">
+            <Form onSubmit={handleSubmit}>
+              <Row>
+                <Col md={12}>
+                  <Form.Group className="mb-4">
+                    <Form.Label className="fw-semibold text-dark mb-2">
+                      <i className="bi bi-chat-text-fill me-2 text-primary" />
+                      Meeting Topic
+                    </Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      name="topic"
+                      value={formData.topic}
+                      onChange={handleChange}
+                      placeholder="Enter the meeting topic..."
+                      required
+                      className="border-2"
+                      style={{
+                        borderRadius: "8px",
+                        fontSize: "0.95rem",
+                        padding: "12px 16px",
+                      }}
+                    />
+                  </Form.Group>
+                </Col>
+                
+                <Col md={6}>
+                  <Form.Group className="mb-4">
+                    <Form.Label className="fw-semibold text-dark mb-2">
+                      <i className="bi bi-calendar-event-fill me-2 text-success" />
+                      Start Time
+                    </Form.Label>
+                    <InputGroup>
+                      <InputGroup.Text className="bg-light border-2">
+                        <i className="bi bi-clock text-success" />
+                      </InputGroup.Text>
+                      <Form.Control
+                        type="datetime-local"
+                        name="start_time"
+                        value={formData.start_time}
+                        onChange={handleChange}
+                        required
+                        className="border-2"
+                        style={{
+                          borderRadius: "0 8px 8px 0",
+                          fontSize: "0.95rem",
+                          padding: "12px 16px",
+                        }}
+                      />
+                    </InputGroup>
+                  </Form.Group>
+                </Col>
+                
+                <Col md={6}>
+                  <Form.Group className="mb-4">
+                    <Form.Label className="fw-semibold text-dark mb-2">
+                      <i className="bi bi-calendar-x-fill me-2 text-danger" />
+                      End Time
+                    </Form.Label>
+                    <InputGroup>
+                      <InputGroup.Text className="bg-light border-2">
+                        <i className="bi bi-clock text-danger" />
+                      </InputGroup.Text>
+                      <Form.Control
+                        type="datetime-local"
+                        name="end_time"
+                        value={formData.end_time}
+                        onChange={handleChange}
+                        required
+                        className="border-2"
+                        style={{
+                          borderRadius: "0 8px 8px 0",
+                          fontSize: "0.95rem",
+                          padding: "12px 16px",
+                        }}
+                      />
+                    </InputGroup>
+                  </Form.Group>
+                </Col>
+                
+                <Col md={12}>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="fw-semibold text-dark mb-2">
+                      <i className="bi bi-geo-alt-fill me-2 text-warning" />
+                      Location
+                    </Form.Label>
+                    <InputGroup>
+                      <InputGroup.Text className="bg-light border-2">
+                        <i className="bi bi-building text-warning" />
+                      </InputGroup.Text>
+                      <Form.Select
+                        name="location"
+                        value={formData.location}
+                        onChange={handleChange}
+                        required
+                        className="border-2"
+                        style={{
+                          borderRadius: "0 8px 8px 0",
+                          fontSize: "0.95rem",
+                          padding: "12px 16px",
+                        }}
+                      >
+                        <option value="">Choose a location...</option>
+                        {locations.map((location) => (
+                          <option key={location} value={location}>
+                            {location}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </InputGroup>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Form>
+          </Card.Body>
+        </Card>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
-          Annuler
-        </Button>
-        <Button variant="primary" onClick={handleSubmit} disabled={loading}>
-          {loading ? (
-            <>
-              <span
-                className="spinner-border spinner-border-sm me-2"
-                role="status"
-              />
-              Mise à jour...
-            </>
-          ) : (
-            <>
-              <i className="bi bi-check-circle me-1" />
-              Mettre à jour la réunion
-            </>
-          )}
-        </Button>
+      
+      <Modal.Footer className="border-0 px-4 pb-4">
+        <div className="d-flex gap-3 w-100 justify-content-end">
+          <Button
+            variant="outline-secondary"
+            onClick={onHide}
+            className="px-4 py-2 fw-semibold"
+            style={{
+              borderRadius: "8px",
+              border: "2px solid",
+            }}
+            disabled={loading}
+          >
+            <i className="bi bi-x-circle me-2" />
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            onClick={handleSubmit}
+            disabled={loading}
+            className="px-4 py-2 fw-semibold"
+            style={{
+              borderRadius: "8px",
+              border: "2px solid transparent",
+              minWidth: "160px",
+            }}
+          >
+            {loading ? (
+              <>
+                <span
+                  className="spinner-border spinner-border-sm me-2"
+                  role="status"
+                  aria-hidden="true"
+                />
+                Updating...
+              </>
+            ) : (
+              <>
+                <i className="bi bi-check-circle-fill me-2" />
+                Update Meeting
+              </>
+            )}
+          </Button>
+        </div>
       </Modal.Footer>
     </Modal>
   );
