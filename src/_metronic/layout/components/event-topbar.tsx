@@ -1,7 +1,17 @@
-import { ArrowLeftRight, Calendar, Menu } from "lucide-react";
-import { Button, Spinner } from "react-bootstrap";
+import {
+  ArrowLeftRight,
+  Calendar,
+  Menu,
+  Building,
+  DollarSign,
+  Plane,
+  Newspaper,
+  FileText,
+} from "lucide-react";
+import { Spinner, Dropdown } from "react-bootstrap";
+import { KTIcon } from "../../helpers/components/KTIcon";
 import { useQuery } from "react-query";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getCompanyExhibitionDemand } from "../../../app/apis/exhibition";
 import { useSelector } from "react-redux";
 import { UserResponse } from "../../../app/types/reducers";
@@ -40,12 +50,7 @@ const EventTopbar = () => {
         demand?.transaction?.status === "paid")
   );
 
-  // Decide CTA label and destination
-  const cta = !company
-    ? { label: "Be Exhibitor", to: "/startup/create" }
-    : isDemandPaid
-    ? { label: "My Startup", to: "/startup/demand" }
-    : { label: "My exhibition request", to: "/startup/demand" };
+  // Removed standalone CTA; the action is now inside the dropdown
 
   const [showTicketPrivileges, setShowTicketPrivileges] = useState(false);
 
@@ -83,52 +88,55 @@ const EventTopbar = () => {
                   <Calendar />
                   December 06-07-08
                 </div>
-
-                {/* <div id="current-ticket-topbar">
-                  <span id="current-ticket-topbar-ticket-label">
-                    Ticket Used:
-                  </span>
-                  <Ticket
-                    id="current-ticket-topbar-ticket-icon"
-                    width={10}
-                    height={10}
-                  />
-                  <span
-                    id="current-ticket-topbar-ticket-name"
-                    role="button"
-                    onClick={() => setShowTicketPrivileges(true)}
-                  >
-                    {user?.ticket?.name}
-                    <ChevronRight id="current-ticket-topbar-ticket-arrow" />
-                  </span>
-                </div> */}
               </div>
             </div>
           </div>
 
           <div id="event-top-bar-cta-container">
-            <div
-              id="event-top-bar-switch"
-              role="button"
-              onClick={() => {
-                navigate("/commingSoon");
-              }}
-            >
-              <ArrowLeftRight />
-            </div>
-
-            <div id="exhibition-topbar-cta-container">
-              {isLoading ? (
-                <Spinner animation="border" />
-              ) : (
-                <Button
-                  onClick={() => navigate(cta.to)}
-                  variant="custom-purple-dark text-white"
-                  id="exhibition-request-cta"
+            {/* Applications & Services Dropdown */}
+            <div className="mx-3">
+              <Dropdown align="end">
+                <Dropdown.Toggle
+                  id="applications-services-dropdown"
+                  variant="outline-primary"
+                  size="sm"
+                  className="d-flex align-items-center gap-2"
                 >
-                  {cta.label}
-                </Button>
-              )}
+                  <KTIcon
+                    iconType="outline"
+                    iconName="element-11"
+                    className="me-1"
+                  />
+                  Applications & Services
+                </Dropdown.Toggle>
+                <Dropdown.Menu className="shadow">
+                  {/* Dynamic Exhibitor / Startup link (temporarily disabled) */}
+                  <Dropdown.Item
+                    as={Link}
+                    to={!company ? "/startup/create" : "/startup/demand"}
+                  >
+                    <FileText size={16} className="me-2" />
+                    {!company
+                      ? "Become an Exhibitor"
+                      : isDemandPaid
+                      ? "My Startup"
+                      : "My Exhibition Request"}
+                  </Dropdown.Item>
+
+                  <Dropdown.Item as={Link} to="/sponsor-demand">
+                    <DollarSign size={16} className="me-2" />
+                    Become a Sponsor
+                  </Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/visa-demand">
+                    <Plane size={16} className="me-2" />
+                    Visa Demand
+                  </Dropdown.Item>
+                  <Dropdown.Item disabled>
+                    <Newspaper size={16} className="me-2" />
+                    Journalist Accreditation
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </div>
 
             <div
