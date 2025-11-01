@@ -123,7 +123,7 @@ const ExhibitionTypeModal = ({
   }
 
   return (
-    <Modal show={show} onHide={onHide} centered size="lg">
+    <Modal show={show} onHide={onHide} centered size="xl">
       <Modal.Header closeButton>
         <Modal.Title>
           {mode === "create"
@@ -142,7 +142,7 @@ const ExhibitionTypeModal = ({
 
           <div className="row g-4">
             {/* Connect Desk */}
-            <div className="col-md-6">
+            <div className="col-md-4">
               <Card
                 className={`h-100 border-3 transition-all ${
                   selectedType === "connect_desk"
@@ -179,15 +179,22 @@ const ExhibitionTypeModal = ({
                     <h4 className="fw-bold mb-0">Connect Desk</h4>
                   </div>
                   <p className="text-muted small mb-3">
-                    Affordable, equipped desk space for startups seeking
-                    visibility and investor connections.
+                    Your gateway to meaningful connections at Africa's premier
+                    startup event.
                   </p>
                   <ul className="small mb-4">
-                    <li>2 exhibitor badges</li>
-                    <li>3 days of exhibition at main lobby</li>
-                    <li>Access to premium trainings</li>
-                    <li>Pitch competition (up to $10,000 prize)</li>
-                    <li>Access to investor deal room</li>
+                    <li>Two exhibitor badges</li>
+                    <li>Three days of exhibition at the main lobby</li>
+                    <li>
+                      Access to trainings with internationally renowned partners
+                    </li>
+                    <li>
+                      Participating in the pitch competition with a cash prize
+                      of up to $10,000
+                    </li>
+                    <li>
+                      Access to the deal room to meet investors and partners
+                    </li>
                   </ul>
                   <h5 className="fw-bold text-primary mb-1">29.900 DZD</h5>
                   <div className="text-muted small">≈ 199 $</div>
@@ -203,8 +210,87 @@ const ExhibitionTypeModal = ({
               </Card>
             </div>
 
+            {/* Scale Up Booth */}
+            <div className="col-md-4">
+              <Card
+                className={`h-100 border-3 transition-all ${
+                  selectedType === "scale_up_booth"
+                    ? "border-primary shadow-lg bg-primary bg-opacity-10"
+                    : "border-light"
+                }`}
+                style={{
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                  transform:
+                    selectedType === "scale_up_booth"
+                      ? "translateY(-4px)"
+                      : "none",
+                }}
+                onClick={() => handleCardClick("scale_up_booth")}
+              >
+                <Card.Body className="position-relative">
+                  {selectedType === "scale_up_booth" && (
+                    <div
+                      className="position-absolute top-0 end-0 m-3 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
+                      style={{ width: "32px", height: "32px" }}
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+                      </svg>
+                    </div>
+                  )}
+                  <div className="mb-3">
+                    <h4 className="fw-bold mb-0">Scale Up Booth</h4>
+                  </div>
+                  <p className="text-muted small mb-3">
+                    An elevated exhibition experience offering greater
+                    visibility, stronger connections, and exclusive networking
+                    opportunities with key ecosystem players.
+                  </p>
+                  <ul className="small mb-4">
+                    <li>Four exhibitor badges</li>
+                    <li>One access pass to the Gala Dinner</li>
+                    <li>
+                      Three days of exhibition in a prime area of the main lobby
+                    </li>
+                    <li>
+                      Access to advanced trainings with internationally renowned
+                      partners
+                    </li>
+                    <li>
+                      Exclusive networking session with investors and ecosystem
+                      leaders
+                    </li>
+                    <li>
+                      Participating in the pitch competition with a cash prize
+                      of up to $10,000
+                    </li>
+                    <li>
+                      Priority access to the deal room to meet investors and
+                      partners
+                    </li>
+                  </ul>
+                  <h5 className="fw-bold text-primary mb-1">99.999 DZD</h5>
+                  <div className="text-muted small">≈ 399 $</div>
+                  <input
+                    type="radio"
+                    value="scale_up_booth"
+                    {...register("exhibition_type", {
+                      required: "Please select an exhibition type",
+                    })}
+                    style={{ display: "none" }}
+                  />
+                </Card.Body>
+              </Card>
+            </div>
+
             {/* Premium Exhibition Space */}
-            <div className="col-md-6">
+            <div className="col-md-4">
               <Card
                 className={`h-100 border-3 transition-all ${
                   selectedType === "premium_exhibition_space"
@@ -241,16 +327,26 @@ const ExhibitionTypeModal = ({
                     <h4 className="fw-bold mb-0">Premium Exhibition Space</h4>
                   </div>
                   <p className="text-muted small mb-3">
-                    Custom 15m² booth for established companies seeking premium
-                    visibility and networking.
+                    Make a bold statement with your own customizable 15m²
+                    showcase.
                   </p>
                   <ul className="small mb-4">
-                    <li>5 exhibitor badges</li>
-                    <li>3 Gala Dinner passes</li>
-                    <li>Build your own 15m² stand</li>
-                    <li>Prime location in main lobby</li>
-                    <li>Pitch competition (up to $10,000 prize)</li>
-                    <li>Access to investor deal room</li>
+                    <li>Five exhibitor badges</li>
+                    <li>Access passes to the Champions-Gov Summit</li>
+                    <li>Access to VIP lounge</li>
+                    <li>Three access passes to the Gala Dinner</li>
+                    <li>
+                      Build your own stand according to your brand on your 15m²
+                      space
+                    </li>
+                    <li>
+                      Three days of exhibition at a strategic position in the
+                      main lobby
+                    </li>
+                    <li>
+                      Priority access to the deal room to meet investors and
+                      partners
+                    </li>
                   </ul>
                   <h5 className="fw-bold text-primary mb-1">299.900 DZD</h5>
                   <div className="text-muted small">≈ 1,999 $</div>

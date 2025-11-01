@@ -75,6 +75,7 @@ interface ApiResponse {
 const EXHIBITION_PRICES: Record<string, { dzd: number; usd: number }> = {
   premium_exhibition_space: { dzd: 299900, usd: 1999 },
   connect_desk: { dzd: 29900, usd: 199 },
+  scale_up_booth: { dzd: 99999, usd: 399 },
 };
 
 const CompanyReservationPage = () => {
@@ -106,6 +107,7 @@ const CompanyReservationPage = () => {
     const explicitMap: Record<string, string> = {
       premium_exhibition_space: "Premium Exhibition Space",
       connect_desk: "Connect Desk",
+      scale_up_booth: "Scale Up Booth",
     };
     if (explicitMap[type]) return explicitMap[type];
     return type

@@ -68,9 +68,11 @@ const validationSchema = Yup.object().shape({
         }),
     otherwise: (schema) => schema.notRequired().nullable(),
   }),
-
+  revenue_2024: Yup.number().typeError("Revenue must be a number").required("Revenue for 2024 is required $"),
+  revenue_2025: Yup.number().typeError("Revenue must be a number").required("Revenue for 2025 is required $"),
+  total_funds_raised: Yup.number().typeError("Total funds raised must be a number").required("Total funds raised is required $"),
   exhibition_type: Yup.string()
-    .oneOf(["connect_desk", "premium_exhibition_space"])
+    .oneOf(["connect_desk", "scale_up_booth", "premium_exhibition_space"])
     .required("Please select an exhibition type"),
 });
 
@@ -161,6 +163,15 @@ const CreateStartupPage = () => {
     formData.append("address", data.address);
     if (data.label_number) {
       formData.append("label_number", data.label_number);
+    }
+    if (data.revenue_2024 !== undefined) {
+      formData.append("revenue_2024", data.revenue_2024.toString());
+    }
+    if (data.revenue_2025 !== undefined) {
+      formData.append("revenue_2025", data.revenue_2025.toString());
+    }
+    if (data.total_funds_raised !== undefined) {
+      formData.append("total_funds_raised", data.total_funds_raised.toString());
     }
     if (data.logo instanceof File) formData.append("logo", data.logo);
     data.activity_areas.forEach((area, index) => {
@@ -266,6 +277,84 @@ const CreateStartupPage = () => {
           colMD={12}
         />
 
+        <Col xs={12} md={4} className="mb-3">
+          <label className="d-flex align-items-center fs-5 fw-semibold mb-2">
+            <span className="fw-bold required">Revenue 2024</span>
+          </label>
+          <div className="input-group input-group-solid">
+            <Controller
+              control={control}
+              name="revenue_2024"
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="number"
+                  className={clsx("form-control", {
+                    "is-invalid": errors.revenue_2024,
+                  })}
+                  placeholder="Enter revenue for 2024"
+                />
+              )}
+            />
+            <span className="input-group-text">$</span>
+          </div>
+          {errors.revenue_2024 && (
+            <div className="text-danger fs-7">{errors.revenue_2024.message}</div>
+          )}
+        </Col>
+        
+        <Col xs={12} md={4} className="mb-3">
+          <label className="d-flex align-items-center fs-5 fw-semibold mb-2">
+            <span className="fw-bold required">Revenue 2025</span>
+          </label>
+          <div className="input-group input-group-solid">
+            <Controller
+              control={control}
+              name="revenue_2025"
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="number"
+                  className={clsx("form-control", {
+                    "is-invalid": errors.revenue_2025,
+                  })}
+                  placeholder="Enter revenue for 2025"
+                />
+              )}
+            />
+            <span className="input-group-text">$</span>
+          </div>
+          {errors.revenue_2025 && (
+            <div className="text-danger fs-7">{errors.revenue_2025.message}</div>
+          )}
+        </Col>
+        
+        <Col xs={12} md={4} className="mb-3">
+          <label className="d-flex align-items-center fs-5 fw-semibold mb-2">
+            <span className="fw-bold required">Total Funds Raised</span>
+          </label>
+          <div className="input-group input-group-solid">
+            <Controller
+              control={control}
+              name="total_funds_raised"
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="number"
+                  className={clsx("form-control", {
+                    "is-invalid": errors.total_funds_raised,
+                  })}
+                  placeholder="Enter total funds raised"
+                />
+              )}
+            />
+            <span className="input-group-text">$</span>
+          </div>
+          {errors.total_funds_raised && (
+            <div className="text-danger fs-7">{errors.total_funds_raised.message}</div>
+          )}
+        </Col>
+
         <Col xs={12} md={12} className="mb-3">
           <label className="d-flex align-items-center fs-5 fw-semibold mb-2">
             <span className="fw-bold required">Logo</span>
@@ -345,7 +434,7 @@ const CreateStartupPage = () => {
             <span className="fw-bold required">Choose Exhibition Type</span>
           </label>
           <div className="row g-4">
-            <div className="col-md-6">
+            <div className="col-md-4">
               <Card
                 className={`h-100 border-3 transition-all ${
                   watch("exhibition_type") === "connect_desk"
@@ -382,13 +471,15 @@ const CreateStartupPage = () => {
                     <h4 className="fw-bold mb-0">Connect Desk</h4>
                   </div>
                   <p className="text-muted small mb-3">
-                    Affordable, equipped desk space for startups seeking
-                    visibility and investor connections.
+                    Your gateway to meaningful connections at Africa's premier
+                    startup event.
                   </p>
                   <ul className="small mb-4">
                     <li>2 exhibitor badges</li>
                     <li>3 days of exhibition at main lobby</li>
-                    <li>Access to premium trainings</li>
+                    <li>
+                      Access to trainings with internationally renowned partners
+                    </li>
                     <li>Pitch competition (up to $10,000 prize)</li>
                     <li>Access to investor deal room</li>
                   </ul>
@@ -398,7 +489,62 @@ const CreateStartupPage = () => {
               </Card>
             </div>
 
-            <div className="col-md-6">
+            <div className="col-md-4">
+              <Card
+                className={`h-100 border-3 transition-all ${
+                  watch("exhibition_type") === "scale_up_booth"
+                    ? "border-primary shadow-lg bg-primary bg-opacity-10"
+                    : "border-light"
+                }`}
+                style={{
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                  transform:
+                    watch("exhibition_type") === "scale_up_booth"
+                      ? "translateY(-4px)"
+                      : "none",
+                }}
+                onClick={() => setValue("exhibition_type", "scale_up_booth")}
+              >
+                <Card.Body className="position-relative">
+                  {watch("exhibition_type") === "scale_up_booth" && (
+                    <div
+                      className="position-absolute top-0 end-0 m-3 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
+                      style={{ width: "32px", height: "32px" }}
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+                      </svg>
+                    </div>
+                  )}
+                  <div className="mb-3">
+                    <h4 className="fw-bold mb-0">Scale Up Booth</h4>
+                  </div>
+                  <p className="text-muted small mb-3">
+                    An elevated exhibition experience offering greater
+                    visibility and stronger connections.
+                  </p>
+                  <ul className="small mb-4">
+                    <li>4 exhibitor badges</li>
+                    <li>1 access pass to the Gala Dinner</li>
+                    <li>3 days of exhibition in prime area</li>
+                    <li>Advanced trainings with renowned partners</li>
+                    <li>Exclusive networking with investors</li>
+                    <li>Pitch competition (up to $10,000 prize)</li>
+                    <li>Priority access to investor deal room</li>
+                  </ul>
+                  <h5 className="fw-bold text-primary mb-1">99.999 DZD</h5>
+                  <div className="text-muted small">≈ 399 $</div>
+                </Card.Body>
+              </Card>
+            </div>
+
+            <div className="col-md-4">
               <Card
                 className={`h-100 border-3 transition-all ${
                   watch("exhibition_type") === "premium_exhibition_space"
@@ -437,16 +583,17 @@ const CreateStartupPage = () => {
                     <h4 className="fw-bold mb-0">Premium Exhibition Space</h4>
                   </div>
                   <p className="text-muted small mb-3">
-                    Custom 15m² booth for established companies seeking premium
-                    visibility and networking.
+                    Make a bold statement with your own customizable 15m²
+                    showcase.
                   </p>
                   <ul className="small mb-4">
                     <li>5 exhibitor badges</li>
+                    <li>Access to Champions-Gov Summit</li>
+                    <li>Access to VIP lounge</li>
                     <li>3 Gala Dinner passes</li>
                     <li>Build your own 15m² stand</li>
-                    <li>Prime location in main lobby</li>
-                    <li>Pitch competition (up to $10,000 prize)</li>
-                    <li>Access to investor deal room</li>
+                    <li>Strategic position in main lobby</li>
+                    <li>Priority access to investor deal room</li>
                   </ul>
                   <h5 className="fw-bold text-primary mb-1">299.900 DZD</h5>
                   <div className="text-muted small">≈ 1,999 $</div>
