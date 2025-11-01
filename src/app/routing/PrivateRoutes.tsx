@@ -199,11 +199,9 @@ const PrivateRoutes = () => {
             <Route
               path="/visa-demand"
               element={
-                <RoleGuard allowedRoles={adminRoles} showError>
-                  <SuspensedView>
-                    <VisaDemandPage />
-                  </SuspensedView>
-                </RoleGuard>
+                <SuspensedView>
+                  <VisaDemandPage />
+                </SuspensedView>
               }
             />
             <Route

@@ -3,7 +3,6 @@ import { useQuery } from "react-query";
 import { VisaDemand, VisaDemandStatus } from "../../types/visa-demand";
 import { getVisaDemands } from "../../apis/visa-demand";
 import { TableComponent } from "../../components/table/TableComponent";
-import ViewVisaDemandModal from "./components/view-visa-demand-modal";
 import AcceptVisaDemandModal from "./components/accept-visa-demand-modal";
 import RefuseVisaDemandModal from "./components/refuse-visa-demand-modal";
 import DeleteVisaDemandModal from "./components/delete-visa-demand-modal";
@@ -177,6 +176,7 @@ export default function VisaDemandsManagementPage() {
         showExport={false}
         isLoading={isLoading}
         canI={null}
+        canA={null}
         customFullHeader={header}
         pagination={true}
         searchKeys={[
@@ -193,12 +193,6 @@ export default function VisaDemandsManagementPage() {
         ]}
       />
 
-      {/* Modals */}
-      <ViewVisaDemandModal
-        show={showView}
-        demandId={currentId}
-        onHide={() => setShowView(false)}
-      />
       <AcceptVisaDemandModal
         show={showAccept}
         demandId={currentId}

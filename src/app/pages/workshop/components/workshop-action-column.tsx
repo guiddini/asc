@@ -57,16 +57,16 @@ const WorkshopActionColumn: React.FC<WorkshopActionColumnProps> = ({
       <DeleteWorkshopModal
         show={openDeleteModal}
         onHide={() => setOpenDeleteModal(false)}
-        conferenceId={conference.id}
-        conferenceTitle={conference.title}
+        workshopId={conference.id}
+        workshopTitle={conference.title}
         onDeleted={onDeleted}
       />
 
       <CancelWorkshopModal
         show={openCancelModal}
         onHide={() => setOpenCancelModal(false)}
-        conferenceId={conference.id}
-        conferenceTitle={conference.title}
+        workshopId={conference.id}
+        workshopTitle={conference.title}
         onDeleted={onDeleted}
       />
     </>
