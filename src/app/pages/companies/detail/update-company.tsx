@@ -1,9 +1,7 @@
 import { useForm } from "react-hook-form";
 import {
-  CommuneSelect,
   CountriesSelect,
   InputComponent,
-  SelectComponent,
   TextAreaComponent,
   TextEditor,
   WillayasSelect,
@@ -62,6 +60,11 @@ export const updateCompanySchema = Yup.object().shape({
       /^\d{4}-\d{2}-\d{2}$/,
       "The founded date field must be a valid date."
     ),
+  revenue_2024: Yup.number().nullable().typeError("Revenue must be a number"),
+  revenue_2025: Yup.number().nullable().typeError("Revenue must be a number"),
+  total_funds_raised: Yup.number()
+    .nullable()
+    .typeError("Total funds raised must be a number"),
   logo: Yup.mixed().nullable(),
   header_image: Yup.mixed().nullable(),
 });
@@ -269,6 +272,18 @@ const UpdateCompanyPage = () => {
 
     if (isValidValue(data?.city)) {
       formData.append("city", data.city);
+    }
+
+    if (isValidValue(data?.revenue_2024)) {
+      formData.append("revenue_2024", data.revenue_2024);
+    }
+
+    if (isValidValue(data?.revenue_2025)) {
+      formData.append("revenue_2025", data.revenue_2025);
+    }
+
+    if (isValidValue(data?.total_funds_raised)) {
+      formData.append("total_funds_raised", data.total_funds_raised);
     }
 
     if (isValidValue(data?.activity_areas)) {
@@ -490,6 +505,36 @@ const UpdateCompanyPage = () => {
               errors={errors}
               label="City"
               type="text"
+              colMD={6}
+              colXS={12}
+            />
+
+            <InputComponent
+              control={control as any}
+              name="revenue_2024"
+              errors={errors}
+              label="Revenue 2024"
+              type="number"
+              colMD={6}
+              colXS={12}
+            />
+
+            <InputComponent
+              control={control as any}
+              name="revenue_2025"
+              errors={errors}
+              label="Revenue 2025"
+              type="number"
+              colMD={6}
+              colXS={12}
+            />
+
+            <InputComponent
+              control={control as any}
+              name="total_funds_raised"
+              errors={errors}
+              label="Total Funds Raised"
+              type="number"
               colMD={6}
               colXS={12}
             />

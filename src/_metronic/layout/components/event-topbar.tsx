@@ -16,17 +16,19 @@ import { getCompanyExhibitionDemand } from "../../../app/apis/exhibition";
 import { useSelector } from "react-redux";
 import { UserResponse } from "../../../app/types/reducers";
 import { TicketsPrivilege } from "../../../app/components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { HeaderUserMenu } from "../../partials";
 import clsx from "clsx";
 import getMediaUrl from "../../../app/helpers/getMediaUrl";
+import RevenueUpdateModal from "../../../app/components/revenue-update-modal";
 
 const EventTopbar = () => {
   const { user } = useSelector((state: UserResponse) => state.user);
   const navigate = useNavigate();
+  const [showRevenueModal, setShowRevenueModal] = useState(false);
 
   // Fetch company/demand info
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryFn: getCompanyExhibitionDemand,
     queryKey: ["company-exhibition-demand"],
     retry: 1,
@@ -39,6 +41,20 @@ const EventTopbar = () => {
   const reservationData = data?.data;
   const company = reservationData?.company;
   const demand = reservationData?.demand;
+
+  // Check if company is missing revenue information
+  useEffect(() => {
+    if (company && !isLoading && demand) {
+      const missingRevenue =
+        !demand?.company.revenue_2024 ||
+        !demand?.company.revenue_2025 ||
+        !demand?.company.total_funds_raised;
+
+      if (missingRevenue) {
+        setShowRevenueModal(true);
+      }
+    }
+  }, [company, isLoading]);
 
   // Evaluate paid status defensively (supports multiple backend shapes)
   const isDemandPaid = Boolean(
@@ -162,6 +178,16 @@ const EventTopbar = () => {
         setIsOpen={() => setShowTicketPrivileges(false)}
         isOpen={showTicketPrivileges}
       />
+
+      {/* Revenue Update Modal */}
+      {company && (
+        <RevenueUpdateModal
+          show={showRevenueModal}
+          onHide={() => setShowRevenueModal(false)}
+          companyId={company.id}
+          onSuccess={() => refetch()}
+        />
+      )}
     </div>
   );
 };
