@@ -1,8 +1,7 @@
 import { useParams } from "react-router-dom";
-import { Overview } from "./components/Overview";
 import { ProfileHeader } from "./ProfileHeader";
-import { useMemo, useState } from "react";
-import { Spinner, Tab, Tabs } from "react-bootstrap";
+import { useMemo } from "react";
+import { Spinner } from "react-bootstrap";
 import { useQuery } from "react-query";
 import { getUserDataApi } from "../../apis";
 import { User } from "../../types/user";
@@ -14,11 +13,11 @@ const ProfilePage = () => {
   const { id } = useParams();
   const { user } = useSelector((state: UserResponse) => state.user);
 
-  const [key, setKey] = useState<string>("overview");
-
   const { isLoading, data } = useQuery({
     queryKey: ["get-user-data", id],
     queryFn: () => getUserDataApi(id),
+    retry: 1,
+    staleTime: 1000 * 60,
   });
 
   const USER_DATA: User = useMemo(() => data?.data, [data, id]);

@@ -2,8 +2,7 @@ import { FC, ReactNode } from "react";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import { checkIsActive, KTIcon, WithChildren } from "../../../helpers";
+import { KTIcon, WithChildren, checkIsActive } from "../../../helpers";
 import { useLayout } from "../../core";
 
 type Props = {
@@ -17,6 +16,7 @@ type Props = {
   outside?: boolean;
   customIcon?: ReactNode;
   onClick?: any;
+  badge?: number | string;
 };
 
 const MenuItem: FC<Props & WithChildren> = ({
@@ -30,11 +30,41 @@ const MenuItem: FC<Props & WithChildren> = ({
   icon,
   children,
   customIcon,
+  badge,
 }) => {
   const { pathname } = useLocation();
   const isActive = checkIsActive(pathname, to);
   const { config } = useLayout();
   const { aside } = config;
+
+  const renderContent = () => (
+    <>
+      {hasBullet && (
+        <span className="menu-bullet">
+          <span className="bullet bullet-dot"></span>
+        </span>
+      )}
+      {icon && aside.menuIcon === "svg" && (
+        <span className="menu-icon">
+          <KTIcon iconName={icon} className="fs-2" />
+        </span>
+      )}
+      {customIcon && <span className="menu-icon me-0">{customIcon}</span>}
+      {fontIcon && aside.menuIcon === "font" ? (
+        <>
+          <span className="menu-icon me-0">
+            <i className={clsx("bi", fontIcon)}></i>
+          </span>
+          <span className="menu-title no-wrap">{title}</span>
+        </>
+      ) : (
+        <span className="menu-title no-wrap">{title}</span>
+      )}
+      {badge !== undefined && (
+        <span className="badge bg-primary ms-2">{badge}</span>
+      )}
+    </>
+  );
 
   return (
     <div className={clsx("menu-item", isActive && "here show", className)}>
@@ -44,76 +74,21 @@ const MenuItem: FC<Props & WithChildren> = ({
           target="_blank"
           className={clsx("menu-link menu-center", { activee: isActive })}
         >
-          {fontIcon && aside.menuIcon === "font" && (
-            <>
-              <span className="menu-icon me-0">
-                <i className={clsx("bi", fontIcon, "fs-2")}></i>
-              </span>
-              <span className="menu-title no-wrap">{title}</span>
-            </>
-          )}
+          {renderContent()}
         </a>
+      ) : onClick ? (
+        <span
+          className="menu-link menu-center cursor-pointer"
+          onClick={onClick}
+        >
+          {renderContent()}
+        </span>
       ) : (
-        <>
-          {onClick ? (
-            <span
-              className="menu-link menu-center cursor-pointer"
-              onClick={onClick}
-            >
-              {hasBullet && (
-                <span className="menu-bullet">
-                  <span className="bullet bullet-dot"></span>
-                </span>
-              )}
-              {icon && aside.menuIcon === "svg" && (
-                <span className="menu-icon">
-                  <KTIcon iconName={icon} className="fs-2" />
-                </span>
-              )}
-              {customIcon && (
-                <span className="menu-icon me-0">{customIcon}</span>
-              )}
-              {fontIcon && aside.menuIcon === "font" ? (
-                <>
-                  <span className="menu-icon me-0">
-                    <i className={clsx("bi", fontIcon)}></i>
-                  </span>
-                  <span className="menu-title no-wrap">{title}</span>
-                </>
-              ) : (
-                <span className="menu-title no-wrap">{title}</span>
-              )}
-            </span>
-          ) : (
-            <Link className="menu-link menu-center" to={to}>
-              {hasBullet && (
-                <span className="menu-bullet">
-                  <span className="bullet bullet-dot"></span>
-                </span>
-              )}
-              {icon && aside.menuIcon === "svg" && (
-                <span className="menu-icon">
-                  <KTIcon iconName={icon} className="fs-2" />
-                </span>
-              )}
-              {customIcon && (
-                <span className="menu-icon me-0">{customIcon}</span>
-              )}
-              {fontIcon && aside.menuIcon === "font" ? (
-                <>
-                  <span className="menu-icon me-0">
-                    <i className={clsx("bi", fontIcon)}></i>
-                  </span>
-                  <span className="menu-title no-wrap">{title}</span>
-                </>
-              ) : (
-                <span className="menu-title no-wrap">{title}</span>
-              )}
-            </Link>
-          )}
-          {children}
-        </>
+        <Link className="menu-link menu-center" to={to}>
+          {renderContent()}
+        </Link>
       )}
+      {children}
     </div>
   );
 };
@@ -121,4 +96,5 @@ const MenuItem: FC<Props & WithChildren> = ({
 const AsideMenuItem: FC<Props & WithChildren> = (props) => {
   return <MenuItem {...props}>{props.children}</MenuItem>;
 };
+
 export { AsideMenuItem };

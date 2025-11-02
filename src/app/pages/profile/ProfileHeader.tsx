@@ -1,14 +1,26 @@
 import type React from "react";
-import { useState } from "react";
 import { KTIcon } from "../../../_metronic/helpers";
 import clsx from "clsx";
 import type { User } from "../../types/user";
 import getMediaUrl from "../../helpers/getMediaUrl";
-import { Button, Modal, Form } from "react-bootstrap";
+import { Button, Modal, Form, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import type { UserResponse } from "../../types/reducers";
 import toast from "react-hot-toast";
 import { MeetingBookingModal } from "./components/meeting/meeting-booking-modal";
+import {
+  checkUserConnectionStatus,
+  sendUserConnectionRequest,
+} from "../../apis/user-connection";
+import type { UserConnectionStatus } from "../../types/user-connection";
+import { useQuery, useMutation, useQueryClient } from "react-query";
+import {
+  UserPlus,
+  UserCheck,
+  Clock,
+  Calendar,
+  MessageSquare,
+} from "lucide-react";
 
 interface ProfileHeaderProps {
   user: User;
@@ -25,22 +37,96 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
     (state: UserResponse) => state.user
   );
   const is_owner = currentUser?.id === user.id;
-  // Modal states
-  const [showMeetModal, setShowMeetModal] = useState(false);
-  const [showTextModal, setShowTextModal] = useState(false);
-  const [textMessage, setTextMessage] = useState<string>("");
+  const queryClient = useQueryClient();
 
-  const handleOpenMeetModal = () => setShowMeetModal(true);
-  const handleCloseMeetModal = () => setShowMeetModal(false);
+  // Connection status via React Query
+  const { data: connectionStatus = "none", isLoading: isConnectionLoading } =
+    useQuery<UserConnectionStatus>({
+      queryKey: ["user-connection-status", user.id],
+      queryFn: async () => {
+        const response = await checkUserConnectionStatus(user.id);
+        return response.status as UserConnectionStatus;
+      },
+      enabled: !is_owner && Boolean(user.id),
+      retry: 1,
+      staleTime: 1000 * 60,
+    });
 
-  const handleOpenTextModal = () => setShowTextModal(true);
+  // Connect mutation
+  const sendConnectionMutation = useMutation({
+    mutationFn: async () => sendUserConnectionRequest(user.id),
+    onSuccess: () => {
+      queryClient.setQueryData(
+        ["user-connection-status", user.id],
+        "pending" as UserConnectionStatus
+      );
+      toast.success(`Connection request sent to ${user.fname}`);
+    },
+    onError: (error: unknown) => {
+      console.error("Error sending connection request:", error);
+      toast.error("Failed to send connection request. Please try again.");
+    },
+  });
+
+  const handleConnect = () => {
+    if (connectionStatus !== "none") return;
+    sendConnectionMutation.mutate();
+  };
+
+  // Manage modal visibility via React Query cache (no local state)
+  const { data: showMeetModal = false } = useQuery<boolean>({
+    queryKey: ["profileHeader", "showMeetModal", user.id],
+    queryFn: async () => false,
+    initialData: false,
+  });
+
+  const { data: showTextModal = false } = useQuery<boolean>({
+    queryKey: ["profileHeader", "showTextModal", user.id],
+    queryFn: async () => false,
+    initialData: false,
+  });
+
+  const { data: textMessage = "" } = useQuery<string>({
+    queryKey: ["profileHeader", "textMessage", user.id],
+    queryFn: async () => "",
+    initialData: "",
+  });
+
+  const handleOpenMeetModal = () =>
+    queryClient.setQueryData(["profileHeader", "showMeetModal", user.id], true);
+  const handleCloseMeetModal = () =>
+    queryClient.setQueryData(
+      ["profileHeader", "showMeetModal", user.id],
+      false
+    );
+
+  const handleOpenTextModal = () =>
+    queryClient.setQueryData(["profileHeader", "showTextModal", user.id], true);
   const handleCloseTextModal = () => {
-    setShowTextModal(false);
-    setTextMessage("");
+    queryClient.setQueryData(
+      ["profileHeader", "showTextModal", user.id],
+      false
+    );
+    queryClient.setQueryData(["profileHeader", "textMessage", user.id], "");
+  };
+
+  const handleTextChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    queryClient.setQueryData(
+      ["profileHeader", "textMessage", user.id],
+      e.target.value
+    );
   };
 
   const handleSendText = () => {
-    toast.success(`Message sent to ${user.fname}: "${textMessage}"`);
+    const message =
+      (queryClient.getQueryData([
+        "profileHeader",
+        "textMessage",
+        user.id,
+      ]) as string) || "";
+    toast.success(`Message sent to ${user.fname}: "${message}"`);
     handleCloseTextModal();
   };
   return (
@@ -142,36 +228,76 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
         <div className="bg-white px-4 py-3">
           {is_owner ? (
             <div className="d-flex gap-2 flex-wrap">
-              <Button
-                variant="dark"
-                className="rounded-pill px-4 fw-semibold"
-                as={"a"}
-                href="#edit-profile"
-              >
+              <Button variant="dark" as={"a"} href="#edit-profile">
                 Edit Profile
               </Button>
             </div>
           ) : (
             <div className="d-flex gap-2 flex-wrap">
+              {connectionStatus === "none" && (
+                <Button
+                  variant="outline-dark"
+                  className="rounded-pill px-4 fw-semibold"
+                  onClick={handleConnect}
+                  disabled={sendConnectionMutation.isLoading}
+                >
+                  {sendConnectionMutation.isLoading ? (
+                    <>
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                        className="me-2"
+                      />
+                      Connecting...
+                    </>
+                  ) : (
+                    <>
+                      <UserPlus size={18} className="me-2" />
+                      Connect
+                    </>
+                  )}
+                </Button>
+              )}
+
+              {connectionStatus === "pending" && (
+                <Button
+                  variant="outline-secondary"
+                  className="rounded-pill px-4 fw-semibold"
+                  disabled
+                >
+                  <Clock size={18} className="me-2" />
+                  Pending
+                </Button>
+              )}
+
+              {connectionStatus === "accepted" && (
+                <Button
+                  variant="outline-success"
+                  className="rounded-pill px-4 fw-semibold"
+                  disabled
+                >
+                  <UserCheck size={18} className="me-2" />
+                  Connected
+                </Button>
+              )}
+
               <Button
-                variant="danger"
+                variant="outline-primary"
                 className="rounded-pill px-4 fw-semibold"
-              >
-                <KTIcon iconName="heart" className="me-2" />
-                Follow
-              </Button>
-              <Button
-                variant="primary"
-                className="rounded-pill px-4"
                 onClick={handleOpenMeetModal}
               >
+                <Calendar size={18} className="me-2" />
                 Request Meeting
               </Button>
               <Button
-                variant="success"
-                className="rounded-pill px-4"
+                variant="outline-info"
+                className="rounded-pill px-4 fw-semibold"
                 onClick={handleOpenTextModal}
               >
+                <MessageSquare size={18} className="me-2" />
                 Send Message
               </Button>
             </div>
@@ -353,7 +479,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
               rows={4}
               placeholder="Write your message..."
               value={textMessage}
-              onChange={(e) => setTextMessage(e.target.value)}
+              onChange={handleTextChange}
             />
           </Form.Group>
         </Modal.Body>

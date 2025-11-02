@@ -8,6 +8,8 @@ import {
 } from "../../../../app/features/userSlice";
 import RoleGuard from "../../../../app/components/role-guard";
 import { adminRoles } from "../../../../app/routing/PrivateRoutes";
+import { useQuery } from "react-query";
+import { getPendingUserConnectionsCount } from "../../../../app/apis/user-connection";
 
 // Permission checks are handled via RoleGuard using adminRoles
 
@@ -23,6 +25,18 @@ export function AsideMenuMain() {
   const isCompanyStaff = useSelector((state) =>
     canViewCompany(state, companyID)
   );
+
+  const { data: pendingCountData } = useQuery(
+    ["connections", "pending", "count"],
+    getPendingUserConnectionsCount,
+    {
+      staleTime: 60 * 1000,
+    }
+  );
+  const pendingBadge =
+    pendingCountData && pendingCountData.count > 0
+      ? pendingCountData.count
+      : undefined;
 
   return (
     <>
@@ -102,12 +116,27 @@ export function AsideMenuMain() {
         />
       </AsideMenuItemWithSubMain>
 
-      <AsideMenuItem
+      <AsideMenuItemWithSubMain
         to={`/participants`}
         title="Participants"
         bsTitle="Participants"
         customIcon={<i className="fa-solid fa-users"></i>}
-      />
+        badge={pendingBadge}
+      >
+        <AsideMenuItem
+          to={`/my-connections`}
+          title="My Connections"
+          bsTitle="My Connections"
+          hasBullet={true}
+          badge={pendingBadge}
+        />
+        <AsideMenuItem
+          to={`/participants`}
+          title="Participants"
+          bsTitle="Participants"
+          hasBullet={true}
+        />
+      </AsideMenuItemWithSubMain>
 
       <AsideMenuItem
         to={`/companies`}

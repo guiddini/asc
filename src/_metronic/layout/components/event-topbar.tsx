@@ -32,9 +32,10 @@ const EventTopbar = () => {
     queryFn: getCompanyExhibitionDemand,
     queryKey: ["company-exhibition-demand"],
     retry: 1,
-    onError: (error) => {
-      console.error("Error fetching company exhibition demand:", error);
-    },
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   // Unpack response data

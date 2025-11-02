@@ -69,6 +69,7 @@ import WorkshopDetailPage from "../pages/workshop/detail/page";
 import VisaDemandsManagementPage from "../pages/visa-demands-management/page";
 import VisaDemandPage from "../pages/visa-demand/page";
 import ProgramEventManagement from "../pages/program-event-management/page";
+import ManageMyConnectionsPage from "../pages/connections/page";
 
 export const adminRoles = ["admin", "super_admin", "staff"];
 
@@ -151,6 +152,15 @@ const PrivateRoutes = () => {
               element={
                 <SuspensedView>
                   <HomeWrapper />
+                </SuspensedView>
+              }
+            />
+
+            <Route
+              path="/my-connections"
+              element={
+                <SuspensedView>
+                  <ManageMyConnectionsPage />
                 </SuspensedView>
               }
             />

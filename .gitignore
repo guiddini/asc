@@ -30,3 +30,6 @@ env
 
 newtodo
 newtodo.mdx
+
+host.txt
+scripts/*

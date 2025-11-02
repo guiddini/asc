@@ -12,6 +12,7 @@ type Props = {
   hasBullet?: boolean;
   bsTitle?: string;
   customIcon?: ReactNode;
+  badge?: number | string;
 };
 
 const AsideMenuItemWithSubMain: FC<Props & WithChildren> = ({
@@ -21,40 +22,47 @@ const AsideMenuItemWithSubMain: FC<Props & WithChildren> = ({
   fontIcon,
   bsTitle,
   customIcon,
+  badge,
 }) => {
   const { pathname } = useLocation();
   const isActive = checkIsActive(pathname, to);
   const { config } = useLayout();
   const { aside } = config;
+
   return (
     <div
-      className={clsx("menu-item py-3", { "here show": isActive })}
+      className={clsx("menu-item py-3 position-relative", {
+        "here show": isActive,
+      })}
       data-kt-menu-trigger="hover"
       data-kt-menu-placement="right-start"
     >
       <span className="menu-link menu-center">
-        {fontIcon && aside.menuIcon === "font" && (
-          <>
-            <span className="menu-icon me-0">
-              <i className={clsx("bi", fontIcon, "fs-2")}></i>
-            </span>
-            <span className="menu-title no-wrap">{title}</span>
-          </>
-        )}
-
-        {customIcon && (
-          <>
-            <span className="menu-icon me-0">{customIcon}</span>
-            <span className="menu-title no-wrap">{title}</span>
-          </>
-        )}
+        {(fontIcon && aside.menuIcon === "font") || customIcon ? (
+          <span className="position-relative d-inline-block">
+            {fontIcon && aside.menuIcon === "font" && (
+              <span className="menu-icon me-0">
+                <i className={clsx("bi", fontIcon, "fs-2")}></i>
+              </span>
+            )}
+            {customIcon && <span className="menu-icon me-0">{customIcon}</span>}
+            {badge !== undefined && (
+              <span
+                className="badge bg-primary position-absolute"
+                style={{ bottom: "-4px", left: "4px", fontSize: "0.65rem" }}
+              >
+                {badge}
+              </span>
+            )}
+          </span>
+        ) : null}
+        <span className="menu-title no-wrap">{title}</span>
       </span>
+
       <div
         className={clsx(
           "menu-sub menu-sub-dropdown w-225px w-lg-275px px-1 py-4",
-          {
-            "menu-active-bg": isActive,
-          }
+          { "menu-active-bg": isActive }
         )}
       >
         {children}

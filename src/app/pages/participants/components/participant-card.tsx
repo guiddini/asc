@@ -1,4 +1,4 @@
-import { Button, Col, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 import { ParticipantProps } from "../../../types/user";
 import getMediaUrl from "../../../helpers/getMediaUrl";
 import { Link } from "react-router-dom";
@@ -20,15 +20,6 @@ const ParticipantCard = (props: ParticipantProps) => {
             {props?.roles[0]?.display_name}
           </div>
 
-          {/* <div className="d-flex flex-center flex-wrap mb-5">
-            <div className="border border-dashed rounded min-w-90px py-3 px-4 mx-2 mb-3">
-              <div className="fs-6 fw-bold text-gray-700">
-                {props?.info?.type || " "}
-              </div>
-              <div className="fw-semibold text-gray-500">Role</div>
-            </div>
-          </div> */}
-
           <div className="d-flex flex-center flex-wrap gap-5 mt-4">
             <Link
               to={`/profile/${props.id}`}
@@ -39,23 +30,6 @@ const ParticipantCard = (props: ParticipantProps) => {
 
               <span className="indicator-label">View</span>
             </Link>
-
-            <OverlayTrigger
-              placement="top-start"
-              delay={{ show: 250, hide: 400 }}
-              overlay={<Tooltip>Bientôt disponible !</Tooltip>}
-            >
-              <Button
-                variant="custom-purple-dark text-white"
-                className="opacity-25"
-                onClick={(e) => {
-                  e.preventDefault();
-                }}
-                size="sm"
-              >
-                Follow
-              </Button>
-            </OverlayTrigger>
           </div>
         </div>
       </div>

@@ -19,3 +19,4 @@ export * from "./blog";
 export * from "./workshop";
 export * from "./visa-demand";
 export * from "./program-event";
+export * from "./user-connection";
