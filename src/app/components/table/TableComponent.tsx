@@ -124,13 +124,12 @@ export const TableComponent = ({
           </div>
         </div>
       )}
-      <KTCardBody className="py-4">
-        <div className="w-100" style={{ overflow: "visible" }}>
+      <KTCardBody className="py-4" scroll>
+        <div className="w-100 h-100">
           <DataTable
             columns={columns}
             data={filteredData}
             fixedHeader
-            fixedHeaderScrollHeight="75vh"
             responsive
             customStyles={{
               table: {
@@ -138,6 +137,7 @@ export const TableComponent = ({
                   width: "max-content",
                   minWidth: "100%",
                   overflow: "visible",
+                  minHeight: "60vh",
                 },
               },
               headRow: {
