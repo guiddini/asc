@@ -81,8 +81,6 @@ export const SpeakersTable: React.FC<SpeakersTableProps> = ({
       <TableComponent
         columns={columns}
         data={speakers}
-        canA={null}
-        canI={null}
         showCreate
         onAddClick={() => setShowAddSpeakerModal(true)}
         placeholder="speaker"

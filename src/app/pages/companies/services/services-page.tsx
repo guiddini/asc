@@ -118,8 +118,6 @@ const ServicesPage = () => {
         onAddClick={() => {
           navigate("create");
         }}
-        canI="create"
-        canA="guests"
       />
     </>
   );

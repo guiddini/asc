@@ -347,8 +347,6 @@ export const AdsPage = () => {
           showCreate={true}
           showExport={false}
           isLoading={isLoading}
-          canA="adsadmin"
-          canI="create"
         />
       </Can>
 

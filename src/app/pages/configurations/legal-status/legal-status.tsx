@@ -116,11 +116,7 @@ export const LegalStatus = () => {
         data={OCUUPATIONS}
         placeholder="legal status"
         isLoading={loadingOccupations}
-        canA="legalstatus"
-        canI="create"
       />
-      {/* <Can I="read" a="legalstatus">
-      </Can> */}
     </div>
   );
 };

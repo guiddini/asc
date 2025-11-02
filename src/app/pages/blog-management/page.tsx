@@ -91,8 +91,6 @@ const BlogsManagementPage = () => {
         searchKeys={["title", "slug"]}
         showCreate
         isLoading={searchMutation.isLoading}
-        canA={null}
-        canI={null}
       />
     </>
   );

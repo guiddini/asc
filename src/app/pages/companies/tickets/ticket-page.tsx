@@ -222,7 +222,6 @@ export const TicketPage = () => {
             }
           }}
           showCreate={userTickets?.length > 0 ? true : false}
-          canI={null}
           showSearch={false}
           key={selectedType}
         />

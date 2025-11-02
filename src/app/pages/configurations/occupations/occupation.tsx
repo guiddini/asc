@@ -211,8 +211,6 @@ export const Occupations = () => {
             showSearch={true}
             searchKeys={["label_en", "label_fr"]}
             showCreate={false}
-            canA="occupations"
-            canI="create"
             pagination
           />
         </Can>

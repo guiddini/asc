@@ -283,8 +283,6 @@ const UsersPage = () => {
           data={users}
           placeholder="utilisateur"
           onAddClick={() => {}}
-          canA="users"
-          canI="create"
           showSearch={false}
           customFullHeader={
             <form onSubmit={handleSubmit(handleFilter)} className="w-100">

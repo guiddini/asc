@@ -109,8 +109,6 @@ const GuestsPage = () => {
         onAddClick={() => {
           setCreateModalOpen(true);
         }}
-        canI="create"
-        canA="guests"
       />
 
       <Can I="create" a="guests">

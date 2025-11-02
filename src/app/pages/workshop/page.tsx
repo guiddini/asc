@@ -96,8 +96,6 @@ function WorkshopsManagementPage() {
         placeholder="workshops"
         onAddClick={() => setCreateModalOpen(true)}
         showSearch
-        canA={null}
-        canI={null}
         searchKeys={["title", "location", "status"]}
         showCreate
         isLoading={workshopsMutation.isLoading}

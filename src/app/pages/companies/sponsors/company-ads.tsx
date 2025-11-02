@@ -222,7 +222,6 @@ export const CompanyAdsPage = () => {
         showCreate={isCompanyEditor}
         showExport={false}
         isLoading={isLoading}
-        canI={null}
       />
 
       {isCompanyEditor && (

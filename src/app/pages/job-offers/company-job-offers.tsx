@@ -108,7 +108,6 @@ export const CompanyJobOffers = () => {
           data={selectedType === "active" ? activejobOffers : inactivejobOffers}
           placeholder=""
           customPlaceholder="Ajouter"
-          canI={null}
           showSearch={false}
           showCreate={isCompanyEditor}
           onAddClick={() => {

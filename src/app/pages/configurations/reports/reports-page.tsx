@@ -98,8 +98,6 @@ const ReportsPage = () => {
           showExport={false}
           showCreate={false}
           placeholder=""
-          canI="create"
-          canA="reports"
         />
       </Can>
     </>

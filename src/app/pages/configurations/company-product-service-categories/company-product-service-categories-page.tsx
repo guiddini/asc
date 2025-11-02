@@ -212,8 +212,6 @@ export const CompanyProductServiceCategoriesPage = () => {
             isLoading={loadingCategories}
             showCreate={false}
             showExport={false}
-            canA="companyproductsservicecategories"
-            canI="create"
           />
         </Can>
       </Row>

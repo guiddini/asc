@@ -175,8 +175,6 @@ export default function VisaDemandsManagementPage() {
         showCreate={false}
         showExport={false}
         isLoading={isLoading}
-        canI={null}
-        canA={null}
         customFullHeader={header}
         pagination={true}
         searchKeys={[

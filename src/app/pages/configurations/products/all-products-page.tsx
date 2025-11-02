@@ -267,8 +267,6 @@ export const AllProductsPage = () => {
           }}
           showCreate={false}
           showExport={false}
-          canI="create"
-          canA="products"
         />
       </Can>
     </>
