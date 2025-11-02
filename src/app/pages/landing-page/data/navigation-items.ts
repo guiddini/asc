@@ -7,9 +7,9 @@ export const navigationItems: NavigationItem[] = [
   {
     label: "Program",
     dropdown: [
-      { label: "Agenda", href: "/program#agenda" },
-      { label: "Workshop", href: "/program#workshops" },
-      { label: "Panels", href: "/program#panels" },
+      { label: "Program", href: "/program" },
+      { label: "Workshop", href: "/program?type=workshop" },
+      { label: "Conference", href: "/program?type=conference" },
       { label: "Speakers", href: "/speakers" },
     ],
   },

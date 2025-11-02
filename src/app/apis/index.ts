@@ -18,3 +18,4 @@ export * from "./job-offers";
 export * from "./blog";
 export * from "./workshop";
 export * from "./visa-demand";
+export * from "./program-event";

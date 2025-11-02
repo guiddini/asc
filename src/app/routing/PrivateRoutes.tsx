@@ -68,6 +68,7 @@ import WorkshopsManagementPage from "../pages/workshop/page";
 import WorkshopDetailPage from "../pages/workshop/detail/page";
 import VisaDemandsManagementPage from "../pages/visa-demands-management/page";
 import VisaDemandPage from "../pages/visa-demand/page";
+import ProgramEventManagement from "../pages/program-event-management/page";
 
 export const adminRoles = ["admin", "super_admin", "staff"];
 
@@ -187,6 +188,16 @@ const PrivateRoutes = () => {
               }
             />
             <Route
+              path="/program-event-management"
+              element={
+                <RoleGuard allowedRoles={adminRoles} showError>
+                  <SuspensedView>
+                    <ProgramEventManagement />
+                  </SuspensedView>
+                </RoleGuard>
+              }
+            />
+            <Route
               path="/visa-demand-management"
               element={
                 <RoleGuard allowedRoles={adminRoles} showError>
@@ -270,14 +281,7 @@ const PrivateRoutes = () => {
                 </SuspensedView>
               }
             />
-            <Route
-              path="/program"
-              element={
-                <SuspensedView>
-                  <ProgramPage />
-                </SuspensedView>
-              }
-            />
+
             {/*  */}
             {/* <Route path="dashboard" element={<DashboardWrapper />} /> */}
             <Route path="menu-test" element={<MenuTestPage />} />

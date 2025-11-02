@@ -258,6 +258,14 @@ export function AsideMenuMain() {
           />
 
           <AsideMenuItem
+            to="/program-event-management"
+            title="Program Events"
+            hasBullet={true}
+            bsTitle="Program Events"
+            customIcon={<i className="fa-solid fa-calendar-days"></i>}
+          />
+
+          <AsideMenuItem
             to="/conferences-management"
             title="Conferences"
             hasBullet={true}

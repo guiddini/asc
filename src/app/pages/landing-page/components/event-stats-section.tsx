@@ -15,7 +15,7 @@ type CounterProps = {
   start?: boolean; // animation démarre seulement si true
 };
 
-const Counter: React.FC<CounterProps> = ({
+export const Counter: React.FC<CounterProps> = ({
   value,
   duration = 2000,
   start = false,
@@ -54,7 +54,7 @@ const Counter: React.FC<CounterProps> = ({
 };
 
 // ---- Données ----
-const EVENT_STATS: StatItem[] = [
+export const EVENT_STATS: StatItem[] = [
   {
     icon: "/stats/startup.svg",
     label: "Ministerial Delegations",

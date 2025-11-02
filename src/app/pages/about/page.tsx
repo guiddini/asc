@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import UserTypeComponent from "../landing-page/layout/type-user-component";
 import EventGallerySection from "../landing-page/components/event-gallery-section";
 // Milestones data
