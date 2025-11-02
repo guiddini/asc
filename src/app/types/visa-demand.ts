@@ -111,3 +111,24 @@ export type ShowVisaDemandResponse = VisaDemand | ApiError;
 export type AcceptVisaDemandResponse = VisaDemand;
 export type RefuseVisaDemandResponse = VisaDemand;
 export type CancelVisaDemandResponse = VisaDemand;
+
+export interface GetUserVisaDemandResponse {
+  id: string;
+  user_id: string;
+  first_name: string;
+  last_name: string;
+  profession?: string | null;
+  company_name?: string | null;
+  passport_number: string;
+  passport_issue_date?: string | null;
+  passport_expiration_date?: string | null;
+  authorities_password?: string | null;
+  status: "pending" | "accepted" | "refused" | "cancelled";
+  created_at: string;
+  updated_at: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+  };
+}

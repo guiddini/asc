@@ -115,17 +115,17 @@ export function AsideMenuMain() {
         badge={pendingBadge}
       >
         <AsideMenuItem
+          to={`/participants`}
+          title="Participants"
+          bsTitle="Participants"
+          hasBullet={true}
+        />
+        <AsideMenuItem
           to={`/my-connections`}
           title="My Connections"
           bsTitle="My Connections"
           hasBullet={true}
           badge={pendingBadge}
-        />
-        <AsideMenuItem
-          to={`/participants`}
-          title="Participants"
-          bsTitle="Participants"
-          hasBullet={true}
         />
       </AsideMenuItemWithSubMain>
 

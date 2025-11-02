@@ -1,21 +1,21 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
-  getVisaDemands,
   createVisaDemand,
   editVisaDemand,
   deleteVisaDemand,
   cancelVisaDemand,
+  getUserVisaDemand,
 } from "../../apis/visa-demand";
 import {
-  VisaDemand,
   VisaDemandStatus,
   CreateVisaDemandRequest,
   EditVisaDemandRequest,
+  GetUserVisaDemandResponse,
 } from "../../types/visa-demand";
 import moment from "moment";
 
-const statusBadgeClass = (status: VisaDemandStatus) => {
+const statusBadgeClass = (status?: VisaDemandStatus) => {
   switch (status) {
     case "accepted":
       return "badge badge-light-success";
@@ -45,12 +45,21 @@ const VisaDemandPage: React.FC = () => {
     refetch: refetchDemands,
   } = useQuery({
     queryKey: ["visa-demands", "me"],
-    queryFn: () => getVisaDemands(),
+    queryFn: () => getUserVisaDemand(),
   });
 
-  const myDemand: VisaDemand | null = useMemo(() => {
-    const first = data?.data?.[0];
-    return first || null;
+  const isDemand = (d: any): d is GetUserVisaDemandResponse => {
+    return (
+      d &&
+      typeof d === "object" &&
+      "id" in d &&
+      "status" in d &&
+      typeof d.status === "string"
+    );
+  };
+
+  const myDemand: GetUserVisaDemandResponse | null = useMemo(() => {
+    return isDemand(data) ? data : null;
   }, [data]);
 
   // Create form state
@@ -339,8 +348,8 @@ const VisaDemandPage: React.FC = () => {
     <div className="card">
       <div className="card-header d-flex align-items-center justify-content-between">
         <h3 className="card-title">My Visa Demand</h3>
-        <span className={statusBadgeClass(myDemand.status)}>
-          {myDemand.status.toUpperCase()}
+        <span className={statusBadgeClass(myDemand?.status)}>
+          {myDemand?.status ? myDemand.status.toUpperCase() : "-"}
         </span>
       </div>
 

@@ -16,6 +16,7 @@ import {
   RefuseVisaDemandResponse,
   CancelVisaDemandRequest,
   CancelVisaDemandResponse,
+  GetUserVisaDemandResponse,
 } from "../types/visa-demand";
 
 // List visa demands (optionally filter by status only admin)
@@ -89,3 +90,9 @@ export const cancelVisaDemand = async (
   const res = await axiosInstance.post("/visa-demands/cancel", payload);
   return res.data;
 };
+
+export const getUserVisaDemand =
+  async (): Promise<GetUserVisaDemandResponse> => {
+    const res = await axiosInstance.get("/visa-demands/user");
+    return res.data;
+  };
