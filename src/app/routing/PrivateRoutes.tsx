@@ -47,9 +47,9 @@ import EventManagement from "../pages/event-management/page";
 import ExhibitionRequests from "../pages/exhibition-requests/page";
 import CompanyReservationPage from "../pages/reservations/page";
 import UserProfileWrapper from "../utils/user-profile-wrapper";
-import NewsManagementPage from "../pages/news-management/page";
-import CreateNewsPage from "../pages/news-management/create-news/page";
-import UpdateNewsPage from "../pages/news-management/update-news/page";
+import MediaManagementPage from "../pages/media-management/page";
+import CreateMediaPage from "../pages/media-management/create-media/page";
+import UpdateMediaPage from "../pages/media-management/update-media/page";
 import RoleGuard from "../components/role-guard";
 import MeetingsCalendar from "../pages/meetings/page";
 import AgendaPage from "../pages/agenda/page";
@@ -164,33 +164,33 @@ const PrivateRoutes = () => {
             />
 
             <Route
-              path="/news-management"
+              path="/media-management"
               element={
                 <RoleGuard allowedRoles={adminRoles} showError>
                   <SuspensedView>
-                    <NewsManagementPage />
+                    <MediaManagementPage />
                   </SuspensedView>
                 </RoleGuard>
               }
             />
 
             <Route
-              path="/news-management/create"
+              path="/media-management/create"
               element={
                 <RoleGuard allowedRoles={adminRoles} showError>
                   <SuspensedView>
-                    <CreateNewsPage />
+                    <CreateMediaPage />
                   </SuspensedView>
                 </RoleGuard>
               }
             />
 
             <Route
-              path="/news-management/update/:id"
+              path="/media-management/update/:id"
               element={
                 <RoleGuard allowedRoles={adminRoles} showError>
                   <SuspensedView>
-                    <UpdateNewsPage />
+                    <UpdateMediaPage />
                   </SuspensedView>
                 </RoleGuard>
               }

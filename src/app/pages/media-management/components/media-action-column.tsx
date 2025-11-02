@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { deleteBlogApi } from "../../../apis";
 
-const NewsActionColumn = ({ blog }: { blog: any }) => {
+const MediaActionColumn = ({ blog }: { blog: any }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const queryClient = useQueryClient();
 
@@ -16,12 +16,12 @@ const NewsActionColumn = ({ blog }: { blog: any }) => {
       await deleteBlogApi(id);
     },
     onSuccess() {
-      toast.success("News supprimé avec succès");
+      toast.success("Media supprimé avec succès");
       queryClient.invalidateQueries({ queryKey: ["blogs"] });
       setOpenDeleteModal(false);
     },
     onError() {
-      toast.error("Erreur lors de la suppression de la news");
+      toast.error("Erreur lors de la suppression du média");
     },
   });
 
@@ -45,7 +45,7 @@ const NewsActionColumn = ({ blog }: { blog: any }) => {
         <Dropdown.Menu>
           <Dropdown.Item
             as={Link}
-            to={`/news-management/${blog.id}`}
+            to={`/media-management/${blog.id}`}
             className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info fw-bold px-5 py-3"
           >
             <KTIcon
@@ -57,7 +57,7 @@ const NewsActionColumn = ({ blog }: { blog: any }) => {
 
           <Dropdown.Item
             as={Link}
-            to={`/news-management/update/${blog.id}`}
+            to={`/media-management/update/${blog.id}`}
             className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info fw-bold px-5 py-3"
           >
             <KTIcon
@@ -124,4 +124,4 @@ const NewsActionColumn = ({ blog }: { blog: any }) => {
   );
 };
 
-export default NewsActionColumn;
+export default MediaActionColumn;

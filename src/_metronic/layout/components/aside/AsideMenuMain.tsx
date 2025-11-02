@@ -256,10 +256,10 @@ export function AsideMenuMain() {
             customIcon={<i className="fa-solid fa-user"></i>}
           />
           <AsideMenuItem
-            to="/news-management"
-            title="News Management"
+            to="/media-management"
+            title="Media Management"
             customIcon={<i className="fa-solid fa-blog"></i>}
-            bsTitle="News Management"
+            bsTitle="Media Management"
             hasBullet={true}
           />
           {/* <AsideMenuItem

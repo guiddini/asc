@@ -34,7 +34,7 @@ import "@mdxeditor/editor/style.css";
 import { useMutation, useQueryClient } from "react-query";
 import { createBlogApi } from "../../../apis";
 import { KTCard, KTCardBody } from "../../../../_metronic/helpers";
-import { NewsFormData } from "../types/news";
+import { MediaFormData } from "../types/media";
 import { useNavigate } from "react-router-dom";
 
 const schema = yup.object({
@@ -49,7 +49,7 @@ const schema = yup.object({
     .required(),
 });
 
-const CreateNewsPage = () => {
+const CreateMediaPage = () => {
   const queryClient = useQueryClient();
   const navigation = useNavigate();
 
@@ -75,17 +75,17 @@ const CreateNewsPage = () => {
     mutationKey: "createBlog",
     mutationFn: (data: FormData) => createBlogApi(data),
     onSuccess() {
-      toast.success("News created successfully");
+      toast.success("Media created successfully");
       queryClient.invalidateQueries(["blogs"]);
       reset();
-      navigation("/news-management");
+      navigation("/media-management");
     },
     onError() {
-      toast.error("Error while creating the news");
+      toast.error("Error while creating the media");
     },
   });
 
-  const onSubmit = (data: NewsFormData) => {
+  const onSubmit = (data: MediaFormData) => {
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("slug", data.slug);
@@ -101,7 +101,7 @@ const CreateNewsPage = () => {
   return (
     <KTCard>
       <KTCardBody>
-        <h3>Create News</h3>
+        <h3>Create Media</h3>
         <Form onSubmit={handleSubmit(onSubmit)} className="p-4">
           <Row className="mb-3">
             <Col>
@@ -247,7 +247,7 @@ const CreateNewsPage = () => {
           </Form.Group>
 
           <Button type="submit" disabled={mutation.isLoading}>
-            {mutation.isLoading ? "Saving..." : "Create News"}
+            {mutation.isLoading ? "Saving..." : "Create Media"}
           </Button>
         </Form>
       </KTCardBody>
@@ -255,4 +255,4 @@ const CreateNewsPage = () => {
   );
 };
 
-export default CreateNewsPage;
+export default CreateMediaPage;

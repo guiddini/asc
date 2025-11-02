@@ -4,11 +4,11 @@ import { useMutation } from "react-query";
 import { searchBlogs } from "../../apis";
 import moment from "moment";
 import getMediaUrl from "../../helpers/getMediaUrl";
-import { News } from "./types/news";
-import NewsActionColumn from "./components/news-action-column";
+import { Media } from "./types/media";
+import MediaActionColumn from "./components/media-action-column";
 import { useNavigate } from "react-router-dom";
 
-const NewsManagementPage = () => {
+const MediaManagementPage = () => {
   const navigate = useNavigate();
   const searchMutation = useMutation({
     mutationFn: searchBlogs,
@@ -24,7 +24,7 @@ const NewsManagementPage = () => {
   const columns = [
     {
       name: "",
-      selector: (row: News) =>
+      selector: (row: Media) =>
         row.cover_image ? (
           <div className="symbol symbol-circle symbol-40px overflow-hidden me-3 my-2">
             <div className="symbol-label">
@@ -42,17 +42,17 @@ const NewsManagementPage = () => {
     },
     {
       name: "Title",
-      selector: (row: News) => row.title,
+      selector: (row: Media) => row.title,
       sortable: true,
     },
     {
       name: "Slug",
-      selector: (row: News) => row.slug,
+      selector: (row: Media) => row.slug,
       sortable: true,
     },
     {
       name: "Status",
-      selector: (row: News) =>
+      selector: (row: Media) =>
         row.status === "draft"
           ? "Draft"
           : row.status === "published"
@@ -62,17 +62,17 @@ const NewsManagementPage = () => {
     },
     {
       name: "Created At",
-      selector: (row: News) => moment(row.created_at).format("DD/MM/YYYY"),
+      selector: (row: Media) => moment(row.created_at).format("DD/MM/YYYY"),
       sortable: true,
     },
     {
       name: "Updated At",
-      selector: (row: News) => moment(row.updated_at).format("DD/MM/YYYY"),
+      selector: (row: Media) => moment(row.updated_at).format("DD/MM/YYYY"),
       sortable: true,
     },
     {
       name: "Actions",
-      selector: (row: News) => <NewsActionColumn blog={row} />,
+      selector: (row: Media) => <MediaActionColumn blog={row} />,
       sortable: true,
       ignoreRowClick: true,
       allowOverflow: true,
@@ -85,8 +85,8 @@ const NewsManagementPage = () => {
       <TableComponent
         columns={columns as any}
         data={data}
-        placeholder="news"
-        onAddClick={() => navigate("/news-management/create")}
+        placeholder="media"
+        onAddClick={() => navigate("/media-management/create")}
         showSearch={true}
         searchKeys={["title", "slug"]}
         showCreate
@@ -96,4 +96,4 @@ const NewsManagementPage = () => {
   );
 };
 
-export default NewsManagementPage;
+export default MediaManagementPage;

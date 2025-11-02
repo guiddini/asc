@@ -1,4 +1,4 @@
-export interface NewsFormData {
+export interface MediaFormData {
   title: string;
   slug: string;
   content: string;
@@ -7,7 +7,7 @@ export interface NewsFormData {
   status: "draft" | "published";
 }
 
-export interface News {
+export interface Media {
   id: string;
   title: string;
   slug: string;
