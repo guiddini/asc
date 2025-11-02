@@ -10,12 +10,9 @@ import {
   toAbsoluteUrl,
 } from "../../../_metronic/helpers";
 import { Spinner } from "react-bootstrap";
-import { Can } from "../../utils/ability-context";
 
-// Helper function to get nested property value
-const getNestedValue = (obj: any, path: string) => {
-  return path.split(".").reduce((acc, part) => acc && acc[part], obj);
-};
+const getNestedValue = (obj: any, path: string) =>
+  path.split(".").reduce((acc, part) => acc && acc[part], obj);
 
 export const TableComponent = ({
   data,
@@ -29,8 +26,6 @@ export const TableComponent = ({
   cardClassName,
   showCreate = true,
   showExport = false,
-  canA,
-  canI,
   showSearch = true,
   customStyles,
   customFullHeader,
@@ -50,8 +45,6 @@ export const TableComponent = ({
   showCreate?: boolean;
   showSearch?: boolean;
   pagination?: boolean;
-  canI?: string;
-  canA?: string;
   customStyles?: TableStyles;
   customFullHeader?: ReactNode;
   searchKeys?: string[];
@@ -59,22 +52,19 @@ export const TableComponent = ({
   const [filteredData, setFilteredData] = useState<any[]>(data);
   const [searchQuery, setSearchQuery] = useState("");
 
-  useEffect(() => {
-    setFilteredData(data);
-  }, [data]);
+  useEffect(() => setFilteredData(data), [data]);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
-    if (query.trim() === "") {
-      setFilteredData(data);
-      return;
-    }
-
+    if (query.trim() === "") return setFilteredData(data);
     const lowercaseQuery = query.toLowerCase();
     const filtered = data.filter((item) =>
       searchKeys.length === 0
         ? columns.some((column) => {
-            const value = getNestedValue(item, column.selector.toString());
+            const value = getNestedValue(
+              item,
+              column.selector?.toString?.() || ""
+            );
             return (
               value && value.toString().toLowerCase().includes(lowercaseQuery)
             );
@@ -106,7 +96,7 @@ export const TableComponent = ({
                   type="text"
                   data-kt-user-table-filter="search"
                   className="form-control form-control-solid w-250px ps-14"
-                  placeholder={`Search`}
+                  placeholder="Search"
                   value={searchQuery}
                   onChange={(e) => handleSearch(e.target.value)}
                 />
@@ -121,138 +111,104 @@ export const TableComponent = ({
                 Export
               </button>
             )}
-            {canI === null ? (
-              <>
-                {showCreate && (
-                  <button
-                    type="button"
-                    className="btn btn-custom-purple-dark text-white"
-                    onClick={onAddClick}
-                  >
-                    <KTIcon iconName="plus" className="fs-2 text-white" />
-                    {customPlaceholder
-                      ? customPlaceholder
-                      : `Add ${placeholder}`}
-                  </button>
-                )}
-              </>
-            ) : (
-              <Can I={canI} a={canA}>
-                {showCreate && (
-                  <button
-                    type="button"
-                    className="btn btn-custom-purple-dark text-white"
-                    onClick={onAddClick}
-                  >
-                    <KTIcon iconName="plus" className="fs-2 text-white" />
-                    {customPlaceholder
-                      ? customPlaceholder
-                      : `Add ${placeholder}`}
-                  </button>
-                )}
-              </Can>
+            {showCreate && (
+              <button
+                type="button"
+                className="btn btn-custom-purple-dark text-white"
+                onClick={onAddClick}
+              >
+                <KTIcon iconName="plus" className="fs-2 text-white" />
+                {customPlaceholder ? customPlaceholder : `Add ${placeholder}`}
+              </button>
             )}
           </div>
         </div>
       )}
       <KTCardBody className="py-4">
-        <DataTable
-          columns={columns}
-          data={filteredData}
-          customStyles={{
-            rows: {
-              style: {
-                backgroundColor: "#fff",
-                borderColor: "#9da1b",
-                borderStyle: "solid",
-                borderWidth: 0,
-                color: "#252F4A",
-                fontFamily: 'Inter, Helvetica, "sans-serif"',
-                overflow: "visible",
+        <div className="w-100" style={{ overflow: "visible" }}>
+          <DataTable
+            columns={columns}
+            data={filteredData}
+            fixedHeader
+            fixedHeaderScrollHeight="75vh"
+            responsive
+            customStyles={{
+              table: {
+                style: {
+                  width: "max-content",
+                  minWidth: "100%",
+                  overflow: "visible",
+                },
               },
-            },
-            headCells: {
-              style: {
-                backgroundColor: "#fff",
-                borderColor: "#9da1b",
-                borderTop: 0,
-                fontWeight: 800,
-                fontSize: "0.95rem !important",
-                textTransform: "uppercase",
-                color: "#9da1b7",
+              headRow: {
+                style: {
+                  minHeight: "56px",
+                  height: "auto",
+                  overflow: "visible",
+                },
               },
-            },
-            headRow: {
-              style: {
-                borderColor: "#9da1b",
+              headCells: {
+                style: {
+                  whiteSpace: "normal",
+                  wordWrap: "break-word", // ADDED
+                  wordBreak: "break-word", // ADDED
+                  lineHeight: "1.4",
+                  fontWeight: 700,
+                  fontSize: "0.95rem",
+                  color: "#9da1b7",
+                  paddingTop: "12px",
+                  paddingBottom: "12px",
+                  textTransform: "uppercase",
+                  backgroundColor: "#fff",
+                  borderTop: 0,
+                },
               },
-            },
-            pagination: {
-              style: {
-                background: "transparent",
-                color: "#252F4A",
+              rows: {
+                style: {
+                  backgroundColor: "#fff",
+                  borderColor: "#9da1b",
+                  borderStyle: "solid",
+                  borderWidth: 0,
+                  color: "#252F4A",
+                  fontFamily: 'Inter, Helvetica, "sans-serif"',
+                  overflow: "visible",
+                },
               },
-            },
-            cells: {
-              style: {
-                color: "#252F4A",
+              cells: {
+                style: {
+                  whiteSpace: "normal", // ADDED: Wrap cell content too
+                  wordWrap: "break-word", // ADDED
+                },
               },
-            },
-            tableWrapper: {
-              style: {
-                overflow: "visible",
-                width: "100%",
-                minHeight: "80vh",
-              },
-            },
-            table: {
-              style: {
-                overflow: "visible",
-                width: "100%",
-                minHeight: "80vh",
-              },
-            },
-            responsiveWrapper: {
-              style: {
-                minHeight: "80vh",
-              },
-            },
-            ...customStyles,
-          }}
-          className={tableClassName}
-          progressPending={isLoading}
-          responsive
-          progressComponent={
-            <div
-              style={{
-                height: "80vh",
-              }}
-              className="w-100 d-flex justify-content-center align-items-center bg-white"
-            >
-              <Spinner animation="border" color="#000" />
-            </div>
-          }
-          noDataComponent={
-            <div
-              className="card"
-              style={{
-                minHeight: "70vh",
-              }}
-            >
-              <div className="card-body d-flex flex-column align-items-center justify-content-center">
-                <span className="fs-3">No Data Available</span>
-                <img
-                  src={toAbsoluteUrl(
-                    "/media/illustrations/sigma-1/21-dark.png"
-                  )}
-                  className="h-250px w-250px"
-                  alt="No data available"
-                />
+              ...customStyles,
+            }}
+            className={tableClassName}
+            progressPending={isLoading}
+            progressComponent={
+              <div
+                style={{ height: "80vh" }}
+                className="w-100 d-flex justify-content-center align-items-center bg-white"
+              >
+                <Spinner animation="border" color="#000" />
               </div>
-            </div>
-          }
-          pagination={pagination}
-        />
+            }
+            noDataComponent={
+              <div className="card" style={{ minHeight: "70vh" }}>
+                <div className="card-body d-flex flex-column align-items-center justify-content-center">
+                  <span className="fs-3">No Data Available</span>
+                  <img
+                    src={toAbsoluteUrl(
+                      "/media/illustrations/sigma-1/21-dark.png"
+                    )}
+                    className="h-250px w-250px"
+                    alt="No data available"
+                  />
+                </div>
+              </div>
+            }
+            pagination={pagination}
+          />
+        </div>
       </KTCardBody>
     </KTCard>
   );

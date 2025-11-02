@@ -1,13 +1,18 @@
 export interface Company {
   id: string;
   name: string;
-  phone_1: string;
+  phone_1: string | null;
+  revenue_2024: number | null;
+  revenue_2025: number | null;
+  total_funds_raised: number | null;
+  country_id: number;
+  founded_date: string;
   logo: string;
-  email: string | null;
-  address: string | null;
-  description: string | null;
-  created_at: string;
-  updated_at: string;
+  label_number: string;
+  country: {
+    id: number;
+    name_en: string;
+  };
 }
 
 export interface ExhibitionDemand {

@@ -8,11 +8,11 @@ import {
   refuseExhibitionDemandApi,
   markExhibitionDemandAsPaidApi,
   markExhibitionDemandAsUnpaidApi,
+  adminEditExhibitionDemandApi,
 } from "../../../apis/exhibition";
-import { Modal, Button, Spinner, Dropdown, Form } from "react-bootstrap";
+import { Modal, Button, Spinner, Dropdown, Form, Table } from "react-bootstrap";
 import { KTIcon } from "../../../../_metronic/helpers";
 import { useNavigate } from "react-router-dom";
-import getMediaUrl from "../../../helpers/getMediaUrl";
 
 interface ExhibitionRequestActionsProps {
   row: ExhibitionDemand;
@@ -22,7 +22,13 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
   const [showAcceptModal, setShowAcceptModal] = useState(false);
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [showUnpaidModal, setShowUnpaidModal] = useState(false);
+  const [showDemandModal, setShowDemandModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [unpaidNotes, setUnpaidNotes] = useState("");
+  const [editNotes, setEditNotes] = useState("");
+  const [editExhibitionType, setEditExhibitionType] = useState<
+    "connect_desk" | "premium_exhibition_space" | "scale_up_booth"
+  >("connect_desk");
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -95,6 +101,27 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
     },
   });
 
+  const editDemandMutation = useMutation({
+    mutationFn: (payload: {
+      demand_id: string;
+      notes: string;
+      exhibition_type:
+        | "connect_desk"
+        | "premium_exhibition_space"
+        | "scale_up_booth";
+    }) => adminEditExhibitionDemandApi(payload),
+    mutationKey: ["edit-exhibition-demand", row.id],
+    onSuccess: () => {
+      queryClient.invalidateQueries("exhibition-requests");
+      toast.success("Exhibition demand updated successfully");
+      setShowEditModal(false);
+      setEditNotes("");
+    },
+    onError: () => {
+      toast.error("Error while updating exhibition demand");
+    },
+  });
+
   const handleAccept = () => {
     if (rowStatus !== STATUS_ACCEPTED && isPendingOrPendingTransfer) {
       acceptMutation.mutate(row.id);
@@ -161,6 +188,43 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
 
         {/* force a clean white background and subtle shadow for the dropdown */}
         <Dropdown.Menu className="bg-white rounded shadow-sm">
+          {/* Show Demand Details */}
+          <Dropdown.Item
+            onClick={() => setShowDemandModal(true)}
+            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
+          >
+            <div className="cursor-pointer d-flex flex-row align-items-center">
+              <KTIcon
+                iconName="information"
+                className="fs-1 cursor-pointer m-0 text-primary"
+              />
+              <span className="text-muted ms-2">Show Demand Details</span>
+            </div>
+          </Dropdown.Item>
+
+          {/* Edit Demand */}
+          <Dropdown.Item
+            onClick={() => {
+              setEditExhibitionType(
+                row.exhibition_type as
+                  | "connect_desk"
+                  | "premium_exhibition_space"
+                  | "scale_up_booth"
+              );
+              setEditNotes("");
+              setShowEditModal(true);
+            }}
+            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
+          >
+            <div className="cursor-pointer d-flex flex-row align-items-center">
+              <KTIcon
+                iconName="pencil"
+                className="fs-1 cursor-pointer m-0 text-warning"
+              />
+              <span className="text-muted ms-2">Edit Demand</span>
+            </div>
+          </Dropdown.Item>
+
           {/* Show Founder */}
           <Dropdown.Item
             onClick={() => navigate(`/profile/${row.user_id}`)}
@@ -466,6 +530,198 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
                 <Spinner animation="border" size="sm" />
               ) : (
                 "Confirm Unpaid"
+              )}
+            </Button>
+          </Modal.Footer>
+        </div>
+      </Modal>
+
+      {/* Show Demand Modal */}
+      <Modal
+        show={showDemandModal}
+        onHide={() => setShowDemandModal(false)}
+        backdrop={true}
+        dialogClassName="modal-dialog modal-dialog-centered modal-lg"
+      >
+        <div className="modal-content">
+          <div className="modal-header">
+            <h2 className="fw-bolder">Exhibition Demand Details</h2>
+            <div
+              className="btn btn-icon btn-sm btn-active-icon-primary"
+              style={{ cursor: "pointer" }}
+              onClick={() => setShowDemandModal(false)}
+            >
+              <KTIcon iconName="cross" className="fs-1" />
+            </div>
+          </div>
+
+          <Modal.Body className="pb-0 px-16 w-100">
+            <Table striped bordered hover responsive>
+              <tbody>
+                <tr>
+                  <th>ID</th>
+                  <td>{row.id}</td>
+                </tr>
+                <tr>
+                  <th>Company</th>
+                  <td>{row.company?.name || "-"}</td>
+                </tr>
+                <tr>
+                  <th>Exhibition Type</th>
+                  <td>{row.exhibition_type}</td>
+                </tr>
+                <tr>
+                  <th>Status</th>
+                  <td>
+                    <span
+                      className={`px-2 py-1 rounded-pill small fw-medium ${
+                        row.status === "pending"
+                          ? "bg-warning text-dark"
+                          : row.status === "accepted"
+                          ? "bg-success text-white"
+                          : row.status === "refused"
+                          ? "bg-danger text-white"
+                          : row.status === "paid"
+                          ? "bg-primary text-white"
+                          : row.status === "unpaid"
+                          ? "bg-secondary text-white"
+                          : "bg-light text-dark"
+                      }`}
+                    >
+                      {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Payment Method</th>
+                  <td>{row.payment_method || "-"}</td>
+                </tr>
+                <tr>
+                  <th>Created At</th>
+                  <td>{new Date(row.created_at).toLocaleString()}</td>
+                </tr>
+                <tr>
+                  <th>Updated At</th>
+                  <td>{new Date(row.updated_at).toLocaleString()}</td>
+                </tr>
+
+                {row.transfer_document && (
+                  <tr>
+                    <th>Transfer Document</th>
+                    <td>
+                      <Button
+                        variant="outline-primary"
+                        size="sm"
+                        onClick={() => {
+                          const docPath = row.transfer_document;
+                          if (!docPath) return;
+                          const link = `https://asc.api.eventili.com/admin/file?path=${encodeURIComponent(
+                            docPath
+                          )}`;
+                          window.open(link, "_blank", "noopener,noreferrer");
+                        }}
+                      >
+                        View Document
+                      </Button>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+          </Modal.Body>
+
+          <Modal.Footer className="w-100 d-flex flex-row align-items-center justify-content-end">
+            <Button
+              variant="secondary"
+              onClick={() => setShowDemandModal(false)}
+            >
+              Close
+            </Button>
+          </Modal.Footer>
+        </div>
+      </Modal>
+
+      {/* Edit Demand Modal */}
+      <Modal
+        show={showEditModal}
+        onHide={() => setShowEditModal(false)}
+        backdrop={true}
+        dialogClassName="modal-dialog modal-dialog-centered mw-600px"
+      >
+        <div className="modal-content">
+          <div className="modal-header">
+            <h2 className="fw-bolder">Edit Exhibition Demand</h2>
+            <div
+              className="btn btn-icon btn-sm btn-active-icon-primary"
+              style={{ cursor: "pointer" }}
+              onClick={() => setShowEditModal(false)}
+            >
+              <KTIcon iconName="cross" className="fs-1" />
+            </div>
+          </div>
+
+          <Modal.Body className="pb-0 px-16 w-100">
+            <div className="mb-5">
+              <h3>Demand Details</h3>
+              <p>Company: {row.company?.name}</p>
+
+              <Form.Group className="mb-4">
+                <Form.Label>Exhibition Type</Form.Label>
+                <Form.Select
+                  value={editExhibitionType}
+                  onChange={(e) =>
+                    setEditExhibitionType(
+                      e.target.value as
+                        | "connect_desk"
+                        | "premium_exhibition_space"
+                        | "scale_up_booth"
+                    )
+                  }
+                >
+                  <option value="connect_desk">Connect Desk</option>
+                  <option value="premium_exhibition_space">
+                    Premium Exhibition Space
+                  </option>
+                  <option value="scale_up_booth">Scale Up Booth</option>
+                </Form.Select>
+              </Form.Group>
+
+              <Form.Group className="mb-4">
+                <Form.Label>Notes</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={4}
+                  placeholder="Enter notes here..."
+                  value={editNotes}
+                  onChange={(e) => setEditNotes(e.target.value)}
+                />
+              </Form.Group>
+            </div>
+          </Modal.Body>
+
+          <Modal.Footer className="w-100 d-flex flex-row align-items-center justify-content-between">
+            <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+              Cancel
+            </Button>
+            <Button
+              variant="primary"
+              onClick={() => {
+                if (!editNotes.trim()) {
+                  toast.error("Please enter notes for the edit");
+                  return;
+                }
+                editDemandMutation.mutate({
+                  demand_id: row.id,
+                  notes: editNotes.trim(),
+                  exhibition_type: editExhibitionType,
+                });
+              }}
+              disabled={editDemandMutation.isLoading}
+            >
+              {editDemandMutation.isLoading ? (
+                <Spinner animation="border" size="sm" />
+              ) : (
+                "Save Changes"
               )}
             </Button>
           </Modal.Footer>

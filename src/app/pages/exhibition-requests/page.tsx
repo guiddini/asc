@@ -64,77 +64,173 @@ const ExhibitionRequests = () => {
       ? "Connect Desk"
       : type === "premium_exhibition_space"
       ? "Premium Exhibition Space"
+      : type === "scale_up_booth"
+      ? "Scale Up Booth"
       : type;
+
+  const formatCurrency = (value: number | null) => {
+    if (value === null) return "-";
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 0,
+    }).format(value);
+  };
 
   const columns = [
     {
       name: "Company",
       selector: (row: ExhibitionDemand) => row.company?.name,
       sortable: true,
+      minWidth: "180px",
+      wrap: true,
       cell: (row: ExhibitionDemand) => (
-        <Link
-          to={`/company/${row.company?.id}`}
-          className="text-decoration-none text-black"
-        >
-          <span className="fw-semibold text-hover-primary">
-            {row.company?.name}
-          </span>
-        </Link>
+        <div>
+          <Link
+            to={`/company/${row.company?.id}`}
+            className="text-decoration-none text-black"
+          >
+            <span className="fw-semibold text-hover-primary">
+              {row.company?.name}
+            </span>
+          </Link>
+        </div>
       ),
     },
     {
       name: "Phone",
       selector: (row: ExhibitionDemand) => row.company?.phone_1 || "-",
       sortable: true,
+      minWidth: "140px",
+      wrap: true,
+      cell: (row: ExhibitionDemand) => <div>{row.company?.phone_1 || "-"}</div>,
+    },
+    {
+      name: "Country",
+      selector: (row: ExhibitionDemand) => row.company?.country?.name_en || "-",
+      sortable: true,
+      minWidth: "140px",
+      wrap: true,
+      cell: (row: ExhibitionDemand) => (
+        <div>{row.company?.country?.name_en || "-"}</div>
+      ),
+    },
+    {
+      name: "Founded",
+      selector: (row: ExhibitionDemand) => {
+        if (!row.company?.founded_date) return "-";
+        return new Date(row.company.founded_date).getFullYear().toString();
+      },
+      sortable: true,
+      minWidth: "110px",
+      wrap: true,
+      cell: (row: ExhibitionDemand) => (
+        <div>
+          {row.company?.founded_date
+            ? new Date(row.company.founded_date).getFullYear()
+            : "-"}
+        </div>
+      ),
+    },
+    {
+      name: "Revenue 2024",
+      selector: (row: ExhibitionDemand) => row.company?.revenue_2024 || 0,
+      sortable: true,
+      minWidth: "200px",
+      wrap: true,
+      cell: (row: ExhibitionDemand) => (
+        <div>{formatCurrency(row.company?.revenue_2024)}</div>
+      ),
+    },
+    {
+      name: "Revenue 2025",
+      selector: (row: ExhibitionDemand) => row.company?.revenue_2025 || 0,
+      sortable: true,
+      minWidth: "200px",
+      wrap: true,
+      cell: (row: ExhibitionDemand) => (
+        <div>{formatCurrency(row.company?.revenue_2025)}</div>
+      ),
+    },
+    {
+      name: "Total Funds Raised",
+      selector: (row: ExhibitionDemand) => row.company?.total_funds_raised || 0,
+      sortable: true,
+      minWidth: "200px",
+      wrap: true,
+      cell: (row: ExhibitionDemand) => (
+        <div>{formatCurrency(row.company?.total_funds_raised)}</div>
+      ),
     },
     {
       name: "Exhibition Type",
-      cell: (row: ExhibitionDemand) => (
-        <span className="fw-semibold">{getTypeLabel(row.exhibition_type)}</span>
-      ),
       selector: (row: ExhibitionDemand) => row.exhibition_type,
       sortable: true,
+      minWidth: "180px",
+      wrap: true,
+      cell: (row: ExhibitionDemand) => (
+        <div>
+          <span className="fw-semibold">
+            {getTypeLabel(row.exhibition_type)}
+          </span>
+        </div>
+      ),
     },
     {
       name: "Payment Method",
       selector: (row: ExhibitionDemand) => row.payment_method || "-",
       sortable: true,
+      minWidth: "160px",
+      wrap: true,
+      cell: (row: ExhibitionDemand) => <div>{row.payment_method || "-"}</div>,
     },
     {
       name: "Status",
-      cell: (row: ExhibitionDemand) => (
-        <span
-          className={`px-2 py-1 rounded-pill small fw-medium ${
-            row.status === "pending"
-              ? "bg-warning text-dark"
-              : row.status === "accepted"
-              ? "bg-success text-white"
-              : row.status === "refused"
-              ? "bg-danger text-white"
-              : row.status === "paid"
-              ? "bg-primary text-white"
-              : row.status === "unpaid"
-              ? "bg-secondary text-white"
-              : "bg-light text-dark"
-          }`}
-        >
-          {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
-        </span>
-      ),
       selector: (row: ExhibitionDemand) => row.status,
       sortable: true,
+      minWidth: "120px",
+      wrap: true,
+      cell: (row: ExhibitionDemand) => (
+        <div>
+          <span
+            className={`px-2 py-1 rounded-pill small fw-medium ${
+              row.status === "pending"
+                ? "bg-warning text-dark"
+                : row.status === "accepted"
+                ? "bg-success text-white"
+                : row.status === "refused"
+                ? "bg-danger text-white"
+                : row.status === "paid"
+                ? "bg-primary text-white"
+                : row.status === "unpaid"
+                ? "bg-secondary text-white"
+                : "bg-light text-dark"
+            }`}
+          >
+            {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
+          </span>
+        </div>
+      ),
     },
-
     {
       name: "Date",
-      cell: (row: ExhibitionDemand) =>
-        new Date(row.created_at).toLocaleDateString(),
       selector: (row: ExhibitionDemand) => row.created_at,
       sortable: true,
+      minWidth: "120px",
+      wrap: true,
+      cell: (row: ExhibitionDemand) => (
+        <div>{new Date(row.created_at).toLocaleDateString()}</div>
+      ),
     },
     {
       name: "Actions",
-      cell: (row: ExhibitionDemand) => <ExhibitionRequestActions row={row} />,
+      minWidth: "100px",
+      wrap: true,
+      cell: (row: ExhibitionDemand) => (
+        <div>
+          <ExhibitionRequestActions row={row} />
+        </div>
+      ),
     },
   ];
 
@@ -170,6 +266,10 @@ const ExhibitionRequests = () => {
         searchKeys={[
           "company.name",
           "company.phone_1",
+          "company.country.name_en",
+          "company.revenue_2024",
+          "company.revenue_2025",
+          "company.total_funds_raised",
           "exhibition_type",
           "status",
         ]}

@@ -71,6 +71,20 @@ const showExhibitionDemandApi = async (demand_id: string) => {
   return res?.data;
 };
 
+const adminEditExhibitionDemandApi = async (data: {
+  demand_id: string;
+  notes: string;
+  exhibition_type:
+    | "connect_desk"
+    | "premium_exhibition_space"
+    | "scale_up_booth";
+}) => {
+  return axiosInstance.post(
+    `/exhibition-demand/admin/edit/${data?.demand_id}`,
+    data
+  );
+};
+
 export {
   calculateExhibitionDemandTotal,
   createExhibitionDemandApi,
@@ -86,4 +100,5 @@ export {
   markExhibitionDemandAsPaidApi,
   markExhibitionDemandAsUnpaidApi,
   showExhibitionDemandApi,
+  adminEditExhibitionDemandApi,
 };
