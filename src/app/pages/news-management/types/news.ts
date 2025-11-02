@@ -1,4 +1,4 @@
-export interface BlogFormData {
+export interface NewsFormData {
   title: string;
   slug: string;
   content: string;
@@ -7,7 +7,7 @@ export interface BlogFormData {
   status: "draft" | "published";
 }
 
-export interface Blog {
+export interface News {
   id: string;
   title: string;
   slug: string;

@@ -80,15 +80,6 @@ export function AsideMenuMain() {
           </AsideMenuItemWithSubMain>
         </>
       )}
-      {/* <RoleGuard allowedRoles={adminRoles}>
-        <AsideMenuItem
-          to="/blogs-management"
-          title="Blogs"
-          customIcon={<i className="fa-solid fa-blog"></i>}
-          bsTitle="Blogs"
-          className="py-2"
-        />
-      </RoleGuard> */}
 
       <AsideMenuItemWithSubMain
         to={`/agenda`}
@@ -263,6 +254,13 @@ export function AsideMenuMain() {
             hasBullet={true}
             bsTitle="User management"
             customIcon={<i className="fa-solid fa-user"></i>}
+          />
+          <AsideMenuItem
+            to="/news-management"
+            title="News Management"
+            customIcon={<i className="fa-solid fa-blog"></i>}
+            bsTitle="News Management"
+            hasBullet={true}
           />
           {/* <AsideMenuItem
             to="/press-conference-management"

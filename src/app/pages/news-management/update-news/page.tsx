@@ -35,7 +35,7 @@ import "@mdxeditor/editor/style.css";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getBlogById, updateBlogApi } from "../../../apis";
 import { KTCard, KTCardBody } from "../../../../_metronic/helpers";
-import { BlogFormData } from "../types/blog";
+import { NewsFormData } from "../types/news";
 import getMediaUrl from "../../../helpers/getMediaUrl";
 
 const schema = yup.object({
@@ -50,7 +50,7 @@ const schema = yup.object({
     .required(),
 });
 
-const UpdateBlogPage = () => {
+const UpdateNewsPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -106,17 +106,17 @@ const UpdateBlogPage = () => {
     (formData: FormData) => updateBlogApi(formData),
     {
       onSuccess: () => {
-        toast.success("Blog updated successfully");
+        toast.success("News updated successfully");
         queryClient.invalidateQueries(["blogs"]);
-        navigate("/blogs-management");
+        navigate("/news-management");
       },
       onError: () => {
-        toast.error("Error while updating the blog");
+        toast.error("Error while updating the news");
       },
     }
   );
 
-  const onSubmit = (data: BlogFormData) => {
+  const onSubmit = (data: NewsFormData) => {
     const formData = new FormData();
     formData.append("id", id!);
     formData.append("title", data.title);
@@ -138,7 +138,7 @@ const UpdateBlogPage = () => {
     <KTCard>
       <KTCardBody>
         <div className="d-flex flex-column">
-          <h2 className="mb-10">Update Blog</h2>
+          <h2 className="mb-10">Update News</h2>
 
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Row>
@@ -178,7 +178,7 @@ const UpdateBlogPage = () => {
                 rows={3}
                 {...register("excerpt")}
                 isInvalid={!!errors.excerpt}
-                placeholder="brief description of the blog post"
+                placeholder="brief description of the news post"
               />
               <Form.Control.Feedback type="invalid">
                 {errors.excerpt?.message}
@@ -308,7 +308,7 @@ const UpdateBlogPage = () => {
               variant="primary"
               disabled={mutation.isLoading}
             >
-              {mutation.isLoading ? "Updating..." : "Update Blog"}
+              {mutation.isLoading ? "Updating..." : "Update News"}
             </Button>
           </Form>
         </div>
@@ -317,4 +317,4 @@ const UpdateBlogPage = () => {
   );
 };
 
-export default UpdateBlogPage;
+export default UpdateNewsPage;

@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { deleteBlogApi } from "../../../apis";
 
-const BlogActionColumn = ({ blog }: { blog: any }) => {
+const NewsActionColumn = ({ blog }: { blog: any }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const queryClient = useQueryClient();
 
@@ -16,12 +16,12 @@ const BlogActionColumn = ({ blog }: { blog: any }) => {
       await deleteBlogApi(id);
     },
     onSuccess() {
-      toast.success("Blog supprimé avec succès");
+      toast.success("News supprimé avec succès");
       queryClient.invalidateQueries({ queryKey: ["blogs"] });
       setOpenDeleteModal(false);
     },
     onError() {
-      toast.error("Erreur lors de la suppression du blog");
+      toast.error("Erreur lors de la suppression de la news");
     },
   });
 
@@ -45,7 +45,7 @@ const BlogActionColumn = ({ blog }: { blog: any }) => {
         <Dropdown.Menu>
           <Dropdown.Item
             as={Link}
-            to={`/blogs-management/${blog.id}`}
+            to={`/news-management/${blog.id}`}
             className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info fw-bold px-5 py-3"
           >
             <KTIcon
@@ -57,7 +57,7 @@ const BlogActionColumn = ({ blog }: { blog: any }) => {
 
           <Dropdown.Item
             as={Link}
-            to={`/blogs-management/update/${blog.id}`}
+            to={`/news-management/update/${blog.id}`}
             className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info fw-bold px-5 py-3"
           >
             <KTIcon
@@ -98,7 +98,7 @@ const BlogActionColumn = ({ blog }: { blog: any }) => {
           </div>
           <Modal.Body>
             <p>
-              Êtes-vous sûr de vouloir supprimer le blog{" "}
+              Êtes-vous sûr de vouloir supprimer la news{" "}
               <strong>{blog?.title}</strong> ?
             </p>
           </Modal.Body>
@@ -124,4 +124,4 @@ const BlogActionColumn = ({ blog }: { blog: any }) => {
   );
 };
 
-export default BlogActionColumn;
+export default NewsActionColumn;

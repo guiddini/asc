@@ -34,7 +34,7 @@ import "@mdxeditor/editor/style.css";
 import { useMutation, useQueryClient } from "react-query";
 import { createBlogApi } from "../../../apis";
 import { KTCard, KTCardBody } from "../../../../_metronic/helpers";
-import { BlogFormData } from "../types/blog";
+import { NewsFormData } from "../types/news";
 import { useNavigate } from "react-router-dom";
 
 const schema = yup.object({
@@ -49,7 +49,7 @@ const schema = yup.object({
     .required(),
 });
 
-const CreateBlogPage = () => {
+const CreateNewsPage = () => {
   const queryClient = useQueryClient();
   const navigation = useNavigate();
 
@@ -75,17 +75,17 @@ const CreateBlogPage = () => {
     mutationKey: "createBlog",
     mutationFn: (data: FormData) => createBlogApi(data),
     onSuccess() {
-      toast.success("Blog created successfully");
+      toast.success("News created successfully");
       queryClient.invalidateQueries(["blogs"]);
       reset();
-      navigation("/blogs-management");
+      navigation("/news-management");
     },
     onError() {
-      toast.error("Error while creating the blog");
+      toast.error("Error while creating the news");
     },
   });
 
-  const onSubmit = (data: BlogFormData) => {
+  const onSubmit = (data: NewsFormData) => {
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("slug", data.slug);
@@ -101,7 +101,7 @@ const CreateBlogPage = () => {
   return (
     <KTCard>
       <KTCardBody>
-        <h3>Create Blog</h3>
+        <h3>Create News</h3>
         <Form onSubmit={handleSubmit(onSubmit)} className="p-4">
           <Row className="mb-3">
             <Col>
@@ -247,7 +247,7 @@ const CreateBlogPage = () => {
           </Form.Group>
 
           <Button type="submit" disabled={mutation.isLoading}>
-            {mutation.isLoading ? "Saving..." : "Create Blog"}
+            {mutation.isLoading ? "Saving..." : "Create News"}
           </Button>
         </Form>
       </KTCardBody>
@@ -255,4 +255,4 @@ const CreateBlogPage = () => {
   );
 };
 
-export default CreateBlogPage;
+export default CreateNewsPage;

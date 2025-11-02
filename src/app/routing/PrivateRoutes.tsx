@@ -41,17 +41,15 @@ import {
 } from "../pages";
 import ReportsPage from "../pages/configurations/reports/reports-page";
 import EventPage from "../pages/event/event-page";
-import ComingSoon from "../pages/coming-soon";
 import PRessConferencePage from "../pages/press-conference/page";
 import TicketTransactionsPage from "../pages/ticket-transactions/page";
 import EventManagement from "../pages/event-management/page";
 import ExhibitionRequests from "../pages/exhibition-requests/page";
 import CompanyReservationPage from "../pages/reservations/page";
-import { TicketWrapper } from "../helpers/ticket-wrapper";
 import UserProfileWrapper from "../utils/user-profile-wrapper";
-import BlogsManagementPage from "../pages/blog-management/page";
-import CreateBlogPage from "../pages/blog-management/create-blog/page";
-import UpdateBlogPage from "../pages/blog-management/update-blog/page";
+import NewsManagementPage from "../pages/news-management/page";
+import CreateNewsPage from "../pages/news-management/create-news/page";
+import UpdateNewsPage from "../pages/news-management/update-news/page";
 import RoleGuard from "../components/role-guard";
 import MeetingsCalendar from "../pages/meetings/page";
 import AgendaPage from "../pages/agenda/page";
@@ -166,33 +164,33 @@ const PrivateRoutes = () => {
             />
 
             <Route
-              path="/blogs-management"
+              path="/news-management"
               element={
                 <RoleGuard allowedRoles={adminRoles} showError>
                   <SuspensedView>
-                    <BlogsManagementPage />
+                    <NewsManagementPage />
                   </SuspensedView>
                 </RoleGuard>
               }
             />
 
             <Route
-              path="/blogs-management/create"
+              path="/news-management/create"
               element={
                 <RoleGuard allowedRoles={adminRoles} showError>
                   <SuspensedView>
-                    <CreateBlogPage />
+                    <CreateNewsPage />
                   </SuspensedView>
                 </RoleGuard>
               }
             />
 
             <Route
-              path="/blogs-management/update/:id"
+              path="/news-management/update/:id"
               element={
                 <RoleGuard allowedRoles={adminRoles} showError>
                   <SuspensedView>
-                    <UpdateBlogPage />
+                    <UpdateNewsPage />
                   </SuspensedView>
                 </RoleGuard>
               }
