@@ -272,13 +272,23 @@ export function AsideMenuMain() {
             bsTitle="Media Management"
             hasBullet={true}
           />
-          {/* <AsideMenuItem
-            to="/press-conference-management"
-            title="Press Conference"
+
+          <AsideMenuItem
+            to="/contact-management"
+            title="Contact Management"
             hasBullet={true}
-            bsTitle="Press Conference"
-            customIcon={<i className="fa-solid fa-users-rectangle"></i>}
-          /> */}
+            bsTitle="Contact Management"
+            customIcon={<i className="fa-solid fa-address-book"></i>}
+          />
+
+          <AsideMenuItem
+            to="/sponsor-requests-management"
+            title="Sponsor Requests"
+            hasBullet={true}
+            bsTitle="Sponsor Requests"
+            customIcon={<i className="fa-solid fa-handshake"></i>}
+          />
+
           <AsideMenuItem
             to="/ticket-transactions"
             title="Ticket Transactions"

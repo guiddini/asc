@@ -24,6 +24,7 @@ import LandingLayout from "../pages/landing-page/layout/layout-landing";
 import PublicProgramPage from "../pages/landing-page/components/public-program";
 import { AboutPage } from "../pages";
 import ProgramPage from "../pages/program/page";
+import ContactPage from "../pages/contact/page";
 
 const AppRoutes: FC = () => {
   const { user } = useSelector((state: UserResponse) => state.user);
@@ -47,6 +48,7 @@ const AppRoutes: FC = () => {
             <Route path="/speakers/:id" element={<SpeakerDetail />} />
 
             <Route path="/program" element={<ProgramPage />} />
+            <Route path="/contact" element={<ContactPage />} />
           </Route>
 
           {/* Other routes */}

@@ -11,9 +11,15 @@ const createExhibitionDemandApi = async (data: FormData) => {
 const updateExhibitionDemandApi = async (data: FormData) => {
   return axiosInstance.post(`/exhibition-demand/edit`, data);
 };
-
-const getAllExhibitionDemandsApi = async () => {
-  return axiosInstance.get(`/exhibition-demand/all`);
+const getAllExhibitionDemandsApi = async (params?: {
+  status?: "all" | "pending" | "accepted" | "refused" | "paid" | "unpaid";
+  page?: number;
+  per_page?: number;
+}) => {
+  const response = await axiosInstance.get("/exhibition-demand/all", {
+    params,
+  });
+  return response.data;
 };
 
 const getCompanyExhibitionDemand = async () => {

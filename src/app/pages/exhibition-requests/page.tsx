@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import { useState } from "react";
 import { PageTitle } from "../../../_metronic/layout/core";
 import { TableComponent } from "../../components";
 import { useQuery } from "react-query";
@@ -13,9 +13,11 @@ const ExhibitionRequests = () => {
     "all" | "pending" | "accepted" | "refused" | "paid" | "unpaid"
   >("all");
 
+  // Fetch filtered list from API based on selected status
   const { isLoading, data } = useQuery({
-    queryFn: getAllExhibitionDemandsApi,
-    queryKey: ["exhibition-requests"],
+    queryFn: () => getAllExhibitionDemandsApi({ status: filterStatus }),
+    queryKey: ["exhibition-requests", filterStatus],
+    keepPreviousData: true,
   });
 
   const list: ExhibitionDemand[] = data?.data || [];
@@ -28,36 +30,6 @@ const ExhibitionRequests = () => {
     | "paid"
     | "unpaid"
   )[] = ["all", "pending", "accepted", "refused", "paid", "unpaid"];
-
-  const getStatusCounts = useMemo(() => {
-    const counts = {
-      all: list.length,
-      pending: 0,
-      accepted: 0,
-      refused: 0,
-      paid: 0,
-      unpaid: 0,
-    };
-    list.forEach((item) => {
-      const status = item.status.toLowerCase();
-      if (counts[status as keyof typeof counts] !== undefined) {
-        counts[status as keyof typeof counts]++;
-      }
-      const isPaid = item.transaction?.status === "Success";
-      if (isPaid) counts.paid++;
-      else counts.unpaid++;
-    });
-    return counts;
-  }, [list]);
-
-  const filteredList = useMemo(() => {
-    if (filterStatus === "all") return list;
-    if (filterStatus === "paid")
-      return list.filter((item) => item.transaction?.status === "Success");
-    if (filterStatus === "unpaid")
-      return list.filter((item) => item.transaction?.status !== "Success");
-    return list.filter((item) => item.status.toLowerCase() === filterStatus);
-  }, [list, filterStatus]);
 
   const getTypeLabel = (type: string) =>
     type === "connect_desk"
@@ -78,6 +50,16 @@ const ExhibitionRequests = () => {
   };
 
   const columns = [
+    {
+      name: "Actions",
+      minWidth: "100px",
+      wrap: true,
+      cell: (row: ExhibitionDemand) => (
+        <div>
+          <ExhibitionRequestActions row={row} />
+        </div>
+      ),
+    },
     {
       name: "Company",
       selector: (row: ExhibitionDemand) => row.company?.name,
@@ -222,16 +204,6 @@ const ExhibitionRequests = () => {
         <div>{new Date(row.created_at).toLocaleDateString()}</div>
       ),
     },
-    {
-      name: "Actions",
-      minWidth: "100px",
-      wrap: true,
-      cell: (row: ExhibitionDemand) => (
-        <div>
-          <ExhibitionRequestActions row={row} />
-        </div>
-      ),
-    },
   ];
 
   return (
@@ -250,14 +222,14 @@ const ExhibitionRequests = () => {
             )}
             onClick={() => setFilterStatus(status)}
           >
-            {status} ({getStatusCounts[status]})
+            {status}
           </button>
         ))}
       </div>
 
       <TableComponent
         columns={columns}
-        data={filteredList}
+        data={list}
         isLoading={isLoading}
         pagination
         showCreate={false}

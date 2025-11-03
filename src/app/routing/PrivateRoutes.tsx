@@ -70,6 +70,8 @@ import ProgramEventManagement from "../pages/program-event-management/page";
 import ManageMyConnectionsPage from "../pages/connections/page";
 import MediaPage from "../pages/media/page";
 import MediaSlugPage from "../pages/media/slug/page";
+import ContactManagementPage from "../pages/contact-management/page";
+import SponsorRequestsManagementPage from "../pages/sponsors-requests-management/page";
 
 export const adminRoles = ["admin", "super_admin", "staff"];
 export const mediaRoles = ["media", "press", "journalist"];
@@ -185,6 +187,28 @@ const PrivateRoutes = () => {
                 <SuspensedView>
                   <ManageMyConnectionsPage />
                 </SuspensedView>
+              }
+            />
+
+            <Route
+              path="/contact-management"
+              element={
+                <RoleGuard allowedRoles={adminRoles} showError>
+                  <SuspensedView>
+                    <ContactManagementPage />
+                  </SuspensedView>
+                </RoleGuard>
+              }
+            />
+
+            <Route
+              path="/sponsor-requests-management"
+              element={
+                <RoleGuard allowedRoles={adminRoles} showError>
+                  <SuspensedView>
+                    <SponsorRequestsManagementPage />
+                  </SuspensedView>
+                </RoleGuard>
               }
             />
 

@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import BecomeSponsorModal from "../../../components/become-sponsor-modal";
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <footer
@@ -80,7 +82,9 @@ const Footer: React.FC = () => {
               <h5 className="footer-title fw-bold mb-3">Get Involved</h5>
               <ul className="footer-links">
                 <li>
-                  <Link to="/partners/packages">Become a Sponsor</Link>
+                  <span role="button" onClick={() => setShowModal(true)}>
+                    Become a Sponsor
+                  </span>
                 </li>
                 <li>
                   <Link to="/partners/spaces">Exhibition Spaces</Link>
@@ -237,6 +241,8 @@ const Footer: React.FC = () => {
           </Col>
         </Row>
       </Container>
+
+      <BecomeSponsorModal onHide={() => setShowModal(false)} show={showModal} />
     </footer>
   );
 };
