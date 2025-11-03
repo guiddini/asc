@@ -16,13 +16,17 @@ import {
 } from "../../features/postsSlice";
 import { getAllPostsApi } from "../../apis";
 import { Col, Row, Spinner } from "react-bootstrap";
-import { toAbsoluteUrl } from "../../../_metronic/helpers";
+import { KTIcon, toAbsoluteUrl } from "../../../_metronic/helpers";
 import RoleGuard from "../../components/role-guard";
 import { adminRoles } from "../../routing/PrivateRoutes";
+import UpdateUserIdentificationsModal from "../../components/update-user-identifications";
 
 const HomePage = () => {
   const dispatch = useDispatch();
+  const [showUpdateIdentification, setShowUpdateIdentification] =
+    useState(false);
   const { user } = useSelector((state: UserResponse) => state.user);
+  const hasIdentification = user?.info?.has_identification;
 
   const { currentPage, posts } = useSelector(
     (state: PostsReducer) => state.posts
@@ -111,6 +115,48 @@ const HomePage = () => {
             className="w-100 flex-lg-row-fluid mx-lg-13"
             id="home-feed-posts"
           >
+            {!hasIdentification && (
+              <>
+                <div
+                  className="notice d-flex align-items-center justify-content-between bg-light-warning rounded border border-dashed border-warning p-4 mb-6"
+                  role="alert"
+                  aria-live="polite"
+                >
+                  <div className="d-flex align-items-center">
+                    <div className="symbol symbol-35px me-4">
+                      <span className="symbol-label bg-light-warning">
+                        <KTIcon
+                          iconName="notification"
+                          className="fs-2 text-warning"
+                        />
+                      </span>
+                    </div>
+                    <div className="d-flex flex-column">
+                      <span className="text-gray-900 fw-bold">
+                        Identification Required
+                      </span>
+                      <span className="text-muted fs-7">
+                        Please upload your passport or national ID to unlock
+                        features.
+                      </span>
+                    </div>
+                  </div>
+                  <div className="ms-5">
+                    <button
+                      type="button"
+                      className="btn btn-primary btn-sm"
+                      onClick={() => setShowUpdateIdentification(true)}
+                    >
+                      Upload Now
+                    </button>
+                  </div>
+                </div>
+                <UpdateUserIdentificationsModal
+                  show={showUpdateIdentification}
+                  onHide={() => setShowUpdateIdentification(false)}
+                />
+              </>
+            )}
             <RoleGuard allowedRoles={adminRoles}>
               <CreatePost />
             </RoleGuard>
@@ -130,7 +176,7 @@ const HomePage = () => {
 
                   {isLoading && (
                     <div className="w-100 d-flex align-items-center justify-content-center">
-                      <Spinner animation="border" color="#000" size="sm" />
+                      <Spinner animation="border" variant="secondary" size="sm" />
                     </div>
                   )}
                   {posts?.length >= 10 && <div ref={observerTarget}></div>}

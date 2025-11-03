@@ -259,6 +259,12 @@ export function AsideMenuMain() {
           fontIcon="bi-gear"
         >
           <AsideMenuItem
+            to="/statistics"
+            title="Statistics"
+            customIcon={<i className="fa-solid fa-chart-simple"></i>}
+            hasBullet
+          />
+          <AsideMenuItem
             to="/users"
             title="User management"
             hasBullet={true}

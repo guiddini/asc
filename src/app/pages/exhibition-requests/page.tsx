@@ -20,7 +20,8 @@ const ExhibitionRequests = () => {
     keepPreviousData: true,
   });
 
-  const list: ExhibitionDemand[] = data?.data || [];
+  // API now returns a bare array; no nested `data` field
+  const list: ExhibitionDemand[] = (data as ExhibitionDemand[]) || [];
 
   const statusOptions: (
     | "all"
@@ -40,13 +41,15 @@ const ExhibitionRequests = () => {
       ? "Scale Up Booth"
       : type;
 
-  const formatCurrency = (value: number | null) => {
+  const formatCurrency = (value: number | string | null) => {
     if (value === null) return "-";
+    const numeric = typeof value === "string" ? Number(value) : value;
+    if (numeric === null || Number.isNaN(numeric)) return "-";
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
       maximumFractionDigits: 0,
-    }).format(value);
+    }).format(numeric);
   };
 
   const columns = [

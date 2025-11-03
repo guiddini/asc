@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useSelector } from "react-redux";
 import { UserResponse } from "../../types/reducers";
@@ -15,6 +16,7 @@ import type {
 import getMediaUrl from "../../helpers/getMediaUrl";
 
 const ManageMyConnectionsPage = () => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { user: authUser } = useSelector((state: UserResponse) => state.user);
   const [activeTab, setActiveTab] = useState<"network" | "requests">("network");
@@ -73,10 +75,21 @@ const ManageMyConnectionsPage = () => {
       .slice(0, 2)
       .toUpperCase() || "?";
 
+  const goToProfile = (u?: UserConnectionUser) => {
+    if (u?.id) {
+      navigate(`/profile/${u.id}`);
+    }
+  };
+
   const renderUserAvatar = (user?: UserConnectionUser) => {
     const initials = initialsOf(user);
     return (
-      <div className="d-flex align-items-center">
+      <div
+        className="d-flex align-items-center"
+        style={{ cursor: "pointer" }}
+        onClick={() => goToProfile(user)}
+        title="View profile"
+      >
         {user?.avatar ? (
           <img
             src={getMediaUrl(user.avatar)}

@@ -40,6 +40,7 @@ import {
   DevTalentSubsciptions,
 } from "../pages";
 import ReportsPage from "../pages/configurations/reports/reports-page";
+import StatisticsPage from "../pages/statistics/page";
 import EventPage from "../pages/event/event-page";
 import PRessConferencePage from "../pages/press-conference/page";
 import TicketTransactionsPage from "../pages/ticket-transactions/page";
@@ -397,6 +398,17 @@ const PrivateRoutes = () => {
                 <SuspensedView>
                   <TicketTransactionsPage />
                 </SuspensedView>
+              }
+            />
+
+            <Route
+              path="/statistics"
+              element={
+                <RoleGuard allowedRoles={adminRoles} showError>
+                  <SuspensedView>
+                    <StatisticsPage />
+                  </SuspensedView>
+                </RoleGuard>
               }
             />
 
