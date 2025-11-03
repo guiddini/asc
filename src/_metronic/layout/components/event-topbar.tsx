@@ -21,11 +21,13 @@ import { HeaderUserMenu } from "../../partials";
 import clsx from "clsx";
 import getMediaUrl from "../../../app/helpers/getMediaUrl";
 import RevenueUpdateModal from "../../../app/components/revenue-update-modal";
+import BecomeSponsorModal from "../../../app/components/become-sponsor-modal";
 
 const EventTopbar = () => {
   const { user } = useSelector((state: UserResponse) => state.user);
   const navigate = useNavigate();
   const [showRevenueModal, setShowRevenueModal] = useState(false);
+  const [showSponsorModal, setShowSponsorModal] = useState(false);
 
   // Fetch company/demand info
   const { data, isLoading, refetch } = useQuery({
@@ -140,7 +142,7 @@ const EventTopbar = () => {
                       : "My Exhibition Request"}
                   </Dropdown.Item>
 
-                  <Dropdown.Item as={Link} to="/sponsor-demand">
+                  <Dropdown.Item onClick={() => setShowSponsorModal(true)}>
                     <DollarSign size={16} className="me-2" />
                     Become a Sponsor
                   </Dropdown.Item>
@@ -189,6 +191,11 @@ const EventTopbar = () => {
           onSuccess={() => refetch()}
         />
       )}
+
+      <BecomeSponsorModal
+        show={showSponsorModal}
+        onHide={() => setShowSponsorModal(false)}
+      />
     </div>
   );
 };
