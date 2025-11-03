@@ -47,7 +47,11 @@ export default function SponsorRequestsManagementPage() {
     {
       name: "Prev. Sponsor",
       selector: (row: ContactRequest) =>
-        row.previous_sponsor === true ? "Yes" : row.previous_sponsor === false ? "No" : "-",
+        row.previous_sponsor === true
+          ? "Yes"
+          : row.previous_sponsor === false
+          ? "No"
+          : "-",
       sortable: true,
       width: "150px",
     },
@@ -60,13 +64,17 @@ export default function SponsorRequestsManagementPage() {
     {
       name: "Created At",
       selector: (row: ContactRequest) =>
-        row.created_at ? moment(row.created_at).format("DD/MM/YYYY HH:mm") : "-",
+        row.created_at
+          ? moment(row.created_at).format("DD/MM/YYYY HH:mm")
+          : "-",
       sortable: true,
     },
     {
       name: "Updated At",
       selector: (row: ContactRequest) =>
-        row.updated_at ? moment(row.updated_at).format("DD/MM/YYYY HH:mm") : "-",
+        row.updated_at
+          ? moment(row.updated_at).format("DD/MM/YYYY HH:mm")
+          : "-",
       sortable: true,
     },
     {
@@ -130,7 +138,9 @@ export default function SponsorRequestsManagementPage() {
               <div className="row mb-3">
                 <div className="col-md-6">
                   <div className="fw-bold">Name</div>
-                  <div>{selected.fname} {selected.lname}</div>
+                  <div>
+                    {selected.fname} {selected.lname}
+                  </div>
                 </div>
                 <div className="col-md-6">
                   <div className="fw-bold">Email</div>
@@ -144,7 +154,9 @@ export default function SponsorRequestsManagementPage() {
                 </div>
                 <div className="col-md-6">
                   <div className="fw-bold">Previous Sponsor</div>
-                  <div className="badge bg-light text-dark border">{selected.previous_sponsor ? "Yes" : "No"}</div>
+                  <div className="badge bg-light text-dark border">
+                    {selected.previous_sponsor ? "Yes" : "No"}
+                  </div>
                 </div>
               </div>
               <div className="row mb-3">
@@ -160,7 +172,10 @@ export default function SponsorRequestsManagementPage() {
               <div className="row mb-3">
                 <div className="col-12">
                   <div className="fw-bold">Message</div>
-                  <div className="p-3 border rounded bg-light" style={{whiteSpace: "pre-wrap"}}>
+                  <div
+                    className="p-3 border rounded bg-light"
+                    style={{ whiteSpace: "pre-wrap" }}
+                  >
                     {selected.message ?? "-"}
                   </div>
                 </div>
@@ -168,11 +183,19 @@ export default function SponsorRequestsManagementPage() {
               <div className="row">
                 <div className="col-md-6">
                   <div className="fw-bold">Created At</div>
-                  <div>{selected.created_at ? moment(selected.created_at).format("DD/MM/YYYY HH:mm") : "-"}</div>
+                  <div>
+                    {selected.created_at
+                      ? moment(selected.created_at).format("DD/MM/YYYY HH:mm")
+                      : "-"}
+                  </div>
                 </div>
                 <div className="col-md-6">
                   <div className="fw-bold">Updated At</div>
-                  <div>{selected.updated_at ? moment(selected.updated_at).format("DD/MM/YYYY HH:mm") : "-"}</div>
+                  <div>
+                    {selected.updated_at
+                      ? moment(selected.updated_at).format("DD/MM/YYYY HH:mm")
+                      : "-"}
+                  </div>
                 </div>
               </div>
             </div>
