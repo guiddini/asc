@@ -105,7 +105,7 @@ export default function SponsorRequestsManagementPage() {
         data={requests}
         placeholder="Sponsor Request"
         showCreate={false}
-        showExport={false}
+        showExport={true}
         isLoading={isLoading}
         pagination={true}
         searchKeys={[

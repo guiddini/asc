@@ -236,7 +236,7 @@ const ExhibitionRequests = () => {
         isLoading={isLoading}
         pagination
         showCreate={false}
-        showExport={false}
+        showExport={true}
         showSearch={true}
         searchKeys={[
           "company.name",

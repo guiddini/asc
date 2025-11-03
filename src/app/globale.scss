@@ -3847,12 +3847,6 @@ a {
   font-weight: 500;
 }
 
-#signup-form-group label::after {
-  content: "*";
-  color: #00c4c4;
-  margin-left: 4px;
-}
-
 #signup-form-group input {
   padding: 14px 16px;
   border: 1px solid #e5e7eb;

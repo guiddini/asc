@@ -9,7 +9,9 @@ import {
   KTIcon,
   toAbsoluteUrl,
 } from "../../../_metronic/helpers";
-import { Spinner } from "react-bootstrap";
+import { Button, Form, Modal, Spinner } from "react-bootstrap";
+import { CSVLink } from "react-csv";
+import * as XLSX from "xlsx";
 
 const getNestedValue = (obj: any, path: string) =>
   path.split(".").reduce((acc, part) => acc && acc[part], obj);
@@ -51,8 +53,24 @@ export const TableComponent = ({
 }) => {
   const [filteredData, setFilteredData] = useState<any[]>(data);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+  const [selectedExportColumns, setSelectedExportColumns] = useState<string[]>(
+    []
+  );
 
   useEffect(() => setFilteredData(data), [data]);
+
+  useEffect(() => {
+    const defaults = columns
+      .map((col) => (typeof col.name === "string" ? col.name : ""))
+      .filter(
+        (name) =>
+          name &&
+          name.toLowerCase() !== "actions" &&
+          !name.toLowerCase().includes("status")
+      );
+    setSelectedExportColumns(defaults);
+  }, [columns]);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -79,6 +97,37 @@ export const TableComponent = ({
     setFilteredData(filtered);
   };
 
+  const exportableColumns = columns.filter((col) => {
+    const name = typeof col.name === "string" ? col.name : "";
+    return !!name && selectedExportColumns.includes(name);
+  });
+
+  const csvHeaders =
+    exportableColumns.map((col) => ({
+      label: typeof col.name === "string" ? col.name : "",
+      key: typeof col.name === "string" ? col.name : "",
+    })) || [];
+
+  const exportData = filteredData.map((row) => {
+    const obj: Record<string, any> = {};
+    exportableColumns.forEach((col) => {
+      if (typeof col.selector === "function")
+        obj[col.name as string] = col.selector(row);
+      else if (typeof col.selector === "string")
+        obj[col.name as string] = getNestedValue(row, col.selector);
+      else obj[col.name as string] = "";
+    });
+    return obj;
+  });
+
+  const handleExcelExport = () => {
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Data");
+    XLSX.writeFile(workbook, `${placeholder || "export"}.xlsx`);
+    setIsExportModalOpen(false);
+  };
+
   return (
     <KTCard className={cardClassName}>
       {customFullHeader ? (
@@ -94,7 +143,6 @@ export const TableComponent = ({
                 />
                 <input
                   type="text"
-                  data-kt-user-table-filter="search"
                   className="form-control form-control-solid w-250px ps-14"
                   placeholder="Search"
                   value={searchQuery}
@@ -106,7 +154,11 @@ export const TableComponent = ({
           <div className="card-toolbar">
             {customHeader}
             {showExport && (
-              <button type="button" className="btn btn-light-primary me-3">
+              <button
+                type="button"
+                className="btn btn-light-primary me-3"
+                onClick={() => setIsExportModalOpen(true)}
+              >
                 <KTIcon iconName="exit-up" className="fs-2" />
                 Export
               </button>
@@ -150,8 +202,8 @@ export const TableComponent = ({
               headCells: {
                 style: {
                   whiteSpace: "normal",
-                  wordWrap: "break-word", // ADDED
-                  wordBreak: "break-word", // ADDED
+                  wordWrap: "break-word",
+                  wordBreak: "break-word",
                   lineHeight: "1.4",
                   fontWeight: 700,
                   fontSize: "0.95rem",
@@ -166,19 +218,13 @@ export const TableComponent = ({
               rows: {
                 style: {
                   backgroundColor: "#fff",
-                  borderColor: "#9da1b",
-                  borderStyle: "solid",
-                  borderWidth: 0,
                   color: "#252F4A",
                   fontFamily: 'Inter, Helvetica, "sans-serif"',
                   overflow: "visible",
                 },
               },
               cells: {
-                style: {
-                  whiteSpace: "normal", // ADDED: Wrap cell content too
-                  wordWrap: "break-word", // ADDED
-                },
+                style: { whiteSpace: "normal", wordWrap: "break-word" },
               },
               ...customStyles,
             }}
@@ -210,6 +256,84 @@ export const TableComponent = ({
           />
         </div>
       </KTCardBody>
+
+      {isExportModalOpen && (
+        <Modal
+          show={isExportModalOpen}
+          onHide={() => setIsExportModalOpen(false)}
+          size="lg"
+          centered
+          backdrop="static"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Export Data</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p className="mb-4 text-muted">
+              Select the columns you want to include in your export. Uncheck any
+              columns you don't need.
+            </p>
+            <div className="d-flex flex-wrap gap-4">
+              {columns
+                .map((col) => (typeof col.name === "string" ? col.name : ""))
+                .filter((name) => !!name)
+                .map((name) => {
+                  const checked = selectedExportColumns.includes(name);
+                  return (
+                    <Form.Check
+                      key={name}
+                      type="checkbox"
+                      id={`export-${name}`}
+                      label={name}
+                      checked={checked}
+                      onChange={() =>
+                        setSelectedExportColumns((prev) =>
+                          prev.includes(name)
+                            ? prev.filter((n) => n !== name)
+                            : [...prev, name]
+                        )
+                      }
+                      className="me-4"
+                    />
+                  );
+                })}
+            </div>
+          </Modal.Body>
+          <Modal.Footer className="justify-content-between">
+            <Button
+              variant="light"
+              onClick={() => {
+                const defaults = columns
+                  .map((col) => (typeof col.name === "string" ? col.name : ""))
+                  .filter(
+                    (name) =>
+                      name &&
+                      name.toLowerCase() !== "actions" &&
+                      !name.toLowerCase().includes("status")
+                  );
+                setSelectedExportColumns(defaults);
+              }}
+            >
+              Reset defaults
+            </Button>
+            <div className="d-flex gap-3">
+              <CSVLink
+                headers={csvHeaders}
+                data={exportData}
+                filename={`${placeholder || "export"}.csv`}
+                uFEFF={true}
+                className="btn btn-light-primary"
+                onClick={() => setIsExportModalOpen(false)}
+              >
+                Export as CSV
+              </CSVLink>
+              <Button variant="primary" onClick={handleExcelExport}>
+                Export as Excel
+              </Button>
+            </div>
+          </Modal.Footer>
+        </Modal>
+      )}
     </KTCard>
   );
 };
