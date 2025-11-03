@@ -36,7 +36,7 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
         {/* Search Input */}
         <Col lg={10} md={10}>
           <Form.Label className="fw-medium text-muted mb-2">
-            Search Articles
+            Search Media
           </Form.Label>
           <InputGroup>
             <InputGroup.Text>
@@ -44,7 +44,7 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
             </InputGroup.Text>
             <Form.Control
               type="text"
-              placeholder="Search blogs by title..."
+              placeholder="Search media by title..."
               value={filters.title || ""}
               onChange={(e) => handleInputChange("title", e.target.value)}
               onKeyPress={handleKeyPress}

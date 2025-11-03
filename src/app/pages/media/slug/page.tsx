@@ -4,9 +4,9 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { getBlogBySlug } from "../../../apis";
 import LoadingSpinner from "../components/loading-spinner";
-import BlogHeader from "../components/blog-header";
-import BlogMeta from "../components/blog-meta";
-import BlogContent from "../components/blog-content";
+import BlogHeader from "../components/media-header";
+import BlogMeta from "../components/media-meta";
+import BlogContent from "../components/media-content";
 import ErrorMessage from "../components/error-message";
 import CommentsSection from "../components/comments-section";
 

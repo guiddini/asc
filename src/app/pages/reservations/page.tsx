@@ -350,8 +350,15 @@ const CompanyReservationPage = () => {
                                 <Button
                                   size="sm"
                                   variant="primary"
-                                  disabled={true}
-                                  title="Visa payment coming soon"
+                                  disabled={false}
+                                  title="Visa payment"
+                                  onClick={() =>
+                                    window.open(
+                                      "https://epayvisa.africanstartupconference.org/",
+                                      "_blank",
+                                      "noopener,noreferrer"
+                                    )
+                                  }
                                 >
                                   <img
                                     src="/media/eventili/visa.png"

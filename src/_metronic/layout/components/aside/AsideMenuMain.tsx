@@ -7,7 +7,7 @@ import {
   canViewCompany,
 } from "../../../../app/features/userSlice";
 import RoleGuard from "../../../../app/components/role-guard";
-import { adminRoles } from "../../../../app/routing/PrivateRoutes";
+import { adminRoles, mediaRoles } from "../../../../app/routing/PrivateRoutes";
 import { useQuery } from "react-query";
 import { getPendingUserConnectionsCount } from "../../../../app/apis/user-connection";
 
@@ -49,6 +49,16 @@ export function AsideMenuMain() {
         bsTitle="Home"
         className="py-2"
       />
+      <RoleGuard allowedRoles={mediaRoles}>
+        <AsideMenuItem
+          to="/media"
+          title="Media"
+          // fontIcon="bi-house-solid fs-2"
+          customIcon={<i className="fa-solid fa-photo-film"></i>}
+          bsTitle="Media"
+          className="py-2"
+        />
+      </RoleGuard>
       {isCompanyStaff && (
         <>
           <AsideMenuItemWithSubMain

@@ -1,4 +1,4 @@
-import { BlogSearchParams } from "../pages/blogs/types/blog";
+import { BlogSearchParams } from "../pages/media/types/blog";
 import axiosInstance from "./axios";
 
 export const searchBlogs = async ({ title }: BlogSearchParams) => {

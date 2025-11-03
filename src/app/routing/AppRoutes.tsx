@@ -20,9 +20,7 @@ import SearchTicketPage from "../pages/public/search-ticket-page";
 import MonBadge from "../pages/public/mon-badge";
 import SpeakerDetail from "../pages/speakers/speaker-detail";
 import LandingPage from "../pages/landing-page/page";
-import BlogsPage from "../pages/blogs/page";
 import LandingLayout from "../pages/landing-page/layout/layout-landing";
-import BLogDetailsPage from "../pages/blogs/slug/page";
 import PublicProgramPage from "../pages/landing-page/components/public-program";
 import { AboutPage } from "../pages";
 import ProgramPage from "../pages/program/page";
@@ -44,10 +42,8 @@ const AppRoutes: FC = () => {
           >
             <Route path="/" element={<LandingPage />} />
             <Route path="/about" element={<AboutPage />} />
-            {/* <Route path="/blogs" element={<BlogsPage />} /> */}
             <Route path="/public-program" element={<PublicProgramPage />} />
 
-            <Route path="/blogs/:slug" element={<BLogDetailsPage />} />
             <Route path="/speakers/:id" element={<SpeakerDetail />} />
 
             <Route path="/program" element={<ProgramPage />} />

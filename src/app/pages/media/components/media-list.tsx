@@ -1,20 +1,20 @@
 import React from "react";
 import { Row, Col, Alert, Spinner } from "react-bootstrap";
 import { Blog } from "../types/blog";
-import BlogCard from "./blog-card";
+import MediaCard from "./media-card";
 
-interface BlogListProps {
-  blogs?: Blog[];
+interface MediaListProps {
+  media?: Blog[];
   loading?: boolean;
   error?: string;
 }
 
-const BlogList: React.FC<BlogListProps> = ({ blogs, loading, error }) => {
+const MediaList: React.FC<MediaListProps> = ({ media, loading, error }) => {
   if (loading) {
     return (
       <div className="text-center py-5">
         <Spinner animation="border" variant="primary" />
-        <p className="mt-3 text-muted">Loading blogs...</p>
+        <p className="mt-3 text-muted">Loading media...</p>
       </div>
     );
   }
@@ -28,11 +28,11 @@ const BlogList: React.FC<BlogListProps> = ({ blogs, loading, error }) => {
     );
   }
 
-  if (blogs?.length === 0) {
+  if (media?.length === 0) {
     return (
       <div className="no-blogs-found text-center py-5">
         <i className="bi bi-journal-x display-1 text-muted mb-3"></i>
-        <h4 className="text-muted">No blogs found</h4>
+        <h4 className="text-muted">No media found</h4>
         <p className="text-muted">
           Try adjusting your search criteria or check back later for new
           content.
@@ -43,13 +43,13 @@ const BlogList: React.FC<BlogListProps> = ({ blogs, loading, error }) => {
 
   return (
     <Row className="g-4">
-      {blogs?.map((blog) => (
-        <Col key={blog?.id} lg={4} md={6} sm={12}>
-          <BlogCard blog={blog} />
+      {media?.map((media) => (
+        <Col key={media?.id} lg={4} md={6} sm={12}>
+          <MediaCard media={media} />
         </Col>
       ))}
     </Row>
   );
 };
 
-export default BlogList;
+export default MediaList;

@@ -68,8 +68,11 @@ import VisaDemandsManagementPage from "../pages/visa-demands-management/page";
 import VisaDemandPage from "../pages/visa-demand/page";
 import ProgramEventManagement from "../pages/program-event-management/page";
 import ManageMyConnectionsPage from "../pages/connections/page";
+import MediaPage from "../pages/media/page";
+import MediaSlugPage from "../pages/media/slug/page";
 
 export const adminRoles = ["admin", "super_admin", "staff"];
+export const mediaRoles = ["media", "press", "journalist"];
 
 const PrivateRoutes = () => {
   const [showAppModal, setShowAppModal] = useState(false);
@@ -151,6 +154,28 @@ const PrivateRoutes = () => {
                 <SuspensedView>
                   <HomeWrapper />
                 </SuspensedView>
+              }
+            />
+
+            <Route
+              path="/media"
+              element={
+                <RoleGuard allowedRoles={mediaRoles}>
+                  <SuspensedView>
+                    <MediaPage />
+                  </SuspensedView>
+                </RoleGuard>
+              }
+            />
+
+            <Route
+              path="/media/:slug"
+              element={
+                <RoleGuard allowedRoles={mediaRoles}>
+                  <SuspensedView>
+                    <MediaSlugPage />
+                  </SuspensedView>
+                </RoleGuard>
               }
             />
 
