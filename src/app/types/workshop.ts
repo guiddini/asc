@@ -51,4 +51,5 @@ export type CreateWorkshopRequest = {
   end_time: string;
   location: string;
   status: string;
+  side_event_id?: string;
 };

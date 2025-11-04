@@ -15,4 +15,5 @@ export type ProgramEventRequest = {
   location?: string | null;
   start_time: string;
   end_time: string;
+  side_event_id?: string;
 };

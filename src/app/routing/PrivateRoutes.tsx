@@ -73,6 +73,10 @@ import MediaPage from "../pages/media/page";
 import MediaSlugPage from "../pages/media/slug/page";
 import ContactManagementPage from "../pages/contact-management/page";
 import SponsorRequestsManagementPage from "../pages/sponsors-requests-management/page";
+import SideEventsManagement from "../pages/side-events-management/page";
+import CreateSideEvent from "../pages/side-events-management/create-side-event";
+import UpdateSideEvent from "../pages/side-events-management/update-side-event";
+import SideEventDetails from "../pages/side-events-management/side-event-details";
 
 export const adminRoles = ["admin", "super_admin", "staff"];
 export const mediaRoles = ["media", "press", "journalist"];
@@ -197,6 +201,50 @@ const PrivateRoutes = () => {
                 <RoleGuard allowedRoles={adminRoles} showError>
                   <SuspensedView>
                     <ContactManagementPage />
+                  </SuspensedView>
+                </RoleGuard>
+              }
+            />
+
+            <Route
+              path="/side-events-management/update/:id"
+              element={
+                <RoleGuard allowedRoles={adminRoles} showError>
+                  <SuspensedView>
+                    <UpdateSideEvent />
+                  </SuspensedView>
+                </RoleGuard>
+              }
+            />
+
+            <Route
+              path="/side-events-management/:id"
+              element={
+                <RoleGuard allowedRoles={adminRoles} showError>
+                  <SuspensedView>
+                    <SideEventDetails />
+                  </SuspensedView>
+                </RoleGuard>
+              }
+            />
+
+            <Route
+              path="/side-events-management/create"
+              element={
+                <RoleGuard allowedRoles={adminRoles} showError>
+                  <SuspensedView>
+                    <CreateSideEvent />
+                  </SuspensedView>
+                </RoleGuard>
+              }
+            />
+
+            <Route
+              path="/side-events-management"
+              element={
+                <RoleGuard allowedRoles={adminRoles} showError>
+                  <SuspensedView>
+                    <SideEventsManagement />
                   </SuspensedView>
                 </RoleGuard>
               }

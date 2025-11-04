@@ -272,6 +272,14 @@ export function AsideMenuMain() {
             customIcon={<i className="fa-solid fa-user"></i>}
           />
           <AsideMenuItem
+            to="/side-events-management"
+            title="Side Events Management"
+            hasBullet
+            bsTitle="Side Events Management"
+            customIcon={<i className="fa-solid fa-calendar-days"></i>}
+          />
+
+          <AsideMenuItem
             to="/media-management"
             title="Media Management"
             customIcon={<i className="fa-solid fa-blog"></i>}
