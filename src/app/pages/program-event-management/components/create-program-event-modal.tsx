@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { createProgramEvent } from "../../../apis/program-event";
+import { getAllSideEvents } from "../../../apis/side-event";
 import toast from "react-hot-toast";
 
 interface CreateProgramEventModalProps {
@@ -21,7 +22,11 @@ const CreateProgramEventModal: React.FC<CreateProgramEventModalProps> = ({
     start_time: "",
     end_time: "",
     location: "",
+    side_event_id: "",
   });
+
+  // Fetch side events
+  const { data: sideEvents } = useQuery("side-events", getAllSideEvents);
 
   const createMutation = useMutation(createProgramEvent, {
     onSuccess: () => {
@@ -31,12 +36,16 @@ const CreateProgramEventModal: React.FC<CreateProgramEventModalProps> = ({
       resetForm();
     },
     onError: (error: any) => {
-      toast.error(error?.response?.data?.message || "Failed to create program event");
+      toast.error(
+        error?.response?.data?.message || "Failed to create program event"
+      );
     },
   });
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -49,6 +58,7 @@ const CreateProgramEventModal: React.FC<CreateProgramEventModalProps> = ({
       start_time: "",
       end_time: "",
       location: "",
+      side_event_id: "",
     });
   };
 
@@ -67,7 +77,9 @@ const CreateProgramEventModal: React.FC<CreateProgramEventModalProps> = ({
           <Row>
             <Col md={12}>
               <Form.Group className="mb-3">
-                <Form.Label>Title <span className="text-danger">*</span></Form.Label>
+                <Form.Label>
+                  Title <span className="text-danger">*</span>
+                </Form.Label>
                 <Form.Control
                   type="text"
                   name="title"
@@ -93,7 +105,9 @@ const CreateProgramEventModal: React.FC<CreateProgramEventModalProps> = ({
             </Col>
             <Col md={6}>
               <Form.Group className="mb-3">
-                <Form.Label>Start Time <span className="text-danger">*</span></Form.Label>
+                <Form.Label>
+                  Start Time <span className="text-danger">*</span>
+                </Form.Label>
                 <Form.Control
                   type="datetime-local"
                   name="start_time"
@@ -105,7 +119,9 @@ const CreateProgramEventModal: React.FC<CreateProgramEventModalProps> = ({
             </Col>
             <Col md={6}>
               <Form.Group className="mb-3">
-                <Form.Label>End Time <span className="text-danger">*</span></Form.Label>
+                <Form.Label>
+                  End Time <span className="text-danger">*</span>
+                </Form.Label>
                 <Form.Control
                   type="datetime-local"
                   name="end_time"
@@ -117,7 +133,26 @@ const CreateProgramEventModal: React.FC<CreateProgramEventModalProps> = ({
             </Col>
             <Col md={12}>
               <Form.Group className="mb-3">
-                <Form.Label>Location <span className="text-danger">*</span></Form.Label>
+                <Form.Label>Side Event</Form.Label>
+                <Form.Select
+                  name="side_event_id"
+                  value={formData.side_event_id}
+                  onChange={handleChange}
+                >
+                  <option value="">Select a side event (optional)</option>
+                  {sideEvents?.map((sideEvent) => (
+                    <option key={sideEvent.id} value={sideEvent.id}>
+                      {sideEvent.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+            </Col>
+            <Col md={12}>
+              <Form.Group className="mb-3">
+                <Form.Label>
+                  Location <span className="text-danger">*</span>
+                </Form.Label>
                 <Form.Control
                   type="text"
                   name="location"

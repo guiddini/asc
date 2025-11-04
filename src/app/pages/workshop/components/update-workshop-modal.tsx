@@ -5,7 +5,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { updateWorkshop, showWorkshopById } from "../../../apis/workshop";
+import { getAllSideEvents } from "../../../apis/side-event";
 import toast from "react-hot-toast";
+import { Workshop } from "../../../types/workshop";
 
 const schema = yup.object().shape({
   title: yup.string().required("Title is required"),
@@ -14,12 +16,17 @@ const schema = yup.object().shape({
   end_time: yup
     .string()
     .required("End time is required")
-    .test("is-after", "End time must be after start time", function (value) {
-      const { start_time } = this.parent;
-      return new Date(value) > new Date(start_time);
-    }),
+    .test(
+      "is-after",
+      "End time must be after start time",
+      function (value) {
+        const { start_time } = this.parent;
+        return new Date(value) > new Date(start_time);
+      }
+    ),
   location: yup.string().required("Location is required"),
   status: yup.string().required("Status is required"),
+  side_event_id: yup.string().nullable(),
 });
 
 const toDateTimeLocal = (input: string) => {
@@ -61,11 +68,16 @@ const UpdateWorkshopModal: React.FC<Props> = ({
   workshopId,
 }) => {
   const queryClient = useQueryClient();
+  
+  // Fetch side events
+  const { data: sideEvents } = useQuery("side-events", getAllSideEvents);
 
   const { data, isLoading, error } = useQuery(
     ["workshop", workshopId],
     () => showWorkshopById(workshopId),
-    { enabled: show, retry: false }
+    {
+      enabled: !!workshopId,
+    }
   );
 
   const mutation = useMutation(
@@ -205,6 +217,20 @@ const UpdateWorkshopModal: React.FC<Props> = ({
               <Form.Control.Feedback type="invalid">
                 {errors.status?.message}
               </Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Side Event</Form.Label>
+              <Form.Select
+                {...register("side_event_id")}
+              >
+                <option value="">Select a side event (optional)</option>
+                {sideEvents?.map((sideEvent) => (
+                  <option key={sideEvent.id} value={sideEvent.id}>
+                    {sideEvent.name}
+                  </option>
+                ))}
+              </Form.Select>
             </Form.Group>
 
             <div className="d-flex justify-content-end gap-2">

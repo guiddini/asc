@@ -1,12 +1,13 @@
 import React from "react";
 import { Modal, Button, Form, Spinner } from "react-bootstrap";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient, useQuery } from "react-query";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { createWorkshop } from "../../../apis/workshop";
+import { getAllSideEvents } from "../../../apis/side-event";
 import toast from "react-hot-toast";
-import { Conference } from "../../../types/conference";
+import { Workshop } from "../../../types/workshop";
 import { useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
@@ -30,6 +31,7 @@ const schema = yup.object().shape({
     }),
   location: yup.string().required("Location is required"),
   status: yup.string().required("Status is required"),
+  side_event_id: yup.string().nullable(),
 });
 
 const formatForBackend = (dtLocal: string) => {
@@ -49,16 +51,19 @@ interface Props {
 const CreateWorkshopModal: React.FC<Props> = ({ show, onClose }) => {
   const queryClient = useQueryClient();
   const navigation = useNavigate();
-  const createMutation = useMutation({
-    mutationFn: createWorkshop,
-    onSuccess(data: Conference) {
-      queryClient.invalidateQueries("conferences");
+
+  // Fetch side events
+  const { data: sideEvents } = useQuery("side-events", getAllSideEvents);
+
+  const mutation = useMutation(createWorkshop, {
+    onSuccess(data: Workshop) {
+      queryClient.invalidateQueries("workshops");
       toast.success("Workshop created successfully");
       onClose();
-      navigation(`/workshop-management/${data?.id}`);
+      navigation(`/workshops-management/${data?.id}`);
     },
     onError() {
-      toast.error("Failed to create workshop");
+      toast.error("Failed to create the workshop");
     },
   });
 
@@ -74,7 +79,7 @@ const CreateWorkshopModal: React.FC<Props> = ({ show, onClose }) => {
   });
 
   const onSubmit = (values: any) => {
-    createMutation.mutate({
+    mutation.mutate({
       ...values,
       start_time: formatForBackend(values.start_time),
       end_time: formatForBackend(values.end_time),
@@ -155,7 +160,9 @@ const CreateWorkshopModal: React.FC<Props> = ({ show, onClose }) => {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Status</Form.Label>
+            <Form.Label>
+              Status <span className="text-danger">*</span>
+            </Form.Label>
             <Form.Select {...register("status")} isInvalid={!!errors.status}>
               <option value="draft">Draft</option>
               <option value="published">Published</option>
@@ -166,16 +173,28 @@ const CreateWorkshopModal: React.FC<Props> = ({ show, onClose }) => {
             </Form.Control.Feedback>
           </Form.Group>
 
+          <Form.Group className="mb-3">
+            <Form.Label>Side Event</Form.Label>
+            <Form.Select {...register("side_event_id")}>
+              <option value="">Select a side event (optional)</option>
+              {sideEvents?.map((sideEvent) => (
+                <option key={sideEvent.id} value={sideEvent.id}>
+                  {sideEvent.name}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+
           <div className="d-flex justify-content-end gap-2">
             <Button
               variant="secondary"
               onClick={onClose}
-              disabled={createMutation.isLoading}
+              disabled={mutation.isLoading}
             >
               Close
             </Button>
-            <Button type="submit" disabled={createMutation.isLoading}>
-              {createMutation.isLoading ? (
+            <Button type="submit" disabled={mutation.isLoading}>
+              {mutation.isLoading ? (
                 <>
                   <Spinner animation="border" size="sm" className="me-2" />
                   Creating...

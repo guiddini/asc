@@ -5,7 +5,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { updateConference, showConferenceById } from "../../../apis/conference";
+import { getAllSideEvents } from "../../../apis/side-event";
 import toast from "react-hot-toast";
+import { Conference } from "../../../types/conference";
 
 interface UpdateConference {
   title: string;
@@ -33,6 +35,7 @@ const schema = yup.object().shape({
     ),
   location: yup.string().required("Location is required"),
   status: yup.string().required("Status is required"),
+  side_event_id: yup.string().nullable(),
 });
 
 const toDateTimeLocal = (dateStr: string) => {
@@ -68,6 +71,9 @@ const UpdateConferenceModal: React.FC<Props> = ({
   conferenceId,
 }) => {
   const queryClient = useQueryClient();
+
+  // Fetch side events
+  const { data: sideEvents } = useQuery("side-events", getAllSideEvents);
 
   const { data, isLoading, error } = useQuery(
     ["conference", conferenceId],
@@ -199,7 +205,7 @@ const UpdateConferenceModal: React.FC<Props> = ({
               </Form.Group>
 
               <Form.Group className="mb-3">
-                <Form.Label>Status</Form.Label>
+                <Form.Label>Status <span className="text-danger">*</span></Form.Label>
                 <Form.Select
                   isInvalid={!!errors.status}
                   {...register("status")}
@@ -211,6 +217,20 @@ const UpdateConferenceModal: React.FC<Props> = ({
                 <Form.Control.Feedback type="invalid">
                   {errors.status?.message}
                 </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>Side Event</Form.Label>
+                <Form.Select
+                  {...register("side_event_id")}
+                >
+                  <option value="">Select a side event (optional)</option>
+                  {sideEvents?.map((sideEvent) => (
+                    <option key={sideEvent.id} value={sideEvent.id}>
+                      {sideEvent.name}
+                    </option>
+                  ))}
+                </Form.Select>
               </Form.Group>
             </>
           )}

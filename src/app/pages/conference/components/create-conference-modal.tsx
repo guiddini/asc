@@ -1,10 +1,11 @@
 import React from "react";
 import { Modal, Button, Form, Spinner } from "react-bootstrap";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient, useQuery } from "react-query";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { createConference } from "../../../apis/conference";
+import { getAllSideEvents } from "../../../apis/side-event";
 import toast from "react-hot-toast";
 import { Conference } from "../../../types/conference";
 import { useNavigate } from "react-router-dom";
@@ -26,6 +27,7 @@ const schema = yup.object().shape({
     ),
   location: yup.string().required("Location is required"),
   status: yup.string().required("Status is required"),
+  side_event_id: yup.string().nullable(),
 });
 
 const formatForBackend = (dtLocal: string) => {
@@ -45,6 +47,10 @@ interface Props {
 const CreateConferenceModal: React.FC<Props> = ({ show, onClose }) => {
   const queryClient = useQueryClient();
   const navigation = useNavigate();
+  
+  // Fetch side events
+  const { data: sideEvents } = useQuery("side-events", getAllSideEvents);
+  
   const mutation = useMutation(createConference, {
     onSuccess(data: Conference) {
       queryClient.invalidateQueries("conferences");
@@ -146,15 +152,32 @@ const CreateConferenceModal: React.FC<Props> = ({ show, onClose }) => {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Status</Form.Label>
-            <Form.Select isInvalid={!!errors.status} {...register("status")}>
-              <option value="">Select a status...</option>
-              <option value="draft">Draft</option>
-              <option value="published">Published</option>
+            <Form.Label>Status <span className="text-danger">*</span></Form.Label>
+            <Form.Select
+              {...register("status")}
+              isInvalid={!!errors.status}
+            >
+              <option value="">Select status</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
             </Form.Select>
             <Form.Control.Feedback type="invalid">
               {errors.status?.message}
             </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Side Event</Form.Label>
+            <Form.Select
+              {...register("side_event_id")}
+            >
+              <option value="">Select a side event (optional)</option>
+              {sideEvents?.map((sideEvent) => (
+                <option key={sideEvent.id} value={sideEvent.id}>
+                  {sideEvent.name}
+                </option>
+              ))}
+            </Form.Select>
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
