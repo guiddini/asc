@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { UserResponse } from "../types/reducers";
-import { Button, Container, Card } from "react-bootstrap";
+import { Container, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 interface RoleGuardProps {
@@ -17,12 +17,13 @@ const RoleGuard: React.FC<RoleGuardProps> = ({
 }) => {
   const { user } = useSelector((state: UserResponse) => state.user);
 
-  const hasAccess = allowedRoles.includes(user?.roleValues?.name);
+  const userRoles = user?.roles?.map((role: any) => role.name) || [];
+  const hasAccess = userRoles.some((role: string) =>
+    allowedRoles.includes(role)
+  );
 
   if (!hasAccess) {
-    if (!showError) {
-      return null;
-    }
+    if (!showError) return null;
 
     return (
       <Container className="d-flex justify-content-center align-items-center vh-100">

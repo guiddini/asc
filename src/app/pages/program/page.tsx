@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { getPublicProgramSchedule } from "../../apis/slot";
-import { useSearchParams } from "react-router-dom";
-import { Col, Row, Spinner } from "react-bootstrap";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { Button, Col, Row, Spinner } from "react-bootstrap";
 import { format, parseISO } from "date-fns";
 import type { PublicSlot, PublicSlotType } from "../../types/slot";
 import { getThreeDayRange } from "../meetings/utils/scheduleUtils";
@@ -12,9 +12,52 @@ import {
   EVENT_STATS,
 } from "../landing-page/components/event-stats-section";
 import getMediaUrl from "../../helpers/getMediaUrl";
+import { useSelector } from "react-redux";
+import { joinConference, leaveConference } from "../../apis/conference";
+import { joinWorkshop, leaveWorkshop } from "../../apis/workshop";
+import toast from "react-hot-toast";
 
 // Custom Event Card Component for Timeline
 const TimelineEventCard: React.FC<{ event: PublicSlot }> = ({ event }) => {
+  const navigate = useNavigate();
+  const { user } = useSelector((state: any) => state.user);
+  
+  const joinConferenceMutation = useMutation(joinConference, {
+    onSuccess: () => {
+      toast.success("Successfully joined the conference");
+    },
+    onError: () => {
+      toast.error("Failed to join the conference");
+    },
+  });
+
+  const leaveConferenceMutation = useMutation(leaveConference, {
+    onSuccess: () => {
+      toast.success("Successfully left the conference");
+    },
+    onError: () => {
+      toast.error("Failed to leave the conference");
+    },
+  });
+
+  const joinWorkshopMutation = useMutation(joinWorkshop, {
+    onSuccess: () => {
+      toast.success("Successfully joined the workshop");
+    },
+    onError: () => {
+      toast.error("Failed to join the workshop");
+    },
+  });
+
+  const leaveWorkshopMutation = useMutation(leaveWorkshop, {
+    onSuccess: () => {
+      toast.success("Successfully left the workshop");
+    },
+    onError: () => {
+      toast.error("Failed to leave the workshop");
+    },
+  });
+
   const formatTime = (timeString: string) => {
     return format(parseISO(timeString), "h:mm a");
   };
@@ -40,6 +83,37 @@ const TimelineEventCard: React.FC<{ event: PublicSlot }> = ({ event }) => {
         return "General Event";
     }
   };
+
+  const handleJoin = () => {
+    if (!user) {
+      toast.error("Please sign up or log in to join this event");
+      navigate("/auth/signup?type=visitor");
+      return;
+    }
+
+    if (event.type === "conference") {
+      joinConferenceMutation.mutate(event.id.toString());
+    } else if (event.type === "workshop") {
+      joinWorkshopMutation.mutate(event.id.toString());
+    }
+  };
+
+  const handleLeave = () => {
+    if (!user) {
+      toast.error("Please sign up or log in first");
+      navigate("/auth/signup?type=visitor");
+      return;
+    }
+
+    if (event.type === "conference") {
+      leaveConferenceMutation.mutate(event.id.toString());
+    } else if (event.type === "workshop") {
+      leaveWorkshopMutation.mutate(event.id.toString());
+    }
+  };
+
+  // Check if user is attending this event
+  const isAttending = user && event.attendees?.some(attendee => attendee.id === user.id);
 
   return (
     <div id={`event-card-${event.id}`} className="timeline-event-item">
@@ -136,6 +210,36 @@ const TimelineEventCard: React.FC<{ event: PublicSlot }> = ({ event }) => {
               )}
             </div>
           )}
+          
+          <div className="mt-3">
+            {isAttending ? (
+              <Button 
+                variant="outline-danger" 
+                size="sm" 
+                onClick={handleLeave}
+                disabled={leaveConferenceMutation.isLoading || leaveWorkshopMutation.isLoading}
+              >
+                {leaveConferenceMutation.isLoading || leaveWorkshopMutation.isLoading ? (
+                  <><Spinner as="span" animation="border" size="sm" /> Leaving...</>
+                ) : (
+                  "Leave"
+                )}
+              </Button>
+            ) : (
+              <Button 
+                variant="outline-primary" 
+                size="sm" 
+                onClick={handleJoin}
+                disabled={joinConferenceMutation.isLoading || joinWorkshopMutation.isLoading}
+              >
+                {joinConferenceMutation.isLoading || joinWorkshopMutation.isLoading ? (
+                  <><Spinner as="span" animation="border" size="sm" /> Joining...</>
+                ) : (
+                  "Join"
+                )}
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </div>

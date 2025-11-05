@@ -34,6 +34,7 @@ export type PublicSlot = {
   start_time: string;
   end_time: string;
   speakers?: Speaker[];
+  attendees?: Speaker[];
 };
 
 export type SlotCheckRequest = {

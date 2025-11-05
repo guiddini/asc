@@ -18,8 +18,8 @@ import { getAllPostsApi } from "../../apis";
 import { Col, Row, Spinner } from "react-bootstrap";
 import { KTIcon, toAbsoluteUrl } from "../../../_metronic/helpers";
 import RoleGuard from "../../components/role-guard";
-import { adminRoles } from "../../routing/PrivateRoutes";
 import UpdateUserIdentificationsModal from "../../components/update-user-identifications";
+import { adminRoles } from "../../utils/roles";
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -176,7 +176,11 @@ const HomePage = () => {
 
                   {isLoading && (
                     <div className="w-100 d-flex align-items-center justify-content-center">
-                      <Spinner animation="border" variant="secondary" size="sm" />
+                      <Spinner
+                        animation="border"
+                        variant="secondary"
+                        size="sm"
+                      />
                     </div>
                   )}
                   {posts?.length >= 10 && <div ref={observerTarget}></div>}

@@ -13,6 +13,11 @@ import {
 import { Modal, Button, Spinner, Dropdown, Form, Table } from "react-bootstrap";
 import { KTIcon } from "../../../../_metronic/helpers";
 import { useNavigate } from "react-router-dom";
+import RoleGuard from "../../../components/role-guard";
+import {
+  exhibitionFinanceOfficerRoles,
+  exhibitionManagerRoles,
+} from "../../../utils/roles";
 
 interface ExhibitionRequestActionsProps {
   row: ExhibitionDemand;
@@ -202,29 +207,6 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
             </div>
           </Dropdown.Item>
 
-          {/* Edit Demand */}
-          <Dropdown.Item
-            onClick={() => {
-              setEditExhibitionType(
-                row.exhibition_type as
-                  | "connect_desk"
-                  | "premium_exhibition_space"
-                  | "scale_up_booth"
-              );
-              setEditNotes("");
-              setShowEditModal(true);
-            }}
-            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
-          >
-            <div className="cursor-pointer d-flex flex-row align-items-center">
-              <KTIcon
-                iconName="pencil"
-                className="fs-1 cursor-pointer m-0 text-warning"
-              />
-              <span className="text-muted ms-2">Edit Demand</span>
-            </div>
-          </Dropdown.Item>
-
           {/* Show Founder */}
           <Dropdown.Item
             onClick={() => navigate(`/profile/${row.user_id}`)}
@@ -255,113 +237,142 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
             </div>
           </Dropdown.Item>
 
-          {/* View transfer document (only when present) */}
-          {row?.transfer_document && (
+          <RoleGuard allowedRoles={exhibitionManagerRoles}>
+            {/* Edit Demand */}
             <Dropdown.Item
-              onClick={handleOpenTransferDocument}
+              onClick={() => {
+                setEditExhibitionType(
+                  row.exhibition_type as
+                    | "connect_desk"
+                    | "premium_exhibition_space"
+                    | "scale_up_booth"
+                );
+                setEditNotes("");
+                setShowEditModal(true);
+              }}
               className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
             >
               <div className="cursor-pointer d-flex flex-row align-items-center">
                 <KTIcon
-                  iconName="document"
-                  className="fs-1 cursor-pointer m-0 text-info"
+                  iconName="pencil"
+                  className="fs-1 cursor-pointer m-0 text-warning"
                 />
-                <span className="text-muted ms-2">View Transfer Document</span>
+                <span className="text-muted ms-2">Edit Demand</span>
               </div>
             </Dropdown.Item>
-          )}
 
-          {/* Accept / Reject only for pending */}
-          {isPending && (
-            <>
-              <Dropdown.Item
-                onClick={() => setShowAcceptModal(true)}
-                disabled={disableAccept}
-                className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
-              >
-                <div className="cursor-pointer d-flex flex-row align-items-center">
-                  <KTIcon
-                    iconName="check"
-                    className="fs-1 cursor-pointer m-0 text-success"
-                  />
-                  <span className="text-muted ms-2">Accept Request</span>
-                </div>
-              </Dropdown.Item>
-            </>
-          )}
-
-          <Dropdown.Item
-            onClick={() => setShowRejectModal(true)}
-            disabled={disableReject}
-            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
-          >
-            <div className="cursor-pointer d-flex flex-row align-items-center">
-              <KTIcon
-                iconName="cross"
-                className="fs-1 cursor-pointer m-0 text-danger"
-              />
-              <span className="text-muted ms-2">Reject Request</span>
-            </div>
-          </Dropdown.Item>
-
-          {/* Mark as Paid / Unpaid — show only for pending transfer confirmation OR unpaid */}
-          {showMarkPaidState &&
-            (rowStatus === "unpaid" ||
-              rowStatus === "pending transfer confirmation") && (
+            {/* Accept / Reject only for pending */}
+            {isPending && (
               <>
                 <Dropdown.Item
-                  onClick={handleMarkPaid}
-                  disabled={markPaidMutation.isLoading}
+                  onClick={() => setShowAcceptModal(true)}
+                  disabled={disableAccept}
                   className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
                 >
                   <div className="cursor-pointer d-flex flex-row align-items-center">
                     <KTIcon
-                      iconName="credit-cart"
-                      className="fs-1 cursor-pointer m-0 text-primary"
+                      iconName="check"
+                      className="fs-1 cursor-pointer m-0 text-success"
                     />
-                    <span className="text-muted ms-2">
-                      {markPaidMutation.isLoading
-                        ? "Marking as Paid..."
-                        : "Mark as Paid"}
-                    </span>
+                    <span className="text-muted ms-2">Accept Request</span>
                   </div>
                 </Dropdown.Item>
               </>
             )}
 
-          <Dropdown.Item
-            onClick={handleOpenUnpaidModal}
-            disabled={markUnpaidMutation.isLoading}
-            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
-          >
-            <div className="cursor-pointer d-flex flex-row align-items-center">
-              <KTIcon
-                iconName="credit-cart"
-                className="fs-1 cursor-pointer m-0 text-warning"
-              />
-              <span className="text-muted ms-2">
-                {markUnpaidMutation.isLoading
-                  ? "Marking as Unpaid..."
-                  : "Mark as Unpaid"}
-              </span>
-            </div>
-          </Dropdown.Item>
-
-          {/* View Payment Results only when paid */}
-          {rowStatus === STATUS_PAID && !row?.transfer_document && (
             <Dropdown.Item
-              onClick={handleRedirectToPaymentResults}
+              onClick={() => setShowRejectModal(true)}
+              disabled={disableReject}
               className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
             >
               <div className="cursor-pointer d-flex flex-row align-items-center">
                 <KTIcon
-                  iconName="eye"
-                  className="fs-1 cursor-pointer m-0 text-warning"
+                  iconName="cross"
+                  className="fs-1 cursor-pointer m-0 text-danger"
                 />
-                <span className="text-muted ms-2">View Payment Results</span>
+                <span className="text-muted ms-2">Reject Request</span>
               </div>
             </Dropdown.Item>
-          )}
+          </RoleGuard>
+
+          <RoleGuard allowedRoles={exhibitionFinanceOfficerRoles}>
+            {/* View transfer document (only when present) */}
+            {row?.transfer_document && (
+              <Dropdown.Item
+                onClick={handleOpenTransferDocument}
+                className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
+              >
+                <div className="cursor-pointer d-flex flex-row align-items-center">
+                  <KTIcon
+                    iconName="document"
+                    className="fs-1 cursor-pointer m-0 text-info"
+                  />
+                  <span className="text-muted ms-2">
+                    View Transfer Document
+                  </span>
+                </div>
+              </Dropdown.Item>
+            )}
+
+            {/* Mark as Paid / Unpaid — show only for pending transfer confirmation OR unpaid */}
+            {showMarkPaidState &&
+              (rowStatus === "unpaid" ||
+                rowStatus === "pending transfer confirmation") && (
+                <>
+                  <Dropdown.Item
+                    onClick={handleMarkPaid}
+                    disabled={markPaidMutation.isLoading}
+                    className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
+                  >
+                    <div className="cursor-pointer d-flex flex-row align-items-center">
+                      <KTIcon
+                        iconName="credit-cart"
+                        className="fs-1 cursor-pointer m-0 text-primary"
+                      />
+                      <span className="text-muted ms-2">
+                        {markPaidMutation.isLoading
+                          ? "Marking as Paid..."
+                          : "Mark as Paid"}
+                      </span>
+                    </div>
+                  </Dropdown.Item>
+                </>
+              )}
+
+            <Dropdown.Item
+              onClick={handleOpenUnpaidModal}
+              disabled={markUnpaidMutation.isLoading}
+              className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
+            >
+              <div className="cursor-pointer d-flex flex-row align-items-center">
+                <KTIcon
+                  iconName="credit-cart"
+                  className="fs-1 cursor-pointer m-0 text-warning"
+                />
+                <span className="text-muted ms-2">
+                  {markUnpaidMutation.isLoading
+                    ? "Marking as Unpaid..."
+                    : "Mark as Unpaid"}
+                </span>
+              </div>
+            </Dropdown.Item>
+
+            {/* View Payment Results only when paid */}
+            {rowStatus === STATUS_PAID && !row?.transfer_document && (
+              <Dropdown.Item
+                onClick={handleRedirectToPaymentResults}
+                className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
+              >
+                <div className="cursor-pointer d-flex flex-row align-items-center">
+                  <KTIcon
+                    iconName="eye"
+                    className="fs-1 cursor-pointer m-0 text-warning"
+                  />
+                  <span className="text-muted ms-2">View Payment Results</span>
+                </div>
+              </Dropdown.Item>
+            )}
+          </RoleGuard>
         </Dropdown.Menu>
       </Dropdown>
 

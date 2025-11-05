@@ -77,9 +77,7 @@ import SideEventsManagement from "../pages/side-events-management/page";
 import CreateSideEvent from "../pages/side-events-management/create-side-event";
 import UpdateSideEvent from "../pages/side-events-management/update-side-event";
 import SideEventDetails from "../pages/side-events-management/side-event-details";
-
-export const adminRoles = ["admin", "super_admin", "staff"];
-export const mediaRoles = ["media", "press", "journalist"];
+import { adminRoles, exhibitionRoles, mediaRoles, programRoles } from "../utils/roles";
 
 const PrivateRoutes = () => {
   const [showAppModal, setShowAppModal] = useState(false);
@@ -154,6 +152,7 @@ const PrivateRoutes = () => {
             {/* Redirect to Dashboard after success login/registartion */}
             <Route path="auth/*" element={<Navigate to="/home" />} />
             {/* Pages */}
+            {/* General Routes */}
             {/* home feed */}
             <Route
               path="/home"
@@ -164,6 +163,7 @@ const PrivateRoutes = () => {
               }
             />
 
+            {/* Media Routes */}
             <Route
               path="/media"
               element={
@@ -195,21 +195,13 @@ const PrivateRoutes = () => {
               }
             />
 
-            <Route
-              path="/contact-management"
-              element={
-                <RoleGuard allowedRoles={adminRoles} showError>
-                  <SuspensedView>
-                    <ContactManagementPage />
-                  </SuspensedView>
-                </RoleGuard>
-              }
-            />
+            
 
+            {/* Program Routes */}
             <Route
               path="/side-events-management/update/:id"
               element={
-                <RoleGuard allowedRoles={adminRoles} showError>
+                <RoleGuard allowedRoles={programRoles} showError>
                   <SuspensedView>
                     <UpdateSideEvent />
                   </SuspensedView>
@@ -220,7 +212,7 @@ const PrivateRoutes = () => {
             <Route
               path="/side-events-management/:id"
               element={
-                <RoleGuard allowedRoles={adminRoles} showError>
+                <RoleGuard allowedRoles={programRoles} showError>
                   <SuspensedView>
                     <SideEventDetails />
                   </SuspensedView>
@@ -231,7 +223,7 @@ const PrivateRoutes = () => {
             <Route
               path="/side-events-management/create"
               element={
-                <RoleGuard allowedRoles={adminRoles} showError>
+                <RoleGuard allowedRoles={programRoles} showError>
                   <SuspensedView>
                     <CreateSideEvent />
                   </SuspensedView>
@@ -242,14 +234,26 @@ const PrivateRoutes = () => {
             <Route
               path="/side-events-management"
               element={
-                <RoleGuard allowedRoles={adminRoles} showError>
+                <RoleGuard allowedRoles={programRoles} showError>
                   <SuspensedView>
                     <SideEventsManagement />
                   </SuspensedView>
                 </RoleGuard>
               }
             />
+            
 
+            {/* Admin Routes */}
+            <Route
+              path="/contact-management"
+              element={
+                <RoleGuard allowedRoles={adminRoles} showError>
+                  <SuspensedView>
+                    <ContactManagementPage />
+                  </SuspensedView>
+                </RoleGuard>
+              }
+            />
             <Route
               path="/sponsor-requests-management"
               element={
@@ -293,10 +297,12 @@ const PrivateRoutes = () => {
                 </RoleGuard>
               }
             />
+            
+            
             <Route
               path="/program-event-management"
               element={
-                <RoleGuard allowedRoles={adminRoles} showError>
+                <RoleGuard allowedRoles={programRoles} showError>
                   <SuspensedView>
                     <ProgramEventManagement />
                   </SuspensedView>
@@ -324,7 +330,7 @@ const PrivateRoutes = () => {
             <Route
               path="/workshop-management"
               element={
-                <RoleGuard allowedRoles={adminRoles} showError>
+                <RoleGuard allowedRoles={programRoles} showError>
                   <SuspensedView>
                     <WorkshopsManagementPage />
                   </SuspensedView>
@@ -334,7 +340,7 @@ const PrivateRoutes = () => {
             <Route
               path="/workshop-management/:id"
               element={
-                <RoleGuard allowedRoles={adminRoles} showError>
+                <RoleGuard allowedRoles={programRoles} showError>
                   <SuspensedView>
                     <WorkshopDetailPage />
                   </SuspensedView>
@@ -344,7 +350,7 @@ const PrivateRoutes = () => {
             <Route
               path="/conferences-management"
               element={
-                <RoleGuard allowedRoles={adminRoles} showError>
+                <RoleGuard allowedRoles={programRoles} showError>
                   <SuspensedView>
                     <ConferencesPage />
                   </SuspensedView>
@@ -354,7 +360,7 @@ const PrivateRoutes = () => {
             <Route
               path="/conferences-management/:id"
               element={
-                <RoleGuard allowedRoles={adminRoles} showError>
+                <RoleGuard allowedRoles={programRoles} showError>
                   <SuspensedView>
                     <ConferenceDetailPage />
                   </SuspensedView>
@@ -705,6 +711,7 @@ const PrivateRoutes = () => {
 
             {/* configuration page */}
 
+            {/* Config Routes */}
             <Route
               path="/config/activities"
               element={
@@ -714,14 +721,18 @@ const PrivateRoutes = () => {
               }
             />
 
+            {/* Exhibition Routes */}
             <Route
               path="/exhibition-requests"
               element={
-                <SuspensedView>
-                  <ExhibitionRequests />
-                </SuspensedView>
+                <RoleGuard allowedRoles={exhibitionRoles} showError>
+                  <SuspensedView>
+                    <ExhibitionRequests />
+                  </SuspensedView>
+                </RoleGuard>
               }
             />
+
             <Route
               path="/config/activities"
               element={
