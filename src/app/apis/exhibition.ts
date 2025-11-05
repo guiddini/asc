@@ -12,7 +12,7 @@ const updateExhibitionDemandApi = async (data: FormData) => {
   return axiosInstance.post(`/exhibition-demand/edit`, data);
 };
 const getAllExhibitionDemandsApi = async (params?: {
-  status?: "all" | "pending" | "accepted" | "refused" | "paid" | "unpaid";
+  status?: "all" | "pending" | "accepted" | "refused" | "paid" | "unpaid" | "failed";
   page?: number;
   per_page?: number;
   exhibition_type?: "connect_desk" | "premium_exhibition_space" | "scale_up_booth";

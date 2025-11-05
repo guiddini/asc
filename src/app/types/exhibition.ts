@@ -24,6 +24,7 @@ export interface ExhibitionDemand {
     | "pending"
     | "accepted"
     | "refused"
+    | "failed"
     | "Pending transfer confirmation"
     | "paid"
     | "unpaid";

@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 const ExhibitionRequests = () => {
   const [filterStatus, setFilterStatus] = useState<
-    "all" | "pending" | "accepted" | "refused" | "paid" | "unpaid"
+    "all" | "pending" | "accepted" | "refused" | "paid" | "unpaid" | "failed"
   >("all");
 
   const [exhibitionType, setExhibitionType] = useState<
@@ -22,8 +22,7 @@ const ExhibitionRequests = () => {
     queryFn: () =>
       getAllExhibitionDemandsApi({
         status: filterStatus,
-        exhibition_type:
-          exhibitionType === "all" ? undefined : exhibitionType,
+        exhibition_type: exhibitionType === "all" ? undefined : exhibitionType,
       }),
     queryKey: ["exhibition-requests", filterStatus, exhibitionType],
     keepPreviousData: true,
@@ -39,7 +38,8 @@ const ExhibitionRequests = () => {
     | "refused"
     | "paid"
     | "unpaid"
-  )[] = ["all", "pending", "accepted", "refused", "paid", "unpaid"];
+    | "failed"
+  )[] = ["all", "pending", "accepted", "refused", "paid", "unpaid", "failed"];
 
   const typeOptions: (
     | "all"
@@ -99,12 +99,14 @@ const ExhibitionRequests = () => {
       ),
     },
     {
-      name: "Phone",
-      selector: (row: ExhibitionDemand) => row.company?.phone_1 || "-",
+      name: "Label Number",
+      selector: (row: ExhibitionDemand) => row.company?.label_number || "-",
       sortable: true,
-      minWidth: "140px",
+      minWidth: "160px",
       wrap: true,
-      cell: (row: ExhibitionDemand) => <div>{row.company?.phone_1 || "-"}</div>,
+      cell: (row: ExhibitionDemand) => (
+        <div>{row.company?.label_number || "-"}</div>
+      ),
     },
     {
       name: "Country",
@@ -199,18 +201,18 @@ const ExhibitionRequests = () => {
                 ? "bg-warning text-dark"
                 : row.status === "accepted"
                 ? "bg-success text-white"
-                : row.status === "refused"
+                : row.status === "refused" || row.status === "failed"
                 ? "bg-danger text-white"
                 : row.status === "paid"
                 ? "bg-primary text-white"
                 : row.status === "unpaid"
                 ? "bg-secondary text-white"
                 : "bg-light text-dark"
-            }`}
-          >
-            {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
-          </span>
-        </div>
+          }`}
+        >
+          {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
+        </span>
+      </div>
       ),
     },
     {
@@ -222,6 +224,14 @@ const ExhibitionRequests = () => {
       cell: (row: ExhibitionDemand) => (
         <div>{new Date(row.created_at).toLocaleDateString()}</div>
       ),
+    },
+    {
+      name: "Phone",
+      selector: (row: ExhibitionDemand) => row.company?.phone_1 || "-",
+      sortable: true,
+      minWidth: "140px",
+      wrap: true,
+      cell: (row: ExhibitionDemand) => <div>{row.company?.phone_1 || "-"}</div>,
     },
   ];
 
@@ -254,7 +264,9 @@ const ExhibitionRequests = () => {
             key={type}
             className={clsx(
               "btn btn-sm fw-semibold text-capitalize px-4 py-2 border",
-              exhibitionType === type ? "btn-custom-purple-dark text-white" : "btn-light"
+              exhibitionType === type
+                ? "btn-custom-purple-dark text-white"
+                : "btn-light"
             )}
             onClick={() => setExhibitionType(type)}
           >
@@ -274,6 +286,7 @@ const ExhibitionRequests = () => {
         searchKeys={[
           "company.name",
           "company.phone_1",
+          "company.label_number",
           "company.country.name_en",
           "company.revenue_2024",
           "company.revenue_2025",
