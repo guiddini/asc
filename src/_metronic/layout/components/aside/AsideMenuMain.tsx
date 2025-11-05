@@ -198,13 +198,13 @@ export function AsideMenuMain() {
         bsTitle="Visa Demand"
         customIcon={<i className="fa-solid fa-id-card"></i>}
       />
-
+      {/* 
       <AsideMenuItem
         to={`/tickets`}
         title="Tickets"
         bsTitle="Tickets"
         customIcon={<i className="fa-solid fa-ticket"></i>}
-      />
+      /> */}
 
       {isCompanyStaff && (
         <AsideMenuItem
@@ -304,13 +304,13 @@ export function AsideMenuMain() {
               customIcon={<i className="fa-solid fa-handshake"></i>}
             />
 
-            <AsideMenuItem
+            {/* <AsideMenuItem
               to="/ticket-transactions"
               title="Ticket Transactions"
               hasBullet
               bsTitle="Ticket Transactions"
               customIcon={<i className="fa-solid fa-ticket"></i>}
-            />
+            /> */}
 
             <AsideMenuItem
               to="/visa-demand-management"
@@ -326,14 +326,6 @@ export function AsideMenuMain() {
               hasBullet
               bsTitle="Guests management"
               customIcon={<i className="fa-solid fa-user-check"></i>}
-            />
-
-            <AsideMenuItem
-              to="/roles"
-              title="Roles management"
-              hasBullet
-              bsTitle="Roles management"
-              customIcon={<i className="fa-solid fa-user-shield"></i>}
             />
 
             <AsideMenuItem
@@ -361,13 +353,6 @@ export function AsideMenuMain() {
               to="/config/ads"
               title="Advertisements"
               customIcon={<i className="fa-solid fa-bullhorn"></i>}
-              hasBullet
-            />
-
-            <AsideMenuItem
-              to="/config/reports"
-              title="Reports"
-              customIcon={<i className="fa-solid fa-flag"></i>}
               hasBullet
             />
 

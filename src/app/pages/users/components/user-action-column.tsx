@@ -80,19 +80,6 @@ const UserActionColumn = ({
           </div>
         </Dropdown.Item>
 
-        <Dropdown.Item
-          onClick={() => setOpenAddNewStaff(true)}
-          className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
-        >
-          <div className="cursor-pointer d-flex flex-row align-items-center">
-            <KTIcon
-              iconName="plus"
-              className="fs-1 cursor-pointer m-0 text-success"
-            />
-            <span className="text-muted ms-2">Ajouter comme un staff</span>
-          </div>
-        </Dropdown.Item>
-
         {/* New Role Management Options */}
         <Dropdown.Item
           onClick={() => setOpenAssignRoleModal(true)}
@@ -133,7 +120,7 @@ const UserActionColumn = ({
           </div>
         </Dropdown.Item>
 
-        <Dropdown.Item
+        {/* <Dropdown.Item
           onClick={(e) => {
             e.preventDefault();
             setOpenGiftTicketToOtherUser(true);
@@ -147,10 +134,10 @@ const UserActionColumn = ({
             />
             <span className="text-muted ms-2">Gift ticket to other user</span>
           </div>
-        </Dropdown.Item>
+        </Dropdown.Item> */}
 
         <div className="p-2">
-          <Dropdown.Item
+          {/* <Dropdown.Item
             onClick={() => {
               setOpenAddNewTicket(props);
             }}
@@ -160,26 +147,10 @@ const UserActionColumn = ({
               <i className="fa-solid fa-ticket fs-2 text-custom-purple-dark me-1"></i>
               <span className="text-muted ms-2">Ajouter des tickets</span>
             </div>
-          </Dropdown.Item>
+          </Dropdown.Item> */}
 
           {/* print badge && assign ticket */}
-          {props?.user_has_ticket_id === null ? (
-            <Dropdown.Item
-              onClick={(e) => {
-                e.preventDefault();
-                setOpenAssignTicket(true);
-              }}
-              className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
-            >
-              <div className="cursor-pointer d-flex flex-row align-items-center">
-                <KTIcon
-                  iconName="receipt-square"
-                  className="fs-1 cursor-pointer m-0 text-warning"
-                />
-                <span className="text-muted ms-2">Assigner un ticket</span>
-              </div>
-            </Dropdown.Item>
-          ) : (
+          {props?.user_has_ticket_id !== null && (
             <>
               <Dropdown.Item
                 onClick={(e) => {

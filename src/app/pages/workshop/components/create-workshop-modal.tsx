@@ -164,9 +164,10 @@ const CreateWorkshopModal: React.FC<Props> = ({ show, onClose }) => {
               Status <span className="text-danger">*</span>
             </Form.Label>
             <Form.Select {...register("status")} isInvalid={!!errors.status}>
+              <option value="">Select status</option>
               <option value="draft">Draft</option>
               <option value="published">Published</option>
-              <option value="canceled">Canceled</option>
+              <option value="cancelled">Cancelled</option>
             </Form.Select>
             <Form.Control.Feedback type="invalid">
               {errors.status?.message as string}

@@ -17,14 +17,10 @@ const schema = yup.object().shape({
   end_time: yup
     .string()
     .required("End time is required")
-    .test(
-      "is-after",
-      "End time must be after start time",
-      function (value) {
-        const { start_time } = this.parent;
-        return new Date(value) > new Date(start_time);
-      }
-    ),
+    .test("is-after", "End time must be after start time", function (value) {
+      const { start_time } = this.parent;
+      return new Date(value) > new Date(start_time);
+    }),
   location: yup.string().required("Location is required"),
   status: yup.string().required("Status is required"),
   side_event_id: yup.string().nullable(),
@@ -47,10 +43,10 @@ interface Props {
 const CreateConferenceModal: React.FC<Props> = ({ show, onClose }) => {
   const queryClient = useQueryClient();
   const navigation = useNavigate();
-  
+
   // Fetch side events
   const { data: sideEvents } = useQuery("side-events", getAllSideEvents);
-  
+
   const mutation = useMutation(createConference, {
     onSuccess(data: Conference) {
       queryClient.invalidateQueries("conferences");
@@ -152,14 +148,14 @@ const CreateConferenceModal: React.FC<Props> = ({ show, onClose }) => {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Status <span className="text-danger">*</span></Form.Label>
-            <Form.Select
-              {...register("status")}
-              isInvalid={!!errors.status}
-            >
+            <Form.Label>
+              Status <span className="text-danger">*</span>
+            </Form.Label>
+            <Form.Select {...register("status")} isInvalid={!!errors.status}>
               <option value="">Select status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
+              <option value="draft">Draft</option>
+              <option value="published">Published</option>
+              <option value="cancelled">Cancelled</option>
             </Form.Select>
             <Form.Control.Feedback type="invalid">
               {errors.status?.message}
@@ -168,9 +164,7 @@ const CreateConferenceModal: React.FC<Props> = ({ show, onClose }) => {
 
           <Form.Group className="mb-3">
             <Form.Label>Side Event</Form.Label>
-            <Form.Select
-              {...register("side_event_id")}
-            >
+            <Form.Select {...register("side_event_id")}>
               <option value="">Select a side event (optional)</option>
               {sideEvents?.map((sideEvent) => (
                 <option key={sideEvent.id} value={sideEvent.id}>
