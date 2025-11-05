@@ -20,8 +20,8 @@ const AsideMenuItemWithSubMain: FC<Props & WithChildren> = ({
   to,
   title,
   fontIcon,
-  bsTitle,
   customIcon,
+  hasBullet,
   badge,
 }) => {
   const { pathname } = useLocation();
@@ -38,27 +38,22 @@ const AsideMenuItemWithSubMain: FC<Props & WithChildren> = ({
       data-kt-menu-placement="right-start"
     >
       <span className="menu-link menu-center">
-        {(fontIcon && aside.menuIcon === "font") || customIcon ? (
-          <span className="position-relative d-inline-block">
-            {fontIcon && aside.menuIcon === "font" && (
-              <span className="menu-icon me-0">
-                <i className={clsx("bi", fontIcon, "fs-2")}></i>
-              </span>
-            )}
-            {customIcon && <span className="menu-icon me-0">{customIcon}</span>}
-            {badge !== undefined && (
-              <span
-                className="badge bg-primary position-absolute"
-                style={{ bottom: "-4px", left: "4px", fontSize: "0.65rem" }}
-              >
-                {badge}
-              </span>
-            )}
+        {hasBullet && (
+          <span className="menu-bullet">
+            <span className="bullet bullet-dot"></span>
           </span>
-        ) : null}
+        )}
+        {aside.menuIcon === "font" && fontIcon && (
+          <span className="menu-icon me-0">
+            <i className={clsx("bi", fontIcon, "fs-2")}></i>
+          </span>
+        )}
+        {customIcon && <span className="menu-icon me-0">{customIcon}</span>}
         <span className="menu-title no-wrap">{title}</span>
+        {badge !== undefined && (
+          <span className="badge bg-primary ms-2">{badge}</span>
+        )}
       </span>
-
       <div
         className={clsx(
           "menu-sub menu-sub-dropdown w-225px w-lg-275px px-1 py-4",

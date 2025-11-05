@@ -32,6 +32,11 @@ export function AsideMenuMain() {
     canViewCompany(state, companyID)
   );
 
+  // Admin visibility control: hide non-admin sections for admins
+  const isAdmin = (user?.roles || []).some((r: any) =>
+    adminRoles.includes(r?.name)
+  );
+
   const { data: pendingCountData } = useQuery(
     ["connections", "pending", "count"],
     getPendingUserConnectionsCount,
@@ -55,17 +60,19 @@ export function AsideMenuMain() {
         bsTitle="Home"
         className="py-2"
       />
-      <RoleGuard allowedRoles={mediaRoles}>
-        <AsideMenuItem
-          to="/media"
-          title="Media"
-          // fontIcon="bi-house-solid fs-2"
-          customIcon={<i className="fa-solid fa-photo-film"></i>}
-          bsTitle="Media"
-          className="py-2"
-        />
-      </RoleGuard>
-      {isCompanyStaff && (
+      {!isAdmin && (
+        <RoleGuard allowedRoles={mediaRoles}>
+          <AsideMenuItem
+            to="/media"
+            title="Media"
+            // fontIcon="bi-house-solid fs-2"
+            customIcon={<i className="fa-solid fa-photo-film"></i>}
+            bsTitle="Media"
+            className="py-2"
+          />
+        </RoleGuard>
+      )}
+      {isCompanyStaff && !isAdmin && (
         <>
           <AsideMenuItemWithSubMain
             to="/company"
@@ -97,31 +104,33 @@ export function AsideMenuMain() {
         </>
       )}
 
-      <AsideMenuItemWithSubMain
-        to={`/agenda`}
-        title="Agenda"
-        bsTitle="Agenda"
-        customIcon={<i className="fa-solid fa-calendar"></i>}
-      >
-        <AsideMenuItem
-          to={`/program`}
-          title="Program"
-          bsTitle="Program"
-          hasBullet
-        />
-        <AsideMenuItem
+      {!isAdmin && (
+        <AsideMenuItemWithSubMain
           to={`/agenda`}
           title="Agenda"
           bsTitle="Agenda"
-          hasBullet
-        />
-        <AsideMenuItem
-          to={`/meetings`}
-          title="Meetings"
-          bsTitle="Meetings"
-          hasBullet
-        />
-      </AsideMenuItemWithSubMain>
+          customIcon={<i className="fa-solid fa-calendar"></i>}
+        >
+          <AsideMenuItem
+            to={`/program`}
+            title="Program"
+            bsTitle="Program"
+            hasBullet
+          />
+          <AsideMenuItem
+            to={`/agenda`}
+            title="Agenda"
+            bsTitle="Agenda"
+            hasBullet
+          />
+          <AsideMenuItem
+            to={`/meetings`}
+            title="Meetings"
+            bsTitle="Meetings"
+            hasBullet
+          />
+        </AsideMenuItemWithSubMain>
+      )}
 
       <AsideMenuItemWithSubMain
         to={`/participants`}
@@ -136,13 +145,15 @@ export function AsideMenuMain() {
           bsTitle="Participants"
           hasBullet={true}
         />
-        <AsideMenuItem
-          to={`/my-connections`}
-          title="My Connections"
-          bsTitle="My Connections"
-          hasBullet={true}
-          badge={pendingBadge}
-        />
+        {!isAdmin && (
+          <AsideMenuItem
+            to={`/my-connections`}
+            title="My Connections"
+            bsTitle="My Connections"
+            hasBullet={true}
+            badge={pendingBadge}
+          />
+        )}
       </AsideMenuItemWithSubMain>
 
       <AsideMenuItem
@@ -165,7 +176,7 @@ export function AsideMenuMain() {
           hasBullet={true}
         />
 
-        {isCompanyStaff && (
+        {isCompanyStaff && !isAdmin && (
           <AsideMenuItem
             to={`/company/${companyID}/products`}
             title="My Products"
@@ -173,7 +184,7 @@ export function AsideMenuMain() {
             hasBullet={true}
           />
         )}
-        {isCompanyEditor && (
+        {(isCompanyEditor || isAdmin) && (
           <AsideMenuItem
             to={`/company/${companyID}/products/create`}
             title="Add Product"
@@ -185,19 +196,23 @@ export function AsideMenuMain() {
 
       {/* dashboard */}
 
-      <AsideMenuItem
-        to="/badge"
-        title="My badge"
-        bsTitle="Mon badge"
-        customIcon={<i className="fa-solid fa-qrcode"></i>}
-      />
+      {!isAdmin && (
+        <AsideMenuItem
+          to="/badge"
+          title="My badge"
+          bsTitle="Mon badge"
+          customIcon={<i className="fa-solid fa-qrcode"></i>}
+        />
+      )}
 
-      <AsideMenuItem
-        to={`/visa-demand`}
-        title="Visa Demand"
-        bsTitle="Visa Demand"
-        customIcon={<i className="fa-solid fa-id-card"></i>}
-      />
+      {!isAdmin && (
+        <AsideMenuItem
+          to={`/visa-demand`}
+          title="Visa Demand"
+          bsTitle="Visa Demand"
+          customIcon={<i className="fa-solid fa-id-card"></i>}
+        />
+      )}
       {/* 
       <AsideMenuItem
         to={`/tickets`}
@@ -206,7 +221,7 @@ export function AsideMenuMain() {
         customIcon={<i className="fa-solid fa-ticket"></i>}
       /> */}
 
-      {isCompanyStaff && (
+      {isCompanyStaff && !isAdmin && (
         <AsideMenuItem
           to={`/ads`}
           title="Ads"
@@ -215,47 +230,49 @@ export function AsideMenuMain() {
         />
       )}
 
-      <AsideMenuItemWithSubMain
-        to="/job-offers/all"
-        title="Job Offers"
-        bsTitle="Offres d'emploi"
-        customIcon={<i className="fa-solid fa-house-laptop"></i>}
-        icon="briefcase"
-      >
-        <AsideMenuItem
-          to={`/job-offers/all`}
-          title="All Job Offers"
-          bsTitle="Toutes les offres d'emploi"
-          hasBullet={true}
-        />
-        {!hasCompany && (
+      {!isAdmin && (
+        <AsideMenuItemWithSubMain
+          to="/job-offers/all"
+          title="Job Offers"
+          bsTitle="Offres d'emploi"
+          customIcon={<i className="fa-solid fa-house-laptop"></i>}
+          icon="briefcase"
+        >
           <AsideMenuItem
-            to={`/job-offers/applications`}
-            title="My Applications"
-            bsTitle="Mes candidatures"
+            to={`/job-offers/all`}
+            title="All Job Offers"
+            bsTitle="Toutes les offres d'emploi"
             hasBullet={true}
           />
-        )}
-        {isCompanyEditor && (
-          <AsideMenuItem
-            to={`/job-offers/create/${companyID}`}
-            title="Add Job Offer"
-            bsTitle="Ajouter un offre d'emploi"
-            hasBullet={true}
-          />
-        )}
-
-        {isCompanyStaff && (
-          <>
+          {!hasCompany && (
             <AsideMenuItem
-              to={`/job-offers/${companyID}`}
-              title="My Job Offers"
-              bsTitle="Mes offres d'emploi"
+              to={`/job-offers/applications`}
+              title="My Applications"
+              bsTitle="Mes candidatures"
               hasBullet={true}
             />
-          </>
-        )}
-      </AsideMenuItemWithSubMain>
+          )}
+          {isCompanyEditor && (
+            <AsideMenuItem
+              to={`/job-offers/create/${companyID}`}
+              title="Add Job Offer"
+              bsTitle="Ajouter un offre d'emploi"
+              hasBullet={true}
+            />
+          )}
+
+          {isCompanyStaff && (
+            <>
+              <AsideMenuItem
+                to={`/job-offers/${companyID}`}
+                title="My Job Offers"
+                bsTitle="Mes offres d'emploi"
+                hasBullet={true}
+              />
+            </>
+          )}
+        </AsideMenuItemWithSubMain>
+      )}
 
       <RoleGuard allowedRoles={staffRoles}>
         <AsideMenuItemWithSubMain
@@ -264,149 +281,43 @@ export function AsideMenuMain() {
           bsTitle="Admin"
           fontIcon="bi-gear"
         >
-          <RoleGuard allowedRoles={["admin", "super_admin"]}>
-            <AsideMenuItem
-              to="/statistics"
-              title="Statistics"
-              customIcon={<i className="fa-solid fa-chart-simple"></i>}
-              hasBullet
-            />
-
-            <AsideMenuItem
-              to="/users"
-              title="User management"
-              hasBullet
-              bsTitle="User management"
-              customIcon={<i className="fa-solid fa-user"></i>}
-            />
-
-            <AsideMenuItem
-              to="/media-management"
-              title="Media Management"
-              customIcon={<i className="fa-solid fa-blog"></i>}
-              bsTitle="Media Management"
-              hasBullet
-            />
-
-            <AsideMenuItem
-              to="/contact-management"
-              title="Contact Management"
-              hasBullet
-              bsTitle="Contact Management"
-              customIcon={<i className="fa-solid fa-address-book"></i>}
-            />
-
-            <AsideMenuItem
-              to="/sponsor-requests-management"
-              title="Sponsor Requests"
-              hasBullet
-              bsTitle="Sponsor Requests"
-              customIcon={<i className="fa-solid fa-handshake"></i>}
-            />
-
-            {/* <AsideMenuItem
-              to="/ticket-transactions"
-              title="Ticket Transactions"
-              hasBullet
-              bsTitle="Ticket Transactions"
-              customIcon={<i className="fa-solid fa-ticket"></i>}
-            /> */}
-
-            <AsideMenuItem
-              to="/visa-demand-management"
-              title="Visa Demands"
-              hasBullet
-              bsTitle="Visa Demands"
-              customIcon={<i className="fa-solid fa-person-chalkboard"></i>}
-            />
-
-            <AsideMenuItem
-              to="/guests"
-              title="Guests management"
-              hasBullet
-              bsTitle="Guests management"
-              customIcon={<i className="fa-solid fa-user-check"></i>}
-            />
-
-            <AsideMenuItem
-              to="/config/products"
-              title="Products management"
-              fontIcon="bi-cart fs-3"
-              hasBullet
-            />
-
-            <AsideMenuItem
-              to="/config/featured-products"
-              title="Featured Products"
-              customIcon={<i className="fa-solid fa-star"></i>}
-              hasBullet
-            />
-
-            <AsideMenuItem
-              to="/config/productsCategories"
-              title="Products categories"
-              customIcon={<i className="fa-solid fa-list" />}
-              hasBullet
-            />
-
-            <AsideMenuItem
-              to="/config/ads"
-              title="Advertisements"
-              customIcon={<i className="fa-solid fa-bullhorn"></i>}
-              hasBullet
-            />
-
-            <AsideMenuItem
-              to="/config/activities"
-              title="Activities"
-              customIcon={<i className="fa-solid fa-chart-line me-2"></i>}
-              hasBullet
-            />
-
-            <AsideMenuItem
-              to="/config/occupations"
-              title="Occupations"
-              customIcon={<i className="fa-solid fa-briefcase"></i>}
-              hasBullet
-            />
-
-            <AsideMenuItem
-              to="/config/legal-status"
-              title="Legal Statut"
-              customIcon={<i className="fa-solid fa-scale-balanced"></i>}
-              hasBullet
-            />
-          </RoleGuard>
-
           <RoleGuard allowedRoles={programRoles}>
-            <AsideMenuItem
-              to="/side-events-management"
-              title="Side Events Management"
-              hasBullet
-              bsTitle="Side Events Management"
+            <AsideMenuItemWithSubMain
+              to="/program-management"
+              title="Programs & Events"
+              bsTitle="Programs & Events"
               customIcon={<i className="fa-solid fa-calendar-days"></i>}
-            />
-            <AsideMenuItem
-              to="/program-event-management"
-              title="Program Events"
               hasBullet
-              bsTitle="Program Events"
-              customIcon={<i className="fa-solid fa-calendar-days"></i>}
-            />
-            <AsideMenuItem
-              to="/conferences-management"
-              title="Conferences"
-              hasBullet
-              bsTitle="Conferences"
-              customIcon={<i className="fa-solid fa-calendar-days"></i>}
-            />
-            <AsideMenuItem
-              to="/workshop-management"
-              title="Workshops"
-              hasBullet
-              bsTitle="Workshops"
-              customIcon={<i className="fa-solid fa-chalkboard-user"></i>}
-            />
+            >
+              <AsideMenuItem
+                to="/side-events-management"
+                title="Side Events Management"
+                hasBullet
+                bsTitle="Side Events Management"
+                customIcon={<i className="fa-solid fa-calendar-days"></i>}
+              />
+              <AsideMenuItem
+                to="/program-event-management"
+                title="Program Events"
+                hasBullet
+                bsTitle="Program Events"
+                customIcon={<i className="fa-solid fa-calendar-days"></i>}
+              />
+              <AsideMenuItem
+                to="/conferences-management"
+                title="Conferences"
+                hasBullet
+                bsTitle="Conferences"
+                customIcon={<i className="fa-solid fa-calendar-days"></i>}
+              />
+              <AsideMenuItem
+                to="/workshop-management"
+                title="Workshops"
+                hasBullet
+                bsTitle="Workshops"
+                customIcon={<i className="fa-solid fa-chalkboard-user"></i>}
+              />
+            </AsideMenuItemWithSubMain>
           </RoleGuard>
 
           <RoleGuard allowedRoles={exhibitionRoles}>
@@ -417,6 +328,130 @@ export function AsideMenuMain() {
               bsTitle="Exhibition Requests"
               customIcon={<i className="fa-solid fa-users"></i>}
             />
+          </RoleGuard>
+          <RoleGuard allowedRoles={["admin", "super_admin"]}>
+            <AsideMenuItemWithSubMain
+              to="/statistics"
+              title="Overview"
+              bsTitle="Overview"
+              customIcon={<i className="fa-solid fa-chart-simple"></i>}
+              hasBullet
+            >
+              <AsideMenuItem
+                to="/statistics"
+                title="Statistics"
+                hasBullet
+                bsTitle="Statistics"
+              />
+            </AsideMenuItemWithSubMain>
+
+            <AsideMenuItem
+              to="/users"
+              title="User management"
+              hasBullet
+              bsTitle="User management"
+            />
+            <AsideMenuItemWithSubMain
+              to="/visa-demand-management"
+              title="Requests"
+              bsTitle="Requests"
+              customIcon={<i className="fa-solid fa-person-chalkboard"></i>}
+              hasBullet
+            >
+              <AsideMenuItem
+                to="/visa-demand-management"
+                title="Visa Demands"
+                hasBullet
+                bsTitle="Visa Demands"
+              />
+              <AsideMenuItem
+                to="/contact-management"
+                title="Contact Management"
+                hasBullet
+                bsTitle="Contact Management"
+              />
+              <AsideMenuItem
+                to="/sponsor-requests-management"
+                title="Sponsor Requests"
+                hasBullet
+                bsTitle="Sponsor Requests"
+              />
+            </AsideMenuItemWithSubMain>
+
+            <AsideMenuItemWithSubMain
+              to="/media-management"
+              title="Media"
+              bsTitle="Media"
+              customIcon={<i className="fa-solid fa-blog"></i>}
+              hasBullet
+            >
+              <AsideMenuItem
+                to="/media-management"
+                title="Media Management"
+                hasBullet
+                bsTitle="Media Management"
+              />
+            </AsideMenuItemWithSubMain>
+
+            <AsideMenuItemWithSubMain
+              to="/config/products"
+              title="Catalog & Ads"
+              bsTitle="Catalog & Ads"
+              fontIcon="bi-cart fs-3"
+              hasBullet
+            >
+              <AsideMenuItem
+                to="/config/products"
+                title="Products management"
+                hasBullet
+                bsTitle="Products management"
+              />
+              <AsideMenuItem
+                to="/config/featured-products"
+                title="Featured Products"
+                hasBullet
+                bsTitle="Featured Products"
+              />
+              <AsideMenuItem
+                to="/config/productsCategories"
+                title="Products categories"
+                hasBullet
+                bsTitle="Products categories"
+              />
+              <AsideMenuItem
+                to="/config/ads"
+                title="Advertisements"
+                hasBullet
+                bsTitle="Advertisements"
+              />
+            </AsideMenuItemWithSubMain>
+
+            <AsideMenuItemWithSubMain
+              to="/config/activities"
+              title="Configurations"
+              bsTitle="Configurations"
+              customIcon={<i className="fa-solid fa-gear"></i>}
+              hasBullet
+            >
+              <AsideMenuItem
+                to="/config/activities"
+                title="Activities"
+                hasBullet
+                bsTitle="Activities"
+              />
+              <AsideMenuItem
+                to="/config/occupations"
+                title="Occupations"
+                hasBullet
+                bsTitle="Occupations"
+              />
+              <AsideMenuItem
+                to="/config/legal-status"
+                title="Legal Statut"
+                hasBullet
+                bsTitle="Legal Statut"
+              />
+            </AsideMenuItemWithSubMain>
           </RoleGuard>
         </AsideMenuItemWithSubMain>
       </RoleGuard>

@@ -62,7 +62,7 @@ export const TableComponent = ({
 
   useEffect(() => {
     const defaults = columns
-      .map((col) => (typeof col.name === "string" ? col.name : ""))
+      .map((col) => (typeof col?.name === "string" ? col?.name : ""))
       .filter(
         (name) =>
           name &&
@@ -97,25 +97,25 @@ export const TableComponent = ({
     setFilteredData(filtered);
   };
 
-  const exportableColumns = columns.filter((col) => {
-    const name = typeof col.name === "string" ? col.name : "";
-    return !!name && selectedExportColumns.includes(name);
+  const exportableColumns = columns?.filter((col) => {
+    const name = typeof col?.name === "string" ? col?.name : "";
+    return !!name && selectedExportColumns?.includes(name);
   });
 
   const csvHeaders =
-    exportableColumns.map((col) => ({
-      label: typeof col.name === "string" ? col.name : "",
-      key: typeof col.name === "string" ? col.name : "",
+    exportableColumns?.map((col) => ({
+      label: typeof col?.name === "string" ? col?.name : "",
+      key: typeof col?.name === "string" ? col?.name : "",
     })) || [];
 
   const exportData = filteredData.map((row) => {
     const obj: Record<string, any> = {};
     exportableColumns.forEach((col) => {
-      if (typeof col.selector === "function")
-        obj[col.name as string] = col.selector(row);
-      else if (typeof col.selector === "string")
-        obj[col.name as string] = getNestedValue(row, col.selector);
-      else obj[col.name as string] = "";
+      if (typeof col?.selector === "function")
+        obj[col?.name as string] = col?.selector(row);
+      else if (typeof col?.selector === "string")
+        obj[col?.name as string] = getNestedValue(row, col?.selector);
+      else obj[col?.name as string] = "";
     });
     return obj;
   });
@@ -275,7 +275,7 @@ export const TableComponent = ({
             </p>
             <div className="d-flex flex-wrap gap-4">
               {columns
-                .map((col) => (typeof col.name === "string" ? col.name : ""))
+                .map((col) => (typeof col?.name === "string" ? col?.name : ""))
                 .filter((name) => !!name)
                 .map((name) => {
                   const checked = selectedExportColumns.includes(name);
@@ -304,7 +304,9 @@ export const TableComponent = ({
               variant="light"
               onClick={() => {
                 const defaults = columns
-                  .map((col) => (typeof col.name === "string" ? col.name : ""))
+                  .map((col) =>
+                    typeof col?.name === "string" ? col?.name : ""
+                  )
                   .filter(
                     (name) =>
                       name &&
