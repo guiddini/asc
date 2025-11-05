@@ -13,10 +13,19 @@ const ExhibitionRequests = () => {
     "all" | "pending" | "accepted" | "refused" | "paid" | "unpaid"
   >("all");
 
+  const [exhibitionType, setExhibitionType] = useState<
+    "all" | "connect_desk" | "premium_exhibition_space" | "scale_up_booth"
+  >("all");
+
   // Fetch filtered list from API based on selected status
   const { isLoading, data } = useQuery({
-    queryFn: () => getAllExhibitionDemandsApi({ status: filterStatus }),
-    queryKey: ["exhibition-requests", filterStatus],
+    queryFn: () =>
+      getAllExhibitionDemandsApi({
+        status: filterStatus,
+        exhibition_type:
+          exhibitionType === "all" ? undefined : exhibitionType,
+      }),
+    queryKey: ["exhibition-requests", filterStatus, exhibitionType],
     keepPreviousData: true,
   });
 
@@ -31,6 +40,13 @@ const ExhibitionRequests = () => {
     | "paid"
     | "unpaid"
   )[] = ["all", "pending", "accepted", "refused", "paid", "unpaid"];
+
+  const typeOptions: (
+    | "all"
+    | "connect_desk"
+    | "premium_exhibition_space"
+    | "scale_up_booth"
+  )[] = ["all", "connect_desk", "premium_exhibition_space", "scale_up_booth"];
 
   const getTypeLabel = (type: string) =>
     type === "connect_desk"
@@ -213,7 +229,8 @@ const ExhibitionRequests = () => {
     <div className="container-fluid">
       <PageTitle>Exhibition Requests</PageTitle>
 
-      <div className="d-flex flex-wrap justify-content-center gap-2 mb-4">
+      {/* Status filter */}
+      <div className="d-flex flex-wrap justify-content-center gap-2 mb-3">
         {statusOptions.map((status) => (
           <button
             key={status}
@@ -226,6 +243,22 @@ const ExhibitionRequests = () => {
             onClick={() => setFilterStatus(status)}
           >
             {status}
+          </button>
+        ))}
+      </div>
+
+      {/* Exhibition type filter */}
+      <div className="d-flex flex-wrap justify-content-center gap-2 mb-4">
+        {typeOptions.map((type) => (
+          <button
+            key={type}
+            className={clsx(
+              "btn btn-sm fw-semibold text-capitalize px-4 py-2 border",
+              exhibitionType === type ? "btn-custom-purple-dark text-white" : "btn-light"
+            )}
+            onClick={() => setExhibitionType(type)}
+          >
+            {getTypeLabel(type)}
           </button>
         ))}
       </div>

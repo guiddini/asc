@@ -51,6 +51,7 @@ const validationSchema = Yup.object().shape({
   address: Yup.string()
     .required("Address is required")
     .min(5, "Address must be at least 5 characters"),
+  phone_1: Yup.string().required("Phone number is required"),
   logo: Yup.mixed().required("Logo is required"),
   activity_areas: Yup.array()
     .of(Yup.string())
@@ -60,7 +61,7 @@ const validationSchema = Yup.object().shape({
     is: (country: any) => country?.label === "Algeria",
     then: (schema) =>
       schema
-        .notRequired()
+        .required("Label number is required")
         .nullable()
         .matches(/^\d{10}$/, {
           message: "Label number must be exactly 10 digits",
@@ -68,9 +69,15 @@ const validationSchema = Yup.object().shape({
         }),
     otherwise: (schema) => schema.notRequired().nullable(),
   }),
-  revenue_2024: Yup.number().typeError("Revenue must be a number").required("Revenue for 2024 is required $"),
-  revenue_2025: Yup.number().typeError("Revenue must be a number").required("Revenue for 2025 is required $"),
-  total_funds_raised: Yup.number().typeError("Total funds raised must be a number").required("Total funds raised is required $"),
+  revenue_2024: Yup.number()
+    .typeError("Revenue must be a number")
+    .required("Revenue for 2024 is required $"),
+  revenue_2025: Yup.number()
+    .typeError("Revenue must be a number")
+    .required("Revenue for 2025 is required $"),
+  total_funds_raised: Yup.number()
+    .typeError("Total funds raised must be a number")
+    .required("Total funds raised is required $"),
   exhibition_type: Yup.string()
     .oneOf(["connect_desk", "scale_up_booth", "premium_exhibition_space"])
     .required("Please select an exhibition type"),
@@ -113,6 +120,7 @@ const CreateStartupPage = () => {
       country: null,
       city: "",
       address: "",
+      phone_1: "",
       logo: null,
       activity_areas: [],
     },
@@ -161,6 +169,7 @@ const CreateStartupPage = () => {
     }
     formData.append("city", data.city);
     formData.append("address", data.address);
+    formData.append("phone_1", data.phone_1);
     if (data.label_number) {
       formData.append("label_number", data.label_number);
     }
@@ -266,6 +275,17 @@ const CreateStartupPage = () => {
           colXS={12}
           colMD={6}
         />
+        <InputComponent
+          control={control}
+          name="phone_1"
+          label="Phone Number"
+          errors={errors}
+          type="tel"
+          placeholder="Enter phone number"
+          required
+          colXS={12}
+          colMD={6}
+        />
         <TextAreaComponent
           control={control}
           name="address"
@@ -299,10 +319,12 @@ const CreateStartupPage = () => {
             <span className="input-group-text">$</span>
           </div>
           {errors.revenue_2024 && (
-            <div className="text-danger fs-7">{errors.revenue_2024.message}</div>
+            <div className="text-danger fs-7">
+              {errors.revenue_2024.message}
+            </div>
           )}
         </Col>
-        
+
         <Col xs={12} md={4} className="mb-3">
           <label className="d-flex align-items-center fs-5 fw-semibold mb-2">
             <span className="fw-bold required">Revenue 2025</span>
@@ -325,10 +347,12 @@ const CreateStartupPage = () => {
             <span className="input-group-text">$</span>
           </div>
           {errors.revenue_2025 && (
-            <div className="text-danger fs-7">{errors.revenue_2025.message}</div>
+            <div className="text-danger fs-7">
+              {errors.revenue_2025.message}
+            </div>
           )}
         </Col>
-        
+
         <Col xs={12} md={4} className="mb-3">
           <label className="d-flex align-items-center fs-5 fw-semibold mb-2">
             <span className="fw-bold required">Total Funds Raised</span>
@@ -351,7 +375,9 @@ const CreateStartupPage = () => {
             <span className="input-group-text">$</span>
           </div>
           {errors.total_funds_raised && (
-            <div className="text-danger fs-7">{errors.total_funds_raised.message}</div>
+            <div className="text-danger fs-7">
+              {errors.total_funds_raised.message}
+            </div>
           )}
         </Col>
 

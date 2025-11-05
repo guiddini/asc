@@ -188,6 +188,7 @@ const EventTopbar = () => {
           show={showRevenueModal}
           onHide={() => setShowRevenueModal(false)}
           companyId={company.id}
+          companyPhone={company?.phone_1}
           onSuccess={() => refetch()}
         />
       )}

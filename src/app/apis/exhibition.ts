@@ -15,6 +15,7 @@ const getAllExhibitionDemandsApi = async (params?: {
   status?: "all" | "pending" | "accepted" | "refused" | "paid" | "unpaid";
   page?: number;
   per_page?: number;
+  exhibition_type?: "connect_desk" | "premium_exhibition_space" | "scale_up_booth";
 }) => {
   const response = await axiosInstance.get("/exhibition-demand/all", {
     params,

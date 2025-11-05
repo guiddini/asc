@@ -10,6 +10,7 @@ import { InputGroup } from "./input-group";
 
 // Validation schema
 const validationSchema = Yup.object().shape({
+  phone_1: Yup.string().trim().required("Phone number is required"),
   revenue_2024: Yup.number()
     .typeError("Revenue must be a number")
     .required("Revenue for 2024 is required"),
@@ -26,6 +27,7 @@ interface RevenueUpdateModalProps {
   onHide: () => void;
   companyId: string;
   onSuccess?: () => void;
+  companyPhone?: string;
 }
 
 const RevenueUpdateModal: React.FC<RevenueUpdateModalProps> = ({
@@ -33,6 +35,7 @@ const RevenueUpdateModal: React.FC<RevenueUpdateModalProps> = ({
   onHide,
   companyId,
   onSuccess,
+  companyPhone,
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -44,6 +47,7 @@ const RevenueUpdateModal: React.FC<RevenueUpdateModalProps> = ({
   } = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: {
+      phone_1: companyPhone ?? "",
       revenue_2024: 0,
       revenue_2025: 0,
       total_funds_raised: 0,
@@ -72,6 +76,7 @@ const RevenueUpdateModal: React.FC<RevenueUpdateModalProps> = ({
   const onSubmit = (data: any) => {
     setIsSubmitting(true);
     const formdata = new FormData();
+    formdata.append("phone_1", data.phone_1 ?? "");
     formdata.append("revenue_2024", data.revenue_2024.toString());
     formdata.append("revenue_2025", data.revenue_2025.toString());
     formdata.append("total_funds_raised", data.total_funds_raised.toString());
@@ -93,6 +98,20 @@ const RevenueUpdateModal: React.FC<RevenueUpdateModalProps> = ({
         </Alert>
 
         <Form onSubmit={handleSubmit(onSubmit)}>
+          <Form.Group className="mb-3">
+            <Form.Label>Phone number</Form.Label>
+            <InputGroup
+              type="tel"
+              placeholder="Enter phone number"
+              {...register("phone_1")}
+              isInvalid={!!errors.phone_1}
+            />
+            {errors.phone_1 && (
+              <Form.Control.Feedback type="invalid">
+                {errors.phone_1.message}
+              </Form.Control.Feedback>
+            )}
+          </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Revenue 2024 ($)</Form.Label>
             <InputGroup
