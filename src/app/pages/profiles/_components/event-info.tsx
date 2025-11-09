@@ -7,16 +7,13 @@ import {
   FileDown,
 } from "lucide-react";
 import { toAbsoluteUrl } from "../../../../_metronic/helpers";
-import { Event } from "../page";
+import { SideEvent } from "../../../types/side-event";
+import getMediaUrl from "../../../helpers/getMediaUrl";
 
-export default function EventCard({ event }: { event: Event }) {
+export default function EventCard({ event }: { event: SideEvent }) {
   return (
     <div className="event-card">
-      <img
-        src={toAbsoluteUrl("/media/eventili/logos/logo.svg")}
-        alt="ASC"
-        className="logo"
-      />
+      <img src={getMediaUrl(event?.logo)} alt={event?.name} className="logo" />
 
       <div className="date-container">
         <div className="date-icon">
@@ -46,38 +43,6 @@ export default function EventCard({ event }: { event: Event }) {
         <Mail className="info-icon" size={20} />
         <a href={`mailto:${event?.email}`}>{event?.email}</a>
       </div>
-
-      <div className="organizers-section">
-        <h3 className="organizers-title">EVENT ORGANIZERS</h3>
-        {event?.organizers?.map((img, idx) => (
-          <img
-            key={idx}
-            src={toAbsoluteUrl(img)}
-            alt="organizer-logo"
-            className="organizer-logo"
-          />
-        ))}
-      </div>
-
-      {event?.cta2 && (
-        <button
-          onClick={event?.onClick2}
-          className="reserve-button"
-          style={{
-            marginBottom: "8px",
-          }}
-        >
-          {event?.cta2}
-          <FileDown size={20} />
-        </button>
-      )}
-
-      {event?.cta && (
-        <button onClick={event?.onClick} className="reserve-button">
-          {event?.cta}
-          {event?.showIcon && <ArrowRight size={20} />}
-        </button>
-      )}
     </div>
   );
 }

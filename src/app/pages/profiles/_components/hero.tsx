@@ -1,12 +1,13 @@
 import { Camera } from "lucide-react";
-import { Event } from "../page";
+import { SideEvent } from "../../../types/side-event";
+import getMediaUrl from "../../../helpers/getMediaUrl";
 
-export default function Hero({ event }: { event: Event }) {
+export default function Hero({ event }: { event: SideEvent }) {
   return (
     <section
       className="hero"
       style={{
-        backgroundImage: `url(${event?.hero})`,
+        backgroundImage: `url(${getMediaUrl(event?.cover)})`,
       }}
     >
       <div className="container">

@@ -1,23 +1,20 @@
 import { Landmark, ShoppingCart } from "lucide-react";
-import React from "react";
-import { Event } from "../page";
+import { SideEvent } from "../../../types/side-event";
 
-const Description = ({ event }: { event: Event }) => {
+const Description = ({ event }: { event: SideEvent }) => {
   return (
     <div className="description-section">
       <div className="container">
         <div className="event-tag-container">
-          <span className="event-tag">
-            <Landmark />
-            <p>Fintech</p>
-          </span>
-          <span className="event-tag">
-            <ShoppingCart />
-            <p> E-commerce</p>
-          </span>
+          {event?.categories?.map((cat, idx) => (
+            <span className="event-tag">
+              <Landmark />
+              <p>{cat}</p>
+            </span>
+          ))}
         </div>
 
-        <h1>{event?.title}</h1>
+        <h1>{event?.name}</h1>
         <p id="description">{event?.description}</p>
       </div>
     </div>

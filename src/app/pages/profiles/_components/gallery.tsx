@@ -1,7 +1,8 @@
 import { Camera } from "lucide-react";
-import { Event } from "../page";
+import { SideEvent } from "../../../types/side-event";
+import getMediaUrl from "../../../helpers/getMediaUrl";
 
-export default function Gallery({ event }: { event: Event }) {
+export default function Gallery({ event }: { event: SideEvent }) {
   return (
     <section className="gallery" id="gallery">
       <div className="container">
@@ -14,14 +15,14 @@ export default function Gallery({ event }: { event: Event }) {
         <div className="gallery-grid">
           {event?.gallery?.map((src, index) => (
             <a
-              href={src}
+              href={getMediaUrl(src)}
               target="_blank"
               key={index}
               className={`gallery-item ${
                 index % 6 === 0 || index % 6 === 3 ? "large" : "small"
               }`}
             >
-              <img src={src} alt={`Gallery Image ${index + 1}`} />
+              <img src={getMediaUrl(src)} alt={`Gallery Image ${index + 1}`} />
             </a>
           ))}
         </div>

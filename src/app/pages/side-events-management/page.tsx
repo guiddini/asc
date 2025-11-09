@@ -39,23 +39,30 @@ const SideEventsManagement = () => {
 
   const columns = [
     {
-      name: "",
+      name: "Logo",
       selector: (row: SideEvent) =>
         row.logo ? (
-          <div className="symbol symbol-circle symbol-40px overflow-hidden me-3 my-2">
-            <div className="symbol-label">
-              <img
-                alt={row.name}
-                src={getMediaUrl(row.logo)}
-                className="w-100"
-              />
-            </div>
+          <div className="me-3 my-2" style={{ width: 40, height: 40 }}>
+            {" "}
+            <img
+              alt={row.name}
+              src={getMediaUrl(row.logo)}
+              style={{
+                width: 40,
+                height: 40,
+                objectFit: "contain",
+                background: "#fff",
+                padding: 4,
+                borderRadius: "50%",
+                border: "1px solid #e5e7eb",
+              }}
+            />{" "}
           </div>
         ) : (
           "-"
         ),
       sortable: false,
-      width: "60px",
+      width: "100px",
     },
     { name: "Name", selector: (row: SideEvent) => row.name, sortable: true },
     {
@@ -85,7 +92,7 @@ const SideEventsManagement = () => {
     {
       name: "Actions",
       selector: (row: SideEvent) => (
-        <div className="d-flex gap-2">
+        <div className="d-flex gap-2 align-items-start">
           <Button
             variant="light-primary"
             size="sm"
@@ -106,6 +113,15 @@ const SideEventsManagement = () => {
             onClick={() => handleDelete(row.id)}
           >
             <KTIcon iconName="trash" className="fs-3" />
+          </Button>
+          <Button
+            variant="light-info"
+            size="sm"
+            className="ms-auto"
+            onClick={() => navigate(`/profiles/${row.slug}`)}
+            title="View public profile"
+          >
+            <KTIcon iconName="exit-right-corner" className="fs-3" />
           </Button>
         </div>
       ),
