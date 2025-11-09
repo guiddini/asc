@@ -15,7 +15,7 @@ const LandingPage: React.FC = () => {
       <HeroSection />
       <AboutSection />
       <EventStatsSection />
-      <ConferenceSection />
+      {/* <ConferenceSection /> */}
       {/* <ConferenceStartupSection /> */}
 
       <SpeakerSection />
