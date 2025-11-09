@@ -31,6 +31,40 @@ const HeroSection: React.FC = () => {
     setTimeout(() => setIsVisible(true), 300);
   }, []);
 
+  // Countdown to December 6, 2025
+  const targetDate = new Date("2025-12-06T00:00:00");
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  useEffect(() => {
+    const updateCountdown = () => {
+      const now = new Date().getTime();
+      const distance = targetDate.getTime() - now;
+
+      if (distance <= 0) {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      setTimeLeft({ days, hours, minutes, seconds });
+    };
+
+    // Initial call and interval setup
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   const renderAction = (id: number) => {
     if (id === 1) {
       return (
@@ -181,6 +215,33 @@ const HeroSection: React.FC = () => {
           International Conference Center - CIC - Abdelatif Rahal <br />
           Algiers, Algeria
         </h6>
+        {/* Countdown to December 6, 2025 */}
+        <div className="countdown-container mt-4">
+          <div className="time-box">
+            <div className="time-number">
+              {String(timeLeft.days).padStart(2, "0")}
+            </div>
+            <div className="time-label">Days</div>
+          </div>
+          <div className="time-box">
+            <div className="time-number">
+              {String(timeLeft.hours).padStart(2, "0")}
+            </div>
+            <div className="time-label">Hours</div>
+          </div>
+          <div className="time-box">
+            <div className="time-number">
+              {String(timeLeft.minutes).padStart(2, "0")}
+            </div>
+            <div className="time-label">Minutes</div>
+          </div>
+          <div className="time-box">
+            <div className="time-number">
+              {String(timeLeft.seconds).padStart(2, "0")}
+            </div>
+            <div className="time-label">Seconds</div>
+          </div>
+        </div>
         {renderAction(item.id)}
       </div>
       <UserTypeComponent show={showTypeComponent} onHide={handleCloseType} />
@@ -301,6 +362,40 @@ const HeroSection: React.FC = () => {
           0% { transform: rotate(-45deg) translateY(-200px); }
           100% { transform: rotate(-45deg) translateY(110vh); }
         }
+
+        /* Countdown styles */
+        .countdown-container {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 16px;
+          flex-wrap: wrap;
+        }
+        .time-box {
+          border: 3px solid #fff;
+          border-radius: 12px;
+          padding: 12px 16px;
+          min-width: 130px;
+          background: transparent; /* removed glass effect */
+        }
+        .time-number {
+          font-size: 2.8rem;
+          font-weight: 800;
+          line-height: 1;
+          color: transparent;
+          -webkit-text-stroke: 2px #fff; /* white bordered numbers */
+          text-stroke: 2px #fff;
+          letter-spacing: 2px;
+        }
+        .time-label {
+          margin-top: 6px;
+          font-size: 0.95rem;
+          font-weight: 700;
+          color: #ffffff;
+          text-transform: uppercase;
+          opacity: 0.9;
+        }
+        /* Seconds styling now matches other units (flip removed) */
       `}</style>
     </section>
   );

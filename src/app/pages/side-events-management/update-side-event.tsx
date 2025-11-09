@@ -89,13 +89,20 @@ const UpdateSideEvent = () => {
   });
 
   const onSubmit = (data: any) => {
-    const formData = {
+    const payload: CreateSideEventRequest = {
       ...data,
-      logo: logoFile,
-      cover: coverFile,
       gallery: galleryFiles,
     };
-    updateMutation.mutate(formData);
+
+    // Only include files if a new file was selected; avoid sending null or strings
+    if (logoFile) {
+      payload.logo = logoFile;
+    }
+    if (coverFile) {
+      payload.cover = coverFile;
+    }
+
+    updateMutation.mutate(payload);
   };
 
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {

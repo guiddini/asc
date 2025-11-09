@@ -74,7 +74,7 @@ const CreateWorkshopModal: React.FC<Props> = ({ show, onClose }) => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      status: "draft",
+      status: "published",
     },
   });
 
@@ -156,21 +156,6 @@ const CreateWorkshopModal: React.FC<Props> = ({ show, onClose }) => {
             />
             <Form.Control.Feedback type="invalid">
               {errors.location?.message as string}
-            </Form.Control.Feedback>
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>
-              Status <span className="text-danger">*</span>
-            </Form.Label>
-            <Form.Select {...register("status")} isInvalid={!!errors.status}>
-              <option value="">Select status</option>
-              <option value="draft">Draft</option>
-              <option value="published">Published</option>
-              <option value="cancelled">Cancelled</option>
-            </Form.Select>
-            <Form.Control.Feedback type="invalid">
-              {errors.status?.message as string}
             </Form.Control.Feedback>
           </Form.Group>
 

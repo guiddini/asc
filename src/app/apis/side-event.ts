@@ -54,7 +54,7 @@ export const updateSideEvent = async (
     if (Array.isArray(v)) v.forEach((f) => form.append(`${k}[]`, f));
     else if (v !== undefined) form.append(k, v);
   });
-  form.append("_method", "PUT");
+
   const res = await axiosInstance.post(`/side-events/update/${id}`, form, {
     headers: { "Content-Type": "multipart/form-data" },
   });

@@ -41,7 +41,7 @@ const CreateSideEvent = () => {
       email: "",
       date: "",
       categories: [],
-      status: "draft",
+      status: "published",
     },
   });
 
@@ -247,20 +247,6 @@ const CreateSideEvent = () => {
                       }}
                       value={(field.value || []).join(", ")}
                     />
-                  )}
-                />
-              </Form.Group>
-
-              <Form.Group className="mb-4">
-                <Form.Label>Status</Form.Label>
-                <Controller
-                  name="status"
-                  control={control}
-                  render={({ field }) => (
-                    <Form.Select {...field} isInvalid={!!errors.status}>
-                      <option value="draft">Draft</option>
-                      <option value="published">Published</option>
-                    </Form.Select>
                   )}
                 />
               </Form.Group>
