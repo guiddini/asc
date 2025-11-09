@@ -9,6 +9,6 @@ export const tickets = [
       { text: "Free networking" },
     ],
     price: 0,
-    slug: "free", // Added slug
+    slug: "free",
   },
 ];
