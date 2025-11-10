@@ -15,8 +15,8 @@ const LandingPage: React.FC = () => {
       <AboutSection />
       <EventStatsSection />
       <SpeakerSection />
-      <SponsorsSection />
-      <PartnersSection />
+      {/* <SponsorsSection /> */}
+      {/* <PartnersSection /> */}
       <EventGallerySection
         heading="ASC 2024 In Pictures"
         subheading="A quick look at memorable moments"
