@@ -1,14 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import { SIDE_EVENTS } from "../data/side-events";
+import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
+import { getPublicSideEvents } from "../../../apis";
+import getMediaUrl from "../../../helpers/getMediaUrl";
+import type { SideEvent } from "../../../types/side-event";
 
 const SideEventsSection: React.FC = () => {
+  const { data, isLoading } = useQuery({
+    queryFn: getPublicSideEvents,
+    queryKey: ["publicSideEvents"],
+  });
+
+  const navigate = useNavigate();
+
+  // Normalize events from API
+  const events: SideEvent[] = (data as SideEvent[]) || [];
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const cardsPerView = 3;
-  const maxIndex = Math.max(0, SIDE_EVENTS.length - cardsPerView);
+  const maxIndex = Math.max(0, (events?.length || 0) - cardsPerView);
 
   // Auto-play functionality like Instagram stories
   useEffect(() => {
@@ -61,7 +75,14 @@ const SideEventsSection: React.FC = () => {
 
   // Get visible cards based on current index
   const getVisibleCards = () => {
-    return SIDE_EVENTS.slice(currentIndex, currentIndex + cardsPerView);
+    return events.slice(currentIndex, currentIndex + cardsPerView);
+  };
+
+  const truncate = (text?: string, max: number = 140) => {
+    if (!text) return "";
+    const normalized = text.trim();
+    if (normalized.length <= max) return normalized;
+    return normalized.slice(0, max).trimEnd() + "…";
   };
 
   return (
@@ -71,7 +92,9 @@ const SideEventsSection: React.FC = () => {
         width: "100vw",
         margin: "0 calc(-50vw + 50%)",
         padding: "5rem 0",
-        backgroundColor: "var(--bs-secondary)",
+        backgroundImage: "url('/media/asc/back4.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
       }}
     >
       <Container
@@ -106,7 +129,7 @@ const SideEventsSection: React.FC = () => {
             variant="outline-light"
             className="carousel-nav carousel-nav-prev"
             onClick={handlePrev}
-            disabled={SIDE_EVENTS.length <= cardsPerView || isTransitioning}
+            disabled={events?.length <= cardsPerView || isTransitioning}
           >
             <i className="bi bi-chevron-left"></i>
           </Button>
@@ -120,7 +143,7 @@ const SideEventsSection: React.FC = () => {
             >
               {getVisibleCards().map((event, index) => (
                 <div
-                  key={`${currentIndex}-${index}`}
+                  key={`${event.id || event.slug || index}-${currentIndex}`}
                   className={`side-event-card ${
                     isTransitioning ? "card-transitioning" : ""
                   }`}
@@ -130,26 +153,38 @@ const SideEventsSection: React.FC = () => {
                       "--card-index": index,
                     } as React.CSSProperties
                   }
+                  onClick={() => navigate(`/side-events/${event.slug}`)}
                 >
                   <div className="card-inner">
                     {/* Front Face - Just Image */}
                     <div className="card-front">
-                      <img
-                        src={event.image}
-                        alt={event.title}
-                        className="card-image"
-                        style={{ width: "100%", height: "100%" }}
-                      />
+                      {(() => {
+                        const imgSrc = getMediaUrl(
+                          (event.cover as string) ||
+                            (event.logo as string) ||
+                            (event.gallery && event.gallery[0]) ||
+                            ""
+                        );
+                        const fallback = "/side-events/commingsoon.jpg";
+                        return (
+                          <img
+                            src={getMediaUrl(event?.logo) || fallback}
+                            alt={event.name}
+                            className="card-image"
+                            style={{ width: "100%", height: "100%" }}
+                          />
+                        );
+                      })()}
                     </div>
 
                     {/* Back Face - Dark Overlay with Title and Description */}
                     <div className="card-back">
                       <div className="dark-overlay">
                         <div className="event-content">
-                          <h3 className="event-title">{event.title}</h3>
+                          <h3 className="event-title">{event.name}</h3>
                           {event.description && (
                             <p className="event-description text-muted">
-                              {event.description}
+                              {truncate(event.description, 140)}
                             </p>
                           )}
                         </div>
@@ -165,7 +200,7 @@ const SideEventsSection: React.FC = () => {
             variant="outline-light"
             className="carousel-nav carousel-nav-next"
             onClick={handleNext}
-            disabled={SIDE_EVENTS.length <= cardsPerView || isTransitioning}
+            disabled={(events?.length || 0) <= cardsPerView || isTransitioning}
           >
             <i className="bi bi-chevron-right"></i>
           </Button>

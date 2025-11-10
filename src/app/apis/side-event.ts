@@ -19,6 +19,11 @@ export const getPublishedSideEvents = async (): Promise<SideEventsResponse> => {
   return res.data;
 };
 
+export const getPublicSideEvents = async (): Promise<SideEventsResponse> => {
+  const res = await axiosInstance.get("/public/side-events");
+  return res.data;
+};
+
 export const showSideEventBySlug = async (
   slug: string
 ): Promise<ShowSideEventResponse> => {

@@ -91,7 +91,19 @@ const SpeakerSection: React.FC = () => {
                 onSelect={setActiveIndex}
               />
             ) : (
-              <div data-placeholder>No speakers found</div>
+              <div data-placeholder>
+                <img
+                  src="/side-events/commingsoon.jpeg"
+                  alt="Coming soon"
+                  style={{
+                    maxWidth: "100%",
+                    height: "auto",
+                    borderRadius: "12px",
+                    display: "block",
+                    margin: "0 auto",
+                  }}
+                />
+              </div>
             )}
           </div>
           <button id="landing-speaker-next" aria-label="Next" onClick={onNext}>

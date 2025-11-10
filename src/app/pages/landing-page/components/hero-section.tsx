@@ -125,6 +125,36 @@ const HeroSection: React.FC = () => {
             </Link>
           </div>
         </div>
+
+        <div className="d-flex flex-column flex-md-row align-items-center justify-content-center gap-4 gap-md-3 mt-6">
+          <a
+            href="https://play.google.com/store/apps/details?id=com.africanstartupconference.app&pli=1"
+            className="btn btn-link p-0"
+            target="_blank"
+          >
+            <img
+              src="/media/play-store.svg"
+              alt="Play Store"
+              style={{
+                width: "150px",
+                paddingTop: "8px",
+                filter: "brightness(0) invert(1)",
+              }}
+            />
+          </a>
+
+          <span className="btn btn-link p-0">
+            <img
+              src="/media/app-store.svg"
+              alt="App Store"
+              style={{
+                width: "150px",
+                paddingTop: "8px",
+                filter: "brightness(0) invert(1)",
+              }}
+            />
+          </span>
+        </div>
       </div>
       <UserTypeComponent show={showTypeComponent} onHide={handleCloseType} />
     </section>
