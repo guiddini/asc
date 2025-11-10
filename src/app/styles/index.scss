@@ -5,14 +5,7 @@
 
 // Add body padding to account for fixed header
 #landing-layout {
-  padding-top: 70px;
   overflow-x: hidden;
-}
-
-@media (max-width: 991.98px) {
-  #landing-layout {
-    padding-top: 70px;
-  }
 }
 
 @media (max-width: 768px) {

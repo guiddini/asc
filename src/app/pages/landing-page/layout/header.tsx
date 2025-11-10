@@ -33,10 +33,9 @@ const Header: React.FC<HeaderProps> = ({ className = "" }) => {
     <header className={`site-header ${className}`}>
       <Navbar
         expand="lg"
-        className="navbar-custom py-3"
+        className="navbar-custom navbar-custom-dark py-2"
         fixed="top"
-        bg="white"
-        style={{ boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}
+        style={{}}
       >
         <Container>
           {/* Logo */}
@@ -66,7 +65,7 @@ const Header: React.FC<HeaderProps> = ({ className = "" }) => {
               <Button
                 variant="outline-secondary"
                 size="sm"
-                className="me-2"
+                className="me-2 search-trigger"
                 onClick={handleShowSearch}
               >
                 <i className="bi bi-search me-1"></i>
@@ -89,7 +88,7 @@ const Header: React.FC<HeaderProps> = ({ className = "" }) => {
                   <Button
                     variant="primary"
                     size="sm"
-                    className="px-3"
+                    className="px-3 btn-login"
                     onClick={() => navigate("/auth/login")}
                   >
                     <i className="bi bi-box-arrow-in-right me-1"></i>
@@ -99,7 +98,7 @@ const Header: React.FC<HeaderProps> = ({ className = "" }) => {
                   <Button
                     variant="secondary"
                     size="sm"
-                    className="px-3"
+                    className="px-3 btn-register"
                     onClick={handleType}
                   >
                     <i className="bi bi-person-plus me-1"></i>

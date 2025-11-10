@@ -56,27 +56,27 @@ export const Counter: React.FC<CounterProps> = ({
 // ---- Données ----
 export const EVENT_STATS: StatItem[] = [
   {
-    icon: "/stats/startup.svg",
+    icon: "/stats/minister-delegations.png",
     label: "Ministerial Delegations",
     value: "40+",
     alt: "Icône Startups",
   },
   {
-    icon: "/stats/visitors.svg",
+    icon: "/stats/participants.png",
     label: "Participants",
-    value: "25 000+",
+    value: "20 000+",
     alt: "Icône Visiteurs",
   },
   {
-    icon: "/stats/experts.svg",
+    icon: "/stats/experts.png",
     label: "International Experts",
-    value: "300+",
+    value: "200+",
     alt: "Icône Experts",
   },
   {
-    icon: "/stats/investors.svg",
+    icon: "/stats/investors.png",
     label: "Investors",
-    value: "200+",
+    value: "150+",
     alt: "Icône Investisseurs",
   },
 ];
@@ -108,45 +108,34 @@ const EventStatsSection: React.FC = () => {
   }, []);
 
   return (
-    <section className="event-stats-section py-5" ref={sectionRef}>
-      <Container
-        style={{
-          paddingTop: "5rem",
-          paddingBottom: "5rem",
-        }}
-      >
-        <Row className="mb-5 text-center">
+    <section id="event-stats-section" ref={sectionRef}>
+      <Container id="event-stats-container">
+        <Row className="mb-4">
           <Col>
-            <h2 className="fw-bold display-4">Event Highlights in Numbers</h2>
-            <p className="lead text-secondary">
+            <h2 id="event-stats-heading">Event Highlights in Numbers</h2>
+            <p id="event-stats-subheading">
               Explore the scale, impact, and global reach of our continental
               conference.
             </p>
           </Col>
         </Row>
-        <Row className="g-4 gy-4 justify-content-center">
+        <Row id="event-stats-grid" className="g-4 gy-4">
           {EVENT_STATS.map((stat) => (
-            <Col
-              key={stat.label}
-              xs={6}
-              md={3}
-              className="d-flex flex-column align-items-center stat-col"
-            >
-              <div className="stat-icon mb-2">
-                <img src={stat.icon} alt={stat.alt} width={48} height={48} />
-              </div>
-              <div className="stat-label small text-uppercase fw-semibold text-secondary mb-1">
-                {stat.label}
-              </div>
-              <div
-                className="stat-value fw-bold display-5"
-                style={{ color: "var(--bs-dark)" }}
-              >
-                <Counter
-                  value={stat.value}
-                  duration={2500}
-                  start={startCounter}
-                />
+            <Col key={stat.label} xs={6} md={3}>
+              <div className="event-stat-card text-center">
+                <div className="event-stat-icon mb-2">
+                  <img src={stat.icon} alt={stat.alt} width={70} height={70} />
+                </div>
+                <div className="event-stat-label fw-semibold mb-1">
+                  {stat.label}
+                </div>
+                <div className="event-stat-value">
+                  <Counter
+                    value={stat.value}
+                    duration={2500}
+                    start={startCounter}
+                  />
+                </div>
               </div>
             </Col>
           ))}

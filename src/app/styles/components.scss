@@ -24,6 +24,74 @@
       }
     }
   }
+  // Dark navbar variant to match provided visual
+  .navbar-custom-dark {
+    background: #021f41 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+
+    .brand-logo {
+      .logo-image {
+        height: 40px;
+      }
+    }
+
+    // Override navigation link colors for dark header
+    .navigation-menu {
+      .nav-link-custom,
+      .nav-dropdown-hover .nav-dropdown-toggle {
+        color: #eaf3ff;
+      }
+
+      .nav-link-custom:hover,
+      .nav-link-custom:focus,
+      .nav-dropdown-hover .nav-dropdown-toggle:hover,
+      .nav-dropdown-hover .nav-dropdown-toggle:focus {
+        color: #57c1dc;
+      }
+
+      .nav-dropdown-hover {
+        .nav-dropdown-toggle::before {
+          background: #57c1dc;
+        }
+
+        // keep dropdown menu light for readability
+        .dropdown-menu-hover {
+          background: rgba(255, 255, 255, 0.97);
+          backdrop-filter: blur(8px);
+        }
+      }
+    }
+
+    // Header actions styling to match screenshot
+    .header-actions {
+      .search-trigger {
+        background: #ffffff;
+        color: #0b2a3a;
+        border: none;
+        border-radius: 999px;
+        padding: 0.4rem 0.9rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+      }
+
+      .btn-login {
+        background: #0f2d40;
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 999px;
+        padding: 0.4rem 0.9rem;
+      }
+
+      .btn-register {
+        background: linear-gradient(90deg, #64b45c, #37b294);
+        color: #ffffff;
+        border: none;
+        border-radius: 999px;
+        padding: 0.4rem 0.9rem;
+        box-shadow: 0 4px 12px rgba(55, 178, 148, 0.35);
+      }
+    }
+  }
   .navbar-custom-transparent {
     background-color: transparent !important;
     transition: all 0.3s ease;
@@ -311,6 +379,210 @@
         }
       }
     }
+  }
+}
+
+// Hero Section (ID-based, responsive)
+#hero-section {
+  min-height: 100vh;
+  width: 100vw; // ensure full viewport width
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  overflow: hidden;
+  padding: 5rem 0;
+}
+
+#hero-background {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+#hero-content {
+  text-align: center;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 1.2s ease-in-out;
+
+  &.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#hero-logo {
+  height: 140px; // reduced default size
+}
+
+#hero-subtext {
+  color: #eaf3ff;
+  font-weight: 700;
+  max-width: 780px;
+  line-height: 1.6;
+  font-size: 1.25rem;
+  margin: 0 auto;
+}
+
+#hero-date {
+  color: #ffffff;
+  font-size: 1.6rem;
+}
+
+#hero-date-start,
+#hero-date-end {
+  color: #64B45C;
+  font-weight: 700;
+}
+
+#hero-location {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1.1rem;
+}
+
+#hero-countdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+#hero-countdown .time-box {
+  border: 4px solid #fff;
+  border-radius: 12px;
+  padding: 12px 16px; // slightly reduced
+  min-width: 130px; // reduced width
+  background: transparent;
+}
+
+#hero-countdown .time-number {
+  font-size: 3rem; // reduced size
+  font-weight: 800;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 2px #fff;
+  text-stroke: 2px #fff;
+  letter-spacing: 2px;
+}
+
+#hero-countdown .time-label {
+  margin-top: 6px;
+  font-size: 0.9rem; // reduced size
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+#hero-cta {
+  background: linear-gradient(90deg, #0090C7, #57C1DC);
+  border: none;
+  color: #fff;
+  padding: 14px 32px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 320px;
+  min-height: 50px;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(0, 144, 199, 0.25);
+}
+
+// Tablets
+@media (max-width: 991.98px) {
+  #hero-logo {
+    height: 120px; // reduce further on tablets
+  }
+  #hero-subtext {
+    font-size: 1.05rem;
+    max-width: 700px;
+  }
+  #hero-date {
+    font-size: 1.4rem;
+  }
+  #hero-location {
+    font-size: 1rem;
+  }
+  #hero-countdown .time-box {
+    min-width: 120px;
+  }
+  #hero-countdown .time-number {
+    font-size: 2.8rem;
+  }
+}
+
+// Phones
+@media (max-width: 575.98px) {
+  #hero-section {
+    padding: 3.5rem 0;
+  }
+  #hero-logo {
+    height: 80px; // further reduced on phones
+  }
+  #hero-subtext {
+    font-size: 0.9rem;
+    max-width: 90%;
+    line-height: 1.5;
+  }
+  #hero-date {
+    font-size: 1.1rem;
+  }
+  #hero-location {
+    font-size: 0.9rem;
+  }
+  #hero-countdown {
+    gap: 10px;
+  }
+  #hero-countdown .time-box {
+    min-width: 96px;
+    padding: 8px 10px;
+    border-width: 3px; // thinner borders for compact look
+  }
+  #hero-countdown .time-number {
+    font-size: 2rem;
+    -webkit-text-stroke: 1.2px #fff;
+    text-stroke: 1.2px #fff;
+  }
+  #hero-countdown .time-label {
+    font-size: 0.8rem;
+  }
+  #hero-cta {
+    width: 100%;
+    max-width: 320px;
+    font-size: 0.95rem;
+    padding: 10px 14px;
+  }
+}
+
+// Very small phones
+@media (max-width: 360px) {
+  #hero-logo { height: 72px; }
+  #hero-countdown .time-box { min-width: 90px; padding: 7px 9px; }
+  #hero-countdown .time-number { font-size: 1.85rem; }
+  #hero-cta { max-width: 300px; font-size: 0.9rem; }
+}
+
+// Large screens
+@media (min-width: 1400px) {
+  #hero-logo {
+    height: 200px;
+  }
+  #hero-subtext {
+    font-size: 1.35rem;
+    max-width: 860px;
+  }
+  #hero-date {
+    font-size: 1.8rem;
+  }
+  #hero-countdown .time-box {
+    min-width: 170px;
+  }
+  #hero-countdown .time-number {
+    font-size: 3.8rem;
   }
 }
 

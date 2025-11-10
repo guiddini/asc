@@ -3,36 +3,39 @@ import { Container, Row, Col } from "react-bootstrap";
 
 const AboutSection: React.FC = () => {
   return (
-    <section className="about-section pt-5 position-relative">
-      <div className="patronage-section py-8 mb-2 w-100">
-        <Container
-          style={{
-            paddingTop: "5rem",
-            paddingBottom: "5rem",
-          }}
-        >
-          <Row className="justify-content-center text-center">
-            <Col lg={8}>
-              <div className="patronage-image-container mb-4">
-                <img
-                  src="/media/startups-minister.png"
-                  alt="Under the High Patronage"
-                  className="patronage-image img-fluid"
-                  width={180}
-                  height={100}
-                />
-              </div>
-              <h2 className="patronage-title display-5 fw-bold mb-3">
-                Under the High Patronage of the President of the Republic
-                {/* Sous le Haut Patronage du Président de la République */}
+    <section id="about-section" className="position-relative">
+      <div id="patronage" className="py-8 mb-2 w-100">
+        <Container id="patronage-container">
+          <Row className="align-items-center">
+            {/* Left copy */}
+            <Col lg={7} className="text-white">
+              <h2 id="about-section-heading" className="fw-bold mb-3">
+                Under the high patronage of his excellency President of Algerian
+                Republic Abdelmadjid Tebboune
               </h2>
-              <p className="patronage-subtitle lead text-muted">
-                {/* Vivez trois jours intenses de réseautage mondial, de présentations d'innovations et d'ateliers porteurs d'avenir. Entrepreneurs, investisseurs et penseurs se réuniront pour créer des opportunités et créer un impact en Afrique. */}
+              <p id="about-section-subtitle" className="lead">
                 Experience 3 powerful days of global networking, innovation
                 showcases, and future-shaping workshops. Entrepreneurs,
                 investors, and thinkers will gather to drive opportunity and
                 impact across Africa.
               </p>
+            </Col>
+            {/* Right card */}
+            <Col
+              lg={5}
+              className="d-flex justify-content-lg-end justify-content-center mt-4 mt-lg-0"
+            >
+              <div id="patronage-card">
+                <img
+                  src="/media/startups-minister.png"
+                  alt="Under the High Patronage"
+                  id="patronage-image"
+                  className="w-100 h-100 object-fit-contain"
+                  style={{
+                    borderRadius: 22,
+                  }}
+                />
+              </div>
             </Col>
           </Row>
         </Container>
@@ -45,17 +48,31 @@ const AboutSection: React.FC = () => {
         }}
       >
         <Row className="align-items-center g-5 flex-column-reverse flex-lg-row">
-          {/* Left Content Column */}
+          {/* Image Column - should appear on the left on large screens */}
+          <Col lg={6}>
+            <div className="about-image-container">
+              <img
+                src="/media/eventili/cover.webp"
+                alt="About Event"
+                id="about-image"
+                className="img-fluid"
+                loading="lazy"
+              />
+            </div>
+          </Col>
+
+          {/* Content Column */}
           <Col lg={6} className="mb-4 mb-lg-0">
             {/* If you have a neutral event logo, put it here */}
             <img
               src="media/eventili/logos/logo.svg"
               alt="Event Logo"
-              style={{ width: 70, marginBottom: 18, display: "block" }}
-              className="d-none d-md-block"
+              id="about-logo"
+              style={{ width: 100, marginBottom: 18, display: "block" }}
+              className="d-none d-md-block mx-auto"
             />
-            <div className="about-content">
-              <p className="about-description">
+            <div id="about-content">
+              <p id="about-description">
                 The African Startup Conference is the ultimate Pan-African stage
                 for innovation and entrepreneurship. From December 6–8, 2025, in
                 Algiers, its 4th edition will celebrate the “African Champions”
@@ -64,7 +81,10 @@ const AboutSection: React.FC = () => {
                 shape a competitive, sovereign, and world-class tech ecosystem
               </p>
               {/* Endorsement/Organization Banner */}
-              <div className="ministry-endorsement d-flex align-items-center gap-3 mt-4 rounded-3 bg-light p-3 shadow-sm">
+              <div
+                id="ministry-endorsement"
+                className="d-flex justify-content-between align-items-center gap-3 mt-4 rounded-3 bg-light p-3 shadow-sm w-100"
+              >
                 <img
                   src="/media/startups-minister.png"
                   alt="Ministry logo"
@@ -86,18 +106,6 @@ const AboutSection: React.FC = () => {
                   style={{ marginLeft: 12, height: 30, width: "auto" }}
                 />
               </div>
-            </div>
-          </Col>
-
-          {/* Right Image Column */}
-          <Col lg={6}>
-            <div className="about-image-container">
-              <img
-                src="/media/eventili/cover.webp"
-                alt="About Event"
-                className="about-image img-fluid"
-                loading="lazy"
-              />
             </div>
           </Col>
         </Row>
