@@ -1,6 +1,5 @@
 import { Lock } from "lucide-react";
 import React, { useState } from "react";
-import ConfirmTicketModal from "./confirm-ticket-modal";
 import { useNavigate } from "react-router-dom";
 
 interface EventCardProps {
@@ -98,12 +97,6 @@ const EventCard: React.FC<EventCardProps> = ({
           )}
         </div>
       </div>
-      {isModalOpen && (
-        <ConfirmTicketModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-        />
-      )}
     </>
   );
 };
