@@ -10,9 +10,10 @@ interface SpeakerListProps {
   }[];
   activeIndex: number;
   onSelect: (index: number) => void;
+  placeholderImage?: string;
 }
 
-const SpeakerList: React.FC<SpeakerListProps> = ({ speakers, activeIndex, onSelect }) => (
+const SpeakerList: React.FC<SpeakerListProps> = ({ speakers, activeIndex, onSelect, placeholderImage }) => (
   <>
     {speakers.map((speaker, idx) => (
       <SpeakerCard
@@ -20,6 +21,7 @@ const SpeakerList: React.FC<SpeakerListProps> = ({ speakers, activeIndex, onSele
         speaker={speaker}
         isActive={idx === activeIndex}
         onSelect={() => onSelect(idx)}
+        placeholderImage={placeholderImage}
       />
     ))}
   </>

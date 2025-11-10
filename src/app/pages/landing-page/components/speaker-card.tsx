@@ -5,9 +5,16 @@ interface SpeakerCardProps {
   speaker: { id: string; avatar: string; fname: string; lname: string };
   isActive?: boolean;
   onSelect?: () => void;
+  // Optional image to use when speaker.avatar is missing
+  placeholderImage?: string;
 }
 
-const SpeakerCard: React.FC<SpeakerCardProps> = ({ speaker, isActive, onSelect }) => {
+const SpeakerCard: React.FC<SpeakerCardProps> = ({
+  speaker,
+  isActive,
+  onSelect,
+  placeholderImage,
+}) => {
   return (
     <div data-card-wrap>
       <div
@@ -26,7 +33,7 @@ const SpeakerCard: React.FC<SpeakerCardProps> = ({ speaker, isActive, onSelect }
             />
           ) : (
             <img
-              src={"/speakers/1.png"}
+              src={placeholderImage || "/speakers/1.png"}
               alt={`${speaker.fname} ${speaker.lname}`}
               width={240}
               height={340}

@@ -648,6 +648,7 @@
   #event-stats-grid {
     grid-template-columns: repeat(1, var(--card-size));
     gap: var(--gap);
+    justify-content: center; /* center grid on mobile */
   }
   .event-stat-card {
     width: var(--card-size);
@@ -663,10 +664,19 @@
   }
 }
 
+/* Exhibitors text styling below the grid */
+.event-stats-exhibitors {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: clamp(3rem, 2.4vw, 2.1rem);
+  padding-top: 16px;
+}
+
 // Landing Speaker Section (ID-based styles)
 #landing-speaker-section {
   position: relative;
-  width: 100%;
+  width: 100vw;
+  margin: 0 calc(-50vw + 50%);
   padding: 6rem 0 5rem;
   background-image: url("/media/asc/back1.jpg");
   background-size: cover;
@@ -1947,7 +1957,7 @@
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   padding: 5rem 0 5rem;
-  background-image: url('/media/asc/back3.jpg');
+  background-image: url("/media/asc/back3.jpg");
   background-size: cover;
   background-position: center;
 }
@@ -1959,7 +1969,9 @@
   padding: 0 24px;
 }
 
-#landing-partners-header { margin-bottom: 2rem; }
+#landing-partners-header {
+  margin-bottom: 2rem;
+}
 
 #landing-partners-heading {
   margin: 0;
@@ -1969,7 +1981,9 @@
   color: #ffffff;
 }
 
-#landing-partners-slider-wrap { position: relative; }
+#landing-partners-slider-wrap {
+  position: relative;
+}
 
 #landing-partners-prev,
 #landing-partners-next {
@@ -1990,8 +2004,12 @@
   z-index: 2;
 }
 
-#landing-partners-prev { left: 12px; }
-#landing-partners-next { right: 12px; }
+#landing-partners-prev {
+  left: 12px;
+}
+#landing-partners-next {
+  right: 12px;
+}
 
 #landing-partners-prev:hover,
 #landing-partners-next:hover {
@@ -2009,7 +2027,10 @@
   -webkit-overflow-scrolling: touch;
 }
 
-#landing-partners-slider::-webkit-scrollbar { height: 0; width: 0; }
+#landing-partners-slider::-webkit-scrollbar {
+  height: 0;
+  width: 0;
+}
 
 #landing-partners-slider [data-partner-card-wrap] {
   width: 220px;
@@ -2028,7 +2049,8 @@
   background: rgba(10, 24, 32, 0.6);
   border: 1px solid rgba(98, 236, 194, 0.25);
   box-shadow: 0 16px 32px rgba(0, 0, 0, 0.35);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease,
+    border-color 0.25s ease;
   cursor: pointer;
 }
 
@@ -2048,22 +2070,53 @@
 
 /* Responsive sizing */
 @media (max-width: 1199.98px) {
-  #landing-partners-slider { gap: 28px; padding: 8px 48px; }
-  #landing-partners-slider [data-partner-card-wrap] { width: 200px; }
-  #landing-partners-slider [data-partner-card] { width: 200px; height: 200px; }
+  #landing-partners-slider {
+    gap: 28px;
+    padding: 8px 48px;
+  }
+  #landing-partners-slider [data-partner-card-wrap] {
+    width: 200px;
+  }
+  #landing-partners-slider [data-partner-card] {
+    width: 200px;
+    height: 200px;
+  }
 }
 
 @media (max-width: 991.98px) {
-  #landing-partners-slider { gap: 24px; padding: 8px 36px; }
-  #landing-partners-slider [data-partner-card-wrap] { width: 180px; }
-  #landing-partners-slider [data-partner-card] { width: 180px; height: 180px; }
+  #landing-partners-slider {
+    gap: 24px;
+    padding: 8px 36px;
+  }
+  #landing-partners-slider [data-partner-card-wrap] {
+    width: 180px;
+  }
+  #landing-partners-slider [data-partner-card] {
+    width: 180px;
+    height: 180px;
+  }
 }
 
 @media (max-width: 575.98px) {
-  #landing-partners-container { padding: 0 16px; }
-  #landing-partners-heading { font-size: 1.8rem; }
-  #landing-partners-slider { gap: 18px; padding: 8px 24px; }
-  #landing-partners-prev, #landing-partners-next { display: none; }
-  #landing-partners-slider [data-partner-card-wrap] { width: 160px; }
-  #landing-partners-slider [data-partner-card] { width: 160px; height: 160px; }
+  #landing-partners-container {
+    padding: 0 16px;
+  }
+  #landing-partners-heading {
+    font-size: 1.8rem;
+  }
+  #landing-partners-slider {
+    gap: 18px;
+    padding: 8px 24px;
+  }
+  #landing-partners-prev,
+  #landing-partners-next {
+    display: none;
+  }
+  #landing-partners-slider [data-partner-card-wrap] {
+    width: 160px;
+  }
+  #landing-partners-slider [data-partner-card] {
+    width: 160px;
+    height: 160px;
+  }
 }

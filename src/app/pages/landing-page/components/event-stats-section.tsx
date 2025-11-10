@@ -53,6 +53,9 @@ export const Counter: React.FC<CounterProps> = ({
   );
 };
 
+// 200+ INVESTORS
+// 25 000+ PARTICIPANTS
+// 200+ EXHIBITOS
 // ---- Données ----
 export const EVENT_STATS: StatItem[] = [
   {
@@ -64,13 +67,13 @@ export const EVENT_STATS: StatItem[] = [
   {
     icon: "/stats/participants.png",
     label: "Participants",
-    value: "20 000+",
+    value: "25 000+",
     alt: "Icône Visiteurs",
   },
   {
     icon: "/stats/experts.png",
     label: "International Experts",
-    value: "200+",
+    value: "300+",
     alt: "Icône Experts",
   },
   {
@@ -139,6 +142,16 @@ const EventStatsSection: React.FC = () => {
               </div>
             </Col>
           ))}
+        </Row>
+        {/* Exhibitors counter text */}
+        <Row className="mt-4">
+          <Col>
+            <div className="event-stats-exhibitors text-center text-white">
+              And more than{" "}
+              <Counter value="+200" duration={10000} start={startCounter} />{" "}
+              Exhibitors
+            </div>
+          </Col>
         </Row>
       </Container>
     </section>
