@@ -1,6 +1,7 @@
-import { Camera } from "lucide-react";
+import { ArrowLeft, Camera } from "lucide-react";
 import { SideEvent } from "../../../types/side-event";
 import getMediaUrl from "../../../helpers/getMediaUrl";
+import { Link } from "react-router-dom";
 
 export default function Hero({ event }: { event: SideEvent }) {
   return (
@@ -11,10 +12,9 @@ export default function Hero({ event }: { event: SideEvent }) {
       }}
     >
       <div className="container">
-        <a href="#gallery" id="gallery-cta">
-          <Camera />
-          <span>View Gallery</span>
-        </a>
+        <Link to="/" id="gallery-cta">
+          <span>← Back</span>
+        </Link>
       </div>
     </section>
   );

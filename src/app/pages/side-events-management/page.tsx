@@ -118,7 +118,7 @@ const SideEventsManagement = () => {
             variant="light-info"
             size="sm"
             className="ms-auto"
-            onClick={() => navigate(`/profiles/${row.slug}`)}
+            onClick={() => navigate(`/side-events/${row.slug}`)}
             title="View public profile"
           >
             <KTIcon iconName="exit-right-corner" className="fs-3" />

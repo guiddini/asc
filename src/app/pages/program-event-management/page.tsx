@@ -5,6 +5,7 @@ import { getAllProgramEvents } from "../../apis/program-event";
 import { TableComponent } from "../../components/table/TableComponent";
 import CreateProgramEventModal from "./components/create-program-event-modal";
 import DeleteProgramEventModal from "./components/delete-program-event-modal";
+import EditProgramEventModal from "./components/edit-program-event-modal";
 import moment from "moment";
 
 export default function ProgramEventManagementPage() {
@@ -18,8 +19,10 @@ export default function ProgramEventManagementPage() {
   const events: ProgramEvent[] = data ?? [];
 
   const [currentId, setCurrentId] = useState<string | null>(null);
+  const [currentEvent, setCurrentEvent] = useState<ProgramEvent | null>(null);
   const [showCreate, setShowCreate] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
 
   const columns = [
     {
@@ -28,8 +31,8 @@ export default function ProgramEventManagementPage() {
       sortable: true,
     },
     {
-      name: "Description",
-      selector: (row: ProgramEvent) => row.description ?? "-",
+      name: "Status",
+      selector: (row: ProgramEvent) => row.status ?? "-",
       sortable: true,
     },
     {
@@ -72,6 +75,17 @@ export default function ProgramEventManagementPage() {
       selector: (row: ProgramEvent) => {
         return (
           <div className="d-flex gap-2">
+            <button
+              type="button"
+              className="btn btn-primary btn-sm"
+              onClick={() => {
+                setCurrentId(row.id);
+                setCurrentEvent(row);
+                setShowEdit(true);
+              }}
+            >
+              Edit
+            </button>
             <button
               type="button"
               className="btn btn-danger btn-sm"
@@ -117,6 +131,12 @@ export default function ProgramEventManagementPage() {
       <CreateProgramEventModal
         show={showCreate}
         onHide={() => setShowCreate(false)}
+        onSuccess={() => refetch()}
+      />
+      <EditProgramEventModal
+        show={showEdit}
+        event={currentEvent}
+        onHide={() => setShowEdit(false)}
         onSuccess={() => refetch()}
       />
       <DeleteProgramEventModal

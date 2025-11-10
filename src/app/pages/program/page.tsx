@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useQuery } from "react-query";
 import { getPublicProgramSchedule } from "../../apis/slot";
 import { useSearchParams } from "react-router-dom";
-import { Button, Col, Row, Spinner } from "react-bootstrap";
+import { Col, Row, Spinner } from "react-bootstrap";
 import { format, parseISO } from "date-fns";
 import type { PublicSlot, PublicSlotType } from "../../types/slot";
 import { getThreeDayRange } from "../meetings/utils/scheduleUtils";
@@ -16,7 +16,6 @@ import getMediaUrl from "../../helpers/getMediaUrl";
 
 // Custom Event Card Component for Timeline
 const TimelineEventCard: React.FC<{ event: PublicSlot }> = ({ event }) => {
-
   const formatTime = (timeString: string) => {
     return format(parseISO(timeString), "h:mm a");
   };
@@ -139,7 +138,7 @@ const TimelineEventCard: React.FC<{ event: PublicSlot }> = ({ event }) => {
               )}
             </div>
           )}
-          
+
           {/* Actions removed: no join/leave buttons */}
         </div>
       </div>

@@ -97,13 +97,7 @@ export const TicketsPrivilege = ({
                     </h1>
                     <div className="fs-5  fw-bold">
                       If you need more information about our pricing, please{" "}
-                      <span
-                        role="button"
-                        onClick={() =>
-                          navigateAndScroll("/profiles/asc/tickets#tickets")
-                        }
-                        className="link-primary"
-                      >
+                      <span role="button" className="link-primary">
                         visit our website
                       </span>
                     </div>

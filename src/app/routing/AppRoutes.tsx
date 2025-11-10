@@ -53,7 +53,7 @@ const AppRoutes: FC = () => {
 
           {/* Other routes */}
 
-          <Route path="/profiles/*" element={<ProfileRoutes />} />
+          <Route path="/side-events/*" element={<ProfileRoutes />} />
           <Route path="error/*" element={<ErrorsPage />} />
           <Route path="logout" element={<Logout />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />

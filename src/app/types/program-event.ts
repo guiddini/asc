@@ -5,6 +5,8 @@ export type ProgramEvent = {
   location?: string | null;
   start_time: string;
   end_time: string;
+  side_event_id?: string;
+  status?: "published" | "completed" | "cancelled";
   created_at?: string;
   updated_at?: string;
 };
@@ -16,4 +18,5 @@ export type ProgramEventRequest = {
   start_time: string;
   end_time: string;
   side_event_id?: string;
+  status?: "published" | "completed" | "cancelled";
 };

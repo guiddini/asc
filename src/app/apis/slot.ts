@@ -33,11 +33,15 @@ export const getAllBookedSlots = async (): Promise<Slot[]> => {
 
 export const getPublicProgramSchedule = async (
   type?: PublicSlotType,
-  start_date?: string
+  start_date?: string,
+  side_event_id?: string,
+  side_event_slug?: string
 ): Promise<PublicSlot[]> => {
   const params: Record<string, string> = {};
   if (type) params.type = type;
   if (start_date) params.start_date = start_date;
+  if (side_event_id) params.side_event_id = side_event_id;
+  if (side_event_slug) params.side_event_slug = side_event_slug;
 
   const response = await axiosInstance.get("/public/program/schedule", {
     params,

@@ -180,9 +180,6 @@ const SharedTicketsPage = () => {
               Vous êtes invité, mais il n'y a plus de Tickets disponibles sur
               cette invitation
             </h1>
-            <Link to="/profiles/asc/tickets" id="reserve-ticket-button">
-              Réserver un ticket
-            </Link>
           </div>
         </div>
       </div>
