@@ -1,5 +1,14 @@
-import { Landmark, ShoppingCart } from "lucide-react";
+import { Landmark } from "lucide-react";
 import { SideEvent } from "../../../types/side-event";
+
+// Show a short preview of the description on the left panel
+const truncate = (text?: string, max = 160) => {
+  if (!text) return "";
+  if (text.length <= max) return text;
+  const trimmed = text.slice(0, max);
+  const lastSpace = trimmed.lastIndexOf(" ");
+  return `${trimmed.slice(0, lastSpace > 0 ? lastSpace : max)}…`;
+};
 
 const Description = ({ event }: { event: SideEvent }) => {
   return (
@@ -15,7 +24,7 @@ const Description = ({ event }: { event: SideEvent }) => {
         </div>
 
         <h1>{event?.name}</h1>
-        <p id="description">{event?.description}</p>
+        <p id="description">{truncate(event?.description)}</p>
       </div>
     </div>
   );

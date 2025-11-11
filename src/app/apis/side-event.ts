@@ -6,6 +6,7 @@ import {
   Workshop,
   Conference,
   PublicScheduleItem,
+  SideEventAttendee,
 } from "../types/side-event";
 import axiosInstance from "./axios";
 
@@ -100,5 +101,29 @@ export const getPublicSchedule = async (params?: {
   const res = await axiosInstance.get("/public/side-events/public-schedule", {
     params,
   });
+  return res.data;
+};
+
+export const checkIfUserJoinedSideEvent = async (
+  id: string
+): Promise<{ joined: boolean }> => {
+  const res = await axiosInstance.get(`/side-events/${id}/is-joined`);
+  return res.data;
+};
+
+export const joinSideEvent = async (id: string) => {
+  const res = await axiosInstance.post(`/side-events/${id}/join`);
+  return res.data;
+};
+
+export const leaveSideEvent = async (id: string) => {
+  const res = await axiosInstance.post(`/side-events/${id}/leave`);
+  return res.data;
+};
+
+export const getSideEventAttendees = async (
+  id: string
+): Promise<SideEventAttendee[]> => {
+  const res = await axiosInstance.get(`/side-events/${id}/attendees`);
   return res.data;
 };

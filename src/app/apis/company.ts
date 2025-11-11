@@ -1,4 +1,4 @@
-import { createCompanyProps } from "./../types/company";
+import { PublicCompany } from "./../types/company";
 import axiosInstance from "./axios";
 
 const getAllCompaniesApi = async () => {
@@ -90,4 +90,9 @@ const createCompanyApi = async (data: FormData) => {
       "Content-Type": "multipart/form-data",
     },
   });
+};
+
+export const getPublicCompanies = async (): Promise<PublicCompany[]> => {
+  const res = await axiosInstance.get("/public/companies");
+  return res.data;
 };

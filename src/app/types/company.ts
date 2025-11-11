@@ -81,3 +81,8 @@ export interface JobOffer {
   created_at: string;
   updated_at: string;
 }
+
+export type PublicCompany = {
+  name: string;
+  logo: string | null;
+};

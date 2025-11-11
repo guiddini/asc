@@ -20,6 +20,7 @@ import {
   Clock,
   Calendar,
   MessageSquare,
+  Handshake,
 } from "lucide-react";
 
 interface ProfileHeaderProps {
@@ -291,6 +292,15 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
               >
                 <Calendar size={18} className="me-2" />
                 Request Meeting
+              </Button>
+              <Button
+                variant="outline-warning"
+                className="rounded-pill px-4 fw-semibold"
+                disabled
+                title="Deal Room coming soon"
+              >
+                <Handshake size={18} className="me-2" />
+                Deal Room
               </Button>
               <Button
                 variant="outline-info"

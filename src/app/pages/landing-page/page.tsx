@@ -5,6 +5,7 @@ import SpeakerSection from "./components/speakers-section";
 import SponsorsSection from "./components/sponsors-section";
 import PartnersSection from "./components/partners-section";
 import EventGallerySection from "./components/event-gallery-section";
+import ExhibitorsSection from "./components/exhibitors-section";
 import SideEventsSection from "./components/side-events-section";
 import EventStatsSection from "./components/event-stats-section";
 
@@ -15,8 +16,9 @@ const LandingPage: React.FC = () => {
       <AboutSection />
       <EventStatsSection />
       <SpeakerSection />
-      {/* <SponsorsSection /> */}
-      {/* <PartnersSection /> */}
+      <SponsorsSection />
+      <PartnersSection />
+      <ExhibitorsSection />
       <EventGallerySection
         heading="ASC 2024 In Pictures"
         subheading="A quick look at memorable moments"

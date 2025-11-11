@@ -95,3 +95,16 @@ export type PublicScheduleItem = {
     avatar: string | null;
   }[];
 };
+
+export type SideEventJoinStatus = {
+  joined: boolean;
+};
+
+export type SideEventAttendee = {
+  id: string;
+  fname: string;
+  lname: string;
+  email: string;
+  avatar: string | null;
+  phone: string | null;
+};

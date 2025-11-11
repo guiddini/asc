@@ -6,6 +6,7 @@ import {
   getProgramEventsBySideEvent,
   getConferencesBySideEvent,
   getWorkshopsBySideEvent,
+  getSideEventAttendees,
 } from "../../apis/side-event";
 import { useNavigate, useParams } from "react-router-dom";
 import { KTCard, KTCardBody } from "../../../_metronic/helpers";
@@ -14,8 +15,10 @@ import {
   ProgramEvent,
   Conference,
   Workshop,
+  SideEventAttendee,
 } from "../../types/side-event";
 import getMediaUrl from "../../helpers/getMediaUrl";
+import { TableComponent } from "../../components";
 
 const SideEventDetails = () => {
   const navigate = useNavigate();
@@ -48,6 +51,13 @@ const SideEventDetails = () => {
     () => getWorkshopsBySideEvent(id as string),
     { enabled: !!id && activeTab === "workshops" }
   );
+
+  // Attendees Query
+  const { data: attendees, isLoading: attendeesLoading } = useQuery<
+    SideEventAttendee[]
+  >(["attendees", id], () => getSideEventAttendees(id as string), {
+    enabled: !!id && activeTab === "attendees",
+  });
 
   if (isLoading) return <div>Loading...</div>;
   if (!sideEvent) return <div>Side event not found</div>;
@@ -91,6 +101,9 @@ const SideEventDetails = () => {
             </Nav.Item>
             <Nav.Item>
               <Nav.Link eventKey="workshops">Workshops</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="attendees">Attendees</Nav.Link>
             </Nav.Item>
           </Nav>
 
@@ -331,6 +344,77 @@ const SideEventDetails = () => {
               ) : (
                 <div className="text-center py-5 text-muted">
                   No workshops available for this side event.
+                </div>
+              )}
+            </Tab.Pane>
+
+            {/* Attendees Tab */}
+            <Tab.Pane eventKey="attendees">
+              {attendeesLoading ? (
+                <div className="text-center py-5">Loading attendees...</div>
+              ) : attendees && attendees.length > 0 ? (
+                <TableComponent
+                  columns={
+                    [
+                      {
+                        name: "Avatar",
+                        selector: (row: SideEventAttendee) =>
+                          row.avatar ? (
+                            <div
+                              className="me-3 my-2"
+                              style={{ width: 40, height: 40 }}
+                            >
+                              <img
+                                alt={`${row.fname} ${row.lname}`}
+                                src={getMediaUrl(row.avatar)}
+                                style={{
+                                  width: 40,
+                                  height: 40,
+                                  objectFit: "cover",
+                                  background: "#fff",
+                                  padding: 2,
+                                  borderRadius: "50%",
+                                  border: "1px solid #e5e7eb",
+                                }}
+                              />
+                            </div>
+                          ) : (
+                            "-"
+                          ),
+                        sortable: false,
+                        width: "100px",
+                      },
+                      {
+                        name: "Name",
+                        selector: (row: SideEventAttendee) =>
+                          `${row.fname} ${row.lname}`,
+                        sortable: true,
+                      },
+                      {
+                        name: "Email",
+                        selector: (row: SideEventAttendee) => (
+                          <a href={`mailto:${row.email}`}>{row.email}</a>
+                        ),
+                        sortable: true,
+                      },
+                      {
+                        name: "Phone",
+                        selector: (row: SideEventAttendee) => row.phone || "-",
+                        sortable: true,
+                      },
+                    ] as any
+                  }
+                  data={attendees || []}
+                  placeholder="attendees"
+                  showSearch
+                  searchKeys={["fname", "lname", "email", "phone"]}
+                  showExport
+                  showCreate={false}
+                  isLoading={attendeesLoading}
+                />
+              ) : (
+                <div className="text-center py-5 text-muted">
+                  No attendees for this side event yet.
                 </div>
               )}
             </Tab.Pane>

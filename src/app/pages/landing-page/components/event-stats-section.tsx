@@ -82,6 +82,12 @@ export const EVENT_STATS: StatItem[] = [
     value: "150+",
     alt: "Icône Investisseurs",
   },
+  {
+    icon: "/stats/exhibitors.png",
+    label: "Exhibitors",
+    value: "200+",
+    alt: "Icône Exhibitors",
+  },
 ];
 
 // ---- Section ----
@@ -124,7 +130,7 @@ const EventStatsSection: React.FC = () => {
         </Row>
         <Row id="event-stats-grid" className="g-4 gy-4">
           {EVENT_STATS.map((stat) => (
-            <Col key={stat.label} xs={6} md={3}>
+            <Col key={stat.label} xs={6} className="five-col">
               <div className="event-stat-card text-center">
                 <div className="event-stat-icon mb-2">
                   <img src={stat.icon} alt={stat.alt} width={70} height={70} />
@@ -142,16 +148,6 @@ const EventStatsSection: React.FC = () => {
               </div>
             </Col>
           ))}
-        </Row>
-        {/* Exhibitors counter text */}
-        <Row className="mt-4">
-          <Col>
-            <div className="event-stats-exhibitors text-center text-white">
-              And more than{" "}
-              <Counter value="+200" duration={10000} start={startCounter} />{" "}
-              Exhibitors
-            </div>
-          </Col>
         </Row>
       </Container>
     </section>

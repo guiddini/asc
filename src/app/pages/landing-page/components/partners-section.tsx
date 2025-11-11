@@ -1,12 +1,8 @@
 import React, { useRef } from "react";
-
-const partnerLogos: { src: string; alt: string }[] = [
-  { src: "/sponsors/commingSoon.jpeg", alt: "Coming Soon" },
-  { src: "/sponsors/commingSoon.jpeg", alt: "Coming Soon" },
-  { src: "/sponsors/commingSoon.jpeg", alt: "Coming Soon" },
-  { src: "/sponsors/commingSoon.jpeg", alt: "Coming Soon" },
-  { src: "/sponsors/commingSoon.jpeg", alt: "Coming Soon" },
-];
+import { useQuery } from "react-query";
+import { getPublicSponsors } from "../../../apis/sponsor";
+import type { Sponsor } from "../../../types/sponsor";
+import getMediaUrl from "../../../helpers/getMediaUrl";
 
 const PartnersSection: React.FC = () => {
   const sliderRef = useRef<HTMLDivElement | null>(null);
@@ -20,6 +16,17 @@ const PartnersSection: React.FC = () => {
       behavior: "smooth",
     });
   };
+
+  const { data: partners, isLoading, isError } = useQuery<Sponsor[]>(
+    ["public-sponsors", "partner"],
+    () => getPublicSponsors({ type: "partner" }),
+    { staleTime: 5 * 60 * 1000, retry: 1 }
+  );
+
+  const logos: { src: string; alt: string }[] = (partners || []).map((p) => ({
+    src: getMediaUrl(p.logo) || "/sponsors/commingSoon.jpeg",
+    alt: p.name || "Partner",
+  }));
 
   return (
     <section id="landing-partners-section">
@@ -38,20 +45,38 @@ const PartnersSection: React.FC = () => {
           </button>
 
           <div id="landing-partners-slider" ref={sliderRef}>
-            {partnerLogos.map((logo, idx) => (
-              <div data-partner-card-wrap key={idx}>
+            {isLoading && <div data-partner-card-wrap><div data-partner-card><div data-logo><img src="/sponsors/commingSoon.jpeg" alt="Loading" /></div></div></div>}
+            {isError && <div data-partner-card-wrap><div data-partner-card><div data-logo><img src="/sponsors/commingSoon.jpeg" alt="Error" /></div></div></div>}
+            {!isLoading && !isError && (logos.length > 0 ? (
+              logos.map((logo, idx) => (
+                <div data-partner-card-wrap key={idx}>
+                  <div data-partner-card>
+                    <div data-logo>
+                      <img
+                        src={logo.src}
+                        alt={logo.alt}
+                        width={220}
+                        height={220}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "contain",
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div data-partner-card-wrap>
                 <div data-partner-card>
                   <div data-logo>
                     <img
-                      src={logo.src}
-                      alt={logo.alt}
+                      src="/sponsors/commingSoon.jpeg"
+                      alt="Coming Soon"
                       width={220}
                       height={220}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "fill",
-                      }}
+                      style={{ width: "100%", height: "100%", objectFit: "contain" }}
                     />
                   </div>
                 </div>

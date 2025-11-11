@@ -212,6 +212,14 @@ const Footer: React.FC = () => {
                     style={{ width: "150px" }}
                   />
                 </span>
+
+                <span className="btn btn-link p-0">
+                  <img
+                    src="/visa-acceptance.png"
+                    alt="Visa Acceptance"
+                    style={{ width: "150px" }}
+                  />
+                </span>
               </div>
             </div>
           </Col>

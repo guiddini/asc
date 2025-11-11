@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useQuery } from "react-query";
 import { getPublicProgramSchedule } from "../../apis/slot";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link, useNavigate } from "react-router-dom";
 import { Col, Row, Spinner } from "react-bootstrap";
 import { format, parseISO } from "date-fns";
 import type { PublicSlot, PublicSlotType } from "../../types/slot";
@@ -41,10 +41,19 @@ const TimelineEventCard: React.FC<{ event: PublicSlot }> = ({ event }) => {
         return "General Event";
     }
   };
-  // Removed join/leave actions and attendance state
+
+  const navigate = useNavigate();
 
   return (
-    <div id={`event-card-${event.id}`} className="timeline-event-item">
+    <div
+      id={`event-card-${event.id}`}
+      className="timeline-event-item"
+      onClick={() => {
+        if (event?.side_event_slug) {
+          navigate(`/side-events/${event.side_event_slug}`);
+        }
+      }}
+    >
       <div className="timeline-event-time">
         <div className="timeline-event-time-content">
           <span className="timeline-start-time">
@@ -78,6 +87,22 @@ const TimelineEventCard: React.FC<{ event: PublicSlot }> = ({ event }) => {
             >
               {getEventLabel(event.type)}
             </span>
+            {event.side_event_slug ? (
+              <span
+                className="timeline-event-badge timeline-event-badge-sideevent-chip"
+                title="View Side Event"
+                aria-label="View Side Event"
+              >
+                Side Event
+              </span>
+            ) : (
+              <span
+                className="timeline-event-badge timeline-event-badge-asc-chip"
+                aria-label="ASC"
+              >
+                ASC
+              </span>
+            )}
           </div>
 
           <h3 className="timeline-event-title">

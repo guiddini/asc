@@ -558,6 +558,103 @@
   color: #0cbfb8;
 }
 
+/* Side Event badge */
+.timeline-event-badge-sideevent {
+  background: linear-gradient(135deg, #00c4c4 0%, #00a6a6 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 196, 196, 0.2);
+  text-decoration: none;
+  border-radius: 6px; /* ensure same shape as other badges */
+  padding: 0.4rem 0.85rem; /* ensure same height/padding as base */
+  cursor: pointer;
+}
+
+.timeline-event-badge-sideevent:hover {
+  background: linear-gradient(135deg, #00b4b4 0%, #009797 100%);
+  color: #ffffff;
+}
+
+/* Variant: Chip (subtle, matches conference/workshop pastel style) */
+/* Side Event: purple/violet filled chip */
+.timeline-event-badge-sideevent-chip {
+  background: #f3e8ff; /* violet pastel */
+  color: #7c3aed; /* violet text */
+  padding: 0.4rem 0.85rem; /* match base badge height */
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  position: relative;
+}
+
+.timeline-event-badge-sideevent-chip::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #7c3aed; /* violet dot */
+  margin-right: 6px;
+}
+
+.timeline-event-badge-sideevent-chip:hover {
+  background: #ede9fe; /* slightly deeper violet pastel */
+  color: #6d28d9;
+}
+
+/* Variant: Outline (clean, minimal) */
+.timeline-event-badge-sideevent-outline {
+  background: #ffffff;
+  color: #00a6a6;
+  border: 2px solid #d5f5ed;
+  padding: 0.38rem 0.8rem; /* visually match height with border */
+  border-radius: 6px;
+}
+
+.timeline-event-badge-sideevent-outline:hover {
+  border-color: #00c4c4;
+  color: #009797;
+}
+
+/* Variant: Glass (premium gradient + soft glow) */
+.timeline-event-badge-sideevent-glass {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 196, 196, 0.15) 0%,
+    rgba(0, 151, 151, 0.15) 100%
+  );
+  color: #00a6a6;
+  border: 1px solid rgba(0, 196, 196, 0.25);
+  backdrop-filter: saturate(1.2) blur(2px);
+  -webkit-backdrop-filter: saturate(1.2) blur(2px);
+  padding: 0.4rem 0.85rem;
+  border-radius: 6px;
+  box-shadow: 0 8px 20px rgba(0, 196, 196, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.timeline-event-badge-sideevent-glass:hover {
+  border-color: #00c4c4;
+}
+
+/* ASC Chip (used when no side_event_slug) */
+/* ASC (non-side event): blue filled chip */
+.timeline-event-badge-asc-chip {
+  background: #eaf2fd; /* blue pastel */
+  color: #2596be; /* blue text */
+  padding: 0.4rem 0.85rem; /* same height as other badges */
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.timeline-event-badge-asc-chip:hover {
+  background: #dce9fd;
+  color: #2596be;
+}
+
+/* Spacing between multiple badges in header */
+.timeline-event-header .timeline-event-badge + .timeline-event-badge {
+  margin-left: 8px;
+}
+
 .timeline-event-title {
   font-size: 1.25rem;
   font-weight: 600;

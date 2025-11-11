@@ -35,6 +35,7 @@ export type PublicSlot = {
   end_time: string;
   speakers?: Speaker[];
   attendees?: Speaker[];
+  side_event_slug?: string | null;
 };
 
 export type SlotCheckRequest = {

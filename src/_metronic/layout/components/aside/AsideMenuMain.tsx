@@ -361,6 +361,14 @@ export function AsideMenuMain() {
               customIcon={<i className="fa-solid fa-handshake"></i>}
             />
 
+            <AsideMenuItem
+              to="/deal-rooms-management"
+              title="Deal Rooms Management"
+              hasBullet
+              bsTitle="Deal Rooms Management"
+              customIcon={<i className="fa-solid fa-handshake"></i>}
+            />
+
             <AsideMenuItemWithSubMain
               to="/media-management"
               title="Media"

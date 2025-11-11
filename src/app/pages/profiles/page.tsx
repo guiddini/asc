@@ -194,7 +194,10 @@ const EntityProfilePage = () => {
   // Skeleton while profile data is loading
   const LoadingSkeleton = () => (
     <div className="w-100 h-100">
-      <section className="hero" style={{ backgroundImage: "none", backgroundColor: "#f5f7f9" }}>
+      <section
+        className="hero"
+        style={{ backgroundImage: "none", backgroundColor: "#f5f7f9" }}
+      >
         <div className="container py-10">
           <div className="placeholder-glow">
             <Placeholder as="div" animation="glow">
@@ -219,8 +222,20 @@ const EntityProfilePage = () => {
 
           <div className="gallery-grid">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className={`gallery-item ${i % 6 === 0 || i % 6 === 3 ? "large" : "small"}`}>
-                <div style={{ width: "100%", height: "100%", background: "#eef1f4", borderRadius: 12 }} />
+              <div
+                key={i}
+                className={`gallery-item ${
+                  i % 6 === 0 || i % 6 === 3 ? "large" : "small"
+                }`}
+              >
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    background: "#eef1f4",
+                    borderRadius: 12,
+                  }}
+                />
               </div>
             ))}
           </div>
