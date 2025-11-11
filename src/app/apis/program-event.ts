@@ -22,7 +22,7 @@ export const updateProgramEvent = async (
   id: string,
   data: ProgramEventRequest
 ): Promise<ProgramEvent> => {
-  const response = await axiosInstance.put(`/program-events/${id}`, data);
+  const response = await axiosInstance.post(`/program-events/${id}`, data);
   return response.data;
 };
 

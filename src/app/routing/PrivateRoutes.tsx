@@ -77,7 +77,13 @@ import SideEventsManagement from "../pages/side-events-management/page";
 import CreateSideEvent from "../pages/side-events-management/create-side-event";
 import UpdateSideEvent from "../pages/side-events-management/update-side-event";
 import SideEventDetails from "../pages/side-events-management/side-event-details";
-import { adminRoles, exhibitionRoles, mediaRoles, programRoles } from "../utils/roles";
+import {
+  adminRoles,
+  exhibitionRoles,
+  mediaRoles,
+  programRoles,
+} from "../utils/roles";
+import SponsorsManagementPage from "../pages/sponsor-management/page";
 
 const PrivateRoutes = () => {
   const [showAppModal, setShowAppModal] = useState(false);
@@ -195,8 +201,6 @@ const PrivateRoutes = () => {
               }
             />
 
-            
-
             {/* Program Routes */}
             <Route
               path="/side-events-management/update/:id"
@@ -241,7 +245,6 @@ const PrivateRoutes = () => {
                 </RoleGuard>
               }
             />
-            
 
             {/* Admin Routes */}
             <Route
@@ -297,8 +300,7 @@ const PrivateRoutes = () => {
                 </RoleGuard>
               }
             />
-            
-            
+
             <Route
               path="/program-event-management"
               element={
@@ -832,6 +834,17 @@ const PrivateRoutes = () => {
               element={
                 <SuspensedView>
                   <CompanyAdsPage />
+                </SuspensedView>
+              }
+            />
+
+            {/* sponsor management */}
+
+            <Route
+              path="/sponsors-management"
+              element={
+                <SuspensedView>
+                  <SponsorsManagementPage />
                 </SuspensedView>
               }
             />

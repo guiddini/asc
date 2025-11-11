@@ -329,7 +329,7 @@ export function AsideMenuMain() {
               customIcon={<i className="fa-solid fa-users"></i>}
             />
           </RoleGuard>
-          <RoleGuard allowedRoles={["admin", "super_admin"]}>
+          <RoleGuard allowedRoles={adminRoles}>
             <AsideMenuItemWithSubMain
               to="/statistics"
               title="Overview"
@@ -347,36 +347,19 @@ export function AsideMenuMain() {
 
             <AsideMenuItem
               to="/users"
-              title="User management"
+              title="User Management"
               hasBullet
-              bsTitle="User management"
+              bsTitle="User Management"
+              customIcon={<i className="fa-solid fa-users"></i>}
             />
-            <AsideMenuItemWithSubMain
-              to="/visa-demand-management"
-              title="Requests"
-              bsTitle="Requests"
-              customIcon={<i className="fa-solid fa-person-chalkboard"></i>}
+
+            <AsideMenuItem
+              to="/sponsors-management"
+              title="Sponsors & Partners"
               hasBullet
-            >
-              <AsideMenuItem
-                to="/visa-demand-management"
-                title="Visa Demands"
-                hasBullet
-                bsTitle="Visa Demands"
-              />
-              <AsideMenuItem
-                to="/contact-management"
-                title="Contact Management"
-                hasBullet
-                bsTitle="Contact Management"
-              />
-              <AsideMenuItem
-                to="/sponsor-requests-management"
-                title="Sponsor Requests"
-                hasBullet
-                bsTitle="Sponsor Requests"
-              />
-            </AsideMenuItemWithSubMain>
+              bsTitle="Sponsors & Partners"
+              customIcon={<i className="fa-solid fa-handshake"></i>}
+            />
 
             <AsideMenuItemWithSubMain
               to="/media-management"
