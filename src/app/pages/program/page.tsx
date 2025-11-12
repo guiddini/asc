@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import { getPublicProgramSchedule } from "../../apis/slot";
 import { useSearchParams, Link, useNavigate } from "react-router-dom";
 import { Col, Row, Spinner } from "react-bootstrap";
@@ -12,7 +12,20 @@ import {
   EVENT_STATS,
 } from "../landing-page/components/event-stats-section";
 import getMediaUrl from "../../helpers/getMediaUrl";
-// Removed join/leave imports; only display program data
+import { useSelector } from "react-redux";
+import type { UserResponse } from "../../types/reducers";
+import {
+  checkWorkshopAttendance,
+  joinWorkshop,
+  leaveWorkshop,
+} from "../../apis/workshop";
+import {
+  checkConferenceAttendance,
+  joinConference,
+  leaveConference,
+} from "../../apis/conference";
+import { getAuth } from "../../modules/auth";
+import toast from "react-hot-toast";
 
 // Custom Event Card Component for Timeline
 const TimelineEventCard: React.FC<{ event: PublicSlot }> = ({ event }) => {
@@ -43,6 +56,102 @@ const TimelineEventCard: React.FC<{ event: PublicSlot }> = ({ event }) => {
   };
 
   const navigate = useNavigate();
+  const { user } = useSelector((state: UserResponse) => state.user);
+  const isAuthenticated = Boolean(user);
+  const queryClient = useQueryClient();
+  const token = getAuth();
+
+  // Attendance check per event type
+  const { data: attendanceConference } = useQuery(
+    ["event-attendance", event.id, "conference"],
+    () => checkConferenceAttendance(String(event.id)),
+    {
+      enabled: isAuthenticated && event.type === "conference" && Boolean(token),
+    }
+  );
+
+  const { data: attendanceWorkshop } = useQuery(
+    ["event-attendance", event.id, "workshop"],
+    () => checkWorkshopAttendance(String(event.id)),
+    {
+      enabled: isAuthenticated && event.type === "workshop",
+    }
+  );
+
+  // Mutations for join/leave
+  const joinConferenceMutation = useMutation(
+    () => joinConference(String(event.id)),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([
+          "event-attendance",
+          event.id,
+          "conference",
+        ]);
+        toast.success("Joined conference");
+      },
+      onError: (error: any) => {
+        toast.error(
+          error?.response?.data?.message || "Failed to join conference"
+        );
+      },
+    }
+  );
+  const leaveConferenceMutation = useMutation(
+    () => leaveConference(String(event.id)),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([
+          "event-attendance",
+          event.id,
+          "conference",
+        ]);
+        toast.success("Left conference");
+      },
+      onError: (error: any) => {
+        toast.error(
+          error?.response?.data?.message || "Failed to leave conference"
+        );
+      },
+    }
+  );
+
+  const joinWorkshopMutation = useMutation(
+    () => joinWorkshop(String(event.id)),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([
+          "event-attendance",
+          event.id,
+          "workshop",
+        ]);
+        toast.success("Joined workshop");
+      },
+      onError: (error: any) => {
+        toast.error(
+          error?.response?.data?.message || "Failed to join workshop"
+        );
+      },
+    }
+  );
+  const leaveWorkshopMutation = useMutation(
+    () => leaveWorkshop(String(event.id)),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([
+          "event-attendance",
+          event.id,
+          "workshop",
+        ]);
+        toast.success("Left workshop");
+      },
+      onError: (error: any) => {
+        toast.error(
+          error?.response?.data?.message || "Failed to leave workshop"
+        );
+      },
+    }
+  );
 
   return (
     <div
@@ -164,7 +273,70 @@ const TimelineEventCard: React.FC<{ event: PublicSlot }> = ({ event }) => {
             </div>
           )}
 
-          {/* Actions removed: no join/leave buttons */}
+          {/* Actions: Connect / Join / Leave */}
+          {event.type !== "general_event" && (
+            <div className="mt-3 d-flex">
+              {!isAuthenticated ? (
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate("/auth/login");
+                  }}
+                >
+                  Connect to join
+                </button>
+              ) : event.type === "conference" ? (
+                attendanceConference?.attending ? (
+                  <button
+                    className="btn btn-secondary btn-sm"
+                    disabled={leaveConferenceMutation.isLoading}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      leaveConferenceMutation.mutate();
+                    }}
+                  >
+                    {leaveConferenceMutation.isLoading ? "Leaving..." : "Leave"}
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-primary btn-sm"
+                    disabled={joinConferenceMutation.isLoading}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      joinConferenceMutation.mutate();
+                    }}
+                  >
+                    {joinConferenceMutation.isLoading ? "Joining..." : "Join"}
+                  </button>
+                )
+              ) : event.type === "workshop" ? (
+                attendanceWorkshop?.attending ? (
+                  <button
+                    className="btn btn-secondary btn-sm"
+                    disabled={leaveWorkshopMutation.isLoading}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      leaveWorkshopMutation.mutate();
+                    }}
+                  >
+                    {leaveWorkshopMutation.isLoading ? "Leaving..." : "Leave"}
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-primary btn-sm"
+                    disabled={joinWorkshopMutation.isLoading}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      joinWorkshopMutation.mutate();
+                    }}
+                  >
+                    {joinWorkshopMutation.isLoading ? "Joining..." : "Join"}
+                  </button>
+                )
+              ) : null}
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -53,3 +53,7 @@ export type CreateWorkshopRequest = {
   status: string;
   side_event_id?: string;
 };
+
+export type AttendanceCheck = {
+  attending: boolean;
+};

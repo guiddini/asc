@@ -53,7 +53,6 @@ export const selectUser = (state) => state.user.user;
 
 export const canEditCompany = (state, companyId) => {
   const user = state?.user?.user;
-  if (user?.roleValues?.name === "super_admin") return true;
   if (!user || !user.companyStaffRole) return false;
   if (user?.company?.id === companyId) {
     const role = user.companyStaffRole.name;
@@ -83,7 +82,6 @@ export const canViewCompany = (state, companyId) => {
 
 export const companyOwner = (state, companyId) => {
   const user = state.user.user;
-  if (user?.roleValues?.name === "super_admin") return true;
   if (!user) return false;
   if (user?.company?.id === companyId) {
     return true;

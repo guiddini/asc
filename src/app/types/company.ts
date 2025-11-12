@@ -85,4 +85,5 @@ export interface JobOffer {
 export type PublicCompany = {
   name: string;
   logo: string | null;
+  id: string;
 };

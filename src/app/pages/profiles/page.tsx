@@ -12,6 +12,21 @@ import { Spinner, Placeholder } from "react-bootstrap";
 import { useState } from "react";
 import { getThreeDayRange } from "../meetings/utils/scheduleUtils";
 import "../program/ProgramPage.css";
+import { useSelector } from "react-redux";
+import type { UserResponse } from "../../types/reducers";
+import { useMutation, useQueryClient } from "react-query";
+import {
+  checkWorkshopAttendance,
+  joinWorkshop,
+  leaveWorkshop,
+} from "../../apis/workshop";
+import {
+  checkConferenceAttendance,
+  joinConference,
+  leaveConference,
+} from "../../apis/conference";
+import { getAuth } from "../../modules/auth";
+import toast from "react-hot-toast";
 
 export interface Event {
   slug: string;
@@ -89,6 +104,102 @@ const EntityProfilePage = () => {
           return "General Event";
       }
     };
+
+    const { user } = useSelector((state: UserResponse) => state.user);
+    const isAuthenticated = Boolean(user);
+    const queryClient = useQueryClient();
+    const token = getAuth();
+
+    const { data: attendanceConference } = useQuery(
+      ["event-attendance", event.id, "conference"],
+      () => checkConferenceAttendance(String(event.id)),
+      {
+        enabled:
+          isAuthenticated && event.type === "conference" && Boolean(token),
+      }
+    );
+
+    const { data: attendanceWorkshop } = useQuery(
+      ["event-attendance", event.id, "workshop"],
+      () => checkWorkshopAttendance(String(event.id)),
+      {
+        enabled: isAuthenticated && event.type === "workshop",
+      }
+    );
+
+    const joinConferenceMutation = useMutation(
+      () => joinConference(String(event.id)),
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries([
+            "event-attendance",
+            event.id,
+            "conference",
+          ]);
+          toast.success("Joined conference");
+        },
+        onError: (error: any) => {
+          toast.error(
+            error?.response?.data?.message || "Failed to join conference"
+          );
+        },
+      }
+    );
+    const leaveConferenceMutation = useMutation(
+      () => leaveConference(String(event.id)),
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries([
+            "event-attendance",
+            event.id,
+            "conference",
+          ]);
+          toast.success("Left conference");
+        },
+        onError: (error: any) => {
+          toast.error(
+            error?.response?.data?.message || "Failed to leave conference"
+          );
+        },
+      }
+    );
+
+    const joinWorkshopMutation = useMutation(
+      () => joinWorkshop(String(event.id)),
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries([
+            "event-attendance",
+            event.id,
+            "workshop",
+          ]);
+          toast.success("Joined workshop");
+        },
+        onError: (error: any) => {
+          toast.error(
+            error?.response?.data?.message || "Failed to join workshop"
+          );
+        },
+      }
+    );
+    const leaveWorkshopMutation = useMutation(
+      () => leaveWorkshop(String(event.id)),
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries([
+            "event-attendance",
+            event.id,
+            "workshop",
+          ]);
+          toast.success("Left workshop");
+        },
+        onError: (error: any) => {
+          toast.error(
+            error?.response?.data?.message || "Failed to leave workshop"
+          );
+        },
+      }
+    );
 
     return (
       <div id={`event-card-${event.id}`} className="timeline-event-item">
@@ -183,6 +294,58 @@ const EntityProfilePage = () => {
                     +{event.speakers.length - 8}
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* Actions: Connect / Join / Leave */}
+            {event.type !== "general_event" && (
+              <div className="mt-3 d-flex">
+                {!isAuthenticated ? (
+                  <button
+                    className="btn btn-primary btn-sm"
+                    onClick={() => (window.location.href = "/auth/login")}
+                  >
+                    Connect to join
+                  </button>
+                ) : event.type === "conference" ? (
+                  attendanceConference?.attending ? (
+                    <button
+                      className="btn btn-secondary btn-sm"
+                      disabled={leaveConferenceMutation.isLoading}
+                      onClick={() => leaveConferenceMutation.mutate()}
+                    >
+                      {leaveConferenceMutation.isLoading
+                        ? "Leaving..."
+                        : "Leave"}
+                    </button>
+                  ) : (
+                    <button
+                      className="btn btn-primary btn-sm"
+                      disabled={joinConferenceMutation.isLoading}
+                      onClick={() => joinConferenceMutation.mutate()}
+                    >
+                      {joinConferenceMutation.isLoading ? "Joining..." : "Join"}
+                    </button>
+                  )
+                ) : event.type === "workshop" ? (
+                  attendanceWorkshop?.attending ? (
+                    <button
+                      className="btn btn-secondary btn-sm"
+                      disabled={leaveWorkshopMutation.isLoading}
+                      onClick={() => leaveWorkshopMutation.mutate()}
+                    >
+                      {leaveWorkshopMutation.isLoading ? "Leaving..." : "Leave"}
+                    </button>
+                  ) : (
+                    <button
+                      className="btn btn-primary btn-sm"
+                      disabled={joinWorkshopMutation.isLoading}
+                      onClick={() => joinWorkshopMutation.mutate()}
+                    >
+                      {joinWorkshopMutation.isLoading ? "Joining..." : "Join"}
+                    </button>
+                  )
+                ) : null}
               </div>
             )}
           </div>

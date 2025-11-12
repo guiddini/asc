@@ -4,8 +4,14 @@ import { useQuery } from "react-query";
 import { getPublicCompanies } from "../../../apis/company";
 import type { PublicCompany } from "../../../types/company";
 import getMediaUrl from "../../../helpers/getMediaUrl";
+import { useSelector } from "react-redux";
+import type { UserResponse } from "../../../types/reducers";
+import { useNavigate } from "react-router-dom";
 
 const ExhibitorsSection: React.FC = () => {
+  const { user } = useSelector((state: UserResponse) => state.user);
+  const isAuthenticated = Boolean(user);
+  const navigate = useNavigate();
   const {
     data: companies,
     isLoading,
@@ -44,7 +50,16 @@ const ExhibitorsSection: React.FC = () => {
             !isError &&
             items.map((company, idx) => (
               <Col key={idx} xs={6} md={4} lg={3} xl={2} className="mb-4">
-                <Card data-exhibitor-card>
+                <Card
+                  data-exhibitor-card
+                  role={isAuthenticated ? "button" : undefined}
+                  style={{ cursor: isAuthenticated ? "pointer" : "default" }}
+                  onClick={() => {
+                    if (isAuthenticated) {
+                      navigate(`/company/${company.id}`);
+                    }
+                  }}
+                >
                   <div data-logo>
                     <img
                       src={

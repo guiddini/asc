@@ -53,3 +53,7 @@ export type CreateConferenceRequest = {
   status: string;
   side_event_id?: string;
 };
+
+export type ConferenceAttendanceCheck = {
+  attending: boolean;
+};

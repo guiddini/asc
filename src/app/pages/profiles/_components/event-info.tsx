@@ -19,6 +19,7 @@ import {
   joinSideEvent,
   leaveSideEvent,
 } from "../../../apis/side-event";
+import toast from "react-hot-toast";
 
 export default function EventCard({ event }: { event: SideEvent }) {
   const { user } = useSelector((state: UserResponse) => state.user);
@@ -42,6 +43,12 @@ export default function EventCard({ event }: { event: SideEvent }) {
     onSuccess: () => {
       queryClient.invalidateQueries(["side-event-joined", event?.id]);
       refetchJoinStatus();
+      toast.success(`Joined ${event?.name || "side event"}`);
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.message || `Failed to join ${event?.name || "side event"}`
+      );
     },
   });
 
@@ -49,6 +56,12 @@ export default function EventCard({ event }: { event: SideEvent }) {
     onSuccess: () => {
       queryClient.invalidateQueries(["side-event-joined", event?.id]);
       refetchJoinStatus();
+      toast.success(`Left ${event?.name || "side event"}`);
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.message || `Failed to leave ${event?.name || "side event"}`
+      );
     },
   });
   const getFormattedDate = (date?: string) => {

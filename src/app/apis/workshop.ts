@@ -2,6 +2,7 @@ import {
   WorkshopsResponse,
   CreateWorkshopRequest,
   ShowWorkshopResponse,
+  AttendanceCheck,
 } from "../types/workshop";
 import axiosInstance from "./axios";
 
@@ -10,10 +11,11 @@ export const getAllWorkshops = async (): Promise<WorkshopsResponse> => {
   return res?.data;
 };
 
-export const getAllPublishedWorkshops = async (): Promise<WorkshopsResponse> => {
-  const res = await axiosInstance.get("/workshops/published");
-  return res.data;
-};
+export const getAllPublishedWorkshops =
+  async (): Promise<WorkshopsResponse> => {
+    const res = await axiosInstance.get("/workshops/published");
+    return res.data;
+  };
 
 export const showWorkshopById = async (
   workshop_id: string
@@ -89,3 +91,10 @@ export const leaveWorkshop = async (workshop_id: string) => {
   );
   return res.data;
 };
+
+export async function checkWorkshopAttendance(workshopId: string) {
+  const res = await axiosInstance.get<AttendanceCheck>(
+    `/workshops/${workshopId}/is-attending`
+  );
+  return res.data;
+}

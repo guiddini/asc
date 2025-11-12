@@ -23,10 +23,12 @@ const PartnersSection: React.FC = () => {
     { staleTime: 5 * 60 * 1000, retry: 1 }
   );
 
-  const logos: { src: string; alt: string }[] = (partners || []).map((p) => ({
-    src: getMediaUrl(p.logo) || "/sponsors/commingSoon.jpeg",
-    alt: p.name || "Partner",
-  }));
+  const logos: { src: string; alt: string; website?: string }[] =
+    (partners || []).map((p) => ({
+      src: getMediaUrl(p.logo) || "/sponsors/commingSoon.jpeg",
+      alt: p.name || "Partner",
+      website: p.website,
+    }));
 
   return (
     <section id="landing-partners-section">
@@ -50,7 +52,16 @@ const PartnersSection: React.FC = () => {
             {!isLoading && !isError && (logos.length > 0 ? (
               logos.map((logo, idx) => (
                 <div data-partner-card-wrap key={idx}>
-                  <div data-partner-card>
+                  <div
+                    data-partner-card
+                    role={logo.website ? "button" : undefined}
+                    style={{ cursor: logo.website ? "pointer" : "default" }}
+                    onClick={() => {
+                      if (logo.website) {
+                        window.open(logo.website, "_blank", "noopener,noreferrer");
+                      }
+                    }}
+                  >
                     <div data-logo>
                       <img
                         src={logo.src}

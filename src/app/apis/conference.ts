@@ -2,6 +2,7 @@ import {
   ConferencesResponse,
   CreateConferenceRequest,
   ShowConferenceResponse,
+  ConferenceAttendanceCheck,
 } from "../types/conference";
 import axiosInstance from "./axios";
 
@@ -93,3 +94,12 @@ export const leaveConference = async (conference_id: string) => {
   );
   return res.data;
 };
+
+export async function checkConferenceAttendance(
+  conferenceId: string
+): Promise<ConferenceAttendanceCheck> {
+  const res = await axiosInstance.get<ConferenceAttendanceCheck>(
+    `/conferences/${conferenceId}/is-attending`
+  );
+  return res.data;
+}

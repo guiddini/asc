@@ -13,10 +13,12 @@ const SponsorsSection: React.FC = () => {
     { staleTime: 5 * 60 * 1000, retry: 1 }
   );
 
-  const logos: { src: string; alt: string }[] = (sponsors || []).map((s) => ({
-    src: getMediaUrl(s.logo) || "/sponsors/commingSoon.jpeg",
-    alt: s.name || "Sponsor",
-  }));
+  const logos: { src: string; alt: string; website?: string }[] =
+    (sponsors || []).map((s) => ({
+      src: getMediaUrl(s.logo) || "/sponsors/commingSoon.jpeg",
+      alt: s.name || "Sponsor",
+      website: s.website,
+    }));
 
   const scrollByAmount = (dir: "prev" | "next") => {
     const el = sliderRef.current;
@@ -63,7 +65,16 @@ const SponsorsSection: React.FC = () => {
             {!isLoading && !isError && (logos.length > 0 ? (
               logos.map((logo, idx) => (
                 <div data-sponsor-card-wrap key={idx}>
-                  <div data-sponsor-card>
+                  <div
+                    data-sponsor-card
+                    role={logo.website ? "button" : undefined}
+                    style={{ cursor: logo.website ? "pointer" : "default" }}
+                    onClick={() => {
+                      if (logo.website) {
+                        window.open(logo.website, "_blank", "noopener,noreferrer");
+                      }
+                    }}
+                  >
                     <div data-logo>
                       <img
                         src={logo.src}

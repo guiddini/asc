@@ -124,10 +124,10 @@ const UsersPage = () => {
     defaultValues: {
       roleFilter: "",
       nameFilter: "",
-      prevRoleFilter: null,
-      prevNameFilter: null,
+      prevRoleFilter: "",
+      prevNameFilter: "",
       is_registered: 0,
-      prev_is_registered: null,
+      prev_is_registered: 0,
     },
   });
 
@@ -188,10 +188,11 @@ const UsersPage = () => {
       prev_is_registered,
     } = data;
 
+    // Detect any change in filters compared to previous submitted values
     const paramsChanged =
-      nameFilter === prevNameFilter ||
-      roleFilter === prevRoleFilter ||
-      is_registered === prev_is_registered;
+      nameFilter !== prevNameFilter ||
+      roleFilter !== prevRoleFilter ||
+      is_registered !== prev_is_registered;
 
     if (paramsChanged) {
       dispatch(resetCurrentPage());
@@ -206,21 +207,27 @@ const UsersPage = () => {
 
     mutate(req, {
       onSuccess(res) {
+        const fetched: User[] = res?.data;
+
+        // Update previous submitted values to current
         setValue("prevNameFilter", nameFilter);
         setValue("prevRoleFilter", roleFilter);
         setValue("prev_is_registered", is_registered);
-        const users: User[] = res?.data;
 
-        if (paramsChanged && users.length === 0) {
-          dispatch(initUsers(users));
+        if (paramsChanged) {
+          // New search: replace list and reset pagination
+          dispatch(initUsers(fetched));
+          dispatch(resetCurrentPage());
+          if (fetched.length > 0) {
+            dispatch(nextPage());
+          }
+          return;
         }
 
-        if (users.length > 0) {
-          users?.forEach((user) => dispatch(addUser(user)));
+        // Infinite scroll: append and advance page
+        if (fetched.length > 0) {
+          fetched.forEach((user) => dispatch(addUser(user)));
           dispatch(nextPage());
-          if (paramsChanged) {
-            dispatch(initUsers(users));
-          }
         }
       },
       onError(error, variables, context) {},
@@ -346,24 +353,6 @@ const UsersPage = () => {
                             </option>
                           ))}
                         </select>
-                      </Col>
-                      <Col>
-                        <div className="form-check mt-10">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="flexCheckDefault"
-                            {...register("is_registered")}
-                          />
-                          <label
-                            className="form-check-label text-black fw-bold fs-3"
-                            htmlFor="flexCheckDefault"
-                          >
-                            Profil complété
-                          </label>
-                        </div>
-                        <label className="fs-6 form-label fw-bold text-gray-900"></label>
                       </Col>
                     </Row>
                   </div>
