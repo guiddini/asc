@@ -6,16 +6,9 @@ import { useAuth } from "../../../../app/modules/auth";
 import { HeaderFavoritesMenu } from "../../../partials/layout/header-menus/HeaderFavoritesMenu";
 import { useLocation } from "react-router-dom";
 import HeaderActivitiesMenu from "../../../partials/layout/header-menus/HeaderActivitiesMenu";
-import toast from "react-hot-toast";
-import { Notification } from "../../../../app/types/notification";
-import {
-  addNotification,
-  loadMoreNotification,
-  nextPage,
-  prevPage,
-} from "../../../../app/features/notificationsSlice";
+import { loadMoreNotification, nextPage, prevPage } from "../../../../app/features/notificationsSlice";
 import { useDispatch, useSelector } from "react-redux";
-import Pusher from "pusher-js";
+// Removed Pusher usage from Topbar to avoid duplicate instantiation
 import {
   NotificationsReducer,
   UserResponse,
@@ -53,27 +46,7 @@ const Topbar: FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const pusher = new Pusher(
-      import.meta.env.VITE_APP_PUSHER_APP_KEY as string,
-      {
-        cluster: import.meta.env.VITE_APP_PUSHER_HOST as string,
-      }
-    );
-    const channel = pusher.subscribe(`${user?.id}-liked-post-channel`);
-    const jobOfferChannel = pusher.subscribe(
-      `${user?.id}-applies-on-job-offer`
-    );
-
-    channel.bind("liked-post-channel", (data: Notification) => {
-      toast.success(`${data?.fname} ${data?.lname} a aimé votre publication`);
-      dispatch(addNotification(data));
-    });
-
-    jobOfferChannel.bind("applies-on-job-offer", (data: Notification) => {
-      toast.success(`${data?.fname} ${data?.lname} a postulé à votre offre`);
-      dispatch(addNotification(data));
-    });
-
+    // Fetch initial notifications only; realtime via Pusher removed from Topbar
     if (currentPage === 0) {
       getNotifications(
         { offset: 0 },
@@ -82,7 +55,7 @@ const Topbar: FC = () => {
             const newNotifications = data?.data;
 
             if (newNotifications.length > 0) {
-              dispatch(loadMoreNotification(newNotifications)); // Dispatch with new notifications
+              dispatch(loadMoreNotification(newNotifications));
               dispatch(nextPage());
             }
           },
@@ -92,10 +65,6 @@ const Topbar: FC = () => {
         }
       );
     }
-
-    return () => {
-      pusher.unsubscribe(`${user?.id}-liked-post-channel`);
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
