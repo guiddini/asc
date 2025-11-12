@@ -56,6 +56,7 @@ const Messenger: FC<Props> = ({ conversationId }) => {
     const pusher = getPusher();
     const channelName = `private-conversation.${conversationId}`;
     const channel = pusher.subscribe(channelName);
+    const debug = !!import.meta.env?.DEV;
 
     const handleIncoming = (payload: any) => {
       const newMsg: Message = payload?.message ?? payload;
@@ -65,7 +66,10 @@ const Messenger: FC<Props> = ({ conversationId }) => {
       queryClient.setQueryData(
         ["messages", conversationId],
         (old: MessagesPage | undefined) => {
-          if (!old) return old;
+          if (!old) {
+            // If initial query hasn't loaded yet, create a minimal structure
+            return ({ data: [newMsg] } as unknown) as MessagesPage;
+          }
           return {
             ...old,
             data: [...(old.data || []), newMsg],
@@ -81,17 +85,39 @@ const Messenger: FC<Props> = ({ conversationId }) => {
     };
 
     const events = [
-      "MessageSent",
+      // Common Laravel event names
       "App\\Events\\MessageSent",
-      ".message.sent",
-      "MessageCreated",
+      "MessageSent",
+      "message.sent",
       "App\\Events\\MessageCreated",
-      ".message.created",
+      "MessageCreated",
+      "message.created",
     ];
     events.forEach((evt) => channel.bind(evt, handleIncoming));
 
+    // Global listener for any events on the channel (helps catch mismatched names)
+    // @ts-ignore - bind_global may not be in pusher-js typings
+    channel.bind_global?.((eventName: string, payload: any) => {
+      if (debug) console.log("[pusher]", channelName, eventName, payload);
+      const maybeMsg: Message = payload?.message ?? payload;
+      if (
+        maybeMsg &&
+        typeof maybeMsg === "object" &&
+        "id" in maybeMsg &&
+        "content" in maybeMsg
+      ) {
+        handleIncoming(maybeMsg);
+      }
+    });
+    // Helpful to know subscription succeeded in dev
+    channel.bind("pusher:subscription_succeeded", () => {
+      if (debug) console.log("[pusher] subscribed:", channelName);
+    });
+
     return () => {
       events.forEach((evt) => channel.unbind(evt, handleIncoming));
+      // @ts-ignore - unbind_global may not be in typings
+      channel.unbind_global?.();
       try {
         pusher.unsubscribe(channelName);
       } catch (_) {}
