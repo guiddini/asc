@@ -60,6 +60,14 @@ export function AsideMenuMain() {
         bsTitle="Home"
         className="py-2"
       />
+      <AsideMenuItem
+        to="/chat"
+        title="Chat"
+        customIcon={<i className="fa-solid fa-comments"></i>}
+        bsTitle="Chat"
+        className="py-2"
+      />
+
       {!isAdmin && (
         <RoleGuard allowedRoles={mediaRoles}>
           <AsideMenuItem

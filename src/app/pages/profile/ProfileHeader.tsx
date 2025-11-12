@@ -4,6 +4,7 @@ import clsx from "clsx";
 import type { User } from "../../types/user";
 import getMediaUrl from "../../helpers/getMediaUrl";
 import { Button, Modal, Form, Spinner } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import type { UserResponse } from "../../types/reducers";
 import toast from "react-hot-toast";
@@ -34,6 +35,7 @@ function decodeUnicode(str: string) {
 }
 
 const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
+  const navigate = useNavigate();
   const { user: currentUser } = useSelector(
     (state: UserResponse) => state.user
   );
@@ -305,7 +307,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
               <Button
                 variant="outline-info"
                 className="rounded-pill px-4 fw-semibold"
-                onClick={handleOpenTextModal}
+                onClick={() => navigate(`/chat?to=${user.id}`)}
               >
                 <MessageSquare size={18} className="me-2" />
                 Send Message

@@ -69,6 +69,7 @@ import VisaDemandsManagementPage from "../pages/visa-demands-management/page";
 import VisaDemandPage from "../pages/visa-demand/page";
 import ProgramEventManagement from "../pages/program-event-management/page";
 import ManageMyConnectionsPage from "../pages/connections/page";
+import ChatPage from "../pages/chat/page";
 import MediaPage from "../pages/media/page";
 import MediaSlugPage from "../pages/media/slug/page";
 import ContactManagementPage from "../pages/contact-management/page";
@@ -91,7 +92,6 @@ const PrivateRoutes = () => {
   const WizardsPage = lazy(() => import("../modules/wizards/WizardsPage"));
   const AccountPage = lazy(() => import("../modules/accounts/AccountPage"));
   const WidgetsPage = lazy(() => import("../modules/widgets/WidgetsPage"));
-  const ChatPage = lazy(() => import("../modules/apps/chat/ChatPage"));
   const Users2Page = lazy(
     () => import("../modules/apps/user-management/UsersPage")
   );
@@ -432,8 +432,18 @@ const PrivateRoutes = () => {
                 </SuspensedView>
               }
             />
-            <Route
+            {/* <Route
               path="apps/chat/*"
+              element={
+                <SuspensedView>
+                  <ChatPage />
+                </SuspensedView>
+              }
+            /> */}
+
+            {/* Conversations/Chat */}
+            <Route
+              path="/chat"
               element={
                 <SuspensedView>
                   <ChatPage />

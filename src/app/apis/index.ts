@@ -23,3 +23,4 @@ export * from "./user-connection";
 export * from "./contact";
 export * from "./side-event";
 export * from "./sponsor";
+export * from "./conversation";
