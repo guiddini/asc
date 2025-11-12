@@ -4,9 +4,9 @@ import { getAuth } from "../modules/auth/core/AuthHelpers";
 let instance: Pusher | null = null;
 
 function createInstance(): Pusher {
-  const key = import.meta.env.VITE_APP_PUSHER_APP_KEY as string;
-  const cluster = import.meta.env.VITE_APP_PUSHER_HOST as string;
-  const apiUrl = import.meta.env.VITE_APP_BASE_URL as string;
+  const key = "ec4e26dcaa1f65bfbd78";
+  const cluster = "eu";
+  const apiUrl = "https://asc.api.eventili.com";
   const token = getAuth();
 
   return new Pusher(key, {
