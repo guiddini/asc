@@ -30,6 +30,7 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
   const [showDemandModal, setShowDemandModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [unpaidNotes, setUnpaidNotes] = useState("");
+  const [rejectNotes, setRejectNotes] = useState("");
   const [editNotes, setEditNotes] = useState("");
   const [editExhibitionType, setEditExhibitionType] = useState<
     "connect_desk" | "premium_exhibition_space" | "scale_up_booth"
@@ -68,11 +69,15 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
     },
   });
 
-  const rejectMutation = useMutation(refuseExhibitionDemandApi, {
+  const rejectMutation = useMutation({
+    mutationFn: (payload: { id: string; notes?: string }) =>
+      refuseExhibitionDemandApi(payload.id, payload.notes),
+    mutationKey: ["reject-exhibition-demand", row.id],
     onSuccess: () => {
       queryClient.invalidateQueries("exhibition-requests");
       toast.success("Request rejected successfully");
       setShowRejectModal(false);
+      setRejectNotes("");
     },
     onError: () => {
       toast.error("Error while rejecting the request");
@@ -135,7 +140,8 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
 
   const handleReject = () => {
     if (rowStatus !== STATUS_REFUSED && isPendingOrPendingTransfer) {
-      rejectMutation.mutate(row.id);
+      const notes = rejectNotes.trim();
+      rejectMutation.mutate({ id: row.id, notes });
     }
   };
 
@@ -463,6 +469,20 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
               <h3>Request Details</h3>
               <p>Company: {row.company?.name}</p>
               <p>Exhibition Type: {row.exhibition_type}</p>
+            </div>
+
+            <div className="mb-5">
+              <h3>Motif</h3>
+              <p className="text-muted">Please provide the reason for rejection.</p>
+              <Form.Group controlId="rejectNotes">
+                <Form.Control
+                  as="textarea"
+                  rows={4}
+                  placeholder="Enter motif..."
+                  value={rejectNotes}
+                  onChange={(e) => setRejectNotes(e.target.value)}
+                />
+              </Form.Group>
             </div>
           </Modal.Body>
 
