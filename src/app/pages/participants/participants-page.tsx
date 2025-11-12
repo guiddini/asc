@@ -56,10 +56,15 @@ export const ParticipantsPage = () => {
   const dispatch = useDispatch();
 
   const [initialLoading, setInitialLoading] = useState<boolean>(false);
+  // Prevent concurrent requests and track latest offset to avoid backwards/duplicate calls
+  const isRequestInFlightRef = useRef<boolean>(false);
+  const latestOffsetRef = useRef<number>(0);
 
   useEffect(() => {
     if (USERS?.length === 0) {
       setInitialLoading(true);
+      isRequestInFlightRef.current = true;
+      latestOffsetRef.current = 0;
       filterMutate(
         {
           offset: 0,
@@ -67,12 +72,14 @@ export const ParticipantsPage = () => {
         {
           onSuccess(data) {
             setInitialLoading(false);
+            isRequestInFlightRef.current = false;
             const users: ParticipantProps[] = data?.data;
             dispatch(initparticipants(users));
             dispatch(nextPage());
           },
           onError(error, variables, context) {
             setInitialLoading(false);
+            isRequestInFlightRef.current = false;
           },
         }
       );
@@ -158,39 +165,65 @@ export const ParticipantsPage = () => {
 
     if (paramsChanged) {
       dispatch(resetCurrentPage());
+      latestOffsetRef.current = 0;
     }
 
     const interestsArray =
       interestsFilter?.map((interest: selectProps) => String(interest.value)) ||
       [];
 
+    const computedOffset = paramsChanged ? 0 : currentPage;
+
+    // Guard against duplicate or backward offsets during infinite scroll
+    if (!paramsChanged) {
+      // Skip if a request is already in flight
+      if (isRequestInFlightRef.current) {
+        return;
+      }
+      // Skip if the computed offset is not strictly greater than the last used
+      if (computedOffset <= latestOffsetRef.current) {
+        return;
+      }
+    }
+
     const req = {
       nameFilter: nameFilter?.toLowerCase(),
       roleFilter: roleFilter?.toLowerCase(),
       country: country?.value ? String(country.value) : undefined,
       interestsFilter: interestsArray.length > 0 ? interestsArray : undefined,
-      offset: paramsChanged ? 0 : currentPage,
+      offset: computedOffset,
     };
+
+    // Mark request as in-flight and record latest offset
+    isRequestInFlightRef.current = true;
+    latestOffsetRef.current = Number(computedOffset) || 0;
 
     filterMutate(req, {
       onSuccess(res) {
+        isRequestInFlightRef.current = false;
         setValue("prevNameFilter", nameFilter);
         setValue("prevRoleFilter", roleFilter);
         setValue("prevCountry", country);
         setValue("prevInterestsFilter", interestsFilter);
 
-        const users: ParticipantProps[] = res?.data;
-        if (paramsChanged && users.length === 0) {
-          dispatch(initparticipants(users));
-        }
+        const users: ParticipantProps[] = res?.data || [];
 
-        if (users.length > 0) {
-          users?.forEach((user) => dispatch(addparticipants(user)));
-          dispatch(nextPage());
-          if (paramsChanged) {
-            dispatch(initparticipants(users));
+        if (paramsChanged) {
+          // Replace list when filters change and reset pagination
+          dispatch(initparticipants(users));
+          if (users.length > 0) {
+            dispatch(nextPage());
+          }
+        } else {
+          // Append for infinite scroll and advance pagination once per fetch
+          if (users.length > 0) {
+            users.forEach((user) => dispatch(addparticipants(user)));
+            dispatch(nextPage());
           }
         }
+      },
+      onError() {
+        isRequestInFlightRef.current = false;
       },
     });
   };
@@ -201,13 +234,11 @@ export const ParticipantsPage = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !isFiltering && !initialLoading) {
+          if (isRequestInFlightRef.current) return;
           const prevNameFilter = getValues("prevNameFilter");
           const prevRoleFilter = getValues("prevRoleFilter");
           const prevCountry = getValues("prevCountry");
           const prevInterestsFilter = getValues("prevInterestsFilter");
-
-          dispatch(nextPage());
-
           handleFilter({
             nameFilter: getValues("nameFilter"),
             roleFilter: getValues("roleFilter"),
@@ -231,7 +262,7 @@ export const ParticipantsPage = () => {
     return () => {
       if (observerTarget.current) observer.unobserve(observerTarget.current);
     };
-  }, [USERS?.length, initialLoading]);
+  }, [USERS?.length, initialLoading, currentPage, isFiltering]);
 
   return (
     <div>
