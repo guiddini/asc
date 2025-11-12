@@ -67,7 +67,7 @@ export const Contacts: FC<Props> = ({ selectedId, onSelect }) => {
               type="text"
               className="form-control form-control-solid px-15"
               name="search"
-              placeholder="Search by username or email..."
+              placeholder="Search by name or email..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
