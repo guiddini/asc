@@ -66,7 +66,10 @@ const Messenger: FC<Props> = ({ conversationId }) => {
         ["messages", conversationId],
         (old: MessagesPage | undefined) => {
           if (!old) return old;
-          return { ...old, data: [...(old.data || []), newMsg] } as MessagesPage;
+          return {
+            ...old,
+            data: [...(old.data || []), newMsg],
+          } as MessagesPage;
         }
       );
 
@@ -139,7 +142,7 @@ const Messenger: FC<Props> = ({ conversationId }) => {
     <div className="flex-lg-row-fluid ms-lg-7 ms-xl-10 d-flex flex-column">
       <div
         className="card flex-grow-1 d-flex flex-column"
-        id="kt_chat_messenger"
+        id="kt_chat_messenger "
         style={{ maxHeight: "70vh" }}
       >
         <div className="card-header" id="kt_chat_messenger_header">
