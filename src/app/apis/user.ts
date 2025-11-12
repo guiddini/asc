@@ -46,15 +46,18 @@ const getAllUsersApi = async ({
   nameFilter,
   offset,
   roleFilter,
+  typeFilter,
 }: {
   nameFilter?: string;
   roleFilter?: string;
+  typeFilter?: string;
   is_registered?: string | number;
   offset: string | number;
 }) => {
   return await axiosInstance.post(`/user/all/filter`, {
     nameFilter,
     roleFilter,
+    typeFilter,
     offset,
     is_registered,
   });

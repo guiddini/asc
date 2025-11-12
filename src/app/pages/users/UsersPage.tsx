@@ -1,5 +1,4 @@
 import { PageLink, PageTitle } from "../../../_metronic/layout/core";
-import { TableComponent } from "../../components";
 import { CreateUserModal } from "./create-user/CreateUserModal";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useMutation, useQuery } from "react-query";
@@ -23,6 +22,7 @@ import { useForm } from "react-hook-form";
 import { Col, Row, Spinner } from "react-bootstrap";
 import { Role } from "../../types/roles";
 import { KTIcon } from "../../../_metronic/helpers";
+import { USER_TYPES } from "../landing-page/layout/type-user-component";
 
 const usersBreadcrumbs: Array<PageLink> = [
   {
@@ -35,103 +35,33 @@ const usersBreadcrumbs: Array<PageLink> = [
 
 const UsersPage = () => {
   const navigate = useNavigate();
-  const columns = [
-    {
-      name: "User",
-      selector: (row) =>
-        row?.avatar === null ? (
-          <div className="symbol symbol-circle symbol-40px overflow-hidden me-3">
-            <div className="symbol-label fs-3 bg-light-danger text-danger">
-              {row?.fname?.slice(0, 1)}
-            </div>
-          </div>
-        ) : (
-          <div className="symbol symbol-circle symbol-40px overflow-hidden me-3 my-2">
-            <div className="symbol-label">
-              <img
-                alt={row?.fname + row?.lname}
-                src={getMediaUrl(row?.avatar)}
-                className="w-100"
-              />
-            </div>
-          </div>
-        ),
-      sortable: true,
-    },
-    {
-      name: "Prénom",
-      selector: (row) => row?.fname,
-      sortable: true,
-    },
-    {
-      name: "Nom",
-      selector: (row) => row?.lname,
-      sortable: true,
-    },
-    {
-      name: "Email",
-      selector: (row) => row?.email,
-      sortable: true,
-      wrap: true,
-      style: {
-        whiteSpace: "normal",
-        wordBreak: "break-word",
-      },
-    },
-    {
-      name: "Type",
-      selector: (row) => row?.info?.type,
-      sortable: true,
-    },
-    {
-      name: "N° Tickets",
-      selector: (row) => Number(row?.ticket_count),
-      sortable: true,
-    },
-    {
-      name: "Créé à",
-      selector: (row) => moment(row.created_at).format("DD/MM/YYYY"),
-      sortable: true,
-    },
-    {
-      name: "",
-      selector: (row: User) => (
-        <UserActionColumn
-          openViewModal={() => {
-            navigate(`/profile/${row?.id}`);
-          }}
-          props={row}
-        />
-      ),
-      sortable: true,
-      ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
-    },
-  ];
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
   const { mutate, isLoading } = useMutation({
     mutationKey: ["get-all-users"],
     mutationFn: async (data: {
       nameFilter?: string;
       roleFilter?: string;
+      typeFilter?: string;
       is_registered?: string | number;
       offset: string | number;
     }) => await getAllUsersApi(data),
   });
 
-  const { watch, setValue, handleSubmit, register } = useForm({
+  const { watch, setValue, handleSubmit, register, getValues } = useForm({
     defaultValues: {
       roleFilter: "",
+      typeFilter: "",
       nameFilter: "",
       prevRoleFilter: "",
+      prevTypeFilter: "",
       prevNameFilter: "",
       is_registered: 0,
       prev_is_registered: 0,
     },
   });
 
-  const { nameFilter, roleFilter, is_registered } = watch();
+  const { nameFilter, roleFilter, typeFilter, is_registered } = watch();
 
   const [createModalOpen, setCreateModalOpen] = useState<boolean>(false);
   const [updateUserID, setUpdateUserID] = useState<string | number | null>(
@@ -171,27 +101,27 @@ const UsersPage = () => {
 
   const observerTarget = useRef(null);
 
-  const handleFilter = async (data: {
+  const handleFilter = async (data?: {
     roleFilter?: string;
     nameFilter?: string;
-    prevRoleFilter?: string;
-    prevNameFilter?: string;
     is_registered?: number;
-    prev_is_registered?: number;
+    typeFilter?: string;
   }) => {
-    const {
-      nameFilter,
-      roleFilter,
-      prevNameFilter,
-      prevRoleFilter,
-      is_registered,
-      prev_is_registered,
-    } = data;
+    const nameFilter = data?.nameFilter ?? watch("nameFilter");
+    const roleFilter = data?.roleFilter ?? watch("roleFilter");
+    const typeFilter = data?.typeFilter ?? watch("typeFilter");
+    const is_registered = data?.is_registered ?? watch("is_registered");
+
+    const prevNameFilter = getValues("prevNameFilter");
+    const prevRoleFilter = getValues("prevRoleFilter");
+    const prevTypeFilter = getValues("prevTypeFilter");
+    const prev_is_registered = getValues("prev_is_registered");
 
     // Detect any change in filters compared to previous submitted values
     const paramsChanged =
       nameFilter !== prevNameFilter ||
       roleFilter !== prevRoleFilter ||
+      typeFilter !== prevTypeFilter ||
       is_registered !== prev_is_registered;
 
     if (paramsChanged) {
@@ -201,6 +131,7 @@ const UsersPage = () => {
     const req = {
       nameFilter: nameFilter?.toLocaleLowerCase(),
       roleFilter: roleFilter?.toLocaleLowerCase(),
+      typeFilter: typeFilter?.toLocaleLowerCase(),
       offset: paramsChanged ? 0 : currentPage,
       is_registered: is_registered ? 1 : 0,
     };
@@ -212,6 +143,7 @@ const UsersPage = () => {
         // Update previous submitted values to current
         setValue("prevNameFilter", nameFilter);
         setValue("prevRoleFilter", roleFilter);
+        setValue("prevTypeFilter", typeFilter);
         setValue("prev_is_registered", is_registered);
 
         if (paramsChanged) {
@@ -225,7 +157,7 @@ const UsersPage = () => {
         }
 
         // Infinite scroll: append and advance page
-        if (fetched.length > 0) {
+        if (!paramsChanged && fetched.length > 0) {
           fetched.forEach((user) => dispatch(addUser(user)));
           dispatch(nextPage());
         }
@@ -234,18 +166,48 @@ const UsersPage = () => {
     });
   };
 
+  // Auto-submit when role/type changes
+  const handleRoleChange = (e: any) => {
+    const value = e?.target?.value ?? "";
+    setValue("roleFilter", value);
+    handleFilter({
+      roleFilter: value,
+      nameFilter,
+      typeFilter,
+      is_registered,
+    });
+  };
+
+  const handleTypeChange = (e: any) => {
+    const value = e?.target?.value ?? "";
+    setValue("typeFilter", value);
+    handleFilter({
+      typeFilter: value,
+      nameFilter,
+      roleFilter,
+      is_registered,
+    });
+  };
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
+          // Avoid multiple triggers while a request is in-flight or initial load
+          if (isLoading || initialLoading) return;
           handleFilter({
             nameFilter,
             roleFilter,
+            typeFilter,
             is_registered,
           });
         }
       },
-      { threshold: 1 }
+      {
+        root: scrollContainerRef.current || null,
+        threshold: 0,
+        rootMargin: "0px 0px 300px 0px",
+      }
     );
 
     if (observerTarget.current) {
@@ -284,113 +246,211 @@ const UsersPage = () => {
     <>
       <PageTitle breadcrumbs={usersBreadcrumbs} />
 
-      <Can I="list" a="usersadmin">
-        <TableComponent
-          columns={columns as any}
-          data={users}
-          placeholder="utilisateur"
-          onAddClick={() => {}}
-          showSearch={false}
-          customFullHeader={
-            <form onSubmit={handleSubmit(handleFilter)} className="w-100">
-              <div className="card">
-                <div className="card-body px-0">
-                  <Row className="d-flex align-items-center justify-content-between w-100">
-                    <Col className="position-relative w-md-400px me-md-2">
-                      <input
-                        type="text"
-                        className="form-control form-control-solid"
-                        name="search"
-                        // value={searchTerm}
-                        // onChange={(e) => setSearchTerm(e.target.value)}
-                        placeholder="Nom d'utlisateur"
-                        {...register("nameFilter")}
-                      />
-                    </Col>
+      <form onSubmit={handleSubmit(handleFilter)} className="w-100">
+        <div className="card">
+          <div className="card-body p-6">
+            <Row className="d-flex align-items-center justify-content-between w-100">
+              <Col className="position-relative w-md-400px me-md-2">
+                <input
+                  type="text"
+                  className="form-control form-control-solid"
+                  name="search"
+                  placeholder="User name"
+                  {...register("nameFilter")}
+                />
+              </Col>
 
-                    <Col className="d-flex align-items-center">
-                      <button
-                        type="submit"
-                        className="btn btn-custom-purple-dark text-white me-5"
-                      >
-                        {isLoading ? (
-                          <Spinner animation="border" size="sm" />
-                        ) : (
-                          "Recherche"
-                        )}
-                      </button>
-                    </Col>
-                    <Can I="create" a="users">
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-custom-purple-dark text-white w-250px"
-                        onClick={() => setCreateModalOpen(true)}
-                      >
-                        <KTIcon iconName="plus" className="fs-2 text-white" />
-                        Ajouter un nouveau utilisateur
-                      </button>
-                    </Can>
-                  </Row>
+              <Col className="d-flex align-items-center">
+                <button
+                  type="submit"
+                  className="btn btn-custom-purple-dark text-white me-5"
+                >
+                  {isLoading ? (
+                    <Spinner animation="border" size="sm" />
+                  ) : (
+                    "Search"
+                  )}
+                </button>
+              </Col>
+              <Can I="create" a="users">
+                <button
+                  type="button"
+                  className="btn btn-sm btn-custom-purple-dark text-white w-250px"
+                  onClick={() => setCreateModalOpen(true)}
+                >
+                  <KTIcon iconName="plus" className="fs-2 text-white" />
+                  Add New User
+                </button>
+              </Can>
+            </Row>
 
-                  <div>
-                    <div className="separator separator-dashed mt-9 mb-6"></div>
-                    <Row className="g-8">
-                      <Col>
-                        <label className="fs-6 form-label fw-bold text-gray-900">
-                          Role d'utlisateur
-                        </label>
-                        <select
-                          className="form-select form-select-solid"
-                          data-control="select2"
-                          data-placeholder="In Progress"
-                          data-hide-search="true"
-                          {...register("roleFilter")}
-                        >
-                          <option value=""></option>
-                          {ROLES?.map((role, index) => (
-                            <option value={role?.value} key={index}>
-                              {role?.label}
-                            </option>
-                          ))}
-                        </select>
-                      </Col>
-                    </Row>
-                  </div>
-                </div>
-              </div>
-            </form>
-          }
-        />
-        {isLoading && (
-          <div className="w-100 d-flex align-items-center justify-content-center">
-            <Spinner animation="border" color="#000" size="sm" />
+            <div>
+              <div className="separator separator-dashed mt-9 mb-6"></div>
+              <Row className="g-8">
+                <Col>
+                  <label className="fs-6 form-label fw-bold text-gray-900">
+                    User Role
+                  </label>
+                  <select
+                    className="form-select form-select-solid"
+                    data-control="select2"
+                    data-placeholder="Select a role"
+                    data-hide-search="true"
+                    {...register("roleFilter", { onChange: handleRoleChange })}
+                  >
+                    <option value=""></option>
+                    {ROLES?.map((role, index) => (
+                      <option value={role?.value} key={index}>
+                        {role?.label}
+                      </option>
+                    ))}
+                  </select>
+                </Col>
+                <Col>
+                  <label className="fs-6 form-label fw-bold text-gray-900">
+                    Registration Type
+                  </label>
+                  <select
+                    className="form-select form-select-solid"
+                    data-control="select2"
+                    data-placeholder="Select a type"
+                    data-hide-search="true"
+                    {...register("typeFilter", { onChange: handleTypeChange })}
+                  >
+                    <option value=""></option>
+                    {USER_TYPES?.map((t, index) => (
+                      <option value={t?.value} key={index}>
+                        {t?.label}
+                      </option>
+                    ))}
+                  </select>
+                </Col>
+              </Row>
+            </div>
           </div>
-        )}
-        {users?.length >= 10 && <div ref={observerTarget}></div>}
-      </Can>
+        </div>
+      </form>
 
-      <Can I="create" a="users">
-        <CreateUserModal
-          isOpen={createModalOpen}
-          setIsOpen={setCreateModalOpen}
-          refetch={() => {}}
-          key={String(createModalOpen)}
-        />
-      </Can>
+      <div className="card mt-5">
+        <div className="card-body p-4">
+          <div
+            ref={scrollContainerRef}
+            style={{ maxHeight: "70vh", overflowY: "auto" }}
+          >
+            <table className="table align-middle table-row-dashed fs-6 gy-5">
+              <thead>
+                <tr className="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                  <th className="min-w-150px">User</th>
+                  <th className="min-w-150px">First Name</th>
+                  <th className="min-w-150px">Last Name</th>
+                  <th className="min-w-200px">Email</th>
+                  <th className="min-w-150px">Role</th>
+                  <th className="min-w-170px">Registration Type</th>
+                  <th className="min-w-120px">Created At</th>
+                  <th className="text-end min-w-150px">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="text-gray-600 fw-semibold">
+                {users?.map((row: User) => (
+                  <tr key={String(row?.id)}>
+                    <td>
+                      {row?.avatar === null ? (
+                        <div className="symbol symbol-circle symbol-40px overflow-hidden me-3">
+                          <div className="symbol-label fs-3 bg-light-danger text-danger">
+                            {row?.fname?.slice(0, 1)}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="symbol symbol-circle symbol-40px overflow-hidden me-3 my-2">
+                          <div className="symbol-label">
+                            <img
+                              alt={(row?.fname || "") + (row?.lname || "")}
+                              src={getMediaUrl(row?.avatar)}
+                              className="w-100"
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </td>
+                    <td>{row?.fname}</td>
+                    <td>{row?.lname}</td>
+                    <td
+                      style={{ whiteSpace: "normal", wordBreak: "break-word" }}
+                    >
+                      {row?.email}
+                    </td>
+                    {/* Role badges */}
+                    <td>
+                      {(row?.roles && row.roles.length > 0
+                        ? row.roles
+                        : row?.roleValues
+                        ? [row.roleValues]
+                        : []
+                      ).map((r: any, idx: number) => (
+                        <span
+                          key={String(r?.id || idx)}
+                          className="badge bg-primary text-white rounded-pill me-2"
+                        >
+                          {r?.display_name || r?.name || "Role"}
+                        </span>
+                      ))}
+                      {(!row?.roles || row.roles.length === 0) && !row?.roleValues && (
+                        <span className="badge bg-light text-muted">No role</span>
+                      )}
+                    </td>
+                    {/* Registration type badge */}
+                    <td>
+                      {row?.info?.type ? (
+                        <span className="badge bg-secondary text-white rounded-pill">
+                          {row.info.type}
+                        </span>
+                      ) : (
+                        <span className="badge bg-light text-muted">Unknown</span>
+                      )}
+                    </td>
+                    <td>{moment(row.created_at).format("DD/MM/YYYY")}</td>
+                    <td className="text-end">
+                      <UserActionColumn
+                        openViewModal={() => {
+                          navigate(`/profile/${row?.id}`);
+                        }}
+                        props={row}
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {isLoading && (
+              <div className="d-flex align-items-center justify-content-center py-4">
+                <Spinner animation="border" size="sm" />
+              </div>
+            )}
+
+            {users?.length >= 10 && (
+              <div ref={observerTarget} style={{ height: 1 }}></div>
+            )}
+          </div>
+        </div>
+      </div>
+      <CreateUserModal
+        isOpen={createModalOpen}
+        setIsOpen={setCreateModalOpen}
+        refetch={() => {}}
+        key={String(createModalOpen)}
+      />
 
       {/* <ViewUserPermissions
         user={updateUserPermissions}
         setIsOpen={setUpdateUserPermissions}
         refetch={() => {}}
       /> */}
-
-      <Can I="update" a="users">
-        <UpdateUserModal
-          refetch={() => {}}
-          setUserID={setUpdateUserID}
-          userID={updateUserID}
-        />
-      </Can>
+      <UpdateUserModal
+        refetch={() => {}}
+        setUserID={setUpdateUserID}
+        userID={updateUserID}
+      />
 
       {/* <ViewUserModal user={user} setIsOpen={setUser} /> */}
     </>

@@ -7,15 +7,16 @@ interface SearchProps {
   onHide: () => void;
 }
 
+export const USER_TYPES = [
+  { label: "Visitor", value: "visitor" },
+  { label: "Exhibitor", value: "exhibitor" },
+  { label: "Investor", value: "investor" },
+  { label: "Media", value: "media" },
+  { label: "Speaker", value: "speaker" },
+  { label: "Policy Makers", value: "policy_makers" },
+];
+
 const UserTypeComponent: React.FC<SearchProps> = ({ show, onHide }) => {
-  const userTypes = [
-    { label: "Visitor", value: "visitor" },
-    { label: "Exhibitor", value: "exhibitor" },
-    { label: "Investor", value: "investor" },
-    { label: "Media", value: "media" },
-    { label: "Speaker", value: "speaker" },
-    { label: "Policy Makers", value: "policy_makers" },
-  ];
 
   return (
     <Modal
@@ -41,7 +42,7 @@ const UserTypeComponent: React.FC<SearchProps> = ({ show, onHide }) => {
           </p>
 
           <div className="d-flex flex-column gap-3 w-100">
-            {userTypes.map((type, index) => (
+            {USER_TYPES.map((type, index) => (
               <Link
                 key={index}
                 to={`/auth/signup?type=${type.value}`}
