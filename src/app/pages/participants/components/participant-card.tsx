@@ -2,6 +2,7 @@ import { Col } from "react-bootstrap";
 import { ParticipantProps } from "../../../types/user";
 import getMediaUrl from "../../../helpers/getMediaUrl";
 import { Link } from "react-router-dom";
+import ReactCountryFlag from "react-country-flag";
 
 const ParticipantCard = (props: ParticipantProps) => {
   return (
@@ -12,8 +13,24 @@ const ParticipantCard = (props: ParticipantProps) => {
             <img src={getMediaUrl(props.avatar)} className="object-fit-cover" />
           </div>
 
-          <span className="fs-4 text-gray-800 fw-bold mb-0 text-center">
+          <span className="fs-4 text-gray-800 fw-bold mb-0 text-center d-inline-flex align-items-center justify-content-center">
             {props?.fname} {props?.lname}
+            {props?.info?.country?.code && (
+              <ReactCountryFlag
+                countryCode={props.info.country.code}
+                svg
+                title={props.info.country.name_fr || props.info.country.name_en}
+                aria-label={
+                  props.info.country.name_en || props.info.country.name_fr
+                }
+                style={{
+                  width: "1.2em",
+                  height: "1.2em",
+                  marginLeft: "0.5rem",
+                  display: "inline-block",
+                }}
+              />
+            )}
           </span>
 
           <div className="fw-semibold text-gray-500 mb-6">

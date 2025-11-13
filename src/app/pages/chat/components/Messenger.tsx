@@ -2,7 +2,7 @@ import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useSelector } from "react-redux";
 // removed generic filter dropdown; using custom menu instead
-import { toAbsoluteUrl } from "../../../../_metronic/helpers";
+
 import type { UserResponse } from "../../../types/reducers";
 import type { Message, MessagesPage } from "../../../types/conversation";
 import { getPusher } from "../../../helpers/pusherClient";
@@ -13,6 +13,8 @@ import {
   markMessageAsRead,
   deleteConversation,
 } from "../../../apis/conversation";
+import getMediaUrl from "../../../helpers/getMediaUrl";
+import { UserSummary } from "../../../types/visa-demand";
 
 type Props = {
   conversationId?: string;
@@ -133,16 +135,17 @@ const Messenger: FC<Props> = ({ conversationId }) => {
     }
   };
 
-  const participantsNames = useMemo(() => {
+  // Show only the other participant's name (exclude current user)
+  const otherParticipantName = useMemo(() => {
     const parts = conversation?.conversation?.participants || [];
-    return parts
-      .map((p) => `${p.fname ?? ""} ${p.lname ?? ""}`.trim())
-      .filter(Boolean)
-      .join(", ");
-  }, [conversation]);
+    const others = parts.filter((p: any) => String(p.id) !== String(user?.id));
+    const first = others[0] || ({} as UserSummary);
+    const name = `${first.fname ?? ""} ${first.lname ?? ""}`.trim();
+    return name;
+  }, [conversation, user]);
 
   const title =
-    conversation?.conversation?.title || participantsNames || "Conversation";
+    conversation?.conversation?.title || otherParticipantName || "Conversation";
   const messages = messagesPage?.data || [];
 
   return (
@@ -243,7 +246,10 @@ const Messenger: FC<Props> = ({ conversationId }) => {
                   const alignItemsClass = mine
                     ? "align-items-end"
                     : "align-items-start";
-                  const otherAvatar = toAbsoluteUrl("/media/avatars/blank.png");
+                  const senderAvatar = mine
+                    ? getMediaUrl(user?.avatar)
+                    : getMediaUrl(m.user?.avatar);
+
                   return (
                     <div
                       key={`message${index}`}
@@ -254,7 +260,7 @@ const Messenger: FC<Props> = ({ conversationId }) => {
                           {!mine ? (
                             <>
                               <div className="symbol symbol-35px symbol-circle">
-                                <img alt="Pic" src={otherAvatar} />
+                                <img alt="Sender Avatar" src={senderAvatar} />
                               </div>
                               <div className="ms-3">
                                 <a
@@ -262,7 +268,9 @@ const Messenger: FC<Props> = ({ conversationId }) => {
                                   className="fs-5 fw-bolder text-gray-900 text-hover-primary me-1"
                                   onClick={(e) => e.preventDefault()}
                                 >
-                                  {participantsNames || "User"}
+                                  {`${m.user?.fname ?? ""} ${
+                                    m.user?.lname ?? ""
+                                  }`.trim() || "User"}
                                 </a>
                                 <span className="text-muted fs-7 mb-1">
                                   {m.created_at?.slice(0, 16)}
@@ -284,12 +292,7 @@ const Messenger: FC<Props> = ({ conversationId }) => {
                                 </a>
                               </div>
                               <div className="symbol symbol-35px symbol-circle">
-                                <img
-                                  alt="Pic"
-                                  src={toAbsoluteUrl(
-                                    "/media/avatars/blank.png"
-                                  )}
-                                />
+                                <img alt="Your Avatar" src={senderAvatar} />
                               </div>
                             </>
                           )}
@@ -333,25 +336,7 @@ const Messenger: FC<Props> = ({ conversationId }) => {
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyDown={onEnterPress}
               ></textarea>
-              <div className="d-flex flex-stack">
-                <div className="d-flex align-items-center me-2">
-                  <button
-                    className="btn btn-sm btn-icon btn-active-light-primary me-1"
-                    type="button"
-                    data-bs-toggle="tooltip"
-                    title="Coming soon"
-                  >
-                    <i className="bi bi-paperclip fs-3"></i>
-                  </button>
-                  <button
-                    className="btn btn-sm btn-icon btn-active-light-primary me-1"
-                    type="button"
-                    data-bs-toggle="tooltip"
-                    title="Coming soon"
-                  >
-                    <i className="bi bi-upload fs-3"></i>
-                  </button>
-                </div>
+              <div className="d-flex justify-content-end">
                 <div className="d-flex align-items-center">
                   <button
                     className="btn btn-primary"

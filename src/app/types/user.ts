@@ -279,6 +279,14 @@ export interface ParticipantProps {
     occupation_id: string;
     institution_type: string | null;
     institution_name: string | null;
+    country: {
+      id: string | null;
+      name_fr: string | null;
+      name_en: string | null;
+      code: string | null;
+      created_at: string | null;
+      updated_at: string | null;
+    };
   };
   roles: {
     id: number;

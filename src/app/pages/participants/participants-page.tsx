@@ -104,14 +104,37 @@ export const ParticipantsPage = () => {
     value: string;
   }[] = useMemo(
     () =>
-      data?.data
-        ?.filter((e) => e?.name !== "admin" && e?.name !== "committee")
-        .map((r: Role) => {
-          return {
-            label: r.display_name || "",
-            value: r.name || "",
-          };
-        }) || [],
+      {
+        // Exclude admin/staff roles, keep only global participant-facing roles
+        const EXCLUDED_ROLES = new Set([
+          "admin",
+          "super_admin",
+          "committee",
+          "company_editor",
+          "company_staff",
+          "organiser",
+          "support",
+          "exhibition_manager",
+          "exhibition_finance_officer",
+          "program_coordinator",
+          "dealroom_manager",
+          "organization_head",
+          "head_delegation",
+          "delegation_member",
+        ]);
+
+        return (
+          data?.data
+            ?.filter((e: Role) => {
+              const name = String(e?.name || "").toLowerCase();
+              return !EXCLUDED_ROLES.has(name);
+            })
+            .map((r: Role) => ({
+              label: r.display_name || "",
+              value: r.name || "",
+            })) || []
+        );
+      },
     [data, isFiltering]
   );
 
@@ -310,13 +333,14 @@ export const ParticipantsPage = () => {
                       className="btn btn-link"
                       data-bs-toggle="collapse"
                       data-bs-target="#kt_advanced_search_form"
+                      aria-expanded="true"
                     >
                       Advanced Search
                     </a>
                   </Col>
                 </Row>
 
-                <div className="collapse" id="kt_advanced_search_form">
+                <div className="collapse show" id="kt_advanced_search_form">
                   <div className="separator separator-dashed mt-9 mb-6"></div>
                   <div className="row g-8">
                     <div className="col-12 col-md-4">

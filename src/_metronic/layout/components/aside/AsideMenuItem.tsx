@@ -61,7 +61,7 @@ const MenuItem: FC<Props & WithChildren> = ({
         <span className="menu-title no-wrap">{title}</span>
       )}
       {badge !== undefined && (
-        <span className="badge bg-primary ms-2">{badge}</span>
+        <span className="badge bg-primary position-absolute bottom-0 end-0">{badge}</span>
       )}
     </>
   );
@@ -72,19 +72,19 @@ const MenuItem: FC<Props & WithChildren> = ({
         <a
           href={to}
           target="_blank"
-          className={clsx("menu-link menu-center", { activee: isActive })}
+          className={clsx("menu-link menu-center position-relative", { activee: isActive })}
         >
           {renderContent()}
         </a>
       ) : onClick ? (
         <span
-          className="menu-link menu-center cursor-pointer"
+          className="menu-link menu-center cursor-pointer position-relative"
           onClick={onClick}
         >
           {renderContent()}
         </span>
       ) : (
-        <Link className="menu-link menu-center" to={to}>
+        <Link className="menu-link menu-center position-relative" to={to}>
           {renderContent()}
         </Link>
       )}

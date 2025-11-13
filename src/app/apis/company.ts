@@ -1,8 +1,11 @@
 import { PublicCompany } from "./../types/company";
 import axiosInstance from "./axios";
 
-const getAllCompaniesApi = async () => {
-  return axiosInstance.get("/company/all");
+const getAllCompaniesApi = async (params?: {
+  search?: string;
+  country_id?: string | number;
+}) => {
+  return axiosInstance.get("/company/all", { params });
 };
 
 const getCompanyApi = async (id: string | number) => {

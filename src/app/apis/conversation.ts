@@ -1,6 +1,5 @@
 import axiosInstance from "./axios";
 import {
-  Conversation,
   CreateConversationRequest,
   CreateConversationResponse,
   ShowConversationResponse,

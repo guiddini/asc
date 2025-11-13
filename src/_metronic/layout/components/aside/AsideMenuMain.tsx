@@ -9,6 +9,7 @@ import {
 import RoleGuard from "../../../../app/components/role-guard";
 import { useQuery } from "react-query";
 import { getPendingUserConnectionsCount } from "../../../../app/apis/user-connection";
+import { getStatistics } from "../../../../app/apis/statistics";
 import {
   adminRoles,
   exhibitionRoles,
@@ -49,6 +50,18 @@ export function AsideMenuMain() {
       ? pendingCountData.count
       : undefined;
 
+  const { data: statsData } = useQuery(["statistics", "unread"], getStatistics, {
+    staleTime: 60 * 1000,
+  });
+  const chatBadge =
+    statsData && statsData.unread_conversations > 0
+      ? statsData.unread_conversations
+      : undefined;
+  const meetingsBadge =
+    statsData && statsData.pending_meetings > 0
+      ? statsData.pending_meetings
+      : undefined;
+
   return (
     <>
       {/* home */}
@@ -65,6 +78,7 @@ export function AsideMenuMain() {
         title="Chat"
         customIcon={<i className="fa-solid fa-comments"></i>}
         bsTitle="Chat"
+        badge={chatBadge}
         className="py-2"
       />
 
@@ -135,6 +149,7 @@ export function AsideMenuMain() {
             to={`/meetings`}
             title="Meetings"
             bsTitle="Meetings"
+            badge={meetingsBadge}
             hasBullet
           />
         </AsideMenuItemWithSubMain>

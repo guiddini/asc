@@ -15,6 +15,7 @@ export interface Conversation {
   created_at?: string;
   updated_at?: string;
   participants?: UserSummary[];
+  unread_messages_count?: number;
 }
 
 export interface CreateConversationRequest {

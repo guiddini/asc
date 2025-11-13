@@ -23,6 +23,7 @@ import {
   MessageSquare,
   Handshake,
 } from "lucide-react";
+import ReactCountryFlag from "react-country-flag";
 
 interface ProfileHeaderProps {
   user: User;
@@ -181,11 +182,29 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
                       user.job_title ||
                       "Event Participant"}
                   </p>
-                  <p className="text-white mb-0 small">
+                  <p className="text-white mb-0 small d-inline-flex align-items-center">
                     {user?.info?.city && user?.info?.wilaya?.name
                       ? `${user.info.city}, ${user.info.wilaya.name}`
                       : user?.info?.country?.name_fr ||
                         "Location not specified"}
+                    {user?.info?.country?.code && (
+                      <ReactCountryFlag
+                        countryCode={user.info.country.code}
+                        svg
+                        title={
+                          user.info.country.name_fr || user.info.country.name_en
+                        }
+                        aria-label={
+                          user.info.country.name_en || user.info.country.name_fr
+                        }
+                        style={{
+                          width: "1.2em",
+                          height: "1.2em",
+                          marginLeft: "0.5rem",
+                          display: "inline-block",
+                        }}
+                      />
+                    )}
                   </p>
                 </div>
               </div>
@@ -414,10 +433,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
                   <div className="mb-3">
                     <small className="text-secondary d-block">Position</small>
                     <span className="fw-semibold text-dark">
-                      {user?.info?.occupationFound?.label_fr ||
-                        user?.info?.occupation ||
-                        user.job_title ||
-                        "Event Participant"}
+                      {user?.info?.job_title}
                     </span>
                   </div>
                   <div className="mb-3">

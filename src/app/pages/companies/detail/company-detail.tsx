@@ -15,6 +15,7 @@ import CompanyTeam from "./components/CompanyTeam";
 import CompanyJobs from "./components/CompanyJobs";
 import EditableWrapper from "./components/EditableWrapper";
 import { Spinner } from "react-bootstrap";
+import ReactCountryFlag from "react-country-flag";
 
 const CompanyDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -73,7 +74,29 @@ const CompanyDetail: React.FC = () => {
 
   return (
     <div className="card" id="company-detail-wrapper">
-      <PageTitle breadcrumbs={companyBreadCrumbs}>{COMPANY?.name}</PageTitle>
+      <PageTitle breadcrumbs={companyBreadCrumbs}>
+        <span className="d-inline-flex align-items-center">
+          {COMPANY?.name}
+          {data?.data?.country?.code && (
+            <ReactCountryFlag
+              countryCode={data.data.country.code}
+              svg
+              title={
+                data.data.country.name_fr || data.data.country.name_en || "Country"
+              }
+              aria-label={
+                data.data.country.name_en || data.data.country.name_fr || "Country"
+              }
+              style={{
+                width: "1.2em",
+                height: "1.2em",
+                marginLeft: "0.5rem",
+                display: "inline-block",
+              }}
+            />
+          )}
+        </span>
+      </PageTitle>
       <div className="card-body p-lg-17 position-relative">
         <EditableWrapper isCompanyEditor={isCompanyEditor} id={id}>
           <CompanyHeader company={COMPANY} />

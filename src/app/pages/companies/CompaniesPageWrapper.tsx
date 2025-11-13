@@ -1,16 +1,68 @@
-import { Spinner } from "react-bootstrap";
+import { Row, Spinner } from "react-bootstrap";
 import { PageTitle } from "../../../_metronic/layout/core";
-import { CompanyCard } from "../../components";
+import { CompanyCard, CountriesSelect, InputComponent } from "../../components";
 import { useCompany } from "../../hooks";
 import { companyType } from "../../types/company";
-import { toAbsoluteUrl } from "../../../_metronic/helpers";
+import { KTCard, KTCardBody, toAbsoluteUrl } from "../../../_metronic/helpers";
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 
 const CompaniesPageWrapper = () => {
-  const { MEMORIZED_COMPANIES, loadingCompanies } = useCompany();
+  const {
+    control,
+    formState: { errors },
+    watch,
+  } = useForm({
+    defaultValues: {
+      search: "",
+      country: null,
+    },
+  });
+
+  const searchWatch = watch("search");
+  const [search, setSearch] = useState<string>("");
+  useEffect(() => {
+    const t = setTimeout(() => setSearch(searchWatch || ""), 350);
+    return () => clearTimeout(t);
+  }, [searchWatch]);
+
+  const [countryId, setCountryId] = useState<string | number | null>(null);
+
+  const { MEMORIZED_COMPANIES, loadingCompanies } = useCompany({
+    search,
+    country_id: countryId ?? undefined,
+  });
 
   return (
     <>
       <PageTitle breadcrumbs={[]}>Exposants</PageTitle>
+
+      {/* Filters */}
+      <KTCard>
+        <KTCardBody>
+          <Row xl={12} md={12}>
+            <InputComponent
+              control={control}
+              name="search"
+              type="text"
+              errors={errors}
+              label="Search companies"
+              placeholder="Type to search by name or description"
+              colXS={12}
+              colMD={6}
+            />
+            <CountriesSelect
+              control={control}
+              errors={errors}
+              colXS={12}
+              colMD={6}
+              label="Country"
+              onValueChange={(value) => setCountryId(value)}
+              debounceMs={350}
+            />
+          </Row>
+        </KTCardBody>
+      </KTCard>
 
       {loadingCompanies ? (
         <div className="w-100 h-100 d-flex align-items-center justify-content-center">

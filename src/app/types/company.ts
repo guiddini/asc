@@ -24,7 +24,6 @@ export type companyType = {
   updated_at: string;
   name: string;
   legal_status: string;
-  country: string;
   wilaya: string;
   city: string;
   address: string;
@@ -35,6 +34,14 @@ export type companyType = {
   description: string;
   user_id: string;
   logo: string | null;
+  country: {
+    id: string | null;
+    name_fr: string | null;
+    name_en: string | null;
+    code: string | null;
+    created_at: string | null;
+    updated_at: string | null;
+  };
 };
 
 export type CompanyDetailProps = {

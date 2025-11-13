@@ -26,6 +26,7 @@ interface SelectComponentProps {
   isMulti?: boolean;
   disabled?: boolean;
   maxLimit?: number;
+  onValueChange?: (value: any) => void;
 }
 
 export const SelectComponent: React.FC<SelectComponentProps> = (props) => {
@@ -105,14 +106,18 @@ export const SelectComponent: React.FC<SelectComponentProps> = (props) => {
                   if (props.isMulti) {
                     const arr = e?.map((item: any) => item?.value);
                     onChange(arr);
+                    props.onValueChange?.(arr);
                   } else {
                     onChange(e?.value);
+                    props.onValueChange?.(e?.value);
                   }
                 } else {
                   if (props.isMulti) {
                     onChange(e);
+                    props.onValueChange?.(e);
                   } else {
                     onChange(e);
+                    props.onValueChange?.(e);
                   }
                 }
               }}

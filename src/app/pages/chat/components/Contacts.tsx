@@ -141,6 +141,18 @@ export const Contacts: FC<Props> = ({ selectedId, onSelect }) => {
                   </div>
 
                   <div className="d-flex flex-column align-items-end ms-2">
+                    {typeof conv.unread_messages_count === "number" &&
+                      conv.unread_messages_count > 0 && (
+                        <span
+                          className="badge badge-light-danger fw-bold mb-1"
+                          aria-label={`${conv.unread_messages_count} unread messages`}
+                          title={`${conv.unread_messages_count} unread messages`}
+                        >
+                          {conv.unread_messages_count > 99
+                            ? "99+"
+                            : conv.unread_messages_count}
+                        </span>
+                      )}
                     <span className="text-muted fs-7 mb-1">
                       {updatedText(conv)}
                     </span>

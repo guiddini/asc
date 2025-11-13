@@ -3,6 +3,7 @@ import { companyType } from "../../types/company";
 import { KTIcon } from "../../../_metronic/helpers";
 import getMediaUrl from "../../helpers/getMediaUrl";
 import { Col } from "react-bootstrap";
+import ReactCountryFlag from "react-country-flag";
 
 export const CompanyCard = (props: companyType) => {
   return (
@@ -23,8 +24,26 @@ export const CompanyCard = (props: companyType) => {
           </div>
         </div>
         <div className="card-body p-9">
-          <div className="fs-3 fw-bold text-gray-900">
-            {props?.name} ({props?.legal_status})
+          <div className="fs-3 fw-bold text-gray-900 d-inline-flex align-items-center">
+            {props?.name}
+            {props?.country?.code && (
+              <ReactCountryFlag
+                countryCode={props.country.code}
+                svg
+                title={
+                  props.country.name_fr || props.country.name_en || "Country"
+                }
+                aria-label={
+                  props.country.name_en || props.country.name_fr || "Country"
+                }
+                style={{
+                  width: "1.2em",
+                  height: "1.2em",
+                  marginLeft: "0.5rem",
+                  display: "inline-block",
+                }}
+              />
+            )}
           </div>
 
           <div className="d-flex flex-row flex-wrap my-2">
