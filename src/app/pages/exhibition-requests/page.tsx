@@ -184,8 +184,7 @@ const ExhibitionRequests = () => {
       selector: (row: ExhibitionDemand) =>
         row.transfer_document ? "bank_transfer" : "online",
       sortable: true,
-      minWidth: "160px",
-      wrap: true,
+      minWidth: "200px",
       cell: (row: ExhibitionDemand) => (
         <div>{row.transfer_document ? "Bank Transfer" : "Online"}</div>
       ),
