@@ -181,11 +181,14 @@ const ExhibitionRequests = () => {
     },
     {
       name: "Payment Method",
-      selector: (row: ExhibitionDemand) => row.payment_method || "-",
+      selector: (row: ExhibitionDemand) =>
+        row.transfer_document ? "bank_transfer" : "online",
       sortable: true,
       minWidth: "160px",
       wrap: true,
-      cell: (row: ExhibitionDemand) => <div>{row.payment_method || "-"}</div>,
+      cell: (row: ExhibitionDemand) => (
+        <div>{row.transfer_document ? "Bank Transfer" : "Online"}</div>
+      ),
     },
     {
       name: "Status",
@@ -208,11 +211,11 @@ const ExhibitionRequests = () => {
                 : row.status === "unpaid"
                 ? "bg-secondary text-white"
                 : "bg-light text-dark"
-          }`}
-        >
-          {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
-        </span>
-      </div>
+            }`}
+          >
+            {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
+          </span>
+        </div>
       ),
     },
     {
