@@ -275,7 +275,7 @@ const ExhibitionTypeModal = ({
                       partners
                     </li>
                   </ul>
-                  <h5 className="fw-bold text-primary mb-1">99.999 DZD</h5>
+                  <h5 className="fw-bold text-primary mb-1">99.900 DZD</h5>
                   <div className="text-muted small">≈ 399 $</div>
                   <input
                     type="radio"

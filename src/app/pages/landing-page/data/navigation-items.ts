@@ -13,7 +13,7 @@ export const navigationItems: NavigationItem[] = [
       { label: "Speakers", href: "/speakers" },
     ],
   },
-  { label: "Exhibitors", href: "/exhibitors" },
+  { label: "Exhibitors", href: "/companies" },
 
   {
     label: "Practical Info",

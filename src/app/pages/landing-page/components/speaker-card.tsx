@@ -33,7 +33,7 @@ const SpeakerCard: React.FC<SpeakerCardProps> = ({
             />
           ) : (
             <img
-              src={placeholderImage || "/speakers/1.png"}
+              src={getMediaUrl(placeholderImage)}
               alt={`${speaker.fname} ${speaker.lname}`}
               width={240}
               height={340}
@@ -44,7 +44,9 @@ const SpeakerCard: React.FC<SpeakerCardProps> = ({
         </div>
       </div>
       <div data-label>
-        <div data-name>{speaker.fname} {speaker.lname}</div>
+        <div data-name>
+          {speaker.fname} {speaker.lname}
+        </div>
       </div>
     </div>
   );

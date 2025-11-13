@@ -564,7 +564,7 @@ const CreateStartupPage = () => {
                     <li>Pitch competition (up to $10,000 prize)</li>
                     <li>Priority access to investor deal room</li>
                   </ul>
-                  <h5 className="fw-bold text-primary mb-1">99.999 DZD</h5>
+                  <h5 className="fw-bold text-primary mb-1">99.900 DZD</h5>
                   <div className="text-muted small">≈ 399 $</div>
                 </Card.Body>
               </Card>

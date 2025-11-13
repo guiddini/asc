@@ -743,6 +743,25 @@
   position: relative;
 }
 
+/* Grid layout variant for speaker slider: 5 columns x 2 rows responsive */
+#landing-speaker-slider.grid {
+  display: grid !important;
+  align-items: stretch;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 20px;
+  padding: 8px 64px;
+}
+
+#landing-speaker-slider.grid [data-card-wrap] {
+  width: auto;
+}
+
+#landing-speaker-slider.grid [data-card] {
+  width: 100%;
+  max-width: 240px;
+  margin: 0 auto;
+}
+
 #landing-speaker-prev,
 #landing-speaker-next {
   position: absolute;
@@ -884,6 +903,9 @@
 
 /* Responsive sizing */
 @media (max-width: 1199.98px) {
+  #landing-speaker-slider.grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
   #landing-speaker-slider {
     gap: 28px;
     padding: 8px 48px;
@@ -899,6 +921,9 @@
 }
 
 @media (max-width: 991.98px) {
+  #landing-speaker-slider.grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
   #landing-speaker-slider {
     gap: 24px;
     padding: 8px 36px;
@@ -914,6 +939,9 @@
 }
 
 @media (max-width: 575.98px) {
+  #landing-speaker-slider.grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
   #landing-speaker-container {
     padding: 0 16px;
   }
@@ -924,9 +952,10 @@
     gap: 18px;
     padding: 8px 24px;
   }
+  /* Keep Prev/Next visible for mobile grid variant */
   #landing-speaker-prev,
   #landing-speaker-next {
-    display: none;
+    display: inline-flex;
   }
   #landing-speaker-slider [data-card-wrap] {
     width: 180px;

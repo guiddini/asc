@@ -7,8 +7,12 @@ import { getAllSpeakers, SpeakersResponse } from "../../../apis/speaker";
 const SpeakerSection: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const sliderRef = useRef<HTMLDivElement | null>(null);
+  const gridRef = useRef<HTMLDivElement | null>(null);
+  // Mobile/md window within page (2 speakers per step)
+  const [mobileStart, setMobileStart] = useState(0);
+  const [isStacked, setIsStacked] = useState(false);
+  const [pendingPrevJump, setPendingPrevJump] = useState(false);
+  const [pendingNextJump, setPendingNextJump] = useState(false);
 
   // Fetch speakers using React Query with currentPage param
   const { data, isLoading, isError } = useQuery<SpeakersResponse>(
@@ -32,33 +36,63 @@ const SpeakerSection: React.FC = () => {
 
   const totalPages = data?.last_page || 1;
 
+  // Detect md and down (<= 991.98px) to stack 1-per-row
+  useEffect(() => {
+    const handler = () => setIsStacked(window.innerWidth <= 991.98);
+    handler();
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, []);
+
   // Reset to page 1 when search term changes (optional: can keep currentPage)
   useEffect(() => {
     setCurrentPage(1);
+    setMobileStart(0);
   }, [searchTerm]);
 
-  // Scroll the active card toward center when index changes
+  // Reset grid scroll on page change
   useEffect(() => {
-    const el = sliderRef.current;
-    if (!el) return;
-    const cards = el.querySelectorAll("[data-card]");
-    const target = cards[activeIndex] as HTMLElement | undefined;
-    if (!target) return;
-    const offset =
-      target.offsetLeft - el.clientWidth / 2 + target.clientWidth / 2;
-    el.scrollTo({ left: offset, behavior: "smooth" });
-  }, [activeIndex]);
+    gridRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
 
-  // Scroll slider left/right without changing the active card
-  const scrollByAmount = (dir: "prev" | "next") => {
-    const el = sliderRef.current;
-    if (!el) return;
-    const amount = el.clientWidth - 160; // show more cards per click
-    el.scrollBy({ left: dir === "prev" ? -amount : amount, behavior: "smooth" });
+  // After page data loads, honor pending cross-page mobile jumps
+  useEffect(() => {
+    if (pendingPrevJump) {
+      const len = filteredSpeakers.length;
+      setMobileStart(Math.max(0, len - 2));
+      setPendingPrevJump(false);
+    }
+    if (pendingNextJump) {
+      setMobileStart(0);
+      setPendingNextJump(false);
+    }
+  }, [speakers, pendingPrevJump, pendingNextJump]);
+
+  const onPrev = () => {
+    if (isStacked) {
+      if (mobileStart > 0) {
+        setMobileStart(Math.max(0, mobileStart - 2));
+      } else if (currentPage > 1) {
+        setPendingPrevJump(true);
+        setCurrentPage((p) => Math.max(1, p - 1));
+      }
+    } else {
+      setCurrentPage((p) => Math.max(1, p - 1));
+    }
   };
 
-  const onPrev = () => scrollByAmount("prev");
-  const onNext = () => scrollByAmount("next");
+  const onNext = () => {
+    if (isStacked) {
+      if (mobileStart + 2 < filteredSpeakers.length) {
+        setMobileStart(mobileStart + 2);
+      } else if (currentPage < totalPages) {
+        setPendingNextJump(true);
+        setCurrentPage((p) => Math.min(totalPages, p + 1));
+      }
+    } else {
+      setCurrentPage((p) => Math.min(totalPages, p + 1));
+    }
+  };
 
   return (
     <section id="landing-speaker-section">
@@ -71,24 +105,29 @@ const SpeakerSection: React.FC = () => {
           </p>
         </div>
 
-        <div id="landing-speaker-slider-wrap">
+        <div id="landing-speaker-slider-wrap" className="w-100">
           <button
             id="landing-speaker-prev"
-            aria-label="Previous"
+            aria-label="Previous page"
             onClick={onPrev}
+            disabled={currentPage <= 1}
           >
             <i className="bi bi-chevron-left" />
           </button>
-          <div id="landing-speaker-slider" ref={sliderRef}>
+          <div id="landing-speaker-slider" className="grid" ref={gridRef}>
             {isLoading ? (
               <div data-placeholder>Loading speakers...</div>
             ) : isError ? (
               <div data-placeholder>Error loading speakers.</div>
             ) : filteredSpeakers.length > 0 ? (
               <SpeakerList
-                speakers={filteredSpeakers}
-                activeIndex={activeIndex}
-                onSelect={setActiveIndex}
+                speakers={
+                  isStacked
+                    ? filteredSpeakers.slice(mobileStart, mobileStart + 2)
+                    : filteredSpeakers.slice(0, 10)
+                }
+                activeIndex={-1}
+                onSelect={() => {}}
               />
             ) : (
               // Empty state: keep card styling but show a Coming Soon image
@@ -107,10 +146,21 @@ const SpeakerSection: React.FC = () => {
               />
             )}
           </div>
-          <button id="landing-speaker-next" aria-label="Next" onClick={onNext}>
+          <button
+            id="landing-speaker-next"
+            aria-label="Next page"
+            onClick={onNext}
+            disabled={
+              isStacked
+                ? mobileStart + 2 >= filteredSpeakers.length && currentPage >= totalPages
+                : currentPage >= totalPages
+            }
+          >
             <i className="bi bi-chevron-right" />
           </button>
         </div>
+
+        {/* Removed page indicator as requested */}
       </div>
     </section>
   );
