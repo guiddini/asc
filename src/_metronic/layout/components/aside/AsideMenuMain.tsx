@@ -451,6 +451,29 @@ export function AsideMenuMain() {
                 bsTitle="Legal Statut"
               />
             </AsideMenuItemWithSubMain>
+
+            {/* Admin utilities at bottom */}
+            <AsideMenuItem
+              to="/contact-management"
+              title="Contact Management"
+              hasBullet
+              bsTitle="Contact Management"
+              customIcon={<i className="fa-solid fa-address-book"></i>}
+            />
+            <AsideMenuItem
+              to="/sponsor-requests-management"
+              title="Sponsor Requests"
+              hasBullet
+              bsTitle="Sponsor Requests"
+              customIcon={<i className="fa-solid fa-clipboard-list"></i>}
+            />
+            <AsideMenuItem
+              to="/visa-demand-management"
+              title="Visa Management"
+              hasBullet
+              bsTitle="Visa Management"
+              customIcon={<i className="fa-solid fa-id-card"></i>}
+            />
           </RoleGuard>
         </AsideMenuItemWithSubMain>
       </RoleGuard>

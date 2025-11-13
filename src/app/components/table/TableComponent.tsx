@@ -51,17 +51,19 @@ export const TableComponent = ({
   customFullHeader?: ReactNode;
   searchKeys?: string[];
 }) => {
-  const [filteredData, setFilteredData] = useState<any[]>(data);
+  const rows = Array.isArray(data) ? data : [];
+  const cols = Array.isArray(columns) ? columns : [];
+  const [filteredData, setFilteredData] = useState<any[]>(rows);
   const [searchQuery, setSearchQuery] = useState("");
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [selectedExportColumns, setSelectedExportColumns] = useState<string[]>(
     []
   );
 
-  useEffect(() => setFilteredData(data), [data]);
+  useEffect(() => setFilteredData(Array.isArray(data) ? data : []), [data]);
 
   useEffect(() => {
-    const defaults = columns
+    const defaults = cols
       .map((col) => (typeof col?.name === "string" ? col?.name : ""))
       .filter(
         (name) =>
@@ -76,9 +78,9 @@ export const TableComponent = ({
     setSearchQuery(query);
     if (query.trim() === "") return setFilteredData(data);
     const lowercaseQuery = query.toLowerCase();
-    const filtered = data.filter((item) =>
+    const filtered = (Array.isArray(data) ? data : []).filter((item) =>
       searchKeys.length === 0
-        ? columns.some((column) => {
+        ? cols.some((column) => {
             const value = getNestedValue(
               item,
               column.selector?.toString?.() || ""
@@ -97,7 +99,7 @@ export const TableComponent = ({
     setFilteredData(filtered);
   };
 
-  const exportableColumns = columns?.filter((col) => {
+  const exportableColumns = cols?.filter((col) => {
     const name = typeof col?.name === "string" ? col?.name : "";
     return !!name && selectedExportColumns?.includes(name);
   });
@@ -179,7 +181,7 @@ export const TableComponent = ({
       <KTCardBody className="py-4" scroll>
         <div className="w-100 h-100">
           <DataTable
-            columns={columns}
+            columns={cols}
             data={filteredData}
             fixedHeader
             responsive
@@ -274,7 +276,7 @@ export const TableComponent = ({
               columns you don't need.
             </p>
             <div className="d-flex flex-wrap gap-4">
-              {columns
+              {cols
                 .map((col) => (typeof col?.name === "string" ? col?.name : ""))
                 .filter((name) => !!name)
                 .map((name) => {

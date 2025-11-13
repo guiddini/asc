@@ -30,6 +30,14 @@ const ParticipantCard = (props: ParticipantProps) => {
 
               <span className="indicator-label">View</span>
             </Link>
+            <Link
+              to={`/chat?to=${props.id}`}
+              className="btn btn-sm btn-outline-info btn-flex btn-center"
+              data-kt-chat-btn="true"
+            >
+              <i className="bi bi-chat-dots"></i>
+              <span className="indicator-label ms-2">Chat</span>
+            </Link>
           </div>
         </div>
       </div>
