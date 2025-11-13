@@ -191,9 +191,6 @@ const HomePage = () => {
                     src={toAbsoluteUrl("/media/svg/illustrations/easy/9.svg")}
                     alt="no post found"
                   />
-                  <span className="text-muted mt-1 fw-semibold fs-4">
-                    Soyez le premier à partager sur le fil
-                  </span>
                 </div>
               )}
             </>

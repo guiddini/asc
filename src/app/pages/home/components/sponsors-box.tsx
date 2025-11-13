@@ -81,21 +81,7 @@ export const SponsorsBox = () => {
             src={toAbsoluteUrl("/media/svg/illustrations/sigma/volume-1.svg")}
             alt="no featured product found"
           />
-          <span className="text-muted mt-1 fw-semibold fs-4">
-            Not ads found
-          </span>
-          {user?.company?.id && (
-            <span
-              className="mt-1 fw-semibold fs-7 cursor-pointer"
-              onClick={() => {
-                if (user?.company?.id) {
-                  navigate(`/ads`);
-                }
-              }}
-            >
-              Ajouter une publicité
-            </span>
-          )}
+          <span className="text-muted mt-1 fw-semibold fs-4">No ads found</span>
         </div>
       )}
     </div>
