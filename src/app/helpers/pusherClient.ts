@@ -8,7 +8,7 @@ function createInstance(): Pusher {
   const key = import.meta.env.VITE_APP_PUSHER_APP_KEY || "ec4e26dcaa1f65bfbd78";
   const cluster = import.meta.env.VITE_APP_PUSHER_CLUSTER || "eu";
   const apiUrl =
-    import.meta.env.VITE_APP_API_URL || "https://asc.api.eventili.com";
+    import.meta.env.VITE_APP_BASE_URL || "https://asc.api.eventili.com";
   const token = getAuth();
 
   if (!key) {

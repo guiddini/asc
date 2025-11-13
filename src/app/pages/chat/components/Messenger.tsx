@@ -58,9 +58,10 @@ const Messenger: FC<Props> = ({ conversationId }) => {
     const channel = pusher.subscribe(channelName);
 
     const handleIncoming = (payload: any) => {
+      const raw = payload?.message ?? payload;
       const newMsg: Message = {
-        ...payload,
-        conversation_id: String(payload.conversation_id),
+        ...raw,
+        conversation_id: String(raw?.conversation_id),
       };
 
       console.log("New message received:", newMsg);
@@ -68,9 +69,12 @@ const Messenger: FC<Props> = ({ conversationId }) => {
       queryClient.setQueryData(
         ["messages", conversationId],
         (old: MessagesPage | undefined) => {
-          if (!old) return { data: [newMsg] } as MessagesPage;
+          if (!old || !Array.isArray(old.data)) {
+            return { data: [newMsg] } as MessagesPage;
+          }
           return {
             ...old,
+            // Prepend so newest is first when data is latest->old
             data: [...(old.data || []), newMsg],
           } as MessagesPage;
         }
@@ -79,7 +83,18 @@ const Messenger: FC<Props> = ({ conversationId }) => {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
 
-    const events = ["MessageSent", "MessageCreated"];
+    const events = [
+      // Match backend event name from your logs
+      "App\\Events\\NewMessageSent",
+      // Common variants just in case
+      "NewMessageSent",
+      "App\\Events\\MessageSent",
+      "MessageSent",
+      "message.sent",
+      "App\\Events\\MessageCreated",
+      "MessageCreated",
+      "message.created",
+    ];
     events.forEach((evt) => channel.bind(evt, handleIncoming));
 
     return () => {
@@ -208,18 +223,12 @@ const Messenger: FC<Props> = ({ conversationId }) => {
           </div>
         ) : (
           <>
-            <div className="card-body flex-grow-1" id="kt_chat_messenger_body">
-              <div
-                className="scroll-y me-n5 pe-5 h-100"
-                data-kt-element="messages"
-                data-kt-scroll="true"
-                data-kt-scroll-activate="{default: false, lg: true}"
-                data-kt-scroll-max-height="auto"
-                data-kt-scroll-dependencies="#kt_header, #kt_toolbar, #kt_footer, #kt_chat_messenger_header, #kt_chat_messenger_footer"
-                data-kt-scroll-wrappers="#kt_content, #kt_chat_messenger_body"
-                data-kt-scroll-offset="0px"
-                style={{ overflowY: "auto" }}
-              >
+            <div
+              className="card-body flex-grow-1"
+              id="kt_chat_messenger_body"
+              style={{ overflowY: "auto", minHeight: 0 }}
+            >
+              <div className="me-n5 pe-5">
                 {messages.length === 0 && (
                   <div className="text-center text-muted py-10">
                     No messages yet.
