@@ -1,3 +1,4 @@
+import { AdminStatsResponse } from "../types/statistics";
 import axiosInstance from "./axios";
 
 export const getStatistics = async (): Promise<{
@@ -6,4 +7,9 @@ export const getStatistics = async (): Promise<{
 }> => {
   const res = await axiosInstance.get("/statistics/unread");
   return res.data;
+};
+
+export const getAdminStats = async (): Promise<AdminStatsResponse> => {
+  const res = await axiosInstance.get("/statistics/admin");
+  return res?.data;
 };

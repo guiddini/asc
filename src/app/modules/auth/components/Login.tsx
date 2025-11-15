@@ -1,3 +1,4 @@
+// Login component
 import { useAuth } from "../core/Auth";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -19,6 +20,7 @@ import {
 } from "../../../utils/server-error";
 import { AxiosError } from "axios";
 import UserTypeComponent from "../../../pages/landing-page/layout/type-user-component";
+import { adminRoles } from "../../../utils/roles";
 
 type loginProps = {
   email: string;
@@ -76,7 +78,10 @@ export function Login() {
             })
           );
 
-          navigate("/home");
+          const isAdmin = (userData?.user?.roles || []).some(
+            (r: any) => adminRoles.includes(r?.name)
+          );
+          navigate(isAdmin ? "/statistics" : "/home");
         },
         onError(error: AxiosError<BackendError>) {
           const errorMessage = error.response?.data

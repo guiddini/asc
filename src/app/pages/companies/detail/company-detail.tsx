@@ -19,9 +19,12 @@ import ReactCountryFlag from "react-country-flag";
 
 const CompanyDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+
   const isCompanyEditor = useSelector((state) => canEditCompany(state, id));
 
-  const { data, isLoading } = useQuery(["company", id], () => getCompanyApi(id));
+  const { data, isLoading } = useQuery(["company", id], () =>
+    getCompanyApi(id)
+  );
 
   const COMPANY: CompanyDetailProps = useMemo(() => {
     if (!isLoading && data?.data) {
@@ -34,8 +37,7 @@ const CompanyDetail: React.FC = () => {
         header_text: data.data.header_text || `Welcome to ${data.data.name}`,
         quote_author: data.data.quote_author || `Company CEO`,
         quote_text:
-          data.data.quote_text ||
-          "Excellence is not an act, but a habit.",
+          data.data.quote_text || "Excellence is not an act, but a habit.",
         team_text:
           data.data.team_text ||
           "Meet the dedicated team that makes it all possible.",
@@ -82,10 +84,14 @@ const CompanyDetail: React.FC = () => {
               countryCode={data.data.country.code}
               svg
               title={
-                data.data.country.name_fr || data.data.country.name_en || "Country"
+                data.data.country.name_fr ||
+                data.data.country.name_en ||
+                "Country"
               }
               aria-label={
-                data.data.country.name_en || data.data.country.name_fr || "Country"
+                data.data.country.name_en ||
+                data.data.country.name_fr ||
+                "Country"
               }
               style={{
                 width: "1.2em",

@@ -50,9 +50,13 @@ export function AsideMenuMain() {
       ? pendingCountData.count
       : undefined;
 
-  const { data: statsData } = useQuery(["statistics", "unread"], getStatistics, {
-    staleTime: 60 * 1000,
-  });
+  const { data: statsData } = useQuery(
+    ["statistics", "unread"],
+    getStatistics,
+    {
+      staleTime: 60 * 1000,
+    }
+  );
   const chatBadge =
     statsData && statsData.unread_conversations > 0
       ? statsData.unread_conversations
@@ -73,6 +77,14 @@ export function AsideMenuMain() {
         bsTitle="Home"
         className="py-2"
       />
+      {isAdmin && (
+        <AsideMenuItem
+          to="/statistics"
+          title="Statistics"
+          customIcon={<i className="fa-solid fa-chart-simple"></i>}
+          bsTitle="Statistics"
+        />
+      )}
       <AsideMenuItem
         to="/chat"
         title="Chat"
@@ -353,21 +365,6 @@ export function AsideMenuMain() {
             />
           </RoleGuard>
           <RoleGuard allowedRoles={adminRoles}>
-            <AsideMenuItemWithSubMain
-              to="/statistics"
-              title="Overview"
-              bsTitle="Overview"
-              customIcon={<i className="fa-solid fa-chart-simple"></i>}
-              hasBullet
-            >
-              <AsideMenuItem
-                to="/statistics"
-                title="Statistics"
-                hasBullet
-                bsTitle="Statistics"
-              />
-            </AsideMenuItemWithSubMain>
-
             <AsideMenuItem
               to="/users"
               title="User Management"

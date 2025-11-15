@@ -1,3 +1,4 @@
+// PrivateRoutes component
 import { FC, lazy, Suspense, useEffect, useState } from "react";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { MasterLayout } from "../../_metronic/layout/MasterLayout";
@@ -85,6 +86,7 @@ import {
   programRoles,
 } from "../utils/roles";
 import SponsorsManagementPage from "../pages/sponsor-management/page";
+import { useSelector } from "react-redux";
 
 const PrivateRoutes = () => {
   const [showAppModal, setShowAppModal] = useState(false);
@@ -114,6 +116,9 @@ const PrivateRoutes = () => {
       // Ignore localStorage errors (e.g., privacy mode)
     }
   }, []);
+
+  const { user } = useSelector((state: any) => state.user);
+  const isAdmin = (user?.roles || []).some((r: any) => adminRoles.includes(r?.name));
 
   return (
     <Routes>
@@ -156,7 +161,7 @@ const PrivateRoutes = () => {
 
           <Route element={<MasterLayout />}>
             {/* Redirect to Dashboard after success login/registartion */}
-            <Route path="auth/*" element={<Navigate to="/home" />} />
+            <Route path="auth/*" element={<Navigate to={isAdmin ? "/statistics" : "/home"} />} />
             {/* Pages */}
             {/* General Routes */}
             {/* home feed */}
