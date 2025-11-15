@@ -127,26 +127,6 @@ const StatisticsPage = () => {
 
   if (!data) return null;
 
-  const exhibitionStatuses: ExhibitionStatus[] = [
-    "pending",
-    "accepted",
-    "refused",
-    "paid",
-    "failed",
-  ];
-  const visaStatuses: VisaStatus[] = [
-    "pending",
-    "accepted",
-    "refused",
-    "cancelled",
-  ];
-  const meetingStatuses: MeetingStatus[] = [
-    "pending",
-    "accepted",
-    "declined",
-    "cancelled",
-  ];
-
   return (
     <Container fluid className="py-4 px-4">
       {/* Header */}
