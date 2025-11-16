@@ -36,8 +36,6 @@ const CompaniesPageWrapper = () => {
   return (
     <>
       <PageTitle breadcrumbs={[]}>Exposants</PageTitle>
-
-      {/* Filters */}
       <KTCard>
         <KTCardBody>
           <Row xl={12} md={12}>
