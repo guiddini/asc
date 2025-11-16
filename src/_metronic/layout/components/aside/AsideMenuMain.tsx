@@ -19,8 +19,6 @@ import {
   kycManagementRoles, // added
 } from "../../../../app/utils/roles";
 
-// Permission checks are handled via RoleGuard using adminRoles
-
 export function AsideMenuMain() {
   const { user } = useSelector((state: UserResponse) => state.user);
   const hasCompany = user?.company ? true : false;
