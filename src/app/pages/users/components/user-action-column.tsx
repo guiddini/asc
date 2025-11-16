@@ -18,6 +18,9 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../../features/userSlice";
 import { kycManagementRoles } from "../../../utils/roles";
 import KycReviewModal from "./kyc-review-modal";
+import { GuestAccommodationsModal } from "../../accomodations-management/components/GuestAccommodationsModal";
+import { CompanionAccommodationsModal } from "../../accomodations-management/components/CompanionAccommodationsModal";
+import { ShowCompanionAccommodationModal } from "../../accomodations-management/components/ShowCompanionAccommodationModal";
 
 const UserActionColumn = ({
   openViewModal,
@@ -34,256 +37,180 @@ const UserActionColumn = ({
   const { mutate: resetPasswordMutate } = useMutation({
     mutationKey: ["register"],
     mutationFn: async (data: { email: string }) => {
-      await forgetPasswordApi({
-        email: data.email,
-      });
+      await forgetPasswordApi({ email: data.email });
     },
   });
 
   const [openAddNewTicket, setOpenAddNewTicket] = useState<User | null>(null);
-  const [openAssignTicket, setOpenAssignTicket] = useState<boolean>(false);
-  const [openViewBadge, setOpenViewBadge] = useState<boolean>(false);
-  const [openAddNewStaff, setOpenAddNewStaff] = useState<boolean>(false);
+  const [openAssignTicket, setOpenAssignTicket] = useState(false);
+  const [openViewBadge, setOpenViewBadge] = useState(false);
+  const [openAddNewStaff, setOpenAddNewStaff] = useState(false);
   const [openGiftTicketToOtherUser, setOpenGiftTicketToOtherUser] =
-    useState<boolean>(false);
-  const [openResetPasswordModal, setOpenResetPasswordModal] =
-    useState<boolean>(false);
-  const [showUserQrCode, setShowUserQrCode] = useState<boolean>(false);
-  const [openAssignRoleModal, setOpenAssignRoleModal] =
-    useState<boolean>(false);
-  const [openRemoveRoleModal, setOpenRemoveRoleModal] =
-    useState<boolean>(false);
+    useState(false);
+  const [openResetPasswordModal, setOpenResetPasswordModal] = useState(false);
+  const [showUserQrCode, setShowUserQrCode] = useState(false);
+  const [openAssignRoleModal, setOpenAssignRoleModal] = useState(false);
+  const [openRemoveRoleModal, setOpenRemoveRoleModal] = useState(false);
 
-  // KYC management gating + modal state
   const currentUser = useSelector(selectUser);
   const isKycManager =
     (currentUser?.roles || []).some((r: any) =>
       kycManagementRoles.includes(String(r?.name || ""))
-    ) || kycManagementRoles.includes(String(currentUser?.roleValues?.name || ""));
-  const [openKycReviewModal, setOpenKycReviewModal] = useState<boolean>(false);
+    ) ||
+    kycManagementRoles.includes(String(currentUser?.roleValues?.name || ""));
+
+  const [openKycReviewModal, setOpenKycReviewModal] = useState(false);
+
+  const [openGuestAccommodations, setOpenGuestAccommodations] = useState(false);
+  const [openCompanionAccommodations, setOpenCompanionAccommodations] =
+    useState(false);
+  const [openCompanionDetail, setOpenCompanionDetail] = useState<string | null>(
+    null
+  );
 
   return (
-    <Dropdown placement="top-start">
-      <Dropdown.Toggle
-        variant="transparent"
-        color="#fff"
-        id="post-dropdown"
-        className="btn btn-icon btn-color-gray-500 btn-active-color-primary justify-content-end"
-      >
-        <i className="ki-duotone ki-dots-square fs-1">
-          <span className="path1"></span>
-          <span className="path2"></span>
-          <span className="path3"></span>
-          <span className="path4"></span>
-        </i>
-      </Dropdown.Toggle>
-
-      <Dropdown.Menu>
-        <Dropdown.Item
-          onClick={() => setShowUserQrCode(true)}
-          className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
+    <>
+      <Dropdown placement="top-start">
+        <Dropdown.Toggle
+          variant="transparent"
+          color="#fff"
+          id="post-dropdown"
+          className="btn btn-icon btn-color-gray-500 btn-active-color-primary justify-content-end"
         >
-          <div className="cursor-pointer d-flex flex-row align-items-center">
-            <KTIcon
-              iconName="eye"
-              className="fs-1 cursor-pointer m-0 text-success"
-            />
-            <span className="text-muted ms-2">View QR Code</span>
-          </div>
-        </Dropdown.Item>
+          <i className="ki-duotone ki-dots-square fs-1">
+            <span className="path1"></span>
+            <span className="path2"></span>
+            <span className="path3"></span>
+            <span className="path4"></span>
+          </i>
+        </Dropdown.Toggle>
 
-        {/* New: KYC Review (only for kycManagementRoles) */}
-        {isKycManager && (
+        <Dropdown.Menu>
           <Dropdown.Item
-            onClick={(e) => {
-              e.preventDefault();
-              setOpenKycReviewModal(true);
-            }}
-            disabled={!props?.has_kyc}
-            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
+            onClick={() => setShowUserQrCode(true)}
+            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold m-0 px-5 py-3"
           >
-            <div className="cursor-pointer d-flex flex-row align-items-center">
+            <KTIcon iconName="eye" className="fs-1 m-0 text-success" />
+            <span className="text-muted ms-2">View QR Code</span>
+          </Dropdown.Item>
+
+          {isKycManager && (
+            <Dropdown.Item
+              onClick={() => setOpenKycReviewModal(true)}
+              disabled={!props?.has_kyc}
+              className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info fw-bold m-0 px-5 py-3"
+            >
               <KTIcon
                 iconName="shield-search"
-                className="fs-1 cursor-pointer m-0 text-primary"
+                className="fs-1 m-0 text-primary"
               />
               <span className="text-muted ms-2">Review KYC</span>
-            </div>
-          </Dropdown.Item>
-        )}
-
-        {/* New Role Management Options */}
-        <Dropdown.Item
-          onClick={() => setOpenAssignRoleModal(true)}
-          className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
-        >
-          <div className="cursor-pointer d-flex flex-row align-items-center">
-            <KTIcon
-              iconName="shield-check"
-              className="fs-1 cursor-pointer m-0 text-primary"
-            />
-            <span className="text-muted ms-2">Assign Role</span>
-          </div>
-        </Dropdown.Item>
-
-        <Dropdown.Item
-          onClick={() => setOpenRemoveRoleModal(true)}
-          className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
-        >
-          <div className="cursor-pointer d-flex flex-row align-items-center">
-            <KTIcon
-              iconName="shield-cross"
-              className="fs-1 cursor-pointer m-0 text-danger"
-            />
-            <span className="text-muted ms-2">Remove Role</span>
-          </div>
-        </Dropdown.Item>
-
-        <Dropdown.Item
-          onClick={() => setOpenResetPasswordModal(true)}
-          className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
-        >
-          <div className="cursor-pointer d-flex flex-row align-items-center">
-            <KTIcon
-              iconName="lock"
-              className="fs-1 cursor-pointer m-0 text-success"
-            />
-            <span className="text-muted ms-2">Reset User password</span>
-          </div>
-        </Dropdown.Item>
-
-        {/* <Dropdown.Item
-          onClick={(e) => {
-            e.preventDefault();
-            setOpenGiftTicketToOtherUser(true);
-          }}
-          className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
-        >
-          <div className="cursor-pointer d-flex flex-row align-items-center">
-            <KTIcon
-              iconName="receipt-square"
-              className="fs-1 cursor-pointer m-0 text-warning"
-            />
-            <span className="text-muted ms-2">Gift ticket to other user</span>
-          </div>
-        </Dropdown.Item> */}
-
-        <div className="p-2">
-          {/* <Dropdown.Item
-            onClick={() => {
-              setOpenAddNewTicket(props);
-            }}
-            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
-          >
-            <div className="cursor-pointer d-flex flex-row align-items-center">
-              <i className="fa-solid fa-ticket fs-2 text-custom-purple-dark me-1"></i>
-              <span className="text-muted ms-2">Ajouter des tickets</span>
-            </div>
-          </Dropdown.Item> */}
-
-          {/* print badge && assign ticket */}
-          {props?.user_has_ticket_id !== null && (
-            <>
-              <Dropdown.Item
-                onClick={(e) => {
-                  e.preventDefault();
-                  setOpenViewBadge(true);
-                }}
-                className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
-              >
-                <div className="cursor-pointer d-flex flex-row align-items-center">
-                  <KTIcon
-                    iconName="printer"
-                    className="fs-1 cursor-pointer m-0 text-primary"
-                  />
-                  <span className="text-muted ms-2">Visualiser le badge</span>
-                </div>
-              </Dropdown.Item>
-            </>
+            </Dropdown.Item>
           )}
 
-          {/* resend email */}
+          <Dropdown.Item
+            onClick={() => setOpenAssignRoleModal(true)}
+            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 fw-bold m-0 px-5 py-3"
+          >
+            <KTIcon iconName="shield-check" className="fs-1 m-0 text-primary" />
+            <span className="text-muted ms-2">Assign Role</span>
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() => setOpenRemoveRoleModal(true)}
+            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 fw-bold m-0 px-5 py-3"
+          >
+            <KTIcon iconName="shield-cross" className="fs-1 m-0 text-danger" />
+            <span className="text-muted ms-2">Remove Role</span>
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() => setOpenResetPasswordModal(true)}
+            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 fw-bold m-0 px-5 py-3"
+          >
+            <KTIcon iconName="lock" className="fs-1 m-0 text-success" />
+            <span className="text-muted ms-2">Reset User password</span>
+          </Dropdown.Item>
+
+          {props?.user_has_ticket_id !== null && (
+            <Dropdown.Item
+              onClick={() => setOpenViewBadge(true)}
+              className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 fw-bold m-0 px-5 py-3"
+            >
+              <KTIcon iconName="printer" className="fs-1 m-0 text-primary" />
+              <span className="text-muted ms-2">Visualiser le badge</span>
+            </Dropdown.Item>
+          )}
+
           <Dropdown.Item
             onClick={openViewModal}
-            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
+            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 fw-bold m-0 px-5 py-3"
           >
-            <div className="cursor-pointer d-flex flex-row align-items-center">
-              <KTIcon
-                iconName="eye"
-                className="fs-1 cursor-pointer m-0 text-success"
-              />
-              <span className="text-muted ms-2">View</span>
-            </div>
+            <KTIcon iconName="eye" className="fs-1 m-0 text-success" />
+            <span className="text-muted ms-2">View</span>
           </Dropdown.Item>
 
           {props?.has_password === "0" ? (
-            <>
-              {/* resend email */}
-              <Dropdown.Item
-                onClick={(e) => {
-                  e.preventDefault();
-                  mutate(props.email, {
-                    onSuccess(data, variables, context) {
-                      toast.success("L'invitation à été envoyé !");
-                    },
-                    onError(error, variables, context) {
-                      toast.error("Erreur lors du renvoi de l'invitation !");
-                    },
-                  });
-                }}
-                className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
-              >
-                <KTIcon
-                  iconName="sms"
-                  className={`fs-1 cursor-pointer m-0 text-primary`}
-                />
-                <span className="text-muted mt-1 ms-2">
-                  Renvoyer l'invitation
-                </span>
-              </Dropdown.Item>
-            </>
+            <Dropdown.Item
+              onClick={() =>
+                mutate(props.email, {
+                  onSuccess() {
+                    toast.success("Invitation envoyée");
+                  },
+                  onError() {
+                    toast.error("Erreur lors de l'envoi");
+                  },
+                })
+              }
+              className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 fw-bold m-0 px-5 py-3"
+            >
+              <KTIcon iconName="sms" className="fs-1 m-0 text-primary" />
+              <span className="text-muted ms-2">Renvoyer l'invitation</span>
+            </Dropdown.Item>
           ) : (
-            <>
-              {/* RESET PASSWORD */}
-              <Dropdown.Item
-                onClick={(e) => {
-                  e.preventDefault();
-                  resetPasswordMutate(
-                    {
-                      email: props.email,
+            <Dropdown.Item
+              onClick={() =>
+                resetPasswordMutate(
+                  { email: props.email },
+                  {
+                    onSuccess() {
+                      toast.success(`Lien envoyé à ${props.email}`);
                     },
-                    {
-                      onSuccess(data, variables, context) {
-                        toast.success(
-                          `Le lien de réinitialisation du mot de passe a été envoyé à ${props.email}`
-                        );
-                      },
-                      onError(error, variables, context) {
-                        toast.error(
-                          "Erreur lors de l'envoi du lien de réinitialisation du mot de passe"
-                        );
-                      },
-                    }
-                  );
-                }}
-                className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
-              >
-                <KTIcon
-                  iconName="lock"
-                  className={`fs-1 cursor-pointer m-0 text-warning`}
-                />
-                <span className="text-muted mt-1 ms-2">
-                  Réinitialiser le mot de passe
-                </span>
-              </Dropdown.Item>
-            </>
+                    onError() {
+                      toast.error("Erreur lors de l'envoi");
+                    },
+                  }
+                )
+              }
+              className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 fw-bold m-0 px-5 py-3"
+            >
+              <KTIcon iconName="lock" className="fs-1 m-0 text-warning" />
+              <span className="text-muted ms-2">
+                Réinitialiser le mot de passe
+              </span>
+            </Dropdown.Item>
           )}
-        </div>
-      </Dropdown.Menu>
 
-      {/* All existing modals */}
+          <Dropdown.Item
+            onClick={() => setOpenGuestAccommodations(true)}
+            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 fw-bold m-0 px-5 py-3"
+          >
+            <KTIcon iconName="home-2" className="fs-1 m-0 text-info" />
+            <span className="text-muted ms-2">Guest Accommodations</span>
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() => setOpenCompanionAccommodations(true)}
+            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 fw-bold m-0 px-5 py-3"
+          >
+            <KTIcon iconName="home" className="fs-1 m-0 text-primary" />
+            <span className="text-muted ms-2">Companion Accommodations</span>
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+
       <AddNewTicketToUserModal
-        isOpen={openAddNewTicket === null ? false : true}
+        isOpen={!!openAddNewTicket}
         setIsOpen={setOpenAddNewTicket}
         user={openAddNewTicket}
       />
@@ -298,22 +225,22 @@ const UserActionColumn = ({
         <ViewUserBadge
           isOpen={openViewBadge}
           setIsOpen={setOpenViewBadge}
-          userID={props?.id}
+          userID={props.id}
           key={String(openViewBadge)}
-          userName={props?.fname + " " + props.lname}
+          userName={props.fname + " " + props.lname}
         />
       )}
       {openAddNewStaff && (
         <AddStaffModal
-          userId={props?.id}
-          userName={props?.fname + " " + props?.lname}
+          userId={props.id}
+          userName={props.fname + " " + props.lname}
           isOpen={openAddNewStaff}
           setIsOpen={setOpenAddNewStaff}
         />
       )}
       {openResetPasswordModal && (
         <ResetPasswordModal
-          userId={props?.id}
+          userId={props.id}
           isOpen={openResetPasswordModal}
           setIsOpen={setOpenResetPasswordModal}
         />
@@ -329,45 +256,62 @@ const UserActionColumn = ({
         <ShowUserQrCodeModal
           isOpen={showUserQrCode}
           setIsOpen={setShowUserQrCode}
-          userId={props?.id}
-          userName={props?.fname + " " + props?.lname}
+          userId={props.id}
+          userName={props.fname + " " + props.lname}
         />
       )}
-
-      {/* New: KYC Review Modal (only for kycManagementRoles) */}
       {isKycManager && (
         <KycReviewModal
           isOpen={openKycReviewModal}
           setIsOpen={setOpenKycReviewModal}
-          userId={props?.id}
-          userName={`${props?.fname || ""} ${props?.lname || ""}`}
+          userId={props.id}
+          userName={props.fname + " " + props.lname}
           currentStatus={(props?.info?.kyc_status as any) || ""}
-          onStatusChange={(status) => {
-            toast.success(`KYC status updated to ${status}`);
-          }}
+          onStatusChange={(status) => toast.success(`KYC updated to ${status}`)}
         />
       )}
-
-      {/* New Role Management Modals */}
       {openAssignRoleModal && (
         <AssignRoleModal
           isOpen={openAssignRoleModal}
           setIsOpen={setOpenAssignRoleModal}
-          userId={props?.id}
-          userName={props?.fname + " " + props?.lname}
-          userRoles={props?.roles || []} // Pass user's current roles
+          userId={props.id}
+          userName={props.fname + " " + props.lname}
+          userRoles={props.roles || []}
         />
       )}
       {openRemoveRoleModal && (
         <RemoveRoleModal
           isOpen={openRemoveRoleModal}
           setIsOpen={setOpenRemoveRoleModal}
-          userId={props?.id}
-          userName={props?.fname + " " + props?.lname}
-          userRoles={props?.roles || []} // Pass user's current roles
+          userId={props.id}
+          userName={props.fname + " " + props.lname}
+          userRoles={props.roles || []}
         />
       )}
-    </Dropdown>
+      {openGuestAccommodations && (
+        <GuestAccommodationsModal
+          isOpen={openGuestAccommodations}
+          onClose={() => setOpenGuestAccommodations(false)}
+          userId={String(props.id)}
+        />
+      )}
+      {openCompanionAccommodations && (
+        <CompanionAccommodationsModal
+          isOpen={openCompanionAccommodations}
+          onClose={() => setOpenCompanionAccommodations(false)}
+          userId={String(props.id)}
+          onOpenAccommodation={(id) => setOpenCompanionDetail(String(id))}
+        />
+      )}
+      {openCompanionDetail && (
+        <ShowCompanionAccommodationModal
+          isOpen={!!openCompanionDetail}
+          onClose={() => setOpenCompanionDetail(null)}
+          userId={String(props.id)}
+          accommodationId={openCompanionDetail}
+        />
+      )}
+    </>
   );
 };
 

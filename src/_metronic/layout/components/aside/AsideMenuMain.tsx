@@ -17,6 +17,8 @@ import {
   programRoles,
   staffRoles,
   kycManagementRoles, // added
+  accommodationManagementRoles, // added
+  statisticsManagementRoles, // added
 } from "../../../../app/utils/roles";
 
 export function AsideMenuMain() {
@@ -76,14 +78,15 @@ export function AsideMenuMain() {
         bsTitle="Home"
         className="py-2"
       />
-      {isAdmin && (
+      {/* Statistics visible to admins and statistics managers */}
+      <RoleGuard allowedRoles={statisticsManagementRoles}>
         <AsideMenuItem
           to="/statistics"
           title="Statistics"
           customIcon={<i className="fa-solid fa-chart-simple"></i>}
           bsTitle="Statistics"
         />
-      )}
+      </RoleGuard>
       <AsideMenuItem
         to="/chat"
         title="Chat"
@@ -315,6 +318,29 @@ export function AsideMenuMain() {
           bsTitle="Admin"
           fontIcon="bi-gear"
         >
+          {/* Hébergement management (Hotels & Accommodations) */}
+          <RoleGuard allowedRoles={accommodationManagementRoles}>
+            <AsideMenuItemWithSubMain
+              to="/accommodation-management"
+              title="Accommodation Management"
+              bsTitle="Accommodation Management"
+              customIcon={<i className="fa-solid fa-bed"></i>}
+              hasBullet
+            >
+              <AsideMenuItem
+                to="/hotels-management"
+                title="Hotels"
+                bsTitle="Hotels"
+                hasBullet
+              />
+              <AsideMenuItem
+                to="/accommodation-management"
+                title="Accommodations"
+                bsTitle="Accommodations"
+                hasBullet
+              />
+            </AsideMenuItemWithSubMain>
+          </RoleGuard>
           {/* Allow KYC Managers to see only User Management inside Admin */}
           <RoleGuard allowedRoles={[...adminRoles, ...kycManagementRoles]}>
             <AsideMenuItem

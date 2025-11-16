@@ -120,6 +120,8 @@ export const ParticipantsPage = () => {
       "head_delegation",
       "delegation_member",
       "kyc_manager",
+      "statistics_manager",
+      "accommodation_manager",
     ]);
 
     return (

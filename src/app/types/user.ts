@@ -43,6 +43,8 @@ export interface User {
   tickets: Ticket[];
   companyStaffRole?: Role;
   has_kyc: boolean;
+  has_accommodation: boolean;
+  is_companion: boolean;
 }
 
 type InfoType = {

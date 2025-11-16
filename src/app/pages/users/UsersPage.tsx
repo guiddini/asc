@@ -9,7 +9,6 @@ import UserActionColumn from "./components/user-action-column";
 import { useNavigate } from "react-router-dom";
 import getMediaUrl from "../../helpers/getMediaUrl";
 import UpdateUserModal from "./update-user/UpdateUserModal";
-import { Can } from "../../utils/ability-context";
 import { User } from "../../types/user";
 import { useDispatch, useSelector } from "react-redux";
 import { UsersReducer, UserResponse } from "../../types/reducers";
@@ -38,6 +37,10 @@ type FormValues = {
   prevTypeFilter: string;
   prevKycStatus: "" | KycStatus;
   prevNameFilter: string;
+  has_accommodation_only: boolean;
+  is_companion_only: boolean;
+  prevHasAccommodationOnly: boolean;
+  prevIsCompanionOnly: boolean;
 };
 
 const usersBreadcrumbs: Array<PageLink> = [
@@ -67,6 +70,8 @@ const UsersPage = () => {
       roleFilter?: string;
       typeFilter?: string;
       kyc_status?: KycStatus;
+      has_accommodation_only?: boolean;
+      is_companion_only?: boolean;
       offset: string | number;
     }) => await getAllUsersApi(data),
   });
@@ -82,10 +87,21 @@ const UsersPage = () => {
         prevTypeFilter: "",
         prevKycStatus: "",
         prevNameFilter: "",
+        has_accommodation_only: false,
+        is_companion_only: false,
+        prevHasAccommodationOnly: false,
+        prevIsCompanionOnly: false,
       },
     });
 
-  const { nameFilter, roleFilter, typeFilter, kyc_status } = watch();
+  const {
+    nameFilter,
+    roleFilter,
+    typeFilter,
+    kyc_status,
+    has_accommodation_only,
+    is_companion_only,
+  } = watch();
 
   const [createModalOpen, setCreateModalOpen] = useState<boolean>(false);
   const [updateUserID, setUpdateUserID] = useState<string | number | null>(
@@ -133,7 +149,12 @@ const UsersPage = () => {
     data?: Partial<
       Pick<
         FormValues,
-        "roleFilter" | "nameFilter" | "typeFilter" | "kyc_status"
+        | "roleFilter"
+        | "nameFilter"
+        | "typeFilter"
+        | "kyc_status"
+        | "has_accommodation_only"
+        | "is_companion_only"
       >
     >
   ) => {
@@ -141,18 +162,26 @@ const UsersPage = () => {
     const roleFilter = data?.roleFilter ?? watch("roleFilter");
     const typeFilter = data?.typeFilter ?? watch("typeFilter");
     const kyc_status = data?.kyc_status ?? watch("kyc_status");
+    const has_accommodation_only =
+      data?.has_accommodation_only ?? watch("has_accommodation_only");
+    const is_companion_only =
+      data?.is_companion_only ?? watch("is_companion_only");
 
     const prevNameFilter = getValues("prevNameFilter");
     const prevRoleFilter = getValues("prevRoleFilter");
     const prevTypeFilter = getValues("prevTypeFilter");
     const prevKycStatus = getValues("prevKycStatus");
+    const prevHasAccommodationOnly = getValues("prevHasAccommodationOnly");
+    const prevIsCompanionOnly = getValues("prevIsCompanionOnly");
 
     // Detect any change in filters compared to previous submitted values
     const paramsChanged =
       nameFilter !== prevNameFilter ||
       roleFilter !== prevRoleFilter ||
       typeFilter !== prevTypeFilter ||
-      kyc_status !== prevKycStatus;
+      kyc_status !== prevKycStatus ||
+      has_accommodation_only !== prevHasAccommodationOnly ||
+      is_companion_only !== prevIsCompanionOnly;
 
     if (paramsChanged) {
       dispatch(resetCurrentPage());
@@ -163,6 +192,8 @@ const UsersPage = () => {
       roleFilter: roleFilter?.toLocaleLowerCase(),
       typeFilter: typeFilter?.toLocaleLowerCase(),
       kyc_status: (kyc_status || "") as KycStatus | undefined,
+      has_accommodation_only: has_accommodation_only ? true : undefined,
+      is_companion_only: is_companion_only ? true : undefined,
       offset: paramsChanged ? 0 : currentPage,
     };
 
@@ -178,6 +209,8 @@ const UsersPage = () => {
         setValue("prevRoleFilter", roleFilter);
         setValue("prevTypeFilter", typeFilter);
         setValue("prevKycStatus", kyc_status || "");
+        setValue("prevHasAccommodationOnly", !!has_accommodation_only);
+        setValue("prevIsCompanionOnly", !!is_companion_only);
 
         if (paramsChanged) {
           // New search: replace list and reset pagination
@@ -213,6 +246,8 @@ const UsersPage = () => {
       nameFilter,
       typeFilter,
       kyc_status,
+      has_accommodation_only,
+      is_companion_only,
     });
   };
 
@@ -224,6 +259,8 @@ const UsersPage = () => {
       nameFilter,
       roleFilter,
       kyc_status,
+      has_accommodation_only,
+      is_companion_only,
     });
   };
 
@@ -235,6 +272,34 @@ const UsersPage = () => {
       nameFilter,
       roleFilter,
       typeFilter,
+      has_accommodation_only,
+      is_companion_only,
+    });
+  };
+
+  const handleHasAccommodationOnlyChange = (e: any) => {
+    const checked = !!e?.target?.checked;
+    setValue("has_accommodation_only", checked);
+    handleFilter({
+      has_accommodation_only: checked,
+      nameFilter,
+      roleFilter,
+      typeFilter,
+      kyc_status,
+      is_companion_only,
+    });
+  };
+
+  const handleIsCompanionOnlyChange = (e: any) => {
+    const checked = !!e?.target?.checked;
+    setValue("is_companion_only", checked);
+    handleFilter({
+      is_companion_only: checked,
+      nameFilter,
+      roleFilter,
+      typeFilter,
+      kyc_status,
+      has_accommodation_only,
     });
   };
 
@@ -249,6 +314,8 @@ const UsersPage = () => {
             roleFilter,
             typeFilter,
             kyc_status,
+            has_accommodation_only,
+            is_companion_only,
           });
         }
       },
@@ -401,6 +468,42 @@ const UsersPage = () => {
                     <option value="refused">Refused</option>
                   </select>
                 </Col>
+                <Col className="d-flex align-items-end">
+                  <div className="form-check form-switch">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      id="hasAccommodationOnly"
+                      {...register("has_accommodation_only", {
+                        onChange: handleHasAccommodationOnlyChange,
+                      })}
+                    />
+                    <label
+                      className="form-check-label ms-2"
+                      htmlFor="hasAccommodationOnly"
+                    >
+                      Accommodation Only
+                    </label>
+                  </div>
+                </Col>
+                <Col className="d-flex align-items-end">
+                  <div className="form-check form-switch">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      id="isCompanionOnly"
+                      {...register("is_companion_only", {
+                        onChange: handleIsCompanionOnlyChange,
+                      })}
+                    />
+                    <label
+                      className="form-check-label ms-2"
+                      htmlFor="isCompanionOnly"
+                    >
+                      Companion Only
+                    </label>
+                  </div>
+                </Col>
               </Row>
             </div>
           </div>
@@ -410,7 +513,7 @@ const UsersPage = () => {
         <div className="card-body p-4">
           <div
             ref={scrollContainerRef}
-            style={{ maxHeight: "70vh", overflowY: "auto" }}
+            style={{ minHeight: "65vh", overflowY: "auto", maxHeight: "65vh" }}
           >
             <table className="table align-middle table-row-dashed fs-6 gy-5">
               <thead>
@@ -423,10 +526,13 @@ const UsersPage = () => {
                   <th className="min-w-170px">Registration Type</th>
                   <th className="min-w-120px">KYC Status</th>
                   <th className="min-w-120px">Has KYC</th>
+                  <th className="min-w-150px">Has Accommodation</th>
+                  <th className="min-w-120px">Is Companion</th>
                   <th className="min-w-120px">Created At</th>
                   <th className="text-end min-w-150px">Actions</th>
                 </tr>
               </thead>
+
               <tbody className="text-gray-600 fw-semibold">
                 {users?.map((row: User) => (
                   <tr key={String(row?.id)}>
@@ -449,14 +555,16 @@ const UsersPage = () => {
                         </div>
                       )}
                     </td>
+
                     <td>{row?.fname}</td>
                     <td>{row?.lname}</td>
+
                     <td
                       style={{ whiteSpace: "normal", wordBreak: "break-word" }}
                     >
                       {row?.email}
                     </td>
-                    {/* Role badges */}
+
                     <td>
                       {(row?.roles && row.roles.length > 0
                         ? row.roles
@@ -471,6 +579,7 @@ const UsersPage = () => {
                           {r?.display_name || r?.name || "Role"}
                         </span>
                       ))}
+
                       {(!row?.roles || row.roles.length === 0) &&
                         !row?.roleValues && (
                           <span className="badge bg-light text-muted">
@@ -478,7 +587,7 @@ const UsersPage = () => {
                           </span>
                         )}
                     </td>
-                    {/* Registration type badge */}
+
                     <td>
                       {row?.info?.type ? (
                         <span className="badge bg-secondary text-white rounded-pill">
@@ -490,7 +599,7 @@ const UsersPage = () => {
                         </span>
                       )}
                     </td>
-                    {/* KYC Status badge */}
+
                     <td>
                       {row?.info?.kyc_status ? (
                         <span
@@ -514,7 +623,7 @@ const UsersPage = () => {
                         </span>
                       )}
                     </td>
-                    {/* Has KYC badge */}
+
                     <td>
                       {row?.has_kyc ? (
                         <span className="badge bg-success text-white rounded-pill">
@@ -524,7 +633,29 @@ const UsersPage = () => {
                         <span className="badge bg-light text-muted">No</span>
                       )}
                     </td>
+
+                    <td>
+                      {row?.has_accommodation ? (
+                        <span className="badge bg-success text-white rounded-pill">
+                          Yes
+                        </span>
+                      ) : (
+                        <span className="badge bg-light text-muted">No</span>
+                      )}
+                    </td>
+
+                    <td>
+                      {row?.is_companion ? (
+                        <span className="badge bg-info text-white rounded-pill">
+                          Yes
+                        </span>
+                      ) : (
+                        <span className="badge bg-light text-muted">No</span>
+                      )}
+                    </td>
+
                     <td>{moment(row.created_at).format("DD/MM/YYYY")}</td>
+
                     <td className="text-end">
                       <UserActionColumn
                         openViewModal={() => {

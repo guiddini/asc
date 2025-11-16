@@ -49,6 +49,8 @@ export type GetAllUsersParams = {
   roleFilter?: string;
   typeFilter?: string;
   is_registered?: boolean;
+  is_companion_only?: boolean;
+  has_accommodation_only?: boolean;
   kyc_status?: KycStatus;
   offset: number | string;
 };

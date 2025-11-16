@@ -85,9 +85,14 @@ import {
   mediaRoles,
   programRoles,
   kycManagementRoles, // added
+  accommodationManagementRoles, // added
+  statisticsManagementRoles, // added
 } from "../utils/roles";
 import SponsorsManagementPage from "../pages/sponsor-management/page";
 import { useSelector } from "react-redux";
+// Add Hébergement pages
+import HotelsManagementPage from "../pages/hotels-management/page";
+import AccommodationsManagementPage from "../pages/accomodations-management/page";
 
 const PrivateRoutes = () => {
   const [showAppModal, setShowAppModal] = useState(false);
@@ -258,6 +263,37 @@ const PrivateRoutes = () => {
             />
 
             {/* Admin Routes */}
+
+            {/* accommodation-management */}
+            <Route
+              path="/accommodation-management"
+              element={
+                <RoleGuard
+                  allowedRoles={accommodationManagementRoles}
+                  showError
+                >
+                  <SuspensedView>
+                    <AccommodationsManagementPage />
+                  </SuspensedView>
+                </RoleGuard>
+              }
+            />
+
+            {/* hotels-management */}
+            <Route
+              path="/hotels-management"
+              element={
+                <RoleGuard
+                  allowedRoles={accommodationManagementRoles}
+                  showError
+                >
+                  <SuspensedView>
+                    <HotelsManagementPage />
+                  </SuspensedView>
+                </RoleGuard>
+              }
+            />
+
             <Route
               path="/contact-management"
               element={
@@ -464,7 +500,10 @@ const PrivateRoutes = () => {
             <Route
               path="/users"
               element={
-                <RoleGuard allowedRoles={[...adminRoles, ...kycManagementRoles]} showError>
+                <RoleGuard
+                  allowedRoles={[...adminRoles, ...kycManagementRoles]}
+                  showError
+                >
                   <SuspensedView>
                     <UsersPage />
                   </SuspensedView>
@@ -483,7 +522,7 @@ const PrivateRoutes = () => {
             <Route
               path="/statistics"
               element={
-                <RoleGuard allowedRoles={adminRoles} showError>
+                <RoleGuard allowedRoles={statisticsManagementRoles} showError>
                   <SuspensedView>
                     <StatisticsPage />
                   </SuspensedView>

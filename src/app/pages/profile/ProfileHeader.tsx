@@ -362,20 +362,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
                     </div>
                   </div>
                 </div>
-                {user?.info?.phone && (
-                  <div className="col-12 col-md-6">
-                    <div className="d-flex align-items-center">
-                      <KTIcon
-                        iconName="phone"
-                        className="me-3 text-success fs-4"
-                      />
-                      <div>
-                        <small className="text-secondary d-block">Phone</small>
-                        <span className="text-dark">{user.info.phone}</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
+
                 {user?.info?.address && (
                   <div className="col-12 col-md-6">
                     <div className="d-flex align-items-center">

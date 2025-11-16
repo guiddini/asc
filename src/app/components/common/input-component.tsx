@@ -6,7 +6,7 @@ import { Col, Row } from "react-bootstrap";
 
 type inputProps = {
   name: string;
-  control: Control<any>;
+  control: Control;
   type: HTMLInputTypeAttribute;
   errors: any;
   label?: string;
