@@ -13,6 +13,10 @@ export const exhibitionRoles = [
 export const programRoles = [...adminRoles, "program_coordinator"];
 export const dealroomRoles = [...adminRoles, "dealroom_manager"];
 
+// Add KYC management role group: admins + kyc_manager
+export const kycManagementRoles = [...adminRoles, "kyc_manager"];
+
+// Update staff roles to include KYC management
 export const staffRoles = [
   ...new Set([
     ...adminRoles,
@@ -20,5 +24,6 @@ export const staffRoles = [
     ...exhibitionRoles,
     ...programRoles,
     ...dealroomRoles,
+    ...kycManagementRoles,
   ]),
 ];

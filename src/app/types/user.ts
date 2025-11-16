@@ -42,9 +42,11 @@ export interface User {
   has_password: string;
   tickets: Ticket[];
   companyStaffRole?: Role;
+  has_kyc: boolean;
 }
 
 type InfoType = {
+  kyc_status: "pending" | "accepted" | "refused";
   activity_areas: any;
   about_you: string;
   job_title: string;

@@ -1,3 +1,4 @@
+// UsersPage component
 import { PageLink, PageTitle } from "../../../_metronic/layout/core";
 import { CreateUserModal } from "./create-user/CreateUserModal";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -11,18 +12,33 @@ import UpdateUserModal from "./update-user/UpdateUserModal";
 import { Can } from "../../utils/ability-context";
 import { User } from "../../types/user";
 import { useDispatch, useSelector } from "react-redux";
-import { UsersReducer } from "../../types/reducers";
+import { UsersReducer, UserResponse } from "../../types/reducers";
 import {
   addUser,
   initUsers,
   nextPage,
   resetCurrentPage,
 } from "../../features/usersSlice";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { Col, Row, Spinner } from "react-bootstrap";
 import { Role } from "../../types/roles";
 import { KTIcon } from "../../../_metronic/helpers";
 import { USER_TYPES } from "../landing-page/layout/type-user-component";
+import { KycStatus } from "../../apis/user";
+import ExportUsersModal from "./components/export-users-modal";
+import { kycManagementRoles } from "../../utils/roles";
+
+// Define the form values shape so types align everywhere
+type FormValues = {
+  roleFilter: string;
+  typeFilter: string;
+  kyc_status: "" | KycStatus;
+  nameFilter: string;
+  prevRoleFilter: string;
+  prevTypeFilter: string;
+  prevKycStatus: "" | KycStatus;
+  prevNameFilter: string;
+};
 
 const usersBreadcrumbs: Array<PageLink> = [
   {
@@ -36,6 +52,13 @@ const usersBreadcrumbs: Array<PageLink> = [
 const UsersPage = () => {
   const navigate = useNavigate();
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const [exportOpen, setExportOpen] = useState<boolean>(false);
+  const currentUser = useSelector((state: UserResponse) => state.user.user);
+  const canExport =
+    !!currentUser &&
+    (currentUser.roles?.some((r) => kycManagementRoles.includes(r.name)) ||
+      (currentUser.roleValues &&
+        kycManagementRoles.includes(currentUser.roleValues.name)));
 
   const { mutate, isLoading } = useMutation({
     mutationKey: ["get-all-users"],
@@ -43,31 +66,31 @@ const UsersPage = () => {
       nameFilter?: string;
       roleFilter?: string;
       typeFilter?: string;
-      is_registered?: string | number;
+      kyc_status?: KycStatus;
       offset: string | number;
     }) => await getAllUsersApi(data),
   });
 
-  const { watch, setValue, handleSubmit, register, getValues } = useForm({
-    defaultValues: {
-      roleFilter: "",
-      typeFilter: "",
-      nameFilter: "",
-      prevRoleFilter: "",
-      prevTypeFilter: "",
-      prevNameFilter: "",
-      is_registered: 0,
-      prev_is_registered: 0,
-    },
-  });
+  const { watch, setValue, handleSubmit, register, getValues } =
+    useForm<FormValues>({
+      defaultValues: {
+        roleFilter: "",
+        typeFilter: "",
+        kyc_status: "",
+        nameFilter: "",
+        prevRoleFilter: "",
+        prevTypeFilter: "",
+        prevKycStatus: "",
+        prevNameFilter: "",
+      },
+    });
 
-  const { nameFilter, roleFilter, typeFilter, is_registered } = watch();
+  const { nameFilter, roleFilter, typeFilter, kyc_status } = watch();
 
   const [createModalOpen, setCreateModalOpen] = useState<boolean>(false);
   const [updateUserID, setUpdateUserID] = useState<string | number | null>(
     null
   );
-
   const [initialLoading, setInitialLoading] = useState<boolean>(false);
 
   const { currentPage, users } = useSelector(
@@ -86,10 +109,14 @@ const UsersPage = () => {
         {
           onSuccess(data) {
             setInitialLoading(false);
-
-            const users: User[] = data?.data;
-            dispatch(initUsers(users));
-            dispatch(nextPage());
+            // Normalize API response shape (array vs object with `data`)
+            const fetched: User[] = Array.isArray(data)
+              ? (data as User[])
+              : ((data as any)?.data as User[]) || [];
+            dispatch(initUsers(fetched));
+            if (fetched.length > 0) {
+              dispatch(nextPage());
+            }
           },
           onError(error, variables, context) {
             setInitialLoading(false);
@@ -101,28 +128,31 @@ const UsersPage = () => {
 
   const observerTarget = useRef(null);
 
-  const handleFilter = async (data?: {
-    roleFilter?: string;
-    nameFilter?: string;
-    is_registered?: number;
-    typeFilter?: string;
-  }) => {
+  // Accept a partial of the fields that matter to filtering
+  const handleFilter = async (
+    data?: Partial<
+      Pick<
+        FormValues,
+        "roleFilter" | "nameFilter" | "typeFilter" | "kyc_status"
+      >
+    >
+  ) => {
     const nameFilter = data?.nameFilter ?? watch("nameFilter");
     const roleFilter = data?.roleFilter ?? watch("roleFilter");
     const typeFilter = data?.typeFilter ?? watch("typeFilter");
-    const is_registered = data?.is_registered ?? watch("is_registered");
+    const kyc_status = data?.kyc_status ?? watch("kyc_status");
 
     const prevNameFilter = getValues("prevNameFilter");
     const prevRoleFilter = getValues("prevRoleFilter");
     const prevTypeFilter = getValues("prevTypeFilter");
-    const prev_is_registered = getValues("prev_is_registered");
+    const prevKycStatus = getValues("prevKycStatus");
 
     // Detect any change in filters compared to previous submitted values
     const paramsChanged =
       nameFilter !== prevNameFilter ||
       roleFilter !== prevRoleFilter ||
       typeFilter !== prevTypeFilter ||
-      is_registered !== prev_is_registered;
+      kyc_status !== prevKycStatus;
 
     if (paramsChanged) {
       dispatch(resetCurrentPage());
@@ -132,19 +162,22 @@ const UsersPage = () => {
       nameFilter: nameFilter?.toLocaleLowerCase(),
       roleFilter: roleFilter?.toLocaleLowerCase(),
       typeFilter: typeFilter?.toLocaleLowerCase(),
+      kyc_status: (kyc_status || "") as KycStatus | undefined,
       offset: paramsChanged ? 0 : currentPage,
-      is_registered: is_registered ? 1 : 0,
     };
 
     mutate(req, {
       onSuccess(res) {
-        const fetched: User[] = res?.data;
+        // Normalize API response shape (array vs object with `data`)
+        const fetched: User[] = Array.isArray(res)
+          ? (res as User[])
+          : ((res as any)?.data as User[]) || [];
 
         // Update previous submitted values to current
         setValue("prevNameFilter", nameFilter);
         setValue("prevRoleFilter", roleFilter);
         setValue("prevTypeFilter", typeFilter);
-        setValue("prev_is_registered", is_registered);
+        setValue("prevKycStatus", kyc_status || "");
 
         if (paramsChanged) {
           // New search: replace list and reset pagination
@@ -166,6 +199,11 @@ const UsersPage = () => {
     });
   };
 
+  // Wire the form submit with the proper type
+  const onSubmit: SubmitHandler<FormValues> = (formData) => {
+    return handleFilter(formData);
+  };
+
   // Auto-submit when role/type changes
   const handleRoleChange = (e: any) => {
     const value = e?.target?.value ?? "";
@@ -174,7 +212,7 @@ const UsersPage = () => {
       roleFilter: value,
       nameFilter,
       typeFilter,
-      is_registered,
+      kyc_status,
     });
   };
 
@@ -185,7 +223,18 @@ const UsersPage = () => {
       typeFilter: value,
       nameFilter,
       roleFilter,
-      is_registered,
+      kyc_status,
+    });
+  };
+
+  const handleKycStatusChange = (e: any) => {
+    const value = e?.target?.value ?? "";
+    setValue("kyc_status", value as "" | KycStatus);
+    handleFilter({
+      kyc_status: value as "" | KycStatus,
+      nameFilter,
+      roleFilter,
+      typeFilter,
     });
   };
 
@@ -199,7 +248,7 @@ const UsersPage = () => {
             nameFilter,
             roleFilter,
             typeFilter,
-            is_registered,
+            kyc_status,
           });
         }
       },
@@ -245,8 +294,7 @@ const UsersPage = () => {
   return (
     <>
       <PageTitle breadcrumbs={usersBreadcrumbs} />
-
-      <form onSubmit={handleSubmit(handleFilter)} className="w-100">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-100">
         <div className="card">
           <div className="card-body p-6">
             <Row className="d-flex align-items-center justify-content-between w-100">
@@ -272,16 +320,25 @@ const UsersPage = () => {
                   )}
                 </button>
               </Col>
-              <Can I="create" a="users">
+              <button
+                type="button"
+                className="btn btn-sm btn-custom-purple-dark text-white w-250px me-3"
+                onClick={() => setCreateModalOpen(true)}
+              >
+                <KTIcon iconName="plus" className="fs-2 text-white" />
+                Add New User
+              </button>
+              {/* Export button visible only to kycManagementRoles; compact style */}
+              {canExport && (
                 <button
                   type="button"
-                  className="btn btn-sm btn-custom-purple-dark text-white w-250px"
-                  onClick={() => setCreateModalOpen(true)}
+                  className="btn btn-sm btn-light-primary d-flex align-items-center gap-2 w-auto"
+                  onClick={() => setExportOpen(true)}
                 >
-                  <KTIcon iconName="plus" className="fs-2 text-white" />
-                  Add New User
+                  <KTIcon iconName="exit-up" className="fs-2" />
+                  <span>Export</span>
                 </button>
-              </Can>
+              )}
             </Row>
 
             <div>
@@ -325,12 +382,30 @@ const UsersPage = () => {
                     ))}
                   </select>
                 </Col>
+                <Col>
+                  <label className="fs-6 form-label fw-bold text-gray-900">
+                    KYC Status
+                  </label>
+                  <select
+                    className="form-select form-select-solid"
+                    data-control="select2"
+                    data-placeholder="Select KYC status"
+                    data-hide-search="true"
+                    {...register("kyc_status", {
+                      onChange: handleKycStatusChange,
+                    })}
+                  >
+                    <option value=""></option>
+                    <option value="pending">Pending</option>
+                    <option value="accepted">Accepted</option>
+                    <option value="refused">Refused</option>
+                  </select>
+                </Col>
               </Row>
             </div>
           </div>
         </div>
       </form>
-
       <div className="card mt-5">
         <div className="card-body p-4">
           <div
@@ -346,6 +421,8 @@ const UsersPage = () => {
                   <th className="min-w-200px">Email</th>
                   <th className="min-w-150px">Role</th>
                   <th className="min-w-170px">Registration Type</th>
+                  <th className="min-w-120px">KYC Status</th>
+                  <th className="min-w-120px">Has KYC</th>
                   <th className="min-w-120px">Created At</th>
                   <th className="text-end min-w-150px">Actions</th>
                 </tr>
@@ -394,9 +471,12 @@ const UsersPage = () => {
                           {r?.display_name || r?.name || "Role"}
                         </span>
                       ))}
-                      {(!row?.roles || row.roles.length === 0) && !row?.roleValues && (
-                        <span className="badge bg-light text-muted">No role</span>
-                      )}
+                      {(!row?.roles || row.roles.length === 0) &&
+                        !row?.roleValues && (
+                          <span className="badge bg-light text-muted">
+                            No role
+                          </span>
+                        )}
                     </td>
                     {/* Registration type badge */}
                     <td>
@@ -405,7 +485,43 @@ const UsersPage = () => {
                           {row.info.type}
                         </span>
                       ) : (
-                        <span className="badge bg-light text-muted">Unknown</span>
+                        <span className="badge bg-light text-muted">
+                          Unknown
+                        </span>
+                      )}
+                    </td>
+                    {/* KYC Status badge */}
+                    <td>
+                      {row?.info?.kyc_status ? (
+                        <span
+                          className={
+                            "badge rounded-pill " +
+                            (row.info.kyc_status === "accepted"
+                              ? "bg-success text-white"
+                              : row.info.kyc_status === "pending"
+                              ? "bg-warning text-dark"
+                              : row.info.kyc_status === "refused"
+                              ? "bg-danger text-white"
+                              : "bg-light text-muted")
+                          }
+                        >
+                          {row.info.kyc_status.charAt(0).toUpperCase() +
+                            row.info.kyc_status.slice(1)}
+                        </span>
+                      ) : (
+                        <span className="badge bg-light text-muted">
+                          Unknown
+                        </span>
+                      )}
+                    </td>
+                    {/* Has KYC badge */}
+                    <td>
+                      {row?.has_kyc ? (
+                        <span className="badge bg-success text-white rounded-pill">
+                          Yes
+                        </span>
+                      ) : (
+                        <span className="badge bg-light text-muted">No</span>
                       )}
                     </td>
                     <td>{moment(row.created_at).format("DD/MM/YYYY")}</td>
@@ -440,7 +556,6 @@ const UsersPage = () => {
         refetch={() => {}}
         key={String(createModalOpen)}
       />
-
       {/* <ViewUserPermissions
         user={updateUserPermissions}
         setIsOpen={setUpdateUserPermissions}
@@ -452,6 +567,10 @@ const UsersPage = () => {
         userID={updateUserID}
       />
 
+      <ExportUsersModal
+        isOpen={exportOpen}
+        onClose={() => setExportOpen(false)}
+      />
       {/* <ViewUserModal user={user} setIsOpen={setUser} /> */}
     </>
   );

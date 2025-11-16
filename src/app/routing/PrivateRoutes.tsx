@@ -84,6 +84,7 @@ import {
   exhibitionRoles,
   mediaRoles,
   programRoles,
+  kycManagementRoles, // added
 } from "../utils/roles";
 import SponsorsManagementPage from "../pages/sponsor-management/page";
 import { useSelector } from "react-redux";
@@ -118,7 +119,9 @@ const PrivateRoutes = () => {
   }, []);
 
   const { user } = useSelector((state: any) => state.user);
-  const isAdmin = (user?.roles || []).some((r: any) => adminRoles.includes(r?.name));
+  const isAdmin = (user?.roles || []).some((r: any) =>
+    adminRoles.includes(r?.name)
+  );
 
   return (
     <Routes>
@@ -161,7 +164,10 @@ const PrivateRoutes = () => {
 
           <Route element={<MasterLayout />}>
             {/* Redirect to Dashboard after success login/registartion */}
-            <Route path="auth/*" element={<Navigate to={isAdmin ? "/statistics" : "/home"} />} />
+            <Route
+              path="auth/*"
+              element={<Navigate to={isAdmin ? "/statistics" : "/home"} />}
+            />
             {/* Pages */}
             {/* General Routes */}
             {/* home feed */}
@@ -458,9 +464,11 @@ const PrivateRoutes = () => {
             <Route
               path="/users"
               element={
-                <SuspensedView>
-                  <UsersPage />
-                </SuspensedView>
+                <RoleGuard allowedRoles={[...adminRoles, ...kycManagementRoles]} showError>
+                  <SuspensedView>
+                    <UsersPage />
+                  </SuspensedView>
+                </RoleGuard>
               }
             />
             <Route
@@ -486,17 +494,21 @@ const PrivateRoutes = () => {
             <Route
               path="/press-conference-management"
               element={
-                <SuspensedView>
-                  <PRessConferencePage />
-                </SuspensedView>
+                <RoleGuard allowedRoles={adminRoles} showError>
+                  <SuspensedView>
+                    <PRessConferencePage />
+                  </SuspensedView>
+                </RoleGuard>
               }
             />
             <Route
               path="/users-management"
               element={
-                <SuspensedView>
-                  <Users2Page />
-                </SuspensedView>
+                <RoleGuard allowedRoles={adminRoles} showError>
+                  <SuspensedView>
+                    <Users2Page />
+                  </SuspensedView>
+                </RoleGuard>
               }
             />
 
@@ -858,9 +870,11 @@ const PrivateRoutes = () => {
             <Route
               path="/sponsors-management"
               element={
-                <SuspensedView>
-                  <SponsorsManagementPage />
-                </SuspensedView>
+                <RoleGuard allowedRoles={adminRoles} showError>
+                  <SuspensedView>
+                    <SponsorsManagementPage />
+                  </SuspensedView>
+                </RoleGuard>
               }
             />
 

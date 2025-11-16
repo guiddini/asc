@@ -41,26 +41,22 @@ export type UsersResponse = {
   total: number;
 };
 
-const getAllUsersApi = async ({
-  is_registered,
-  nameFilter,
-  offset,
-  roleFilter,
-  typeFilter,
-}: {
+export type KycStatus = "pending" | "accepted" | "refused";
+
+export type GetAllUsersParams = {
   nameFilter?: string;
+  emailFilter?: string;
   roleFilter?: string;
   typeFilter?: string;
-  is_registered?: string | number;
-  offset: string | number;
-}) => {
-  return await axiosInstance.post(`/user/all/filter`, {
-    nameFilter,
-    roleFilter,
-    typeFilter,
-    offset,
-    is_registered,
-  });
+  is_registered?: boolean;
+  kyc_status?: KycStatus;
+  offset: number | string;
+};
+
+const getAllUsersApi = async (params: GetAllUsersParams) => {
+  const res = await axiosInstance.post("/user/all/filter", params);
+  const data = res?.data ?? [];
+  return data.map((u: any) => ({ ...u, has_kyc: !!u.has_kyc }));
 };
 
 const getAllParticipantsApi = async ({

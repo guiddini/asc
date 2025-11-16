@@ -27,6 +27,7 @@ const HomePage = () => {
     useState(false);
   const { user } = useSelector((state: UserResponse) => state.user);
   const hasIdentification = user?.info?.has_identification;
+  const kycStatus = user?.info?.kyc_status;
 
   const { currentPage, posts } = useSelector(
     (state: PostsReducer) => state.posts
@@ -94,7 +95,8 @@ const HomePage = () => {
   return (
     <div className="content d-flex flex-column" id="">
       <div id="kt_content_container" className="w-100">
-        <div className="d-flex flex-row">
+        {/* Dim the page when blocked, but keep it interactive */}
+        <div className="d-flex flex-row" style={{}}>
           <div
             id="feed-left-container"
             className="d-lg-flex flex-column flex-lg-row-auto w-lg-325px"
@@ -115,42 +117,71 @@ const HomePage = () => {
             className="w-100 flex-lg-row-fluid mx-lg-13"
             id="home-feed-posts"
           >
-            {!hasIdentification && (
+            {/* KYC notice aligned with Badge page */}
+            {kycStatus !== "accepted" && (
               <>
                 <div
-                  className="notice d-flex align-items-center justify-content-between bg-light-warning rounded border border-dashed border-warning p-4 mb-6"
+                  className={`notice d-flex align-items-center justify-content-between rounded border border-dashed p-4 mb-6 ${
+                    kycStatus === "refused"
+                      ? "bg-light-danger border-danger"
+                      : "bg-light-warning border-warning"
+                  }`}
                   role="alert"
                   aria-live="polite"
                 >
                   <div className="d-flex align-items-center">
                     <div className="symbol symbol-35px me-4">
-                      <span className="symbol-label bg-light-warning">
+                      <span
+                        className={`symbol-label ${
+                          kycStatus === "refused"
+                            ? "bg-light-danger"
+                            : "bg-light-warning"
+                        }`}
+                      >
                         <KTIcon
                           iconName="notification"
-                          className="fs-2 text-warning"
+                          className={`fs-2 ${
+                            kycStatus === "refused"
+                              ? "text-danger"
+                              : "text-warning"
+                          }`}
                         />
                       </span>
                     </div>
                     <div className="d-flex flex-column">
                       <span className="text-gray-900 fw-bold">
-                        Identification Required
+                        {kycStatus === "refused"
+                          ? "KYC Refused — Access Denied"
+                          : hasIdentification
+                          ? "KYC Pending — Access Restricted"
+                          : "Identification Required — No Access"}
                       </span>
                       <span className="text-muted fs-7">
-                        Please upload your passport or national ID to unlock
-                        features.
+                        {kycStatus === "refused"
+                          ? "Your identification documents were refused. You must re‑upload valid documents. Until your KYC is accepted, you cannot enter the event venue, generate or print your badge, or access restricted features."
+                          : hasIdentification
+                          ? "Your documents are under review. Until KYC is accepted: no entry to the event venue, no badge generation/printing, and certain features remain locked."
+                          : "You have not uploaded your passport or national ID. To attend the event, you must submit your identification for KYC. Without an accepted KYC, you cannot enter the venue or generate/print your badge."}
                       </span>
                     </div>
                   </div>
                   <div className="ms-5">
-                    <button
-                      type="button"
-                      className="btn btn-primary btn-sm"
-                      onClick={() => setShowUpdateIdentification(true)}
-                    >
-                      Upload Now
-                    </button>
+                    {(kycStatus === "refused" ||
+                      (kycStatus === "pending" && !hasIdentification) ||
+                      (!kycStatus && !hasIdentification)) && (
+                      <button
+                        type="button"
+                        className="btn btn-primary btn-sm"
+                        onClick={() => setShowUpdateIdentification(true)}
+                      >
+                        {kycStatus === "refused"
+                          ? "Upload Again"
+                          : "Upload Now"}
+                      </button>
+                    )}
                   </div>
                 </div>
+
                 <UpdateUserIdentificationsModal
                   show={showUpdateIdentification}
                   onHide={() => setShowUpdateIdentification(false)}

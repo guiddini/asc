@@ -44,83 +44,72 @@ const fileSchema = yup
     return file.size <= MAX_SIZE_BYTES;
   });
 
-const schema = yup
-  .object()
-  .shape({
-    passport_path: fileSchema,
-    identity_path: fileSchema,
+const createSchema = (isAlgerian: boolean) =>
+  yup.object().shape({
+    doc_type: isAlgerian
+      ? yup
+          .string()
+          .oneOf(["passport", "nin"], "Please select Passport or NIN.")
+          .required("Please select Passport or NIN.")
+      : yup.string().nullable(),
+
+    // Passport fields
+    passport_path: fileSchema.when("doc_type", {
+      is: (val: string) => {
+        if (!isAlgerian) return true; // Always required for non-Algerian
+        return val === "passport"; // Required for Algerian if passport selected
+      },
+      then: (schema) => schema.required("Passport file is required."),
+      otherwise: (schema) => schema.nullable(),
+    }),
+
     passport_number: yup
       .string()
       .nullable()
       .transform((val) => {
         const v = typeof val === "string" ? val.trim() : val;
-        return v === "" ? null : (v as string);
+        return v === "" ? null : v;
       })
-      .test(
-        "passport-len",
-        "Passport number must be at least 7 characters.",
-        (val) => !val || val.length >= 7
-      )
-      .max(255),
+      .when("doc_type", {
+        is: (val: string) => {
+          if (!isAlgerian) return true; // Always required for non-Algerian
+          return val === "passport"; // Required for Algerian if passport selected
+        },
+        then: (schema) =>
+          schema
+            .required("Passport number is required.")
+            .min(7, "Passport number must be at least 7 characters.")
+            .max(255, "Passport number is too long."),
+        otherwise: (schema) => schema.nullable(),
+      }),
+
+    // Identity fields (Algerian only)
+    identity_path: fileSchema.when("doc_type", {
+      is: "nin",
+      then: (schema) => schema.required("Identity file is required."),
+      otherwise: (schema) => schema.nullable(),
+    }),
+
     identity_number: yup
       .string()
       .nullable()
       .transform((val) => {
         const v = typeof val === "string" ? val.trim() : val;
-        return v === "" ? null : (v as string);
+        return v === "" ? null : v;
       })
-      .test(
-        "identity-len",
-        "Identity number must be exactly 18 characters.",
-        (val) => !val || val.length === 18
-      ),
-    doc_type: yup
-      .string()
-      .nullable()
-      .test(
-        "doc-type-required",
-        "Please select Passport or NIN.",
-        function (value) {
-          const isAlgerian = this.options?.context?.isAlgerian as
-            | boolean
-            | undefined;
-          if (isAlgerian === true) {
-            return !!value;
-          }
-          return true;
-        }
-      ),
-  })
-  .test(
-    "conditional-required",
-    "Please provide the required identification.",
-    function (values) {
-      const {
-        passport_number,
-        passport_path,
-        identity_number,
-        identity_path,
-        doc_type,
-      } = values as FormValues;
-      const hasIdentity = Boolean(identity_number?.trim() || identity_path);
-      const hasPassport = Boolean(passport_number?.trim() || passport_path);
-      const isAlgerian = this.options?.context?.isAlgerian as
-        | boolean
-        | undefined;
-
-      // Rule based on country when we can detect it
-      // Algerian users: require based on selected type
-      if (isAlgerian === true) {
-        if (doc_type === "passport") return hasPassport;
-        if (doc_type === "nin") return hasIdentity;
-        return hasIdentity || hasPassport;
-      }
-      if (isAlgerian === false) return hasPassport;
-
-      // Fallback: if country detection is ambiguous, accept either identity or passport
-      return hasIdentity || hasPassport;
-    }
-  );
+      .when("doc_type", {
+        is: "nin",
+        then: (schema) =>
+          schema
+            .required("Identity number is required.")
+            .test(
+              "identity-len",
+              "Identity number must be exactly 18 characters.",
+              (val) => val?.length === 18
+            ),
+        otherwise: (schema) => schema.nullable(),
+      }),
+  });
 
 const UpdateUserIdentificationsModal: React.FC<Props> = ({ show, onHide }) => {
   const queryClient = useQueryClient();
@@ -135,6 +124,8 @@ const UpdateUserIdentificationsModal: React.FC<Props> = ({ show, onHide }) => {
     [user]
   );
 
+  const schema = useMemo(() => createSchema(isAlgerian), [isAlgerian]);
+
   const {
     register,
     handleSubmit,
@@ -143,7 +134,7 @@ const UpdateUserIdentificationsModal: React.FC<Props> = ({ show, onHide }) => {
     reset,
     watch,
   } = useForm({
-    resolver: yupResolver(schema, { context: { isAlgerian } }),
+    resolver: yupResolver(schema),
     defaultValues: {
       passport_path: null,
       identity_path: null,
@@ -153,23 +144,24 @@ const UpdateUserIdentificationsModal: React.FC<Props> = ({ show, onHide }) => {
     },
   });
 
-  const selectedDocType = isAlgerian ? watch("doc_type") : null;
+  const selectedDocType = watch("doc_type");
 
+  // Clear opposite fields when doc type changes (Algerian only)
   useEffect(() => {
     if (!isAlgerian) return;
+
     if (selectedDocType === "nin") {
-      setValue("passport_number", null, { shouldValidate: true });
-      setValue("passport_path", null, { shouldValidate: true });
+      setValue("passport_number", null);
+      setValue("passport_path", null);
     } else if (selectedDocType === "passport") {
-      setValue("identity_number", null, { shouldValidate: true });
-      setValue("identity_path", null, { shouldValidate: true });
+      setValue("identity_number", null);
+      setValue("identity_path", null);
     }
   }, [selectedDocType, isAlgerian, setValue]);
 
   const mutation = useMutation(updateUserApi, {
     onSuccess: () => {
       toast.success("Identification updated successfully.");
-      // Refresh user data if present
       if (user?.id) queryClient.invalidateQueries(["get-user-data", user.id]);
       reset();
       onHide();
@@ -183,11 +175,9 @@ const UpdateUserIdentificationsModal: React.FC<Props> = ({ show, onHide }) => {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const fd = new FormData();
-    // Always include user_id
     if (user?.id) fd.append("user_id", String(user.id));
 
     if (isAlgerian) {
-      // Algerian: send only the selected identification type
       if (data.doc_type === "nin") {
         if (data.identity_number)
           fd.append("identity_number", data.identity_number);
@@ -198,7 +188,6 @@ const UpdateUserIdentificationsModal: React.FC<Props> = ({ show, onHide }) => {
         if (data.passport_path) fd.append("passport_path", data.passport_path);
       }
     } else {
-      // Non-Algerian: Passport is primary
       if (data.passport_number)
         fd.append("passport_number", data.passport_number);
       if (data.passport_path) fd.append("passport_path", data.passport_path);
@@ -210,10 +199,8 @@ const UpdateUserIdentificationsModal: React.FC<Props> = ({ show, onHide }) => {
     ? "Verify Your Identification (Algeria)"
     : "Verify Your Identification (Passport)";
   const subheading = isAlgerian
-    ? "For participants whose country is Algeria, please provide your National Identity (Carte d’Identité). You can upload a clear scan or enter its identification number. Accepted formats: JPG, JPEG, PNG, WEBP, PDF. Max size: 15MB."
-    : "For non-Algerian participants, please provide your Passport details. You can upload a clear scan or enter the passport number. Accepted formats: JPG, JPEG, PNG, WEBP, PDF. Max size: 15MB.";
-
-  console.log("errors", errors);
+    ? "For participants whose country is Algeria, please provide your National Identity (Carte d'Identité) or Passport depending on your selection. Both the document file and its number are required. Accepted formats: JPG, JPEG, PNG, WEBP, PDF. Max size: 15MB."
+    : "For non-Algerian participants, please provide your Passport details. Both the document file and its number are required. Accepted formats: JPG, JPEG, PNG, WEBP, PDF. Max size: 15MB.";
 
   return (
     <Modal show={show} onHide={onHide} centered backdrop="static">
@@ -238,12 +225,6 @@ const UpdateUserIdentificationsModal: React.FC<Props> = ({ show, onHide }) => {
                     value="nin"
                     disabled={mutation.isLoading || isSubmitting}
                     {...register("doc_type")}
-                    checked={selectedDocType === "nin"}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      setValue("doc_type", e.target.value as any, {
-                        shouldValidate: true,
-                      });
-                    }}
                   />
                   <Form.Check
                     type="radio"
@@ -252,27 +233,19 @@ const UpdateUserIdentificationsModal: React.FC<Props> = ({ show, onHide }) => {
                     value="passport"
                     disabled={mutation.isLoading || isSubmitting}
                     {...register("doc_type")}
-                    checked={selectedDocType === "passport"}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      setValue("doc_type", e.target.value as any, {
-                        shouldValidate: true,
-                      });
-                    }}
                   />
                 </div>
                 {errors.doc_type && (
                   <div className="text-danger mt-1">
-                    {errors.doc_type.message as any}
+                    {errors.doc_type.message}
                   </div>
                 )}
               </div>
 
-              {selectedDocType === "passport" ? (
+              {selectedDocType === "passport" && (
                 <>
                   <div className="mb-3">
-                    <Form.Label>
-                      Provide either a Passport file or number
-                    </Form.Label>
+                    <Form.Label>Upload Passport File</Form.Label>
                     <Form.Control
                       type="file"
                       accept=".jpg,.jpeg,.png,.webp,.pdf"
@@ -282,13 +255,11 @@ const UpdateUserIdentificationsModal: React.FC<Props> = ({ show, onHide }) => {
                         setValue("passport_path", file, {
                           shouldValidate: true,
                         });
-                        // If a passport file is provided, clear the number to avoid conflicting errors
-                        setValue("passport_number", null, { shouldValidate: true });
                       }}
                     />
                     {errors.passport_path && (
                       <div className="text-danger mt-1">
-                        {errors.passport_path.message as any}
+                        {errors.passport_path.message}
                       </div>
                     )}
                     <Form.Text className="text-muted">
@@ -297,9 +268,7 @@ const UpdateUserIdentificationsModal: React.FC<Props> = ({ show, onHide }) => {
                   </div>
 
                   <div className="mb-3">
-                    <Form.Label>
-                      Passport Number (alternative to file)
-                    </Form.Label>
+                    <Form.Label>Passport Number</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="e.g., A1234567 (min 7 chars)"
@@ -311,17 +280,14 @@ const UpdateUserIdentificationsModal: React.FC<Props> = ({ show, onHide }) => {
                         {errors.passport_number.message}
                       </div>
                     )}
-                    <Form.Text className="text-muted">
-                      You can enter the number instead of uploading a file.
-                    </Form.Text>
                   </div>
                 </>
-              ) : (
+              )}
+
+              {selectedDocType === "nin" && (
                 <>
                   <div className="mb-3">
-                    <Form.Label>
-                      Provide either an Identity file or number
-                    </Form.Label>
+                    <Form.Label>Upload Identity File</Form.Label>
                     <Form.Control
                       type="file"
                       accept=".jpg,.jpeg,.png,.webp,.pdf"
@@ -331,13 +297,11 @@ const UpdateUserIdentificationsModal: React.FC<Props> = ({ show, onHide }) => {
                         setValue("identity_path", file, {
                           shouldValidate: true,
                         });
-                        // If an identity file is provided, clear the number to avoid conflicting errors
-                        setValue("identity_number", null, { shouldValidate: true });
                       }}
                     />
                     {errors.identity_path && (
                       <div className="text-danger mt-1">
-                        {errors.identity_path.message as any}
+                        {errors.identity_path.message}
                       </div>
                     )}
                     <Form.Text className="text-muted">
@@ -346,9 +310,7 @@ const UpdateUserIdentificationsModal: React.FC<Props> = ({ show, onHide }) => {
                   </div>
 
                   <div className="mb-3">
-                    <Form.Label>
-                      Identity Number (alternative to file)
-                    </Form.Label>
+                    <Form.Label>Identity Number</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="Enter National ID (exactly 18 chars)"
@@ -360,36 +322,26 @@ const UpdateUserIdentificationsModal: React.FC<Props> = ({ show, onHide }) => {
                         {errors.identity_number.message}
                       </div>
                     )}
-                    <Form.Text className="text-muted">
-                      You can enter the number instead of uploading a file.
-                    </Form.Text>
                   </div>
                 </>
-              )}
-              {errors.root && (
-                <Alert variant="danger">{errors.root.message as any}</Alert>
               )}
             </div>
           ) : (
             <div>
               <div className="mb-3">
-                <Form.Label>
-                  Provide either a Passport file or number
-                </Form.Label>
+                <Form.Label>Upload Passport File</Form.Label>
                 <Form.Control
                   type="file"
                   accept=".jpg,.jpeg,.png,.webp,.pdf"
                   disabled={mutation.isLoading || isSubmitting}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  const file = e.target.files?.[0] ?? null;
-                  setValue("passport_path", file, { shouldValidate: true });
-                  // If a passport file is provided, clear the number to avoid conflicting errors
-                  setValue("passport_number", null, { shouldValidate: true });
-                }}
-              />
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    const file = e.target.files?.[0] ?? null;
+                    setValue("passport_path", file, { shouldValidate: true });
+                  }}
+                />
                 {errors.passport_path && (
                   <div className="text-danger mt-1">
-                    {errors.passport_path.message as any}
+                    {errors.passport_path.message}
                   </div>
                 )}
                 <Form.Text className="text-muted">
@@ -398,10 +350,10 @@ const UpdateUserIdentificationsModal: React.FC<Props> = ({ show, onHide }) => {
               </div>
 
               <div className="mb-3">
-                <Form.Label>Passport Number (alternative to file)</Form.Label>
+                <Form.Label>Passport Number</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="e.g., P1234567"
+                  placeholder="e.g., P1234567 (min 7 chars)"
                   disabled={mutation.isLoading || isSubmitting}
                   {...register("passport_number")}
                 />
@@ -410,13 +362,7 @@ const UpdateUserIdentificationsModal: React.FC<Props> = ({ show, onHide }) => {
                     {errors.passport_number.message}
                   </div>
                 )}
-                <Form.Text className="text-muted">
-                  You can enter the number instead of uploading a file.
-                </Form.Text>
               </div>
-              {errors.root && (
-                <Alert variant="danger">{errors.root.message as any}</Alert>
-              )}
             </div>
           )}
         </Modal.Body>

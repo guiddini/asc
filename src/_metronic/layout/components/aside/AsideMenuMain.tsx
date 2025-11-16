@@ -16,6 +16,7 @@ import {
   mediaRoles,
   programRoles,
   staffRoles,
+  kycManagementRoles, // added
 } from "../../../../app/utils/roles";
 
 // Permission checks are handled via RoleGuard using adminRoles
@@ -316,6 +317,18 @@ export function AsideMenuMain() {
           bsTitle="Admin"
           fontIcon="bi-gear"
         >
+          {/* Allow KYC Managers to see only User Management inside Admin */}
+          <RoleGuard allowedRoles={[...adminRoles, ...kycManagementRoles]}>
+            <AsideMenuItem
+              to="/users"
+              title="User Management"
+              hasBullet
+              bsTitle="User Management"
+              customIcon={<i className="fa-solid fa-users"></i>}
+            />
+          </RoleGuard>
+
+          {/* Keep the rest of Admin-only items restricted to adminRoles */}
           <RoleGuard allowedRoles={programRoles}>
             <AsideMenuItemWithSubMain
               to="/program-management"
@@ -364,15 +377,9 @@ export function AsideMenuMain() {
               customIcon={<i className="fa-solid fa-users"></i>}
             />
           </RoleGuard>
-          <RoleGuard allowedRoles={adminRoles}>
-            <AsideMenuItem
-              to="/users"
-              title="User Management"
-              hasBullet
-              bsTitle="User Management"
-              customIcon={<i className="fa-solid fa-users"></i>}
-            />
 
+          <RoleGuard allowedRoles={adminRoles}>
+            {/* Removed the duplicate User Management here */}
             <AsideMenuItem
               to="/sponsors-management"
               title="Sponsors & Partners"

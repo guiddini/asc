@@ -14,6 +14,10 @@ import GiftTicketToOtherUserModal from "./gift-ticket-to-other-user-modal";
 import ShowUserQrCodeModal from "./show-user-qr-code";
 import AssignRoleModal from "./assign-role-modal";
 import RemoveRoleModal from "./remove-role-modal";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../../features/userSlice";
+import { kycManagementRoles } from "../../../utils/roles";
+import KycReviewModal from "./kyc-review-modal";
 
 const UserActionColumn = ({
   openViewModal,
@@ -50,6 +54,14 @@ const UserActionColumn = ({
   const [openRemoveRoleModal, setOpenRemoveRoleModal] =
     useState<boolean>(false);
 
+  // KYC management gating + modal state
+  const currentUser = useSelector(selectUser);
+  const isKycManager =
+    (currentUser?.roles || []).some((r: any) =>
+      kycManagementRoles.includes(String(r?.name || ""))
+    ) || kycManagementRoles.includes(String(currentUser?.roleValues?.name || ""));
+  const [openKycReviewModal, setOpenKycReviewModal] = useState<boolean>(false);
+
   return (
     <Dropdown placement="top-start">
       <Dropdown.Toggle
@@ -79,6 +91,26 @@ const UserActionColumn = ({
             <span className="text-muted ms-2">View QR Code</span>
           </div>
         </Dropdown.Item>
+
+        {/* New: KYC Review (only for kycManagementRoles) */}
+        {isKycManager && (
+          <Dropdown.Item
+            onClick={(e) => {
+              e.preventDefault();
+              setOpenKycReviewModal(true);
+            }}
+            disabled={!props?.has_kyc}
+            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0 px-5 py-3"
+          >
+            <div className="cursor-pointer d-flex flex-row align-items-center">
+              <KTIcon
+                iconName="shield-search"
+                className="fs-1 cursor-pointer m-0 text-primary"
+              />
+              <span className="text-muted ms-2">Review KYC</span>
+            </div>
+          </Dropdown.Item>
+        )}
 
         {/* New Role Management Options */}
         <Dropdown.Item
@@ -299,6 +331,20 @@ const UserActionColumn = ({
           setIsOpen={setShowUserQrCode}
           userId={props?.id}
           userName={props?.fname + " " + props?.lname}
+        />
+      )}
+
+      {/* New: KYC Review Modal (only for kycManagementRoles) */}
+      {isKycManager && (
+        <KycReviewModal
+          isOpen={openKycReviewModal}
+          setIsOpen={setOpenKycReviewModal}
+          userId={props?.id}
+          userName={`${props?.fname || ""} ${props?.lname || ""}`}
+          currentStatus={(props?.info?.kyc_status as any) || ""}
+          onStatusChange={(status) => {
+            toast.success(`KYC status updated to ${status}`);
+          }}
         />
       )}
 

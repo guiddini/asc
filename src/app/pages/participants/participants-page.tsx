@@ -102,41 +102,38 @@ export const ParticipantsPage = () => {
   const ROLES: {
     label: string;
     value: string;
-  }[] = useMemo(
-    () =>
-      {
-        // Exclude admin/staff roles, keep only global participant-facing roles
-        const EXCLUDED_ROLES = new Set([
-          "admin",
-          "super_admin",
-          "committee",
-          "company_editor",
-          "company_staff",
-          "organiser",
-          "support",
-          "exhibition_manager",
-          "exhibition_finance_officer",
-          "program_coordinator",
-          "dealroom_manager",
-          "organization_head",
-          "head_delegation",
-          "delegation_member",
-        ]);
+  }[] = useMemo(() => {
+    // Exclude admin/staff roles, keep only global participant-facing roles
+    const EXCLUDED_ROLES = new Set([
+      "admin",
+      "super_admin",
+      "committee",
+      "company_editor",
+      "company_staff",
+      "organiser",
+      "support",
+      "exhibition_manager",
+      "exhibition_finance_officer",
+      "program_coordinator",
+      "dealroom_manager",
+      "organization_head",
+      "head_delegation",
+      "delegation_member",
+      "kyc_manager",
+    ]);
 
-        return (
-          data?.data
-            ?.filter((e: Role) => {
-              const name = String(e?.name || "").toLowerCase();
-              return !EXCLUDED_ROLES.has(name);
-            })
-            .map((r: Role) => ({
-              label: r.display_name || "",
-              value: r.name || "",
-            })) || []
-        );
-      },
-    [data, isFiltering]
-  );
+    return (
+      data?.data
+        ?.filter((e: Role) => {
+          const name = String(e?.name || "").toLowerCase();
+          return !EXCLUDED_ROLES.has(name);
+        })
+        .map((r: Role) => ({
+          label: r.display_name || "",
+          value: r.name || "",
+        })) || []
+    );
+  }, [data, isFiltering]);
 
   const {
     register,
