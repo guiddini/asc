@@ -44,7 +44,7 @@ const AppRoutes: FC = () => {
           >
             <Route path="/" element={<LandingPage />} />
 
-            <Route path="/adt2025" element={<ATDPage />} />
+            <Route path="/atd2025" element={<ATDPage />} />
 
             <Route path="/about" element={<AboutPage />} />
 
