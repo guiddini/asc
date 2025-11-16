@@ -25,6 +25,7 @@ import PublicProgramPage from "../pages/landing-page/components/public-program";
 import { AboutPage } from "../pages";
 import ProgramPage from "../pages/program/page";
 import ContactPage from "../pages/contact/page";
+import ATDPage from "../pages/atd";
 
 const AppRoutes: FC = () => {
   const { user } = useSelector((state: UserResponse) => state.user);
@@ -42,6 +43,7 @@ const AppRoutes: FC = () => {
             }
           >
             <Route path="/" element={<LandingPage />} />
+            <Route path="/atd" element={<ATDPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/public-program" element={<PublicProgramPage />} />
 
