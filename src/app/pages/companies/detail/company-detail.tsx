@@ -35,7 +35,7 @@ const CompanyDetail: React.FC = () => {
           "Discover our story and our commitment to our customers.",
         description: data.data.description || "",
         header_text: data.data.header_text || `Welcome to ${data.data.name}`,
-        quote_author: data.data.quote_author || `Company CEO`,
+        quote_author: data.data.quote_author || `Startup CEO`,
         quote_text:
           data.data.quote_text || "Excellence is not an act, but a habit.",
         team_text:

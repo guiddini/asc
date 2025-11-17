@@ -20,6 +20,7 @@ import { KTIcon, toAbsoluteUrl } from "../../../_metronic/helpers";
 import RoleGuard from "../../components/role-guard";
 import UpdateUserIdentificationsModal from "../../components/update-user-identifications";
 import { adminRoles } from "../../utils/roles";
+import PitchDeckAlert from "./components/pitch-deck-alert";
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -188,6 +189,8 @@ const HomePage = () => {
                 />
               </>
             )}
+            {/* Pitch Deck alert & upload */}
+            <PitchDeckAlert />
             <RoleGuard allowedRoles={adminRoles}>
               <CreatePost />
             </RoleGuard>

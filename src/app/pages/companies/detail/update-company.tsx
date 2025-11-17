@@ -115,7 +115,7 @@ const UpdateCompanyPage = () => {
             : htmlToDraftBlocks(data?.data?.description),
         header_text:
           data?.data?.header_text || `Welcome to ${data?.data?.name}`,
-        quote_author: data?.data?.quote_author || `Company CEO`,
+        quote_author: data?.data?.quote_author || `Startup CEO`,
         quote_text:
           data?.data?.quote_text || "Excellence is not an act, but a habit.",
         team_text:
@@ -319,7 +319,7 @@ const UpdateCompanyPage = () => {
 
     mutate(formData, {
       onSuccess() {
-        toast.success("Company updated successfully");
+        toast.success("Startup updated successfully");
       },
       onError(error) {
         toast.error("Error updating company");
@@ -329,7 +329,7 @@ const UpdateCompanyPage = () => {
 
   return (
     <div className="card">
-      <PageTitle>Edit Company</PageTitle>
+      <PageTitle>Edit Startup</PageTitle>
       <div className="card-body">
         {isLoading ? (
           <div
@@ -371,7 +371,7 @@ const UpdateCompanyPage = () => {
                             ? getMediaUrl(data?.data?.logo)
                             : URL.createObjectURL(logo)
                         }
-                        alt="Company logo"
+                        alt="Startup logo"
                         id="company-logo-preview"
                       />
                     )}

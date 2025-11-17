@@ -35,7 +35,7 @@ export function Overview() {
           </div>
 
           <div className="row mb-7">
-            <label className="col-lg-4 fw-bold text-muted">Company</label>
+            <label className="col-lg-4 fw-bold text-muted">Startup</label>
 
             <div className="col-lg-8 fv-row">
               <span className="fw-bold fs-6">Keenthemes</span>
@@ -60,7 +60,7 @@ export function Overview() {
           </div>
 
           <div className="row mb-7">
-            <label className="col-lg-4 fw-bold text-muted">Company Site</label>
+            <label className="col-lg-4 fw-bold text-muted">Startup Site</label>
 
             <div className="col-lg-8">
               <a

@@ -249,7 +249,7 @@ const VisaDemandPage: React.FC = () => {
                 />
               </div>
               <div className="col-md-6">
-                <label className="form-label">Company Name</label>
+                <label className="form-label">Startup Name</label>
                 <input
                   className="form-control"
                   value={createForm.company_name ?? ""}
@@ -368,7 +368,7 @@ const VisaDemandPage: React.FC = () => {
             </div>
 
             <div className="col-md-6">
-              <div className="fw-bold">Company</div>
+              <div className="fw-bold">Startup</div>
               <div>{myDemand.company_name ?? "-"}</div>
             </div>
             <div className="col-md-6">
@@ -480,7 +480,7 @@ const VisaDemandPage: React.FC = () => {
                 />
               </div>
               <div className="col-md-6">
-                <label className="form-label">Company Name</label>
+                <label className="form-label">Startup Name</label>
                 <input
                   className="form-control"
                   value={editForm.company_name ?? ""}

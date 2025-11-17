@@ -155,7 +155,7 @@ const BecomeSponsorModal: React.FC<BecomeSponsorModalProps> = ({
 
             <Col md={6}>
               <Form.Group controlId="sponsorCompany">
-                <Form.Label>Company Name</Form.Label>
+                <Form.Label>Startup Name</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Your company"

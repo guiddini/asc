@@ -27,3 +27,5 @@ export * from "./conversation";
 export * from "./statistics";
 export * from "./accommodations";
 export * from "./hotels";
+export * from "./pitch-deck";
+export * from "./investor-connection";

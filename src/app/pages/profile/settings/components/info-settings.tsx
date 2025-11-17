@@ -549,7 +549,7 @@ const InfoSettings = ({ user }: { user: any }) => {
                 <div className="separator mb-4"></div>
                 <div className="row mb-6">
                   <label className="col-lg-4 col-form-label fw-bold fs-6">
-                    <span className="required">Company</span>
+                    <span className="required">Startup</span>
                   </label>
 
                   <div className="col-lg-8 fv-row">
@@ -649,13 +649,13 @@ const InfoSettings = ({ user }: { user: any }) => {
 
             <div className="row mb-6">
               <label className="col-lg-4 col-form-label fw-bold fs-6">
-                Company Name
+                Startup Name
               </label>
               <div className="col-lg-8 fv-row">
                 <input
                   type="text"
                   className="form-control form-control-lg form-control-solid"
-                  placeholder="Company Name"
+                  placeholder="Startup Name"
                   {...register("company_name")}
                 />
                 {errorMessage(errors, "company_name")}

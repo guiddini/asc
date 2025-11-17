@@ -34,7 +34,7 @@ export default function VisaDemandsManagementPage() {
       sortable: true,
     },
     {
-      name: "Company",
+      name: "Startup",
       selector: (row: VisaDemand) => row.company_name ?? "-",
       sortable: true,
     },

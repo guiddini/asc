@@ -112,8 +112,8 @@ export function AsideMenuMain() {
         <>
           <AsideMenuItemWithSubMain
             to="/company"
-            title="My Company"
-            bsTitle="My Company"
+            title="My Startup"
+            bsTitle="My Startup"
             fontIcon="bi-briefcase fs-2"
             icon="briefcase"
           >

@@ -80,7 +80,7 @@ const ExhibitionRequests = () => {
       ),
     },
     {
-      name: "Company",
+      name: "Startup",
       selector: (row: ExhibitionDemand) => row.company?.name,
       sortable: true,
       minWidth: "180px",

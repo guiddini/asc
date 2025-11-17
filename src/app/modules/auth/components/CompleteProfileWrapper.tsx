@@ -152,7 +152,9 @@ const CompleteProfileWrapper = () => {
                       <span className="stepper-number">2</span>
                     </div>
                     <div className="stepper-label">
-                      <h3 className="stepper-title fs-2">Account Information</h3>
+                      <h3 className="stepper-title fs-2">
+                        Account Information
+                      </h3>
                       <div className="stepper-desc fw-normal">
                         Set up your account information
                       </div>
@@ -175,7 +177,9 @@ const CompleteProfileWrapper = () => {
                     </div>
                     <div className="stepper-label">
                       <h3 className="stepper-title fs-2">Ticket Details</h3>
-                      <div className="stepper-desc fw-normal">Assign a ticket</div>
+                      <div className="stepper-desc fw-normal">
+                        Assign a ticket
+                      </div>
                     </div>
                   </div>
                   <div className="stepper-line h-40px"></div>
@@ -195,7 +199,7 @@ const CompleteProfileWrapper = () => {
                         </span>
                       </div>
                       <div className="stepper-label">
-                        <h3 className="stepper-title fs-2">Company Details</h3>
+                        <h3 className="stepper-title fs-2">Startup Details</h3>
                         <div className="stepper-desc fw-normal">
                           Add company details
                         </div>
@@ -217,7 +221,9 @@ const CompleteProfileWrapper = () => {
                     </div>
                     <div className="stepper-label">
                       <h3 className="stepper-title">Completed</h3>
-                      <div className="stepper-desc fw-normal">Your account is created</div>
+                      <div className="stepper-desc fw-normal">
+                        Your account is created
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -58,7 +58,7 @@ const step2Schema = yup.object({
     )
     .min(1, "At least one language is required."),
   job_title: yup.string().required("Job title is required."),
-  company_name: yup.string().required("Company description is required."),
+  company_name: yup.string().required("Startup description is required."),
   participation_goals: yup
     .array()
     .of(
@@ -446,7 +446,7 @@ export default function SignupPage() {
             <Row>
               <Col md={12}>
                 <div id="signup-form-group">
-                  <label>Company</label>
+                  <label>Startup</label>
                   <input type="text" {...register("company_name")} />
                   {errors.company_name && (
                     <span id="signup-error-message">

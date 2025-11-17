@@ -36,7 +36,7 @@ export default function ContactManagementPage() {
       sortable: true,
     },
     {
-      name: "Company",
+      name: "Startup",
       selector: (row: ContactRequest) => row.company_name ?? "-",
       sortable: true,
     },
@@ -150,7 +150,7 @@ export default function ContactManagementPage() {
               </div>
               <div className="row mb-3">
                 <div className="col-md-6">
-                  <div className="fw-bold">Company</div>
+                  <div className="fw-bold">Startup</div>
                   <div>{selected.company_name ?? "-"}</div>
                 </div>
                 <div className="col-md-6">

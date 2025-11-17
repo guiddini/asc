@@ -262,7 +262,7 @@ const UpdateAds: React.FC<UpdateAdsProps> = ({ ads, isOpen, setIsOpen }) => {
               data={companies}
               isLoading={loadingCompanies}
               errors={errors}
-              label="Company"
+              label="Startup"
               name="company_id"
               noOptionMessage=""
               colMD={12}

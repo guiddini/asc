@@ -58,7 +58,7 @@ const RevenueUpdateModal: React.FC<RevenueUpdateModalProps> = ({
     (data: FormData) => updateCompanyApi(data),
     {
       onSuccess: () => {
-        toast.success("Company information updated successfully");
+        toast.success("Startup information updated successfully");
         reset();
         if (onSuccess) onSuccess();
         onHide();
@@ -88,7 +88,7 @@ const RevenueUpdateModal: React.FC<RevenueUpdateModalProps> = ({
   return (
     <Modal show={show} onHide={onHide} centered backdrop="static">
       <Modal.Header closeButton>
-        <Modal.Title>Update Company Information</Modal.Title>
+        <Modal.Title>Update Startup Information</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Alert variant="info">

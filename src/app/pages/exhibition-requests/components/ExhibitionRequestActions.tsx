@@ -404,7 +404,7 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
           <Modal.Body className="pb-0 px-16 w-100">
             <div className="mb-5">
               <h3>Request Details</h3>
-              <p>Company: {row.company?.name}</p>
+              <p>Startup: {row.company?.name}</p>
               <p>Exhibition Type: {row.exhibition_type}</p>
               <p>Status: {row.status}</p>
             </div>
@@ -467,13 +467,15 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
 
             <div className="mb-5">
               <h3>Request Details</h3>
-              <p>Company: {row.company?.name}</p>
+              <p>Startup: {row.company?.name}</p>
               <p>Exhibition Type: {row.exhibition_type}</p>
             </div>
 
             <div className="mb-5">
               <h3>Motif</h3>
-              <p className="text-muted">Please provide the reason for rejection.</p>
+              <p className="text-muted">
+                Please provide the reason for rejection.
+              </p>
               <Form.Group controlId="rejectNotes">
                 <Form.Control
                   as="textarea"
@@ -594,7 +596,7 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
                   <td>{row.id}</td>
                 </tr>
                 <tr>
-                  <th>Company</th>
+                  <th>Startup</th>
                   <td>{row.company?.name || "-"}</td>
                 </tr>
                 <tr>
@@ -694,7 +696,7 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
           <Modal.Body className="pb-0 px-16 w-100">
             <div className="mb-5">
               <h3>Demand Details</h3>
-              <p>Company: {row.company?.name}</p>
+              <p>Startup: {row.company?.name}</p>
 
               <Form.Group className="mb-4">
                 <Form.Label>Exhibition Type</Form.Label>
