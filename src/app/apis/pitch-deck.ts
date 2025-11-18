@@ -12,6 +12,8 @@ export const getPitchDecks = async (params?: {
   status?: "pending" | "accepted" | "refused";
   company_id?: string;
   search?: string;
+  page?: number;
+  per_page?: number;
 }): Promise<PitchDeckListResponse> => {
   const res = await axiosInstance.get("/pitch-decks", { params });
   return res.data;
@@ -20,6 +22,7 @@ export const getPitchDecks = async (params?: {
 export const getAcceptedPitchDecks = async (params?: {
   company_id?: string;
   country_id?: string;
+  search?: string;
 }): Promise<PitchDeckListResponse> => {
   const res = await axiosInstance.get("/pitch-decks/accepted", { params });
   return res.data;

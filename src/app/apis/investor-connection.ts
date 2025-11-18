@@ -28,6 +28,15 @@ export const createInvestorConnection = async (
   return res.data;
 };
 
+export const deleteInvestorConnection = async (
+  pitch_deck_id: string
+): Promise<InvestorConnection> => {
+  const res = await axiosInstance.post("/investor-connections/remove", {
+    pitch_deck_id,
+  });
+  return res.data;
+};
+
 export const myInvestorConnections =
   async (): Promise<InvestorConnectionsResponse> => {
     const res = await axiosInstance.get("/investor-connections/investor");

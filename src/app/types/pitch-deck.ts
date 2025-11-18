@@ -12,6 +12,14 @@ export type CompanyLite = {
   id: string;
   name: string;
   logo?: string | null;
+  country: {
+    id: number;
+    name_fr: string;
+    name_en: string;
+    code: string;
+    created_at: string;
+    updated_at: string;
+  };
 };
 
 export type PitchDeck = {
@@ -21,6 +29,7 @@ export type PitchDeck = {
   file_path: string;
   status: PitchDeckStatus;
   title?: string | null;
+  is_favorite?: boolean | null;
   created_at?: string;
   updated_at?: string;
 };

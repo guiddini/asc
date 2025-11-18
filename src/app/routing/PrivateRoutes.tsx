@@ -86,13 +86,19 @@ import {
   programRoles,
   kycManagementRoles, // added
   accommodationManagementRoles, // added
-  statisticsManagementRoles, // added
+  statisticsManagementRoles,
+  dealroomRoles,
+  investorRoles, // added
 } from "../utils/roles";
 import SponsorsManagementPage from "../pages/sponsor-management/page";
 import { useSelector } from "react-redux";
 // Add Hébergement pages
 import HotelsManagementPage from "../pages/hotels-management/page";
 import AccommodationsManagementPage from "../pages/accomodations-management/page";
+import DealRoomManagementPage from "../pages/deal-room-management/page";
+import DealRoomPage from "../pages/deal-room/page";
+import FavoritePitchDeckPage from "../pages/deal-room/favorites/page";
+import InterestedInvestorsInMyPitchDeck from "../pages/deal-room/interested/page";
 
 const PrivateRoutes = () => {
   const [showAppModal, setShowAppModal] = useState(false);
@@ -263,6 +269,48 @@ const PrivateRoutes = () => {
             />
 
             {/* Admin Routes */}
+
+            {/* <Route
+              path="/deal-room-management"
+              element={
+                <RoleGuard allowedRoles={dealroomRoles} showError>
+                  <SuspensedView>
+                    <DealRoomManagementPage />
+                  </SuspensedView>
+                </RoleGuard>
+              }
+            />
+
+            <Route
+              path="/deal-room"
+              element={
+                <RoleGuard allowedRoles={investorRoles} showError>
+                  <SuspensedView>
+                    <DealRoomPage />
+                  </SuspensedView>
+                </RoleGuard>
+              }
+            />
+
+            <Route
+              path="/deal-room/favorites"
+              element={
+                <RoleGuard allowedRoles={["investor"]} showError>
+                  <SuspensedView>
+                    <FavoritePitchDeckPage />
+                  </SuspensedView>
+                </RoleGuard>
+              }
+            />
+
+            <Route
+              path="/deal-room/interested-investors"
+              element={
+                <SuspensedView>
+                  <InterestedInvestorsInMyPitchDeck />
+                </SuspensedView>
+              }
+            /> */}
 
             {/* accommodation-management */}
             <Route

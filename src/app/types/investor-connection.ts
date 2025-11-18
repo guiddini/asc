@@ -22,7 +22,5 @@ export type InvestorConnectionWithRelations = InvestorConnection & {
 export type InvestorConnectionsResponse = InvestorConnectionWithRelations[];
 
 export type CreateInvestorConnectionRequest = {
-  investor_id: string;
-  startup_id?: string;
-  pitch_deck_id?: string;
+  pitch_deck_id: string;
 };

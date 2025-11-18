@@ -1,9 +1,9 @@
-import { useEffect, useMemo } from "react";
-import { Spinner } from "react-bootstrap";
+import { useEffect, useMemo, useState } from "react";
+import { Spinner, Row, Col } from "react-bootstrap";
 import ProductCard from "./components/product-card";
 import { PageTitle } from "../../../_metronic/layout/core";
-import { useMutation } from "react-query";
-import { getAllPublishedProductServiceApi } from "../../apis";
+import { useQuery } from "react-query";
+import { getAllPublishedProductServiceApi, getCountriesApi, getAllProductsServicesCategoriesApi } from "../../apis";
 import { toAbsoluteUrl } from "../../../_metronic/helpers";
 
 export type ProductCardProps = {
@@ -66,20 +66,108 @@ export type ProductCardProps = {
 };
 
 export const ProductsPage = () => {
-  const { data, isLoading, mutate } = useMutation({
-    mutationKey: ["get-all-published-products-services"],
-    mutationFn: async () => await getAllPublishedProductServiceApi(),
-  });
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [countryId, setCountryId] = useState<number | undefined>(undefined);
+  const [categoryId, setCategoryId] = useState<number | undefined>(undefined);
 
   useEffect(() => {
-    mutate();
-  }, []);
+    const t = setTimeout(() => setDebouncedSearch(search.trim()), 400);
+    return () => clearTimeout(t);
+  }, [search]);
 
-  const PRODUCTS: ProductCardProps[] = useMemo(() => data?.data, [isLoading]);
+  const { data: countriesRes } = useQuery(["countries-all"], getCountriesApi, {
+    staleTime: 60 * 60 * 1000,
+  });
+  const { data: categoriesRes } = useQuery(
+    ["products-categories-all"],
+    getAllProductsServicesCategoriesApi,
+    { staleTime: 60 * 60 * 1000 }
+  );
+
+  const { data, isLoading } = useQuery(
+    [
+      "get-all-published-products-services",
+      debouncedSearch,
+      countryId,
+      categoryId,
+    ],
+    () =>
+      getAllPublishedProductServiceApi({
+        search: debouncedSearch || undefined,
+        country_id: countryId,
+        category_id: categoryId,
+      }),
+    {
+      keepPreviousData: true,
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 60 * 60 * 1000,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  const COUNTRIES = useMemo(() => countriesRes?.data || [], [countriesRes]);
+  const CATEGORIES = useMemo(() => categoriesRes?.data || [], [categoriesRes]);
+  const PRODUCTS: ProductCardProps[] = useMemo(() => data?.data, [data]);
 
   return (
     <div>
       <PageTitle>Produits</PageTitle>
+
+      <div className="card mb-4">
+        <div className="card-body">
+          <Row className="g-3">
+            <Col xs={12} md={4}>
+              <label className="form-label fw-semibold">Search</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Search products/services..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </Col>
+            <Col xs={12} md={4}>
+              <label className="form-label fw-semibold">Country</label>
+              <select
+                className="form-select"
+                value={countryId ?? ""}
+                onChange={(e) =>
+                  setCountryId(
+                    e.target.value ? Number(e.target.value) : undefined
+                  )
+                }
+              >
+                <option value="">All countries</option>
+                {COUNTRIES.map((c: any) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name_en || c.name_fr || c.name}
+                  </option>
+                ))}
+              </select>
+            </Col>
+            <Col xs={12} md={4}>
+              <label className="form-label fw-semibold">Category</label>
+              <select
+                className="form-select"
+                value={categoryId ?? ""}
+                onChange={(e) =>
+                  setCategoryId(
+                    e.target.value ? Number(e.target.value) : undefined
+                  )
+                }
+              >
+                <option value="">All categories</option>
+                {CATEGORIES.map((cat: any) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name_en || cat.name_fr || cat.name}
+                  </option>
+                ))}
+              </select>
+            </Col>
+          </Row>
+        </div>
+      </div>
 
       {isLoading ? (
         <div

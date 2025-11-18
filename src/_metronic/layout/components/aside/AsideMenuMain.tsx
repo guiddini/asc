@@ -18,7 +18,9 @@ import {
   staffRoles,
   kycManagementRoles, // added
   accommodationManagementRoles, // added
-  statisticsManagementRoles, // added
+  statisticsManagementRoles,
+  investorRoles,
+  dealroomRoles, // added
 } from "../../../../app/utils/roles";
 
 export function AsideMenuMain() {
@@ -73,7 +75,6 @@ export function AsideMenuMain() {
       <AsideMenuItem
         to="/home"
         title="Home"
-        // fontIcon="bi-house-solid fs-2"
         customIcon={<i className="fa-solid fa-house"></i>}
         bsTitle="Home"
         className="py-2"
@@ -95,6 +96,36 @@ export function AsideMenuMain() {
         badge={chatBadge}
         className="py-2"
       />
+
+      {/* <AsideMenuItemWithSubMain
+        to="/deal-room"
+        title="Deal Room"
+        bsTitle="Deal Room"
+        customIcon={<i className="fa-solid fa-handshake"></i>}
+      >
+        <RoleGuard allowedRoles={investorRoles}>
+          <AsideMenuItem
+            to="/deal-room"
+            title="Browse Pitch Decks"
+            bsTitle="Browse Pitch Decks"
+            hasBullet
+          />
+          <RoleGuard allowedRoles={["investor"]}>
+            <AsideMenuItem
+              to="/deal-room/favorites"
+              title="My Favorite Pitch Decks"
+              bsTitle="My Favorite Pitch Decks"
+              hasBullet
+            />
+          </RoleGuard>
+        </RoleGuard>
+        <AsideMenuItem
+          to="/deal-room/interested-investors"
+          title="Investors Interested in my Deck"
+          bsTitle="Investors Interested in my Deck"
+          hasBullet
+        />
+      </AsideMenuItemWithSubMain> */}
 
       {!isAdmin && (
         <RoleGuard allowedRoles={mediaRoles}>
@@ -412,13 +443,15 @@ export function AsideMenuMain() {
               customIcon={<i className="fa-solid fa-handshake"></i>}
             />
 
-            <AsideMenuItem
-              to="/deal-rooms-management"
-              title="Deal Rooms Management"
-              hasBullet
-              bsTitle="Deal Rooms Management"
-              customIcon={<i className="fa-solid fa-handshake"></i>}
-            />
+            <RoleGuard allowedRoles={dealroomRoles}>
+              <AsideMenuItem
+                to="/deal-room-management"
+                title="Deal Room Management"
+                hasBullet
+                bsTitle="Deal Rooms Management"
+                customIcon={<i className="fa-solid fa-handshake"></i>}
+              />
+            </RoleGuard>
 
             <AsideMenuItemWithSubMain
               to="/media-management"

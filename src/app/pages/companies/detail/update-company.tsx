@@ -45,7 +45,7 @@ export const updateCompanySchema = Yup.object().shape({
   phone_1: Yup.string().nullable().max(255),
   label_number: Yup.string()
     .nullable()
-    .matches(/^\d{10,11}$/, "Label number must be 10–11 digits"),
+    .matches(/^\d{11}$/, "Label number must be 11 digits"),
   activity_areas: Yup.array().of(Yup.string().max(255)).nullable(),
   founded_date: Yup.string()
     .nullable()

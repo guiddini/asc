@@ -63,8 +63,8 @@ const validationSchema = Yup.object().shape({
       schema
         .required("Label number is required")
         .nullable()
-        .matches(/^\d{10}$/, {
-          message: "Label number must be exactly 10 digits",
+        .matches(/^\d{11}$/, {
+          message: "Label number must be exactly 11 digits",
           excludeEmptyString: true,
         }),
     otherwise: (schema) => schema.notRequired().nullable(),

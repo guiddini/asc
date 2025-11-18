@@ -313,7 +313,8 @@ const CompanyReservationPage = () => {
                           <td>
                             {demand.status === "accepted" ||
                             demand.status === "failed" ||
-                            demand.status === "unpaid" ? (
+                            demand.status === "unpaid" ||
+                            demand.status === "rejected" ? (
                               <div className="d-flex gap-2 align-items-center justify-content-center">
                                 <Button
                                   size="sm"

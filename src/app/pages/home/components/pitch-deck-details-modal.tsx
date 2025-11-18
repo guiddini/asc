@@ -73,7 +73,12 @@ const PitchDeckDetailsModal: React.FC<Props> = ({ show, onHide }) => {
         {isError && (
           <Alert variant="danger" className="mb-0">
             Failed to load pitch deck details.
-            <Button size="sm" variant="outline-danger" className="ms-2" onClick={() => refetch()}>
+            <Button
+              size="sm"
+              variant="outline-danger"
+              className="ms-2"
+              onClick={() => refetch()}
+            >
               Retry
             </Button>
           </Alert>
@@ -115,18 +120,15 @@ const PitchDeckDetailsModal: React.FC<Props> = ({ show, onHide }) => {
 
             <div>
               <div className="fw-semibold">Company</div>
-              <div className="text-muted">
-                {deck.company?.name || "—"}
-              </div>
-            </div>
-
-            <div>
-              <div className="fw-semibold">File Path</div>
-              <div className="text-muted">{deck.file_path || "—"}</div>
+              <div className="text-muted">{deck.company?.name || "—"}</div>
             </div>
 
             <div className="pt-2">
-              <Button variant="primary" onClick={handleDownload} disabled={downloading}>
+              <Button
+                variant="primary"
+                onClick={handleDownload}
+                disabled={downloading}
+              >
                 {downloading ? (
                   <>
                     <Spinner size="sm" animation="border" className="me-2" />

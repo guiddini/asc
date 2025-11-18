@@ -4,8 +4,12 @@ const getAllProductServiceApi = () => {
   return axiosInstance.get("/productservice/all");
 };
 
-const getAllPublishedProductServiceApi = () => {
-  return axiosInstance.get("/productservice/all/published");
+const getAllPublishedProductServiceApi = (params?: {
+  search?: string;
+  country_id?: number;
+  category_id?: number;
+}) => {
+  return axiosInstance.get("/productservice/all/published", { params });
 };
 
 const getCompanyProductServiceApi = (company_id: string) => {

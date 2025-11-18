@@ -25,6 +25,9 @@ export const accommodationManagementRoles = [
 // statistics_manager
 export const statisticsManagementRoles = [...adminRoles, "statistics_manager"];
 
+// investor
+export const investorRoles = [...adminRoles, "investor"];
+
 // Update staff roles to include KYC management
 export const staffRoles = [
   ...new Set([
