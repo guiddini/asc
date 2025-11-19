@@ -1,8 +1,8 @@
 import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
 
-const AUTH_COOKIE_KEY = "eventili-user";
-const SECRET_KEY = import.meta.env.VITE_APP_ENCRYPTION_KEY;
+const AUTH_COOKIE_KEY = "asc-user";
+const SECRET_KEY = "ASC";
 const COOKIE_OPTIONS = { secure: true, sameSite: "Strict", expires: 7 };
 
 const setAuth = (auth: string) => {

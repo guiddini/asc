@@ -128,15 +128,12 @@ const getUserQRCodeApi = async (user_id: string) => {
 };
 
 const getUserBadgeApi = async () => {
-  return await axios.get(
-    `${import.meta.env.VITE_APP_HTTP_API_URL}/ticket/badge`,
-    {
-      headers: {
-        Authorization: `Bearer ${userAuth}`,
-      },
-      // responseType: "blob",
-    }
-  );
+  return await axios.get(`https://asc.api.eventili.com/api/ticket/badge`, {
+    headers: {
+      Authorization: `Bearer ${userAuth}`,
+    },
+    // responseType: "blob",
+  });
 };
 
 const resendEmailToUserApi = async (email: string) => {
