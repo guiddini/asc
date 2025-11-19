@@ -97,7 +97,7 @@ export function AsideMenuMain() {
         className="py-2"
       />
 
-      {/* <AsideMenuItemWithSubMain
+      <AsideMenuItemWithSubMain
         to="/deal-room"
         title="Deal Room"
         bsTitle="Deal Room"
@@ -125,7 +125,7 @@ export function AsideMenuMain() {
           bsTitle="Investors Interested in my Deck"
           hasBullet
         />
-      </AsideMenuItemWithSubMain> */}
+      </AsideMenuItemWithSubMain>
 
       {!isAdmin && (
         <RoleGuard allowedRoles={mediaRoles}>

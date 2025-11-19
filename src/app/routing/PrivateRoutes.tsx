@@ -270,7 +270,7 @@ const PrivateRoutes = () => {
 
             {/* Admin Routes */}
 
-            {/* <Route
+            <Route
               path="/deal-room-management"
               element={
                 <RoleGuard allowedRoles={dealroomRoles} showError>
@@ -310,7 +310,7 @@ const PrivateRoutes = () => {
                   <InterestedInvestorsInMyPitchDeck />
                 </SuspensedView>
               }
-            /> */}
+            />
 
             {/* accommodation-management */}
             <Route
