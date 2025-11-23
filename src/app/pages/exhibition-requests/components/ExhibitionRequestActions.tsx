@@ -139,8 +139,12 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
   };
 
   const handleReject = () => {
-    if (rowStatus !== STATUS_REFUSED && isPendingOrPendingTransfer) {
-      const notes = rejectNotes.trim();
+    const notes = rejectNotes.trim();
+    if (!notes) {
+      toast.error("Please enter motif");
+      return;
+    }
+    if (rowStatus !== STATUS_REFUSED) {
       rejectMutation.mutate({ id: row.id, notes });
     }
   };
@@ -498,7 +502,7 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
             <Button
               variant="danger"
               onClick={handleReject}
-              disabled={rejectMutation.isLoading}
+              disabled={!rejectNotes.trim() || rejectMutation.isLoading}
             >
               {rejectMutation.isLoading ? (
                 <Spinner animation="border" size="sm" />
