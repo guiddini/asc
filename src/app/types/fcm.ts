@@ -4,6 +4,11 @@ export type FcmUserSummary = {
   lname: string | null;
   email: string;
   avatar: string | null;
+  roles?: {
+    id: number;
+    name: string;
+    display_name: string;
+  }[];
 };
 
 export type PaginationLink = {
@@ -33,6 +38,9 @@ export type SendFcmRequest = {
   body: string;
   user_id?: string;
   user_ids?: string[];
+  roles?: string[];
+  role_id?: number;
+  role_ids?: number[];
 };
 
 export type SendFcmResponse = {

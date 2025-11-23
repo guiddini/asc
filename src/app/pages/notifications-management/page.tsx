@@ -1,10 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useMemo, useState, useEffect, useCallback, useRef } from "react";
 import { useMutation, useQuery } from "react-query";
+import { Spinner } from "react-bootstrap";
 import { PageTitle } from "../../../_metronic/layout/core";
 import { getUsersWithFcmTokens, sendFcmToUsers } from "../../apis/fcm";
+import { getAllRolesApi } from "../../apis";
 import getMediaUrl from "../../helpers/getMediaUrl";
 import { FcmUserSummary, FcmUsersWithTokensResponse } from "../../types/fcm";
-import { Spinner } from "react-bootstrap";
+import { Role } from "../../types/roles";
+import { useForm } from "react-hook-form";
+import { SelectComponent } from "../../components";
 
 const NotificationsManagement = () => {
   const [title, setTitle] = useState("");
@@ -12,12 +16,47 @@ const NotificationsManagement = () => {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [page, setPage] = useState(1);
   const [users, setUsers] = useState<FcmUserSummary[]>([]);
+  const [selectedRoleIds, setSelectedRoleIds] = useState<number[]>([]);
+  const [roleQueryIds, setRoleQueryIds] = useState<number[]>([]);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const observerTarget = useRef<HTMLDivElement | null>(null);
 
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setRoleQueryIds(selectedRoleIds);
+      setPage(1);
+    }, 400);
+    return () => clearTimeout(t);
+  }, [selectedRoleIds]);
+
+  const {
+    control,
+    formState: { errors },
+  } = useForm({ defaultValues: { role_ids: [] } });
+
+  const { data: rolesRes } = useQuery({
+    queryKey: ["roles"],
+    queryFn: getAllRolesApi,
+  });
+  const ROLE_OPTIONS: { label: string; value: number }[] = useMemo(
+    () =>
+      rolesRes?.data
+        ?.filter((e: Role) => e?.name !== "admin" && e?.name !== "committee")
+        .map((r: Role) => ({
+          label: r.display_name || "",
+          value: Number(r.id),
+        })) || [],
+    [rolesRes]
+  );
+
   const { data, isLoading, isFetching } = useQuery(
-    ["fcm-users", page],
-    () => getUsersWithFcmTokens({ per_page: 50, page }),
+    ["fcm-users", page, roleQueryIds.join(",")],
+    () =>
+      getUsersWithFcmTokens({
+        per_page: 50,
+        page,
+        role_ids: roleQueryIds.length ? roleQueryIds : undefined,
+      }),
     {
       keepPreviousData: true,
       onSuccess: (res: FcmUsersWithTokensResponse) => {
@@ -69,9 +108,11 @@ const NotificationsManagement = () => {
         title: title.trim(),
         body: body.trim(),
         user_ids: Array.from(selected),
+        role_ids: selectedRoleIds.length ? selectedRoleIds : undefined,
       }),
     onSuccess: () => {
       setSelected(new Set());
+      setSelectedRoleIds([]);
     },
   });
 
@@ -84,12 +125,23 @@ const NotificationsManagement = () => {
 
   return (
     <>
-      <PageTitle breadcrumbs={[{ title: "Notifications", path: "/notifications-management", isSeparator: false, isActive: false }]} />
+      <PageTitle
+        breadcrumbs={[
+          {
+            title: "Notifications",
+            path: "/notifications-management",
+            isSeparator: false,
+            isActive: false,
+          },
+        ]}
+      />
       <div className="card">
         <div className="card-body p-6">
           <div className="row g-6 align-items-end">
             <div className="col-md-4">
-              <label className="fs-6 form-label fw-bold text-gray-900">Title</label>
+              <label className="fs-6 form-label fw-bold text-gray-900">
+                Title
+              </label>
               <input
                 type="text"
                 className="form-control form-control-solid"
@@ -99,7 +151,9 @@ const NotificationsManagement = () => {
               />
             </div>
             <div className="col-md-6">
-              <label className="fs-6 form-label fw-bold text-gray-900">Body</label>
+              <label className="fs-6 form-label fw-bold text-gray-900">
+                Body
+              </label>
               <input
                 type="text"
                 className="form-control form-control-solid"
@@ -108,17 +162,35 @@ const NotificationsManagement = () => {
                 placeholder="Notification body"
               />
             </div>
-            <div className="col-md-2 d-flex align-items-end">
+            <SelectComponent
+              label="Roles (target)"
+              name="role_ids"
+              control={control}
+              errors={errors}
+              data={ROLE_OPTIONS}
+              isMulti
+              saveOnlyValue
+              colMD={3}
+              colXS={12}
+              onValueChange={(vals) =>
+                setSelectedRoleIds(vals.map((v: any) => Number(v)))
+              }
+            />
+            <div className="col-md-3 d-flex align-items-end">
               <button
                 type="button"
                 className="btn btn-primary w-100"
-                disabled={!canSend || selected.size === 0 || sendBulk.isLoading}
-                onClick={() => canSend && selected.size > 0 && sendBulk.mutate()}
+                disabled={
+                  !canSend ||
+                  (selected.size === 0 && selectedRoleIds.length === 0) ||
+                  sendBulk.isLoading
+                }
+                onClick={() => canSend && sendBulk.mutate()}
               >
                 {sendBulk.isLoading ? (
                   <span className="spinner-border spinner-border-sm me-2"></span>
                 ) : null}
-                Send to {selected.size} selected
+                Send
               </button>
             </div>
           </div>
@@ -134,17 +206,26 @@ const NotificationsManagement = () => {
             <table className="table align-middle table-row-dashed fs-6 gy-5">
               <thead>
                 <tr className="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                  <th className="min-w-120px">Select</th>
                   <th className="min-w-150px">User</th>
                   <th className="min-w-150px">First Name</th>
                   <th className="min-w-150px">Last Name</th>
                   <th className="min-w-200px">Email</th>
-                  <th className="min-w-120px">Select</th>
+                  <th className="min-w-150px">Roles</th>
                   <th className="text-end min-w-150px">Actions</th>
                 </tr>
               </thead>
               <tbody className="text-gray-600 fw-semibold">
                 {users?.map((row: FcmUserSummary) => (
                   <tr key={String(row?.id)}>
+                    <td>
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        checked={selected.has(String(row?.id))}
+                        onChange={() => toggleSelect(String(row?.id))}
+                      />
+                    </td>
                     <td>
                       {row?.avatar === null ? (
                         <div className="symbol symbol-circle symbol-40px overflow-hidden me-3">
@@ -166,21 +247,35 @@ const NotificationsManagement = () => {
                     </td>
                     <td>{row?.fname}</td>
                     <td>{row?.lname}</td>
-                    <td style={{ whiteSpace: "normal", wordBreak: "break-word" }}>{row?.email}</td>
+                    <td
+                      style={{ whiteSpace: "normal", wordBreak: "break-word" }}
+                    >
+                      {row?.email}
+                    </td>
                     <td>
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        checked={selected.has(String(row?.id))}
-                        onChange={() => toggleSelect(String(row?.id))}
-                      />
+                      {row?.roles && row?.roles?.length > 0 ? (
+                        row?.roles?.map((r, idx) => (
+                          <span
+                            key={r?.id ?? idx}
+                            className="badge bg-primary text-white rounded-pill me-2"
+                          >
+                            {r?.display_name || r?.name || "Role"}
+                          </span>
+                        ))
+                      ) : (
+                        <span className="badge bg-light text-muted">
+                          No role
+                        </span>
+                      )}
                     </td>
                     <td className="text-end">
                       <button
                         type="button"
                         className="btn btn-sm btn-primary"
-                        disabled={!canSend || sendSingle.isLoading}
-                        onClick={() => canSend && sendSingle.mutate(String(row?.id))}
+                        disabled={sendSingle.isLoading}
+                        onClick={() =>
+                          canSend && sendSingle.mutate(String(row?.id))
+                        }
                       >
                         {sendSingle.isLoading ? (
                           <span className="spinner-border spinner-border-sm me-2"></span>
