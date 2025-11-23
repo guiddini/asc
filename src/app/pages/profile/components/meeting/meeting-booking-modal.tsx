@@ -10,7 +10,6 @@ import {
   formatMeetingDateTime,
   getThreeDayRange,
   isSlotAvailable,
-  locations,
   timeSlots,
 } from "../../../meetings/utils/scheduleUtils";
 import { getBookedUserSlot } from "../../../../apis/slot";
@@ -272,20 +271,15 @@ const MeetingBookingModal: React.FC<MeetingBookingModalProps> = ({
             <Form.Group>
               <Form.Label className="fw-bold">
                 <i className="bi bi-geo-alt me-2"></i>
-                Select Location <span className="text-danger">*</span>
+                Location <span className="text-danger">*</span>
               </Form.Label>
-              <Form.Select
+              <Form.Control
+                type="text"
+                placeholder="Enter location (e.g., VIP Lounge, Main Hall B)"
                 value={selectedLocation}
                 onChange={(e) => setSelectedLocation(e.target.value)}
                 required
-              >
-                <option value="">Choose a location...</option>
-                {locations.map((location) => (
-                  <option key={location} value={location}>
-                    {location}
-                  </option>
-                ))}
-              </Form.Select>
+              />
             </Form.Group>
           </div>
 

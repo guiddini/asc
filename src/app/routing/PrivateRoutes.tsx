@@ -99,6 +99,8 @@ import DealRoomManagementPage from "../pages/deal-room-management/page";
 import DealRoomPage from "../pages/deal-room/page";
 import FavoritePitchDeckPage from "../pages/deal-room/favorites/page";
 import InterestedInvestorsInMyPitchDeck from "../pages/deal-room/interested/page";
+import NotificationsManagement from "../pages/notifications-management/page";
+import PitchDeckPage from "../pages/pitch-deck/page";
 
 const PrivateRoutes = () => {
   const [showAppModal, setShowAppModal] = useState(false);
@@ -209,6 +211,28 @@ const PrivateRoutes = () => {
                 <RoleGuard allowedRoles={mediaRoles}>
                   <SuspensedView>
                     <MediaSlugPage />
+                  </SuspensedView>
+                </RoleGuard>
+              }
+            />
+
+            {/* pitch deck */}
+            <Route
+              path="/pitch-deck"
+              element={
+                <SuspensedView>
+                  <PitchDeckPage />
+                </SuspensedView>
+              }
+            />
+
+            {/* notifications */}
+            <Route
+              path="/notifications-management"
+              element={
+                <RoleGuard allowedRoles={adminRoles}>
+                  <SuspensedView>
+                    <NotificationsManagement />
                   </SuspensedView>
                 </RoleGuard>
               }

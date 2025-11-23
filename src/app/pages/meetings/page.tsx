@@ -11,7 +11,7 @@ import {
 } from "../../apis/meetings";
 import { useSelector } from "react-redux";
 import { UserResponse } from "../../types/reducers";
-import { getThreeDayRange, locations } from "./utils/scheduleUtils";
+import { getThreeDayRange } from "./utils/scheduleUtils";
 import DayTabs from "./components/day-tabs";
 import MeetingList from "./components/meeting-list";
 import MeetingDetailsModal from "./components/meeting-details-modal";
@@ -204,9 +204,7 @@ const MeetingsCalendar: React.FC = () => {
   if (!userId)
     return (
       <Container className="py-5 text-center">
-        <Alert variant="warning">
-          Please log in to view your meetings.
-        </Alert>
+        <Alert variant="warning">Please log in to view your meetings.</Alert>
       </Container>
     );
 
@@ -302,7 +300,6 @@ const MeetingsCalendar: React.FC = () => {
             meeting={selectedMeeting}
             onSubmit={handleUpdateMeeting}
             loading={updateMeetingMutation.isLoading}
-            locations={locations}
           />
         </>
       )}

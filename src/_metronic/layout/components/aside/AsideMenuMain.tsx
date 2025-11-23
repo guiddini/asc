@@ -530,6 +530,13 @@ export function AsideMenuMain() {
 
             {/* Admin utilities at bottom */}
             <AsideMenuItem
+              to="/notifications-management"
+              title="Notifications"
+              hasBullet
+              bsTitle="Notifications"
+              customIcon={<i className="fa-solid fa-bell"></i>}
+            />
+            <AsideMenuItem
               to="/contact-management"
               title="Contact Management"
               hasBullet

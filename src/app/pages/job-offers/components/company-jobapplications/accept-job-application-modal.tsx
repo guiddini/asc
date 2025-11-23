@@ -19,16 +19,16 @@ const MySwal = withReactContent(Swal);
 const schema = yup.object().shape({
   company_meetup_date: yup
     .string()
-    .required("La date de rencontre prévue est requise")
-    .typeError("La date de rencontre prévue est requise"),
+    .required("Meeting date is required")
+    .typeError("Meeting date is required"),
   company_exact_meetup_hour: yup
     .string()
-    .required("La période de rencontre prévue est requise")
-    .typeError("La période de rencontre prévue est requise"),
+    .required("Meeting hour is required")
+    .typeError("Meeting hour is required"),
   company_exact_meetup_minute: yup
     .string()
-    .required("La période de rencontre prévue est requise")
-    .typeError("La période de rencontre prévue est requise"),
+    .required("Meeting minute is required")
+    .typeError("Meeting minute is required"),
   type: yup.string().notRequired(),
 });
 
@@ -53,9 +53,9 @@ const AcceptJobApplicationModal = ({
     setValue,
   } = useForm({
     defaultValues: {
-      company_meetup_date: "05 Mars (1er jour)",
+      company_meetup_date: "06 December 2025",
       company_exact_meetup_hour: "08",
-      company_exact_meetup_minute: "0",
+      company_exact_meetup_minute: "00",
       type: null,
     },
     resolver: yupResolver(schema),
@@ -63,8 +63,8 @@ const AcceptJobApplicationModal = ({
 
   const availableDates = [
     {
-      day: "05 Mars",
-      label: "05 Mars (1er jour)",
+      day: "06 December 2025",
+      label: "06 December 2025 (Day 1)",
       hours: [
         "08",
         "09",
@@ -98,8 +98,8 @@ const AcceptJobApplicationModal = ({
       ],
     },
     {
-      day: "06 Mars",
-      label: "06 Mars (2ème jour)",
+      day: "07 December 2025",
+      label: "07 December 2025 (Day 2)",
       hours: ["09", "10", "11", "12", "13", "14", "15", "16", "17"],
       time: [
         "00",
@@ -117,8 +117,8 @@ const AcceptJobApplicationModal = ({
       ],
     },
     {
-      day: "07 Mars",
-      label: "07 Mars (3ème jour)",
+      day: "08 December 2025",
+      label: "08 December 2025 (Day 3)",
       hours: [
         "08",
         "09",
@@ -191,11 +191,11 @@ const AcceptJobApplicationModal = ({
 
     acceptMutate(req, {
       onSuccess() {
-        toast.success("La demande d'emploi a été acceptée avec succès");
+        toast.success("Job application accepted successfully");
         closeModal();
       },
       onError(error) {
-        toast.error("Erreur lors de l'acceptation de la demande d'emploi");
+        toast.error("Error while accepting the job application");
       },
     });
   };
@@ -207,10 +207,10 @@ const AcceptJobApplicationModal = ({
 
   const handleRefusJobApplication = async () => {
     MySwal.fire({
-      title: "Êtes-vous sûr de vouloir refuser ?",
+      title: "Are you sure you want to refuse?",
       icon: "error",
       showCancelButton: true,
-      confirmButtonText: "Refuser",
+      confirmButtonText: "Refuse",
       showLoaderOnConfirm: true,
       preConfirm: async (motif) => {
         refuseMutate(
@@ -219,12 +219,12 @@ const AcceptJobApplicationModal = ({
           },
           {
             onSuccess() {
-              toast.success("La demande d'emploi a été refusée avec succès");
+              toast.success("Job application refused successfully");
               closeModal();
             },
             onError(error) {
-              console.log("Erreur lors du refus d'une demande d'emploi", error);
-              toast.error("Erreur lors du refus d'une demande d'emploi");
+              console.log("Error while refusing a job application", error);
+              toast.error("Error while refusing the job application");
             },
           }
         );
@@ -245,7 +245,7 @@ const AcceptJobApplicationModal = ({
     >
       <div className="modal-content">
         <div className="modal-header">
-          <h2 className="fw-bolder">Accepter le candidat</h2>
+          <h2 className="fw-bolder">Accept Candidate</h2>
 
           <div
             className="btn btn-icon btn-sm btn-active-icon-primary"
@@ -263,7 +263,7 @@ const AcceptJobApplicationModal = ({
 
           <div className="w-100 d-flex align-items-center justify-content-between">
             <span className="my-5 fs-4 text-center fw-bold">
-              Détails du rendez-vous
+              Meeting Details
             </span>
 
             {type === null && (
@@ -276,7 +276,7 @@ const AcceptJobApplicationModal = ({
                       handleRefusJobApplication();
                     }}
                   >
-                    refuser
+                    refuse
                   </button>
                 ) : null}
                 {job?.status !== "Accepted" ? (
@@ -284,7 +284,7 @@ const AcceptJobApplicationModal = ({
                     className="btn btn-sm btn-custom-purple-dark text-white"
                     onClick={() => setValue("type", "accept")}
                   >
-                    accepter
+                    accept
                   </button>
                 ) : null}
               </div>
@@ -299,7 +299,7 @@ const AcceptJobApplicationModal = ({
                     <Row>
                       <Col xs={12} md={6} className="fv-row">
                         <label className="required fs-5 fw-semibold mb-2">
-                          Le jour
+                          Day
                         </label>
                         <select
                           className="form-select form-select-solid"
@@ -313,7 +313,7 @@ const AcceptJobApplicationModal = ({
                       </Col>
                       <Col xs={6} md={3} className="fv-row">
                         <label className="required fs-5 fw-semibold mb-2">
-                          L'heure
+                          Hour
                         </label>
                         <select
                           className="form-select form-select-solid"
@@ -359,9 +359,8 @@ const AcceptJobApplicationModal = ({
                           {/* <h4 className="text-white fw-bold">CV</h4> */}
 
                           <div className="fs-6 text-white">
-                            Après acceptation, le candidat recevra
-                            automatiquement un email contenant toutes les
-                            informations nécessaires.
+                            After acceptance, the candidate will automatically
+                            receive an email with all necessary information.
                           </div>
                         </div>
                       </div>
@@ -381,7 +380,7 @@ const AcceptJobApplicationModal = ({
               }}
               className="btn bg-custom-purple-light text-white"
             >
-              Annuler
+              Cancel
             </button>
             <button
               onClick={handleSubmit(onSubmit)}
@@ -393,7 +392,7 @@ const AcceptJobApplicationModal = ({
                   {isAccepting ? (
                     <Spinner animation="border" size="sm" />
                   ) : (
-                    "Confirmer"
+                    "Confirm"
                   )}
                 </>
               )}

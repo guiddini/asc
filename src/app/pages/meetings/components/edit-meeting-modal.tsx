@@ -13,7 +13,6 @@ interface EditMeetingModalProps {
     location: string;
   }) => void;
   loading: boolean;
-  locations: string[];
 }
 
 const EditMeetingModal: React.FC<EditMeetingModalProps> = ({
@@ -22,7 +21,6 @@ const EditMeetingModal: React.FC<EditMeetingModalProps> = ({
   meeting,
   onSubmit,
   loading,
-  locations,
 }) => {
   const [formData, setFormData] = useState({
     topic: "",
@@ -169,10 +167,12 @@ const EditMeetingModal: React.FC<EditMeetingModalProps> = ({
                       <InputGroup.Text className="bg-light border-2">
                         <i className="bi bi-building text-warning" />
                       </InputGroup.Text>
-                      <Form.Select
+                      <Form.Control
+                        type="text"
                         name="location"
                         value={formData.location}
                         onChange={handleChange}
+                        placeholder="Enter location (e.g., VIP Lounge, Main Hall B)"
                         required
                         className="border-2"
                         style={{
@@ -180,14 +180,7 @@ const EditMeetingModal: React.FC<EditMeetingModalProps> = ({
                           fontSize: "0.95rem",
                           padding: "12px 16px",
                         }}
-                      >
-                        <option value="">Choose a location...</option>
-                        {locations.map((location) => (
-                          <option key={location} value={location}>
-                            {location}
-                          </option>
-                        ))}
-                      </Form.Select>
+                      />
                     </InputGroup>
                   </Form.Group>
                 </Col>

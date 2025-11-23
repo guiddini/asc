@@ -1,25 +1,20 @@
 import React, { useMemo, useState } from "react";
 import { Card, Button, Spinner, Badge, Row, Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 import { UserResponse } from "../../../types/reducers";
 import { getPitchDeckStatus, getMyPitchDeck } from "../../../apis/pitch-deck";
-import PitchDeckUploadModal from "./pitch-deck-upload-modal";
-import PitchDeckDetailsModal from "./pitch-deck-details-modal";
+import { useNavigate } from "react-router-dom";
 import getMediaUrl from "../../../helpers/getMediaUrl";
 
 function PitchDeckAlert() {
-  const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const { user } = useSelector((state: UserResponse) => state.user);
-
-  const [showUpload, setShowUpload] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
 
   const {
     data: statusData,
     isLoading,
     isError,
-    refetch,
   } = useQuery(["pitch-deck-status"], getPitchDeckStatus, {
     enabled: true,
     staleTime: 60 * 1000,
@@ -34,7 +29,7 @@ function PitchDeckAlert() {
   const status = statusData?.status ?? null;
   const deckTitle = myDeckData?.pitch_deck?.title || null;
 
-  const { variant, title, description, showAction, actionLabel, icon, badge } =
+  const { variant, title, description, showAction, actionLabel, badge } =
     useMemo(() => {
       if (status === "pending") {
         return {
@@ -198,7 +193,7 @@ function PitchDeckAlert() {
                         : "primary"
                     }
                     className="fw-semibold"
-                    onClick={() => setShowUpload(true)}
+                    onClick={() => navigate("/pitch-deck")}
                   >
                     {actionLabel}
                     <i className="bi bi-upload ms-2" />
@@ -208,7 +203,7 @@ function PitchDeckAlert() {
                     <Button
                       variant="primary"
                       className="fw-semibold"
-                      onClick={() => setShowDetails(true)}
+                      onClick={() => navigate("/pitch-deck")}
                     >
                       View Details <i className="bi bi-arrow-right ms-1" />
                     </Button>
@@ -219,19 +214,6 @@ function PitchDeckAlert() {
           </Row>
         </Card.Body>
       </Card>
-
-      <PitchDeckUploadModal
-        show={showUpload}
-        onHide={() => setShowUpload(false)}
-        onUploaded={async () => {
-          await refetch();
-          queryClient.invalidateQueries(["pitch-deck-status"]);
-        }}
-      />
-      <PitchDeckDetailsModal
-        show={showDetails}
-        onHide={() => setShowDetails(false)}
-      />
     </>
   );
 }

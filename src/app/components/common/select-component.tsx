@@ -36,9 +36,36 @@ export const SelectComponent: React.FC<SelectComponentProps> = (props) => {
     <Controller
       control={props.control}
       name={props.name}
-      defaultValue={props.defaultValue || null}
+      defaultValue={
+        props.saveOnlyValue
+          ? props.isMulti
+            ? Array.isArray(props.defaultValue)
+              ? (props.defaultValue as any[])?.map((o: any) => o?.value)
+              : []
+            : (props.defaultValue as any)?.value ?? null
+          : props.defaultValue || null
+      }
       disabled={props.disabled}
       render={({ field: { onBlur, onChange, ref, value } }) => {
+        let selected: any = null;
+        if (props.isMulti) {
+          if (Array.isArray(value)) {
+            const isPrimitiveArray = value.length > 0 && typeof value[0] !== "object";
+            selected = isPrimitiveArray
+              ? props.data.filter((opt) => (value as any[]).includes(opt.value))
+              : value;
+          } else {
+            selected = [];
+          }
+        } else {
+          if (value == null) {
+            selected = props.defaultValue ?? null;
+          } else if (typeof value === "object" && (value as any)?.value !== undefined) {
+            selected = value;
+          } else {
+            selected = props.data.find((opt) => opt.value === value) ?? props.defaultValue ?? null;
+          }
+        }
         return (
           <Col
             xs={props.colXS || "6"}
@@ -54,6 +81,7 @@ export const SelectComponent: React.FC<SelectComponentProps> = (props) => {
               isDisabled={props.disabled}
               isLoading={props.isLoading || false}
               options={props.data}
+              value={selected}
               isClearable
               isMulti={props.isMulti}
               closeMenuOnSelect={!props.isMulti}
