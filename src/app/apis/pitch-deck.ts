@@ -144,7 +144,7 @@ export const updatePitchDeck = async (
       form.append("activity_sectors[]", s)
     );
 
-  const res = await axiosInstance.put(`/pitch-decks/${id}`, form, {
+  const res = await axiosInstance.post(`/update-my-pitch-deck`, form, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return res.data;
