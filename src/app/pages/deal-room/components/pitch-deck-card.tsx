@@ -119,15 +119,11 @@ function PitchDeckCard({ deck }: { deck: PitchDeckWithRelations }) {
                         countryCode={deck.company.country.code}
                         style={{ width: "1.25em", height: "1.25em" }}
                         aria-label={
-                          deck?.company?.country?.name_en ||
-                          deck?.company?.country?.name_fr ||
-                          "Country"
+                          deck?.company?.country?.name_en || "Country"
                         }
                       />
                       <span className="ms-1 fs-8 text-muted">
-                        {deck?.company?.country?.name_en ||
-                          deck?.company?.country?.name_fr ||
-                          ""}
+                        {deck?.company?.country?.name_en || ""}
                       </span>
                     </span>
                   ) : null}

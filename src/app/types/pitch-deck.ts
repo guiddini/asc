@@ -111,5 +111,4 @@ export type AcceptedPitchDeckFilters = {
 export type ListPitchDeckFilters = AcceptedPitchDeckFilters & {
   status?: PitchDeckStatus;
   page?: number;
-  per_page?: number;
 };

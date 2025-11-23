@@ -522,6 +522,7 @@ const UsersPage = () => {
                   <th className="min-w-150px">First Name</th>
                   <th className="min-w-150px">Last Name</th>
                   <th className="min-w-200px">Email</th>
+                  <th className="min-w-150px">Phone</th>
                   <th className="min-w-150px">Role</th>
                   <th className="min-w-170px">Registration Type</th>
                   <th className="min-w-120px">KYC Status</th>
@@ -564,6 +565,8 @@ const UsersPage = () => {
                     >
                       {row?.email}
                     </td>
+
+                    <td>{row?.info?.phone || "—"}</td>
 
                     <td>
                       {(row?.roles && row.roles.length > 0

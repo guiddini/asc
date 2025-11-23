@@ -5,48 +5,77 @@ import { getAcceptedPitchDecks } from "../../../apis/pitch-deck";
 import { PitchDeckWithRelations } from "../../../types/pitch-deck";
 import PitchDeckCard from "./pitch-deck-card";
 import { getCountriesApi } from "../../../apis/rsources";
-import { getAllCompaniesApi } from "../../../apis";
+
+import {
+  ACTIVITY_SECTOR_OPTIONS,
+  INVESTMENT_CATEGORY_OPTIONS,
+  MATURITY_LEVEL_OPTIONS,
+} from "../../../data/pitch-deck";
 
 const PitchDeckList = () => {
-  const [companyId, setCompanyId] = useState<string>("");
   const [countryId, setCountryId] = useState<string>("");
   const [search, setSearch] = useState<string>("");
+  const [investmentCategory, setInvestmentCategory] = useState<string>("");
+  const [maturityLevel, setMaturityLevel] = useState<string>("");
+  const [activitySector, setActivitySector] = useState<string>("");
+  const [yearOfCreation, setYearOfCreation] = useState<string>("");
+  const [revenue2024, setRevenue2024] = useState<string>("");
+  const [usersCount, setUsersCount] = useState<string>("");
+  const [employeesCount, setEmployeesCount] = useState<string>("");
+  const [requestedAmountUsd, setRequestedAmountUsd] = useState<string>("");
 
   const [queryParams, setQueryParams] = useState<{
-    company_id: string;
     country_id: string;
     search: string;
+    investment_category: string;
+    maturity_level: string;
+    activity_sectors: string;
+    year_of_creation: string;
+    revenue_2024: string;
+    users_count: string;
+    employees_count: string;
+    requested_amount_usd: string;
   }>({
-    company_id: companyId,
     country_id: countryId,
     search,
+    investment_category: investmentCategory,
+    maturity_level: maturityLevel,
+    activity_sectors: activitySector,
+    year_of_creation: yearOfCreation,
+    revenue_2024: revenue2024,
+    users_count: usersCount,
+    employees_count: employeesCount,
+    requested_amount_usd: requestedAmountUsd,
   });
 
   useEffect(() => {
     const t = setTimeout(() => {
       setQueryParams({
-        company_id: companyId,
         country_id: countryId,
         search,
+        investment_category: investmentCategory,
+        maturity_level: maturityLevel,
+        activity_sectors: activitySector,
+        year_of_creation: yearOfCreation,
+        revenue_2024: revenue2024,
+        users_count: usersCount,
+        employees_count: employeesCount,
+        requested_amount_usd: requestedAmountUsd,
       });
     }, 400);
     return () => clearTimeout(t);
-  }, [companyId, countryId, search]);
-
-  const { data: companiesRes } = useQuery(["companies-all"], async () => {
-    const res = await getAllCompaniesApi();
-    return res.data;
-  });
-
-  const companies: { id: string; name: string }[] = useMemo(() => {
-    const raw = Array.isArray(companiesRes)
-      ? companiesRes
-      : companiesRes?.data || [];
-    return (raw || []).map((c: any) => ({
-      id: String(c?.id || ""),
-      name: String(c?.name || ""),
-    }));
-  }, [companiesRes]);
+  }, [
+    countryId,
+    search,
+    investmentCategory,
+    maturityLevel,
+    activitySector,
+    yearOfCreation,
+    revenue2024,
+    usersCount,
+    employeesCount,
+    requestedAmountUsd,
+  ]);
 
   const { data: countriesRes } = useQuery(["countries-all"], async () => {
     const res = await getCountriesApi();
@@ -55,27 +84,51 @@ const PitchDeckList = () => {
 
   const countries: { id: string; name: string }[] = useMemo(() => {
     const raw = countriesRes?.data || countriesRes || [];
-    return (raw || []).map(
-      (willaya: { id: string; name_en: string; name_fr?: string }) => ({
-        id: String(willaya.id || ""),
-        name: String(willaya.name_en || willaya.name_fr || ""),
-      })
-    );
+    return (raw || []).map((willaya: { id: string; name_en: string }) => ({
+      id: String(willaya.id || ""),
+      name: String(willaya.name_en || ""),
+    }));
   }, [countriesRes]);
 
   const { data, isLoading, isError } = useQuery(
     [
       "accepted-pitch-decks",
-      queryParams.company_id,
       queryParams.country_id,
       queryParams.search,
+      queryParams.investment_category,
+      queryParams.maturity_level,
+      queryParams.activity_sectors,
+      queryParams.year_of_creation,
+      queryParams.revenue_2024,
+      queryParams.users_count,
+      queryParams.employees_count,
+      queryParams.requested_amount_usd,
     ],
     async () => {
       const res = await getAcceptedPitchDecks({
-        company_id: queryParams.company_id || undefined,
-        country_id: queryParams.country_id || undefined,
         search: queryParams.search || undefined,
-      });
+        investment_category: queryParams.investment_category || undefined,
+        maturity_level: queryParams.maturity_level || undefined,
+        country_id: queryParams.country_id
+          ? Number(queryParams.country_id)
+          : undefined,
+        activity_sectors: queryParams.activity_sectors || undefined,
+        year_of_creation: queryParams.year_of_creation
+          ? Number(queryParams.year_of_creation)
+          : undefined,
+        revenue_2024: queryParams.revenue_2024
+          ? Number(queryParams.revenue_2024)
+          : undefined,
+        users_count: queryParams.users_count
+          ? Number(queryParams.users_count)
+          : undefined,
+        employees_count: queryParams.employees_count
+          ? Number(queryParams.employees_count)
+          : undefined,
+        requested_amount_usd: queryParams.requested_amount_usd
+          ? Number(queryParams.requested_amount_usd)
+          : undefined,
+      } as any);
       return res;
     },
     { keepPreviousData: true }
@@ -84,7 +137,7 @@ const PitchDeckList = () => {
   // Cleaned: simpler decks extraction without useMemo
   const decks: PitchDeckWithRelations[] = Array.isArray(data)
     ? (data as PitchDeckWithRelations[])
-    : ((data as any)?.data || []);
+    : (data as any)?.data || [];
 
   if (isLoading) {
     return (
@@ -127,29 +180,41 @@ const PitchDeckList = () => {
               />
             </Col>
             <Col xs={12} md={4}>
-              <label htmlFor="accepted-company" className="form-label mb-2">
-                Company
-              </label>
+              <label className="form-label mb-2">Investment Category</label>
               <select
-                id="accepted-company"
                 className="form-select form-select-solid"
-                value={companyId}
-                onChange={(e) => setCompanyId(e.target.value)}
+                value={investmentCategory}
+                onChange={(e) => setInvestmentCategory(e.target.value)}
               >
-                <option value="">All companies</option>
-                {companies.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
+                <option value="">All categories</option>
+                {INVESTMENT_CATEGORY_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
                   </option>
                 ))}
               </select>
             </Col>
             <Col xs={12} md={4}>
-              <label htmlFor="accepted-country" className="form-label mb-2">
-                Country
-              </label>
+              <label className="form-label mb-2">Maturity Level</label>
               <select
-                id="accepted-country"
+                className="form-select form-select-solid"
+                value={maturityLevel}
+                onChange={(e) => setMaturityLevel(e.target.value)}
+              >
+                <option value="">All levels</option>
+                {MATURITY_LEVEL_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </Col>
+          </Row>
+
+          <Row className="g-4 mt-4">
+            <Col xs={12} md={4}>
+              <label className="form-label mb-2">Country</label>
+              <select
                 className="form-select form-select-solid"
                 value={countryId}
                 onChange={(e) => setCountryId(e.target.value)}
@@ -161,6 +226,72 @@ const PitchDeckList = () => {
                   </option>
                 ))}
               </select>
+            </Col>
+            <Col xs={12} md={4}>
+              <label className="form-label mb-2">Activity Sector</label>
+              <select
+                className="form-select form-select-solid"
+                value={activitySector}
+                onChange={(e) => setActivitySector(e.target.value)}
+              >
+                <option value="">All sectors</option>
+                {ACTIVITY_SECTOR_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </Col>
+          </Row>
+
+          <Row className="g-4 mt-4">
+            <Col xs={12} md={4}>
+              <label className="form-label mb-2">Year of Creation</label>
+              <input
+                type="number"
+                className="form-control form-control-solid"
+                value={yearOfCreation}
+                onChange={(e) => setYearOfCreation(e.target.value)}
+              />
+            </Col>
+            <Col xs={12} md={4}>
+              <label className="form-label mb-2">Revenue 2024</label>
+              <input
+                type="number"
+                className="form-control form-control-solid"
+                value={revenue2024}
+                onChange={(e) => setRevenue2024(e.target.value)}
+              />
+            </Col>
+            <Col xs={12} md={4}>
+              <label className="form-label mb-2">Users</label>
+              <input
+                type="number"
+                className="form-control form-control-solid"
+                value={usersCount}
+                onChange={(e) => setUsersCount(e.target.value)}
+              />
+            </Col>
+          </Row>
+
+          <Row className="g-4 mt-4">
+            <Col xs={12} md={6}>
+              <label className="form-label mb-2">Employees</label>
+              <input
+                type="number"
+                className="form-control form-control-solid"
+                value={employeesCount}
+                onChange={(e) => setEmployeesCount(e.target.value)}
+              />
+            </Col>
+            <Col xs={12} md={6}>
+              <label className="form-label mb-2">Requested Amount (USD)</label>
+              <input
+                type="number"
+                className="form-control form-control-solid"
+                value={requestedAmountUsd}
+                onChange={(e) => setRequestedAmountUsd(e.target.value)}
+              />
             </Col>
           </Row>
         </div>
