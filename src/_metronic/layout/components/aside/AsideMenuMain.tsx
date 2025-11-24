@@ -383,6 +383,16 @@ export function AsideMenuMain() {
             />
           </RoleGuard>
 
+          <RoleGuard allowedRoles={dealroomRoles}>
+            <AsideMenuItem
+              to="/deal-room-management"
+              title="Deal Room Management"
+              hasBullet
+              bsTitle="Deal Rooms Management"
+              customIcon={<i className="fa-solid fa-handshake"></i>}
+            />
+          </RoleGuard>
+
           {/* Keep the rest of Admin-only items restricted to adminRoles */}
           <RoleGuard allowedRoles={programRoles}>
             <AsideMenuItemWithSubMain
@@ -442,16 +452,6 @@ export function AsideMenuMain() {
               bsTitle="Sponsors & Partners"
               customIcon={<i className="fa-solid fa-handshake"></i>}
             />
-
-            <RoleGuard allowedRoles={dealroomRoles}>
-              <AsideMenuItem
-                to="/deal-room-management"
-                title="Deal Room Management"
-                hasBullet
-                bsTitle="Deal Rooms Management"
-                customIcon={<i className="fa-solid fa-handshake"></i>}
-              />
-            </RoleGuard>
 
             <AsideMenuItemWithSubMain
               to="/media-management"
