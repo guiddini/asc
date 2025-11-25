@@ -1,10 +1,20 @@
 import { CompanyDetailProps } from "../../../../types/company";
+import { useQuery } from "react-query";
+import { getCompanyStats } from "../../../../apis/company";
 
 interface CompanyStatsProps {
   company: CompanyDetailProps;
 }
 
 const CompanyStats: React.FC<CompanyStatsProps> = ({ company }) => {
+  const { data } = useQuery({
+    queryKey: ["company-stats", company?.id],
+    queryFn: getCompanyStats,
+  });
+  const stats = (data as any)?.data || {};
+  const productsCount = Number(stats?.product_services_count || 0);
+  const staffCount = Number(stats?.staff_count || 0);
+
   return (
     <div className="card bg-light mb-18">
       <div className="card-body py-15">
@@ -20,7 +30,7 @@ const CompanyStats: React.FC<CompanyStatsProps> = ({ company }) => {
                       data-kt-countup="true"
                       data-kt-countup-value="700"
                     >
-                      {0}
+                      {productsCount}
                     </div>
                   </div>
                   <span className="text-gray-600 fw-semibold fs-5 lh-0">
@@ -39,7 +49,7 @@ const CompanyStats: React.FC<CompanyStatsProps> = ({ company }) => {
                       data-kt-countup="true"
                       data-kt-countup-value="80"
                     >
-                      {0}
+                      {staffCount}
                     </div>
                   </div>
                   <span className="text-gray-600 fw-semibold fs-5 lh-0">

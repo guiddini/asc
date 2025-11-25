@@ -99,3 +99,7 @@ export const getPublicCompanies = async (): Promise<PublicCompany[]> => {
   const res = await axiosInstance.get("/public/companies");
   return res.data;
 };
+
+export const getCompanyStats = async () => {
+  return axiosInstance.get(`/company-stats`);
+};
