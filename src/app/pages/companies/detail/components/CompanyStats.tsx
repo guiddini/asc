@@ -9,7 +9,7 @@ interface CompanyStatsProps {
 const CompanyStats: React.FC<CompanyStatsProps> = ({ company }) => {
   const { data } = useQuery({
     queryKey: ["company-stats", company?.id],
-    queryFn: getCompanyStats,
+    queryFn: () => getCompanyStats(company?.id),
   });
   const stats = (data as any)?.data || {};
   const productsCount = Number(stats?.product_services_count || 0);

@@ -100,6 +100,6 @@ export const getPublicCompanies = async (): Promise<PublicCompany[]> => {
   return res.data;
 };
 
-export const getCompanyStats = async () => {
-  return axiosInstance.get(`/company-stats`);
+export const getCompanyStats = async (company_id: string | number) => {
+  return axiosInstance.get(`/company/${company_id}/stats`);
 };
