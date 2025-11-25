@@ -28,6 +28,8 @@ export interface VisaDemand {
 /* Requests */
 export interface VisaDemandsIndexRequest {
   status?: VisaDemandStatus;
+  page?: number;
+  per_page?: number;
 }
 
 export interface CreateVisaDemandRequest {
