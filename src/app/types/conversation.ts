@@ -95,9 +95,10 @@ export interface GetUserConversationsRequest {
   search?: string;
 }
 
-export interface GetMessagesRequest {
-  per_page?: number;
-}
-
 export type ConversationsPage = Pagination<Conversation>;
 export type MessagesPage = Pagination<Message>;
+
+export interface GetMessagesRequest {
+  page?: number;
+  per_page?: number;
+}

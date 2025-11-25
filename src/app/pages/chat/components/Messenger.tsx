@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useSelector } from "react-redux";
 // removed generic filter dropdown; using custom menu instead
@@ -25,6 +25,11 @@ const Messenger: FC<Props> = ({ conversationId }) => {
   const queryClient = useQueryClient();
   const [message, setMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const messagesContainerRef = useRef<HTMLDivElement | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   const { data: conversation, isLoading: loadingConv } = useQuery(
     ["conversation", conversationId],
@@ -32,25 +37,69 @@ const Messenger: FC<Props> = ({ conversationId }) => {
     { enabled: !!conversationId }
   );
 
-  const { data: messagesPage, isLoading: loadingMsgs } = useQuery(
-    ["messages", conversationId],
-    () => getMessages(String(conversationId), { per_page: 100 }),
+  const { isLoading: loadingMsgs } = useQuery(
+    ["messages", conversationId, page],
+    () => getMessages(String(conversationId), { per_page: 50, page: 1 }),
     {
       enabled: !!conversationId,
-      onSuccess: async (page) => {
-        const unread = (page.data || []).filter(
+      onSuccess: async (resp) => {
+        const list = Array.isArray(resp?.data) ? resp.data : [];
+        setMessages(list);
+        setPage(resp?.current_page || 1);
+        setHasMore(!!resp?.next_page_url);
+        const unread = list.filter(
           (m: Message) => !m.reads?.some((r) => r.user_id === user?.id)
         );
         await Promise.allSettled(
           unread.map((m) => markMessageAsRead(String(m.id)))
         );
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
       },
     }
   );
 
+  const loadMore = useCallback(async () => {
+    if (!conversationId || isLoadingMore || !hasMore) return;
+    setIsLoadingMore(true);
+    const el = messagesContainerRef.current;
+    const prevScrollHeight = el?.scrollHeight || 0;
+    const prevScrollTop = el?.scrollTop || 0;
+    try {
+      const next = (page || 1) + 1;
+      const resp = await getMessages(String(conversationId), {
+        per_page: 50,
+        page: next,
+      });
+      const older = Array.isArray(resp?.data) ? resp.data : [];
+      setMessages((cur) => [...older, ...cur]);
+      setPage(resp?.current_page || next);
+      setHasMore(!!resp?.next_page_url);
+    } finally {
+      setIsLoadingMore(false);
+      const newScrollHeight =
+        messagesContainerRef.current?.scrollHeight || prevScrollHeight;
+      if (messagesContainerRef.current) {
+        messagesContainerRef.current.scrollTop =
+          prevScrollTop + (newScrollHeight - prevScrollHeight);
+      }
+    }
+  }, [conversationId, page, hasMore, isLoadingMore]);
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messagesPage?.data?.length]);
+  }, [messages.length]);
+
+  useEffect(() => {
+    const el = messagesContainerRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      if (el.scrollTop <= 100) {
+        loadMore();
+      }
+    };
+    el.addEventListener("scroll", onScroll);
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [loadMore]);
 
   // Subscribe to realtime conversation events via Pusher private channel
   useEffect(() => {
@@ -68,20 +117,7 @@ const Messenger: FC<Props> = ({ conversationId }) => {
 
       console.log("New message received:", newMsg);
 
-      queryClient.setQueryData(
-        ["messages", conversationId],
-        (old: MessagesPage | undefined) => {
-          if (!old || !Array.isArray(old.data)) {
-            return { data: [newMsg] } as MessagesPage;
-          }
-          return {
-            ...old,
-            // Prepend so newest is first when data is latest->old
-            data: [...(old.data || []), newMsg],
-          } as MessagesPage;
-        }
-      );
-
+      setMessages((old) => [...old, newMsg]);
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
 
@@ -146,7 +182,6 @@ const Messenger: FC<Props> = ({ conversationId }) => {
 
   const title =
     conversation?.conversation?.title || otherParticipantName || "Conversation";
-  const messages = messagesPage?.data || [];
 
   return (
     <div className="flex-lg-row-fluid ms-lg-7 ms-xl-10 d-flex flex-column">
@@ -230,6 +265,7 @@ const Messenger: FC<Props> = ({ conversationId }) => {
               className="card-body flex-grow-1"
               id="kt_chat_messenger_body"
               style={{ overflowY: "auto", minHeight: 0 }}
+              ref={messagesContainerRef}
             >
               <div className="me-n5 pe-5">
                 {messages.length === 0 && (
