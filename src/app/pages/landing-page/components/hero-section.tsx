@@ -143,7 +143,11 @@ const HeroSection: React.FC = () => {
             />
           </a>
 
-          <span className="btn btn-link p-0">
+          <a
+            href="https://apps.apple.com/us/app/asc-event-official/id6754880557"
+            target="_blank"
+            className="btn btn-link p-0"
+          >
             <img
               src="/media/app-store.svg"
               alt="App Store"
@@ -153,7 +157,7 @@ const HeroSection: React.FC = () => {
                 filter: "brightness(0) invert(1)",
               }}
             />
-          </span>
+          </a>
         </div>
       </div>
       <UserTypeComponent show={showTypeComponent} onHide={handleCloseType} />

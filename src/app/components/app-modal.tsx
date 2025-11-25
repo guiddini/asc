@@ -120,11 +120,16 @@ const AppModal: React.FC<AppModalProps> = ({
 
                   {isIOS && (
                     <Col xs={12} sm={6} className="text-center">
-                      <img
-                        src="/media/app-store.svg"
-                        alt="Download on the App Store"
-                        className="me-3"
-                      />
+                      <a
+                        href="https://apps.apple.com/us/app/asc-event-official/id6754880557"
+                        target="_blank"
+                      >
+                        <img
+                          src="/media/app-store.svg"
+                          alt="Download on the App Store"
+                          className="me-3"
+                        />
+                      </a>
                     </Col>
                   )}
 
@@ -142,13 +147,17 @@ const AppModal: React.FC<AppModalProps> = ({
                         />
                       </a>
 
-                      <span className="btn btn-link p-0">
+                      <a
+                        href="https://apps.apple.com/us/app/asc-event-official/id6754880557"
+                        target="_blank"
+                        className="btn btn-link p-0"
+                      >
                         <img
                           src="/media/app-store.svg"
                           alt="App Store"
                           style={{ width: "150px", opacity: "80%" }}
                         />
-                      </span>
+                      </a>
                     </div>
                   )}
                 </Row>
