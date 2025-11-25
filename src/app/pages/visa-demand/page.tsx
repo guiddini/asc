@@ -6,6 +6,7 @@ import {
   deleteVisaDemand,
   cancelVisaDemand,
   getUserVisaDemand,
+  downloadVisaDemand,
 } from "../../apis/visa-demand";
 import {
   VisaDemandStatus,
@@ -173,6 +174,26 @@ const VisaDemandPage: React.FC = () => {
     const ok = window.confirm("Cancel this visa demand?");
     if (!ok) return;
     cancelMutation.mutate({ demand_id: myDemand.id });
+  };
+
+  // Download handler
+  const [downloading, setDownloading] = useState(false);
+  const handleDownload = async () => {
+    if (!myDemand?.id) return;
+    try {
+      setDownloading(true);
+      const blob = await downloadVisaDemand(myDemand.id);
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `visa-demand-${myDemand.id}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 0);
+    } finally {
+      setDownloading(false);
+    }
   };
 
   // UI helpers
@@ -348,9 +369,20 @@ const VisaDemandPage: React.FC = () => {
     <div className="card">
       <div className="card-header d-flex align-items-center justify-content-between">
         <h3 className="card-title">My Visa Demand</h3>
-        <span className={statusBadgeClass(myDemand?.status)}>
-          {myDemand?.status ? myDemand.status.toUpperCase() : "-"}
-        </span>
+        <div className="d-flex align-items-center gap-3">
+          <span className={statusBadgeClass(myDemand?.status)}>
+            {myDemand?.status ? myDemand.status.toUpperCase() : "-"}
+          </span>
+          {myDemand?.status === "accepted" && (
+            <button
+              className="btn btn-sm btn-primary"
+              onClick={handleDownload}
+              disabled={downloading}
+            >
+              {downloading ? "Downloading..." : "Download Visa"}
+            </button>
+          )}
+        </div>
       </div>
 
       {!isEditing && (

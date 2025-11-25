@@ -96,3 +96,11 @@ export const getUserVisaDemand =
     const res = await axiosInstance.get("/visa-demands/user");
     return res.data;
   };
+
+export const downloadVisaDemand = async (demand_id: string): Promise<Blob> => {
+  const res = await axiosInstance.get(`/visa-demands/downloadForVisitor`, {
+    data: { demand_id },
+    responseType: "blob",
+  });
+  return res.data;
+};
