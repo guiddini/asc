@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import { useQuery } from "react-query";
 import { getPublicCompanies } from "../../../apis/company";
@@ -12,6 +12,18 @@ const ExhibitorsSection: React.FC = () => {
   const { user } = useSelector((state: UserResponse) => state.user);
   const isAuthenticated = Boolean(user);
   const navigate = useNavigate();
+  const sliderRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollByAmount = (dir: "prev" | "next") => {
+    const el = sliderRef.current;
+    if (!el) return;
+    const amount = el.clientWidth - 160;
+    el.scrollBy({
+      left: dir === "prev" ? -amount : amount,
+      behavior: "smooth",
+    });
+  };
+
   const {
     data: companies,
     isLoading,
@@ -22,66 +34,114 @@ const ExhibitorsSection: React.FC = () => {
     { staleTime: 5 * 60 * 1000, retry: 1 }
   );
 
-  const items = companies || [];
+  const logos: { src: string; alt: string; id: string }[] = (
+    companies || []
+  ).map((c) => ({
+    src: getMediaUrl(c.logo) || "/sponsors/commingSoon.jpeg",
+    alt: c.name,
+    id: c.id,
+  }));
 
   return (
     <section id="landing-exhibitors-section">
-      <Container id="landing-exhibitors-container">
-        <div id="landing-exhibitors-header">
-          <h2 id="landing-exhibitors-heading">Exhibitors</h2>
+      <div id="landing-partners-container">
+        <div id="landing-partners-header">
+          <h2 id="landing-partners-heading" className="text-black">
+            Exhibitors
+          </h2>
         </div>
-        <Row>
-          {isLoading && (
-            <Col xs={12} className="text-center py-5">
-              Loading exhibitors…
-            </Col>
-          )}
-          {isError && (
-            <Col xs={12} className="text-center py-5">
-              Failed to load exhibitors.
-            </Col>
-          )}
-          {!isLoading && !isError && items.length === 0 && (
-            <Col xs={12} className="text-center py-5">
-              No exhibitors yet.
-            </Col>
-          )}
-          {!isLoading &&
-            !isError &&
-            items.map((company, idx) => (
-              <Col key={idx} xs={6} md={4} lg={3} xl={2} className="mb-4">
-                <Card
-                  data-exhibitor-card
-                  role={isAuthenticated ? "button" : undefined}
-                  style={{ cursor: isAuthenticated ? "pointer" : "default" }}
-                  onClick={() => {
-                    if (isAuthenticated) {
-                      navigate(`/company/${company.id}`);
-                    }
-                  }}
-                >
+
+        <div id="landing-partners-slider-wrap">
+          <button
+            id="landing-partners-prev"
+            aria-label="Previous"
+            onClick={() => scrollByAmount("prev")}
+          >
+            <i className="bi bi-chevron-left" />
+          </button>
+
+          <div id="landing-partners-slider" ref={sliderRef}>
+            {isLoading && (
+              <div data-partner-card-wrap>
+                <div data-partner-card>
                   <div data-logo>
-                    <img
-                      src={
-                        getMediaUrl(company.logo) ||
-                        "/sponsors/commingSoon.jpeg"
-                      }
-                      alt={company.name}
-                    />
+                    <img src="/sponsors/commingSoon.jpeg" alt="Loading" />
                   </div>
-                  <Card.Body>
-                    <Card.Title
-                      className="text-center fs-6"
-                      style={{ minHeight: 24 }}
+                </div>
+              </div>
+            )}
+            {isError && (
+              <div data-partner-card-wrap>
+                <div data-partner-card>
+                  <div data-logo>
+                    <img src="/sponsors/commingSoon.jpeg" alt="Error" />
+                  </div>
+                </div>
+              </div>
+            )}
+            {!isLoading &&
+              !isError &&
+              (logos.length > 0 ? (
+                logos.map((logo, idx) => (
+                  <div data-partner-card-wrap key={idx}>
+                    <div
+                      data-partner-card
+                      role={isAuthenticated ? "button" : undefined}
+                      style={{
+                        cursor: isAuthenticated ? "pointer" : "default",
+                      }}
+                      onClick={() => {
+                        if (isAuthenticated) {
+                          navigate(`/company/${logo.id}`);
+                        }
+                      }}
                     >
-                      {company.name}
-                    </Card.Title>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-        </Row>
-      </Container>
+                      <div data-logo>
+                        <img
+                          src={logo.src}
+                          alt={logo.alt}
+                          width={220}
+                          height={220}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "contain",
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div data-partner-card-wrap>
+                  <div data-partner-card>
+                    <div data-logo>
+                      <img
+                        src="/sponsors/commingSoon.jpeg"
+                        alt="Coming Soon"
+                        width={220}
+                        height={220}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "contain",
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+          </div>
+
+          <button
+            id="landing-partners-next"
+            aria-label="Next"
+            onClick={() => scrollByAmount("next")}
+          >
+            <i className="bi bi-chevron-right" />
+          </button>
+        </div>
+      </div>
     </section>
   );
 };

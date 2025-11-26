@@ -1,10 +1,10 @@
 import { useAuth } from "../core/Auth";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation, useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { useRef, useState, useMemo } from "react";
+import { useRef, useState, useMemo, useEffect } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import * as yup from "yup";
 import { getAllActivitiesApi, loginApi, regiterApi } from "../../../apis";
@@ -20,7 +20,6 @@ import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { CountriesSelect, SelectComponent } from "../../../components";
 import { Col, Row } from "react-bootstrap";
-import { KTIcon } from "../../../../_metronic/helpers";
 
 // ----------------- Schemas -----------------
 const step1Schema = yup.object({
@@ -76,6 +75,18 @@ type SignupProps = yup.InferType<typeof step1Schema> &
   yup.InferType<typeof step2Schema>;
 
 // ----------------- Component -----------------
+
+export const USER_TYPE_VALUES = [
+  "visitor",
+  "exhibitor",
+  "investor",
+  "media",
+  "speaker",
+  "policy_makers",
+  "vip-asc@2025dz",
+  "sponsor-asc@2025",
+];
+
 export default function SignupPage() {
   const { saveAuth, setCurrentUser } = useAuth();
   const dispatch = useDispatch();
@@ -96,6 +107,12 @@ export default function SignupPage() {
 
   const [searchParams] = useSearchParams();
   const type = searchParams.get("type") || "";
+
+  useEffect(() => {
+    if (!USER_TYPE_VALUES.includes(type)) {
+      navigate("/");
+    }
+  }, [type, navigate]);
 
   const { mutate, isLoading } = useMutation({
     mutationKey: ["signup"],

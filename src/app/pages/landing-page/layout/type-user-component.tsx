@@ -17,7 +17,6 @@ export const USER_TYPES = [
 ];
 
 const UserTypeComponent: React.FC<SearchProps> = ({ show, onHide }) => {
-
   return (
     <Modal
       show={show}

@@ -63,7 +63,7 @@ import CreateStartupPage from "../pages/startup/create-startup-page";
 import OnlinePaymentResultsPage from "../pages/payment/results/page";
 import AppModal from "../components/app-modal";
 import { Calendar, Phone } from "lucide-react";
-import { Button } from "react-bootstrap";
+import { Button, Modal, Form } from "react-bootstrap";
 import WorkshopsManagementPage from "../pages/workshop/page";
 import WorkshopDetailPage from "../pages/workshop/detail/page";
 import VisaDemandsManagementPage from "../pages/visa-demands-management/page";
@@ -91,7 +91,7 @@ import {
   investorRoles, // added
 } from "../utils/roles";
 import SponsorsManagementPage from "../pages/sponsor-management/page";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 // Add Hébergement pages
 import HotelsManagementPage from "../pages/hotels-management/page";
 import AccommodationsManagementPage from "../pages/accomodations-management/page";
@@ -101,9 +101,16 @@ import FavoritePitchDeckPage from "../pages/deal-room/favorites/page";
 import InterestedInvestorsInMyPitchDeck from "../pages/deal-room/interested/page";
 import NotificationsManagement from "../pages/notifications-management/page";
 import PitchDeckPage from "../pages/pitch-deck/page";
+import { updateUserLogo } from "../apis/user";
+import { setCurrentUser } from "../features/userSlice";
 
 const PrivateRoutes = () => {
   const [showAppModal, setShowAppModal] = useState(false);
+  const [showAvatarModal, setShowAvatarModal] = useState(false);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [avatarSaving, setAvatarSaving] = useState(false);
+  const dispatch = useDispatch();
   const ProfilePage = lazy(() => import("../pages/profile/ProfilePage"));
   const WizardsPage = lazy(() => import("../modules/wizards/WizardsPage"));
   const AccountPage = lazy(() => import("../modules/accounts/AccountPage"));
@@ -131,7 +138,44 @@ const PrivateRoutes = () => {
     }
   }, []);
 
-  const { user } = useSelector((state: any) => state.user);
+  const { user, token } = useSelector((state: any) => state.user);
+
+  useEffect(() => {
+    if (user && (!user.avatar || user.avatar === "")) {
+      setShowAvatarModal(true);
+    } else {
+      setShowAvatarModal(false);
+    }
+  }, [user]);
+
+  const onAvatarFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0] || null;
+    setAvatarFile(f);
+    if (f) {
+      const reader = new FileReader();
+      reader.onloadend = () => setAvatarPreview(reader.result as string);
+      reader.readAsDataURL(f);
+    } else {
+      setAvatarPreview(null);
+    }
+  };
+
+  const saveAvatar = async () => {
+    if (!avatarFile) return;
+    setAvatarSaving(true);
+    const fd = new FormData();
+    fd.append("avatar", avatarFile);
+    try {
+      const res = await updateUserLogo(fd);
+      const updatedUser =
+        (res as any)?.data?.user || (res as any)?.data || user;
+      dispatch(setCurrentUser({ token, user: updatedUser }));
+      setShowAvatarModal(false);
+    } catch (e) {
+    } finally {
+      setAvatarSaving(false);
+    }
+  };
   const isAdmin = (user?.roles || []).some((r: any) =>
     adminRoles.includes(r?.name)
   );
@@ -160,6 +204,48 @@ const PrivateRoutes = () => {
               onHide={() => setShowAppModal(false)}
               show={showAppModal}
             />
+
+            <Modal
+              show={showAvatarModal}
+              backdrop="static"
+              keyboard={false}
+              centered
+            >
+              <Modal.Header>
+                <Modal.Title>Complete Your Profile</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <p className="mb-4">
+                  Please add your avatar to generate your badge.
+                </p>
+                <Form.Group controlId="userAvatar">
+                  <Form.Label>Upload Avatar</Form.Label>
+                  <Form.Control
+                    type="file"
+                    accept="image/*"
+                    onChange={onAvatarFileChange}
+                  />
+                </Form.Group>
+                {avatarPreview && (
+                  <div className="mt-3">
+                    <img
+                      src={avatarPreview}
+                      alt="Avatar Preview"
+                      style={{ maxWidth: "100%", borderRadius: 8 }}
+                    />
+                  </div>
+                )}
+              </Modal.Body>
+              <Modal.Footer>
+                <Button
+                  variant="primary"
+                  onClick={saveAvatar}
+                  disabled={!avatarFile || avatarSaving}
+                >
+                  {avatarSaving ? "Saving..." : "Save Avatar"}
+                </Button>
+              </Modal.Footer>
+            </Modal>
           </div>
         }
       >

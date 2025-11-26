@@ -2107,11 +2107,8 @@
   height: 220px;
   border-radius: 16px;
   overflow: hidden;
-  background: rgba(10, 24, 32, 0.6);
+  background: #fff;
   border: 1px solid rgba(98, 236, 194, 0.25);
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.35);
-  transition: transform 0.25s ease, box-shadow 0.25s ease,
-    border-color 0.25s ease;
   cursor: pointer;
 }
 
@@ -2125,8 +2122,6 @@
 
 #landing-partners-slider [data-partner-card]:hover {
   transform: scale(1.05);
-  border-color: rgba(98, 236, 194, 0.6);
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
 }
 
 /* Responsive sizing */
@@ -2229,8 +2224,12 @@
   cursor: pointer;
 }
 
-#landing-sponsors-prev { margin-inline-end: 12px; }
-#landing-sponsors-next { margin-inline-start: 12px; }
+#landing-sponsors-prev {
+  margin-inline-end: 12px;
+}
+#landing-sponsors-next {
+  margin-inline-start: 12px;
+}
 
 #landing-sponsors-slider {
   display: grid;
@@ -2293,7 +2292,9 @@
   padding: 0 24px;
 }
 
-#landing-exhibitors-header { margin-bottom: 2rem; }
+#landing-exhibitors-header {
+  margin-bottom: 2rem;
+}
 #landing-exhibitors-heading {
   margin: 0;
   font-size: 2.25rem;
