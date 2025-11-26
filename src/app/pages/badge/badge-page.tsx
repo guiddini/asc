@@ -184,14 +184,17 @@ export const BadgePage = () => {
               <div className="card h-100 d-flex align-items-center justify-content-center text-center p-10">
                 <h3 className="mb-2">Badge unavailable</h3>
                 <p className="text-muted">
-                  Badge generation is disabled until your KYC is accepted. No badge means no entry to the event venue.
+                  Badge generation is disabled until your KYC is accepted. No
+                  badge means no entry to the event venue.
                 </p>
                 <Button
                   variant="primary"
                   size="sm"
                   onClick={() => setShowUpdateIdentification(true)}
                 >
-                  {kycStatus === "refused" ? "Upload Again" : "Upload Documents"}
+                  {kycStatus === "refused"
+                    ? "Upload Again"
+                    : "Upload Documents"}
                 </Button>
               </div>
             ) : (
@@ -230,34 +233,34 @@ export const BadgePage = () => {
                 <h1>Share my participation</h1>
                 <div className="w-100 d-flex flex-column align-items-start justify-content-center gap-4 align-self-start">
                   <LinkedinShareButton
-                    url={`https://asc.eventili.com/`}
+                    url={`https://africanstartupconference.org/`}
                     title="I'm attending the African Startup Conference — the leading pan-African gathering dedicated to innovation, entrepreneurship, and future technologies. 🌍✨ Since its inception, it has united ecosystems, governments, investors, and the African diaspora around a shared vision: building a technologically sovereign and inclusive Africa. 
                     
                     Edition after edition, the Conference has become a key platform for dialogue and collaboration, shaping strategic initiatives such as the Algiers Declaration on Startup Development, the African Charter for Talent Retention, and the continental Public Policy Framework on Artificial Intelligence — all highlighting its transformative impact on Africa’s innovation landscape. 
                     
-                    In 2025, the Conference returns for its 4th edition under the theme 'Raising African Champions' 🚀 — celebrating high-growth African startups driving progress across the continent and beyond. Join us at https://asc.eventili.com/ to be part of this movement. 💡#ASC2025 #AfricanStartups #Innovation #TechInAfrica #Entrepreneurship #PanAfrican #Guiddini"
+                    In 2025, the Conference returns for its 4th edition under the theme 'Raising African Champions' 🚀 — celebrating high-growth African startups driving progress across the continent and beyond. Join us at https://africanstartupconference.org/ to be part of this movement. 💡#ASC2025 #AfricanStartups #Innovation #TechInAfrica #Entrepreneurship #PanAfrican #Guiddini"
                   >
                     <LinkedinIcon size={32} round />
                     <span className="text-muted ms-2">LinkedIn</span>
                   </LinkedinShareButton>
                   <FacebookShareButton
-                    url={`https://asc.eventili.com/`}
+                    url={`https://africanstartupconference.org/`}
                     title="I'm attending the African Startup Conference — the leading pan-African gathering dedicated to innovation, entrepreneurship, and future technologies. 🌍✨ Since its inception, it has united ecosystems, governments, investors, and the African diaspora around a shared vision: building a technologically sovereign and inclusive Africa. 
                     
                     Edition after edition, the Conference has become a key platform for dialogue and collaboration, shaping strategic initiatives such as the Algiers Declaration on Startup Development, the African Charter for Talent Retention, and the continental Public Policy Framework on Artificial Intelligence — all highlighting its transformative impact on Africa’s innovation landscape. 
                     
-                    In 2025, the Conference returns for its 4th edition under the theme 'Raising African Champions' 🚀 — celebrating high-growth African startups driving progress across the continent and beyond. Join us at https://asc.eventili.com/ to be part of this movement. 💡#ASC2025 #AfricanStartups #Innovation #TechInAfrica #Entrepreneurship #PanAfrican #Guiddini"
+                    In 2025, the Conference returns for its 4th edition under the theme 'Raising African Champions' 🚀 — celebrating high-growth African startups driving progress across the continent and beyond. Join us at https://africanstartupconference.org/ to be part of this movement. 💡#ASC2025 #AfricanStartups #Innovation #TechInAfrica #Entrepreneurship #PanAfrican #Guiddini"
                   >
                     <FacebookIcon size={32} round />
                     <span className="text-muted ms-2">Facebook</span>
                   </FacebookShareButton>
                   <TwitterShareButton
-                    url={`https://asc.eventili.com/`}
+                    url={`https://africanstartupconference.org/`}
                     title="I'm attending the African Startup Conference — the leading pan-African gathering dedicated to innovation, entrepreneurship, and future technologies. 🌍✨ Since its inception, it has united ecosystems, governments, investors, and the African diaspora around a shared vision: building a technologically sovereign and inclusive Africa. 
                     
                     Edition after edition, the Conference has become a key platform for dialogue and collaboration, shaping strategic initiatives such as the Algiers Declaration on Startup Development, the African Charter for Talent Retention, and the continental Public Policy Framework on Artificial Intelligence — all highlighting its transformative impact on Africa’s innovation landscape. 
                     
-                    In 2025, the Conference returns for its 4th edition under the theme 'Raising African Champions' 🚀 — celebrating high-growth African startups driving progress across the continent and beyond. Join us at https://asc.eventili.com/ to be part of this movement. 💡#ASC2025 #AfricanStartups #Innovation #TechInAfrica #Entrepreneurship #PanAfrican #Guiddini"
+                    In 2025, the Conference returns for its 4th edition under the theme 'Raising African Champions' 🚀 — celebrating high-growth African startups driving progress across the continent and beyond. Join us at https://africanstartupconference.org/ to be part of this movement. 💡#ASC2025 #AfricanStartups #Innovation #TechInAfrica #Entrepreneurship #PanAfrican #Guiddini"
                   >
                     <TwitterIcon size={32} round />
                     <span className="text-muted ms-2">Twitter</span>
@@ -271,10 +274,18 @@ export const BadgePage = () => {
 
       {!isBlocked && (
         <div className="d-flex gap-3 mt-4">
-          <Button variant="primary" disabled={loadingBadge || !pdfSource} onClick={handleDownloadPdf}>
+          <Button
+            variant="primary"
+            disabled={loadingBadge || !pdfSource}
+            onClick={handleDownloadPdf}
+          >
             Download Badge
           </Button>
-          <Button variant="secondary" disabled={loadingBadge || !pdfSource} onClick={handlePrintPdf}>
+          <Button
+            variant="secondary"
+            disabled={loadingBadge || !pdfSource}
+            onClick={handlePrintPdf}
+          >
             Print Badge
           </Button>
           {loadingBadge && <Spinner animation="border" size="sm" />}

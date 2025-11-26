@@ -877,7 +877,7 @@ const PostBox = ({
                   className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0"
                 >
                   <LinkedinShareButton
-                    url={`https://asc.eventili.com/home#afes-post-${id}`}
+                    url={`https://africanstartupconference.org/home#afes-post-${id}`}
                     title="Je participe à l'événement 'Algeria Fintech & E-commerce Summit' organisé par 'Guiddini'. 🚀 Rejoignez-moi pour explorer les dernières tendances et innovations dans le domaine de la fintech et du commerce électronique en consultant le site web : https://algeriafintech.com/💻🌐 #AFES2024 #Guiddini #groupetelecomalgérie #icosnet #saa #caat #bea #Saticom
 #allianceassrances"
                   >
@@ -894,7 +894,7 @@ const PostBox = ({
                   className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0"
                 >
                   <FacebookShareButton
-                    url={`https://asc.eventili.com/home#afes-post-${id}`}
+                    url={`https://africanstartupconference.org/home#afes-post-${id}`}
                     title="Je participe à l'événement 'Algeria Fintech & E-commerce Summit' organisé par 'Guiddini'. 🚀 Rejoignez-moi pour explorer les dernières tendances et innovations dans le domaine de la fintech et du commerce électronique en consultant le site web : https://algeriafintech.com/💻🌐 #AFES2024 #Guiddini #groupetelecomalgérie #icosnet #saa #caat #bea #Saticom
 #allianceassrances"
                   >
@@ -911,7 +911,7 @@ const PostBox = ({
                   className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 btn-active-color-info btn-active-light-info fw-bold collapsible m-0"
                 >
                   <TwitterShareButton
-                    url={`https://asc.eventili.com/home#afes-post-${id}`}
+                    url={`https://africanstartupconference.org/home#afes-post-${id}`}
                     title="Je participe à l'événement 'Algeria Fintech & E-commerce Summit' organisé par 'Guiddini'. 🚀 Rejoignez-moi pour explorer les dernières tendances et innovations dans le domaine de la fintech et du commerce électronique en consultant le site web :"
                   >
                     <TwitterIcon size={32} round />
