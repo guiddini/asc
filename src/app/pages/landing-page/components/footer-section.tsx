@@ -134,7 +134,7 @@ const Footer: React.FC = () => {
                 </div>
                 <div className="contact-item">
                   <i className="bi bi-telephone me-2"></i>
-                  <a href="tel:+213770222149">+213 (0) 770 22 21 49</a>
+                  <a href="tel:+213770848390">+213 7 70848390</a>
                 </div>
               </div>
             </div>
