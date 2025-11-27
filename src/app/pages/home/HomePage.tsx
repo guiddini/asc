@@ -190,7 +190,9 @@ const HomePage = () => {
               </>
             )}
             {/* Pitch Deck alert & upload */}
-            <PitchDeckAlert />
+            <RoleGuard allowedRoles={["participant", "exhibitor"]}>
+              <PitchDeckAlert />
+            </RoleGuard>
             <RoleGuard allowedRoles={adminRoles}>
               <CreatePost />
             </RoleGuard>
