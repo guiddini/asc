@@ -6,23 +6,31 @@ import { Link } from "react-router-dom";
 
 interface RoleGuardProps {
   allowedRoles: string[];
+  exclusiveRoles?: string[];
   children: React.ReactNode;
   showError?: boolean;
 }
 
 const RoleGuard: React.FC<RoleGuardProps> = ({
   allowedRoles,
+  exclusiveRoles,
   children,
   showError = false,
 }) => {
   const { user } = useSelector((state: UserResponse) => state.user);
 
-  const userRoles = user?.roles?.map((role: any) => role.name) || [];
+  const userRoles = user?.roles?.map((r: any) => r.name) || [];
+
   const hasAccess = userRoles.some((role: string) =>
     allowedRoles.includes(role)
   );
 
-  if (!hasAccess) {
+  const passesExclusive =
+    exclusiveRoles && exclusiveRoles.length > 0
+      ? userRoles.every((role: string) => exclusiveRoles.includes(role))
+      : true;
+
+  if (!hasAccess || !passesExclusive) {
     if (!showError) return null;
 
     return (
