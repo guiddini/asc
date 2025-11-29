@@ -18,6 +18,7 @@ import {
   exhibitionFinanceOfficerRoles,
   exhibitionManagerRoles,
 } from "../../../utils/roles";
+import { env } from "../../../config/env";
 
 interface ExhibitionRequestActionsProps {
   row: ExhibitionDemand;
@@ -174,9 +175,9 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
   const handleOpenTransferDocument = () => {
     const docPath = row?.transfer_document;
     if (!docPath) return;
-    const link = `${
-      import.meta.env.VITE_APP_BASE_URL
-    }/admin/file?path=${encodeURIComponent(docPath)}`;
+    const link = `${env.baseUrl}/admin/file?path=${encodeURIComponent(
+      docPath
+    )}`;
     window.open(link, "_blank", "noopener,noreferrer");
   };
 
@@ -653,7 +654,7 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
                           const docPath = row.transfer_document;
                           if (!docPath) return;
                           const link = `${
-                            import.meta.env.VITE_APP_BASE_URL
+                            env.baseUrl
                           }/admin/file?path=${encodeURIComponent(docPath)}`;
                           window.open(link, "_blank", "noopener,noreferrer");
                         }}

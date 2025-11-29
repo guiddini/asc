@@ -12,9 +12,9 @@ import {
   IToolbar,
 } from "./LayoutModels";
 import { DefaultLayoutConfig } from "./DefaultLayoutConfig";
+import { env } from "../../../app/config/env";
 
-const LAYOUT_CONFIG_KEY =
-  import.meta.env.VITE_APP_BASE_LAYOUT_CONFIG_KEY || "LayoutConfig";
+const LAYOUT_CONFIG_KEY = env.baseLayoutConfigKey;
 
 export function getLayout(): ILayout {
   const ls = localStorage.getItem(LAYOUT_CONFIG_KEY);

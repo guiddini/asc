@@ -104,6 +104,7 @@ import PitchDeckPage from "../pages/pitch-deck/page";
 import { updateUserLogo } from "../apis/user";
 import { setCurrentUser } from "../features/userSlice";
 import CompanyVisitorsPage from "../pages/company-visitors/page";
+import AdminQrLogsPage from "../pages/scan-logs/page";
 
 const PrivateRoutes = () => {
   const [showAppModal, setShowAppModal] = useState(false);
@@ -665,6 +666,17 @@ const PrivateRoutes = () => {
                 >
                   <SuspensedView>
                     <UsersPage />
+                  </SuspensedView>
+                </RoleGuard>
+              }
+            />
+
+            <Route
+              path="/scan-logs"
+              element={
+                <RoleGuard allowedRoles={[...adminRoles]} showError>
+                  <SuspensedView>
+                    <AdminQrLogsPage />
                   </SuspensedView>
                 </RoleGuard>
               }

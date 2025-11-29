@@ -1,8 +1,9 @@
 import axios from "axios";
 import { getAuth } from "../modules/auth";
+import { env } from "../config/env";
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_APP_API_URL,
+  baseURL: env.baseUrl,
   responseType: "json",
   headers: {
     "Content-Type": "multipart/form-data",

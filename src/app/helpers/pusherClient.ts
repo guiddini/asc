@@ -1,13 +1,14 @@
 import Pusher from "pusher-js";
 import { getAuth } from "../modules/auth/core/AuthHelpers";
+import { env } from "../config/env";
 
 let instance: Pusher | null = null;
 
 function createInstance(): Pusher {
   // Access Vite environment variables correctly
-  const key = import.meta.env.VITE_APP_PUSHER_APP_KEY || "ec4e26dcaa1f65bfbd78";
-  const cluster = import.meta.env.VITE_APP_PUSHER_CLUSTER || "eu";
-  const apiUrl = import.meta.env.VITE_APP_BASE_URL;
+  const key = env.pusherAppKey;
+  const cluster = env.pusherHost;
+  const apiUrl = env.baseUrl;
   const token = getAuth();
 
   if (!key) {

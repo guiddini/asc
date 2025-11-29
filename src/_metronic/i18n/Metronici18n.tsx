@@ -2,9 +2,9 @@
 import { FC, createContext, useContext } from "react";
 import { WithChildren } from "../helpers";
 import i18next from "i18next";
+import { env } from "../../app/config/env";
 
-const I18N_CONFIG_KEY =
-  import.meta.env.VITE_APP_I18N_CONFIG_KEY || "i18nConfig";
+const I18N_CONFIG_KEY = env.i18nConfigKey;
 
 type Props = {
   selectedLang: "en" | "fr" | "ar";

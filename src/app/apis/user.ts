@@ -1,6 +1,7 @@
 import axios from "axios";
 import axiosInstance from "./axios";
 import { getAuth } from "../modules/auth";
+import { env } from "../config/env";
 
 const userAuth = getAuth();
 
@@ -128,15 +129,12 @@ const getUserQRCodeApi = async (user_id: string) => {
 };
 
 const getUserBadgeApi = async () => {
-  return await axios.get(
-    `${import.meta.env.VITE_APP_HTTP_API_URL}/ticket/badge`,
-    {
-      headers: {
-        Authorization: `Bearer ${userAuth}`,
-      },
-      // responseType: "blob",
-    }
-  );
+  return await axios.get(`${env.baseUrl}/ticket/badge`, {
+    headers: {
+      Authorization: `Bearer ${userAuth}`,
+    },
+    // responseType: "blob",
+  });
 };
 
 const resendEmailToUserApi = async (email: string) => {

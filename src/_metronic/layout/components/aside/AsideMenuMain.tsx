@@ -452,6 +452,13 @@ export function AsideMenuMain() {
           <RoleGuard allowedRoles={adminRoles}>
             {/* Removed the duplicate User Management here */}
             <AsideMenuItem
+              to="/scan-logs"
+              title="Scan Logs"
+              hasBullet
+              bsTitle="Scan Logs"
+              customIcon={<i className="fa-solid fa-qrcode"></i>}
+            />
+            <AsideMenuItem
               to="/sponsors-management"
               title="Sponsors & Partners"
               hasBullet
