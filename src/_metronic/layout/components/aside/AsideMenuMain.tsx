@@ -97,6 +97,13 @@ export function AsideMenuMain() {
         className="py-2"
       />
 
+      <AsideMenuItem
+        to={`/tickets`}
+        title="Tickets"
+        bsTitle="Tickets"
+        customIcon={<i className="fa-solid fa-ticket"></i>}
+      />
+
       <AsideMenuItemWithSubMain
         to="/deal-room"
         title="Deal Room"
