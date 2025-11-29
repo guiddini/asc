@@ -22,7 +22,7 @@ export const env = {
     : "http://asc.api.eventili.com/api",
   storageUrl: useEnv
     ? import.meta.env.VITE_APP_STORAGE_URL
-    : "https://asc.api.eventili.com/storage",
+    : "https://asc.api.eventili.com/storage/",
 
   encryptionKey: useEnv ? import.meta.env.VITE_APP_ENCRYPTION_KEY : "asc-2025",
 };
