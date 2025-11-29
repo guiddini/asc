@@ -3,7 +3,7 @@ import { getAuth } from "../modules/auth";
 import { env } from "../config/env";
 
 const axiosInstance = axios.create({
-  baseURL: env.baseUrl,
+  baseURL: env.apiUrl,
   responseType: "json",
   headers: {
     "Content-Type": "multipart/form-data",
