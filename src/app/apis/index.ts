@@ -29,3 +29,5 @@ export * from "./accommodations";
 export * from "./hotels";
 export * from "./pitch-deck";
 export * from "./investor-connection";
+export * from "./qr-code";
+export * from "./permission";

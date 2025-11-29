@@ -21,6 +21,9 @@ import KycReviewModal from "./kyc-review-modal";
 import { GuestAccommodationsModal } from "../../accomodations-management/components/GuestAccommodationsModal";
 import { CompanionAccommodationsModal } from "../../accomodations-management/components/CompanionAccommodationsModal";
 import { ShowCompanionAccommodationModal } from "../../accomodations-management/components/ShowCompanionAccommodationModal";
+import GrantDayAccessModal from "./grant-day-access";
+import RevokeDayAccessModal from "./revoke-day-modal";
+import ViewUserPermissionsModal from "./view-user-permission";
 
 const UserActionColumn = ({
   openViewModal,
@@ -51,6 +54,9 @@ const UserActionColumn = ({
   const [showUserQrCode, setShowUserQrCode] = useState(false);
   const [openAssignRoleModal, setOpenAssignRoleModal] = useState(false);
   const [openRemoveRoleModal, setOpenRemoveRoleModal] = useState(false);
+  const [openGrantDayAccess, setOpenGrantDayAccess] = useState(false);
+  const [openRevokeDayAccess, setOpenRevokeDayAccess] = useState(false);
+  const [openViewPermissions, setOpenViewPermissions] = useState(false);
 
   const currentUser = useSelector(selectUser);
   const isKycManager =
@@ -108,6 +114,49 @@ const UserActionColumn = ({
             </Dropdown.Item>
           )}
 
+          <Dropdown.Divider />
+
+          {/* Day Access Section */}
+          <Dropdown.Header className="text-primary fw-bold">
+            <KTIcon iconName="calendar" className="fs-3 me-1" />
+            Day Access Management
+          </Dropdown.Header>
+
+          <Dropdown.Item
+            onClick={() => setOpenGrantDayAccess(true)}
+            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 fw-bold m-0 px-5 py-3"
+          >
+            <KTIcon iconName="calendar-add" className="fs-1 m-0 text-success" />
+            <span className="text-muted ms-2">Grant Day Access</span>
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() => setOpenRevokeDayAccess(true)}
+            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 fw-bold m-0 px-5 py-3"
+          >
+            <KTIcon
+              iconName="calendar-remove"
+              className="fs-1 m-0 text-danger"
+            />
+            <span className="text-muted ms-2">Revoke Day Access</span>
+          </Dropdown.Item>
+
+          <Dropdown.Divider />
+
+          {/* Permissions & Roles Section */}
+          <Dropdown.Header className="text-primary fw-bold">
+            <KTIcon iconName="shield" className="fs-3 me-1" />
+            Permissions & Roles
+          </Dropdown.Header>
+
+          <Dropdown.Item
+            onClick={() => setOpenViewPermissions(true)}
+            className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 fw-bold m-0 px-5 py-3"
+          >
+            <KTIcon iconName="key" className="fs-1 m-0 text-info" />
+            <span className="text-muted ms-2">View All Permissions</span>
+          </Dropdown.Item>
+
           <Dropdown.Item
             onClick={() => setOpenAssignRoleModal(true)}
             className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 fw-bold m-0 px-5 py-3"
@@ -123,6 +172,8 @@ const UserActionColumn = ({
             <KTIcon iconName="shield-cross" className="fs-1 m-0 text-danger" />
             <span className="text-muted ms-2">Remove Role</span>
           </Dropdown.Item>
+
+          <Dropdown.Divider />
 
           <Dropdown.Item
             onClick={() => setOpenResetPasswordModal(true)}
@@ -191,6 +242,8 @@ const UserActionColumn = ({
             </Dropdown.Item>
           )}
 
+          <Dropdown.Divider />
+
           <Dropdown.Item
             onClick={() => setOpenGuestAccommodations(true)}
             className="cursor-pointer d-flex flex-row align-items-center nav-link btn btn-sm btn-color-gray-600 fw-bold m-0 px-5 py-3"
@@ -209,6 +262,7 @@ const UserActionColumn = ({
         </Dropdown.Menu>
       </Dropdown>
 
+      {/* Existing Modals */}
       <AddNewTicketToUserModal
         isOpen={!!openAddNewTicket}
         setIsOpen={setOpenAddNewTicket}
@@ -309,6 +363,32 @@ const UserActionColumn = ({
           onClose={() => setOpenCompanionDetail(null)}
           userId={String(props.id)}
           accommodationId={openCompanionDetail}
+        />
+      )}
+
+      {/* New Day Access & Permissions Modals */}
+      {openGrantDayAccess && (
+        <GrantDayAccessModal
+          isOpen={openGrantDayAccess}
+          setIsOpen={setOpenGrantDayAccess}
+          userId={String(props.id)}
+          userName={props.fname + " " + props.lname}
+        />
+      )}
+      {openRevokeDayAccess && (
+        <RevokeDayAccessModal
+          isOpen={openRevokeDayAccess}
+          setIsOpen={setOpenRevokeDayAccess}
+          userId={String(props.id)}
+          userName={props.fname + " " + props.lname}
+        />
+      )}
+      {openViewPermissions && (
+        <ViewUserPermissionsModal
+          isOpen={openViewPermissions}
+          setIsOpen={setOpenViewPermissions}
+          userId={String(props.id)}
+          userName={props.fname + " " + props.lname}
         />
       )}
     </>

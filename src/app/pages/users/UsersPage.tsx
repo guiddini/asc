@@ -1,4 +1,3 @@
-// UsersPage component
 import { PageLink, PageTitle } from "../../../_metronic/layout/core";
 import { CreateUserModal } from "./create-user/CreateUserModal";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -18,7 +17,7 @@ import {
   nextPage,
   resetCurrentPage,
 } from "../../features/usersSlice";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { Col, Row, Spinner } from "react-bootstrap";
 import { Role } from "../../types/roles";
 import { KTIcon } from "../../../_metronic/helpers";
@@ -26,6 +25,7 @@ import { USER_TYPES } from "../landing-page/layout/type-user-component";
 import { KycStatus } from "../../apis/user";
 import ExportUsersModal from "./components/export-users-modal";
 import { kycManagementRoles } from "../../utils/roles";
+import Select from "react-select";
 
 // Define the form values shape so types align everywhere
 type FormValues = {
@@ -41,6 +41,8 @@ type FormValues = {
   is_companion_only: boolean;
   prevHasAccommodationOnly: boolean;
   prevIsCompanionOnly: boolean;
+  days_access: { value: number; label: string }[];
+  prevGrantedDays: { value: number; label: string }[];
 };
 
 const usersBreadcrumbs: Array<PageLink> = [
@@ -50,6 +52,12 @@ const usersBreadcrumbs: Array<PageLink> = [
     isSeparator: false,
     isActive: false,
   },
+];
+
+const dayOptions = [
+  { value: 1, label: "Day 1" },
+  { value: 2, label: "Day 2" },
+  { value: 3, label: "Day 3" },
 ];
 
 const UsersPage = () => {
@@ -72,11 +80,12 @@ const UsersPage = () => {
       kyc_status?: KycStatus;
       has_accommodation_only?: boolean;
       is_companion_only?: boolean;
+      days_access?: number[];
       offset: string | number;
     }) => await getAllUsersApi(data),
   });
 
-  const { watch, setValue, handleSubmit, register, getValues } =
+  const { watch, setValue, handleSubmit, register, control, getValues } =
     useForm<FormValues>({
       defaultValues: {
         roleFilter: "",
@@ -91,6 +100,8 @@ const UsersPage = () => {
         is_companion_only: false,
         prevHasAccommodationOnly: false,
         prevIsCompanionOnly: false,
+        days_access: [],
+        prevGrantedDays: [],
       },
     });
 
@@ -101,6 +112,7 @@ const UsersPage = () => {
     kyc_status,
     has_accommodation_only,
     is_companion_only,
+    days_access,
   } = watch();
 
   const [createModalOpen, setCreateModalOpen] = useState<boolean>(false);
@@ -125,7 +137,6 @@ const UsersPage = () => {
         {
           onSuccess(data) {
             setInitialLoading(false);
-            // Normalize API response shape (array vs object with `data`)
             const fetched: User[] = Array.isArray(data)
               ? (data as User[])
               : ((data as any)?.data as User[]) || [];
@@ -144,7 +155,6 @@ const UsersPage = () => {
 
   const observerTarget = useRef(null);
 
-  // Accept a partial of the fields that matter to filtering
   const handleFilter = async (
     data?: Partial<
       Pick<
@@ -155,6 +165,7 @@ const UsersPage = () => {
         | "kyc_status"
         | "has_accommodation_only"
         | "is_companion_only"
+        | "days_access"
       >
     >
   ) => {
@@ -166,6 +177,7 @@ const UsersPage = () => {
       data?.has_accommodation_only ?? watch("has_accommodation_only");
     const is_companion_only =
       data?.is_companion_only ?? watch("is_companion_only");
+    const days_access = data?.days_access ?? watch("days_access");
 
     const prevNameFilter = getValues("prevNameFilter");
     const prevRoleFilter = getValues("prevRoleFilter");
@@ -173,15 +185,16 @@ const UsersPage = () => {
     const prevKycStatus = getValues("prevKycStatus");
     const prevHasAccommodationOnly = getValues("prevHasAccommodationOnly");
     const prevIsCompanionOnly = getValues("prevIsCompanionOnly");
+    const prevGrantedDays = getValues("prevGrantedDays");
 
-    // Detect any change in filters compared to previous submitted values
     const paramsChanged =
       nameFilter !== prevNameFilter ||
       roleFilter !== prevRoleFilter ||
       typeFilter !== prevTypeFilter ||
       kyc_status !== prevKycStatus ||
       has_accommodation_only !== prevHasAccommodationOnly ||
-      is_companion_only !== prevIsCompanionOnly;
+      is_companion_only !== prevIsCompanionOnly ||
+      JSON.stringify(days_access) !== JSON.stringify(prevGrantedDays);
 
     if (paramsChanged) {
       dispatch(resetCurrentPage());
@@ -194,26 +207,28 @@ const UsersPage = () => {
       kyc_status: (kyc_status || "") as KycStatus | undefined,
       has_accommodation_only: has_accommodation_only ? true : undefined,
       is_companion_only: is_companion_only ? true : undefined,
+      days_access:
+        days_access && days_access.length > 0
+          ? days_access.map((d) => d.value)
+          : undefined,
       offset: paramsChanged ? 0 : currentPage,
     };
 
     mutate(req, {
       onSuccess(res) {
-        // Normalize API response shape (array vs object with `data`)
         const fetched: User[] = Array.isArray(res)
           ? (res as User[])
           : ((res as any)?.data as User[]) || [];
 
-        // Update previous submitted values to current
         setValue("prevNameFilter", nameFilter);
         setValue("prevRoleFilter", roleFilter);
         setValue("prevTypeFilter", typeFilter);
         setValue("prevKycStatus", kyc_status || "");
         setValue("prevHasAccommodationOnly", !!has_accommodation_only);
         setValue("prevIsCompanionOnly", !!is_companion_only);
+        setValue("prevGrantedDays", days_access || []);
 
         if (paramsChanged) {
-          // New search: replace list and reset pagination
           dispatch(initUsers(fetched));
           dispatch(resetCurrentPage());
           if (fetched.length > 0) {
@@ -222,7 +237,6 @@ const UsersPage = () => {
           return;
         }
 
-        // Infinite scroll: append and advance page
         if (!paramsChanged && fetched.length > 0) {
           fetched.forEach((user) => dispatch(addUser(user)));
           dispatch(nextPage());
@@ -232,12 +246,10 @@ const UsersPage = () => {
     });
   };
 
-  // Wire the form submit with the proper type
   const onSubmit: SubmitHandler<FormValues> = (formData) => {
     return handleFilter(formData);
   };
 
-  // Auto-submit when role/type changes
   const handleRoleChange = (e: any) => {
     const value = e?.target?.value ?? "";
     setValue("roleFilter", value);
@@ -248,6 +260,7 @@ const UsersPage = () => {
       kyc_status,
       has_accommodation_only,
       is_companion_only,
+      days_access,
     });
   };
 
@@ -261,6 +274,7 @@ const UsersPage = () => {
       kyc_status,
       has_accommodation_only,
       is_companion_only,
+      days_access,
     });
   };
 
@@ -274,6 +288,7 @@ const UsersPage = () => {
       typeFilter,
       has_accommodation_only,
       is_companion_only,
+      days_access,
     });
   };
 
@@ -287,6 +302,7 @@ const UsersPage = () => {
       typeFilter,
       kyc_status,
       is_companion_only,
+      days_access,
     });
   };
 
@@ -300,6 +316,20 @@ const UsersPage = () => {
       typeFilter,
       kyc_status,
       has_accommodation_only,
+      days_access,
+    });
+  };
+
+  const handleGrantedDaysChange = (selectedOptions: any) => {
+    setValue("days_access", selectedOptions || []);
+    handleFilter({
+      days_access: selectedOptions || [],
+      nameFilter,
+      roleFilter,
+      typeFilter,
+      kyc_status,
+      has_accommodation_only,
+      is_companion_only,
     });
   };
 
@@ -307,7 +337,6 @@ const UsersPage = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          // Avoid multiple triggers while a request is in-flight or initial load
           if (isLoading || initialLoading) return;
           handleFilter({
             nameFilter,
@@ -316,6 +345,7 @@ const UsersPage = () => {
             kyc_status,
             has_accommodation_only,
             is_companion_only,
+            days_access,
           });
         }
       },
@@ -395,7 +425,6 @@ const UsersPage = () => {
                 <KTIcon iconName="plus" className="fs-2 text-white" />
                 Add New User
               </button>
-              {/* Export button visible only to kycManagementRoles; compact style */}
               {canExport && (
                 <button
                   type="button"
@@ -468,6 +497,36 @@ const UsersPage = () => {
                     <option value="refused">Refused</option>
                   </select>
                 </Col>
+                <Col>
+                  <label className="fs-6 form-label fw-bold text-gray-900">
+                    Granted Days
+                  </label>
+                  <Controller
+                    name="days_access"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        isMulti
+                        options={dayOptions}
+                        className="react-select-container"
+                        classNamePrefix="react-select"
+                        placeholder="Select days..."
+                        onChange={handleGrantedDaysChange}
+                        styles={{
+                          control: (base) => ({
+                            ...base,
+                            backgroundColor: "#f5f8fa",
+                            borderColor: "#e4e6ef",
+                            minHeight: "44px",
+                          }),
+                        }}
+                      />
+                    )}
+                  />
+                </Col>
+              </Row>
+              <Row className="g-8 mt-2">
                 <Col className="d-flex align-items-end">
                   <div className="form-check form-switch">
                     <input
@@ -518,6 +577,7 @@ const UsersPage = () => {
             <table className="table align-middle table-row-dashed fs-6 gy-5">
               <thead>
                 <tr className="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                  <th className="text-end min-w-150px">Actions</th>
                   <th className="min-w-150px">User</th>
                   <th className="min-w-150px">First Name</th>
                   <th className="min-w-150px">Last Name</th>
@@ -530,13 +590,20 @@ const UsersPage = () => {
                   <th className="min-w-150px">Has Accommodation</th>
                   <th className="min-w-120px">Is Companion</th>
                   <th className="min-w-120px">Created At</th>
-                  <th className="text-end min-w-150px">Actions</th>
                 </tr>
               </thead>
 
               <tbody className="text-gray-600 fw-semibold">
                 {users?.map((row: User) => (
                   <tr key={String(row?.id)}>
+                    <td className="text-start">
+                      <UserActionColumn
+                        openViewModal={() => {
+                          navigate(`/profile/${row?.id}`);
+                        }}
+                        props={row}
+                      />
+                    </td>
                     <td>
                       {row?.avatar === null ? (
                         <div className="symbol symbol-circle symbol-40px overflow-hidden me-3">
@@ -658,15 +725,6 @@ const UsersPage = () => {
                     </td>
 
                     <td>{moment(row.created_at).format("DD/MM/YYYY")}</td>
-
-                    <td className="text-end">
-                      <UserActionColumn
-                        openViewModal={() => {
-                          navigate(`/profile/${row?.id}`);
-                        }}
-                        props={row}
-                      />
-                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -690,11 +748,6 @@ const UsersPage = () => {
         refetch={() => {}}
         key={String(createModalOpen)}
       />
-      {/* <ViewUserPermissions
-        user={updateUserPermissions}
-        setIsOpen={setUpdateUserPermissions}
-        refetch={() => {}}
-      /> */}
       <UpdateUserModal
         refetch={() => {}}
         setUserID={setUpdateUserID}
@@ -705,7 +758,6 @@ const UsersPage = () => {
         isOpen={exportOpen}
         onClose={() => setExportOpen(false)}
       />
-      {/* <ViewUserModal user={user} setIsOpen={setUser} /> */}
     </>
   );
 };

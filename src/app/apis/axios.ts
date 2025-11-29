@@ -2,7 +2,7 @@ import axios from "axios";
 import { getAuth } from "../modules/auth";
 
 const axiosInstance = axios.create({
-  baseURL: "https://asc.api.eventili.com/api",
+  baseURL: import.meta.env.VITE_APP_API_URL,
   responseType: "json",
   headers: {
     "Content-Type": "multipart/form-data",

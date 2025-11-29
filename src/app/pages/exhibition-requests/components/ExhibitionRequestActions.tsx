@@ -174,9 +174,9 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
   const handleOpenTransferDocument = () => {
     const docPath = row?.transfer_document;
     if (!docPath) return;
-    const link = `https://asc.api.eventili.com/admin/file?path=${encodeURIComponent(
-      docPath
-    )}`;
+    const link = `${
+      import.meta.env.VITE_APP_BASE_URL
+    }/admin/file?path=${encodeURIComponent(docPath)}`;
     window.open(link, "_blank", "noopener,noreferrer");
   };
 
@@ -652,9 +652,9 @@ const ExhibitionRequestActions = ({ row }: ExhibitionRequestActionsProps) => {
                         onClick={() => {
                           const docPath = row.transfer_document;
                           if (!docPath) return;
-                          const link = `https://asc.api.eventili.com/admin/file?path=${encodeURIComponent(
-                            docPath
-                          )}`;
+                          const link = `${
+                            import.meta.env.VITE_APP_BASE_URL
+                          }/admin/file?path=${encodeURIComponent(docPath)}`;
                           window.open(link, "_blank", "noopener,noreferrer");
                         }}
                       >

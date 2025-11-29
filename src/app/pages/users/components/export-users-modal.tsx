@@ -33,7 +33,10 @@ const ExportUsersModal = ({ isOpen, onClose }: ExportUsersModalProps) => {
       const csvBlob = await exportUsersCsv(onlyKyc);
       const csvText = await csvBlob.text();
       const csvWorkbook = XLSX.read(csvText, { type: "string" });
-      const wbArray = XLSX.write(csvWorkbook, { type: "array", bookType: "xlsx" });
+      const wbArray = XLSX.write(csvWorkbook, {
+        type: "array",
+        bookType: "xlsx",
+      });
       const xlsxBlob = new Blob([wbArray], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
@@ -62,7 +65,8 @@ const ExportUsersModal = ({ isOpen, onClose }: ExportUsersModalProps) => {
       </Modal.Header>
       <Modal.Body>
         <p className="mb-4 text-muted">
-          Choose your options and export the users list. Enable filtering by KYC presence if needed.
+          Choose your options and export the users list. Enable filtering by KYC
+          presence if needed.
         </p>
         <Form>
           <Form.Group>
@@ -81,10 +85,18 @@ const ExportUsersModal = ({ isOpen, onClose }: ExportUsersModalProps) => {
           Cancel
         </Button>
         <div className="d-flex gap-3">
-          <Button variant="light-primary" onClick={handleExportCsv} disabled={isExporting}>
+          <Button
+            variant="light-primary"
+            onClick={handleExportCsv}
+            disabled={isExporting}
+          >
             {isExporting ? "Exporting..." : "Export as CSV"}
           </Button>
-          <Button variant="primary" onClick={handleExportExcel} disabled={isExporting}>
+          <Button
+            variant="primary"
+            onClick={handleExportExcel}
+            disabled={isExporting}
+          >
             {isExporting ? "Exporting..." : "Export as Excel"}
           </Button>
         </div>

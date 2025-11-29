@@ -5,6 +5,7 @@ export type UserConnectionUser = {
   fname: string;
   lname: string;
   avatar?: string | null;
+  email?: string | null;
 };
 
 export type UserConnection = {

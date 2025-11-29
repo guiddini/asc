@@ -103,6 +103,7 @@ import NotificationsManagement from "../pages/notifications-management/page";
 import PitchDeckPage from "../pages/pitch-deck/page";
 import { updateUserLogo } from "../apis/user";
 import { setCurrentUser } from "../features/userSlice";
+import CompanyVisitorsPage from "../pages/company-visitors/page";
 
 const PrivateRoutes = () => {
   const [showAppModal, setShowAppModal] = useState(false);
@@ -768,6 +769,14 @@ const PrivateRoutes = () => {
               element={
                 <SuspensedView>
                   <CompanyReservationPage />
+                </SuspensedView>
+              }
+            />
+            <Route
+              path="/company/:id/visitors"
+              element={
+                <SuspensedView>
+                  <CompanyVisitorsPage />
                 </SuspensedView>
               }
             />

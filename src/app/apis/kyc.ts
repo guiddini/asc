@@ -38,11 +38,12 @@ export const setKycStatus = async (
 };
 
 export const exportUsersCsv = async (
-  onlyKyc: boolean = false
+  onlyKyc: boolean = false,
+  daysAccess?: number[]
 ): Promise<Blob> => {
   const res = await axiosInstance.post(
     "/user/export",
-    { only_kyc: onlyKyc },
+    { only_kyc: onlyKyc, days_access: daysAccess },
     { responseType: "blob" }
   );
   return res.data;
@@ -50,9 +51,10 @@ export const exportUsersCsv = async (
 
 export const downloadUsersCsv = async (
   onlyKyc: boolean = false,
-  filename: string = "users_export.csv"
+  filename: string = "users_export.csv",
+  daysAccess?: number[]
 ): Promise<void> => {
-  const blob = await exportUsersCsv(onlyKyc);
+  const blob = await exportUsersCsv(onlyKyc, daysAccess);
   const url = window.URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;

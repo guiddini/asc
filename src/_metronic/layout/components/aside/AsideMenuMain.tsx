@@ -167,6 +167,12 @@ export function AsideMenuMain() {
               bsTitle="Staff"
               hasBullet={true}
             />
+            <AsideMenuItem
+              to={`/company/${companyID}/visitors`}
+              title="Visitors"
+              bsTitle="Visitors"
+              hasBullet={true}
+            />
           </AsideMenuItemWithSubMain>
         </>
       )}

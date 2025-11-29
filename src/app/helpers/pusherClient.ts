@@ -7,7 +7,7 @@ function createInstance(): Pusher {
   // Access Vite environment variables correctly
   const key = import.meta.env.VITE_APP_PUSHER_APP_KEY || "ec4e26dcaa1f65bfbd78";
   const cluster = import.meta.env.VITE_APP_PUSHER_CLUSTER || "eu";
-  const apiUrl = "https://asc.api.eventili.com";
+  const apiUrl = import.meta.env.VITE_APP_BASE_URL;
   const token = getAuth();
 
   if (!key) {
