@@ -30,15 +30,16 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          pass: ${{ secrets.SERVER_PASSWORD }}
+          password: ${{ secrets.SERVER_PASSWORD }}
           proxy_host: ${{ secrets.JUMP_HOST }}
           proxy_username: ${{ secrets.JUMP_USER }}
-          proxy_pass: ${{ secrets.JUMP_PASSWORD }}
+          proxy_password: ${{ secrets.JUMP_PASSWORD }}
+          proxy_port: ${{ secrets.JUMP_PORT }}
           script: |
             docker login registry.gitlab.com \
               -u ${{ secrets.GITLAB_REGISTRY_USER }} \
               -p ${{ secrets.GITLAB_REGISTRY_PASSWORD }}
 
             docker pull registry.gitlab.com/zbousmina/asc:frontend
-            cd /mnt/disk/production/apps/asc
+            cd /mnt/disk/production/apps/deployment
             ls -la
