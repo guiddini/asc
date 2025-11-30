@@ -14,6 +14,8 @@ export const USER_TYPES = [
   { label: "Media", value: "media" },
   { label: "Speaker", value: "speaker" },
   { label: "Policy Makers", value: "policy_makers" },
+  { label: "VIP", value: "vip-asc@2025dz" },
+  { label: "Sponsor ASC", value: "sponsor-asc@2025" },
 ];
 
 const UserTypeComponent: React.FC<SearchProps> = ({ show, onHide }) => {
