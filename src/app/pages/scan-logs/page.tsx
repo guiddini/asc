@@ -223,6 +223,50 @@ const AdminQrLogsPage = () => {
         ),
       },
       {
+        Header: "Context",
+        accessor: "context",
+        Cell: ({ row }) => {
+          const ctx = row.original.context;
+          if (!ctx || Object.keys(ctx).length === 0)
+            return <span className="text-muted">—</span>;
+
+          return (
+            <div className="text-muted fs-7">
+              {ctx?.action && (
+                <div>
+                  <strong>Action:</strong> {ctx?.action}
+                </div>
+              )}
+              {ctx?.permission && (
+                <div>
+                  <strong>Permission:</strong> {ctx?.permission}
+                </div>
+              )}
+              {ctx?.access_result && (
+                <div>
+                  <strong>Result:</strong>{" "}
+                  <span
+                    className={
+                      ctx?.access_result.includes("granted") &&
+                      !ctx?.access_result.includes("not_granted")
+                        ? "text-success"
+                        : "text-danger"
+                    }
+                  >
+                    {ctx?.access_result}
+                  </span>
+                </div>
+              )}
+              {ctx?.day && (
+                <div>
+                  <strong>Day:</strong> {ctx?.day}
+                </div>
+              )}
+            </div>
+          );
+        },
+      },
+      {
         Header: "Scanned At",
         accessor: "scanned_at",
         Cell: ({ row }) => {
