@@ -40,6 +40,7 @@ jobs:
               -u ${{ secrets.GITLAB_REGISTRY_USER }} \
               -p ${{ secrets.GITLAB_REGISTRY_PASSWORD }}
 
-            docker pull registry.gitlab.com/zbousmina/asc:frontend
             cd /mnt/disk/production/apps/deployment
-            ls -la
+            docker-compose -f frontend.docker-compose.yml down \
+            && docker-compose -f frontend.docker-compose.yml pull \
+            && docker-compose -f frontend.docker-compose.yml up -d
